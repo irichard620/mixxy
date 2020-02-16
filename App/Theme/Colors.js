@@ -6,11 +6,33 @@
  */
 
 export default {
-  transparent: 'rgba(0,0,0,0)',
-  // Example colors:
-  white: '#ffffff',
-  text: '#212529',
-  primary: '#007bff',
-  success: '#28a745',
-  error: '#dc3545',
+  // Text colors
+  text1Light: '#000000',
+  text1Dark: '#ffffff',
+  text2Light: '#00000050',
+  text2Dark: '#ffffff50',
+  text3Light: '#00000030',
+  text3Dark: '#ffffff30',
+  text4Light: '#00000020',
+  text4Dark: '#ffffff20',
+  // Main color palette
+  blue1: '#2D8CD3',
+  blue1TransparentLight: '#2D8CD315',
+  blue1TransparentDark: '#2D8CD330',
+  red1: '#EB4B13',
+  red1TransparentLight: '#EB4B1315',
+  red1TransparentDark: '#EB4B1330',
+  backgroundColorLight: '#FFFFFF',
+  backgroundColorDark: '#000000',
+  cardColorLight: '#FFFFFF',
+  cardColorDark: '#2B2B2B',
+  // Fill colors
+  bwFillLight: '#000000',
+  bwFillDark: '#FFFFFF',
+  darkFill1Light: '#00000045',
+  darkFill1Dark: '#FFFFFF45',
+  darkFill2Light: '#00000020',
+  darkFill2Dark: '#FFFFFF20',
+  darkFill3Light: '#00000010',
+  darkFill3Dark: '#FFFFFF10',
 }

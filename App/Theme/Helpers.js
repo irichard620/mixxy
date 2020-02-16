@@ -146,6 +146,11 @@ export default StyleSheet.create({
   rowReverse: {
     flexDirection: 'row-reverse',
   },
+  rowStart: {
+    flexDirection: 'row',
+    flexWrap: 'no-wrap',
+    alignItems: 'flex-start',
+  },
   scrollSpaceAround: {
     flexGrow: 1,
     justifyContent: 'space-around',
