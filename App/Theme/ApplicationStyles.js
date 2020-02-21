@@ -11,9 +11,18 @@ const baseDividerStyle = {
   width: '100%',
 }
 
+const baseThickDividerStyle = {
+  height: 8,
+  width: '100%',
+}
+
 export default new DynamicStyleSheet({
   divider: {
     ...baseDividerStyle,
+    backgroundColor: new DynamicValue(Colors.darkFill2Light, Colors.darkFill2Dark),
+  },
+  thickDivider: {
+    ...baseThickDividerStyle,
     backgroundColor: new DynamicValue(Colors.darkFill2Light, Colors.darkFill2Dark),
   },
   outerContainer: {

@@ -148,7 +148,12 @@ export default StyleSheet.create({
   },
   rowStart: {
     flexDirection: 'row',
-    flexWrap: 'no-wrap',
+    flexWrap: 'nowrap',
+    alignItems: 'flex-start',
+  },
+  colStart: {
+    flexDirection: 'column',
+    flex: 1,
     alignItems: 'flex-start',
   },
   scrollSpaceAround: {

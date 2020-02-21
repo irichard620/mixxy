@@ -6,7 +6,7 @@
 
 import { INITIAL_STATE } from './InitialState'
 import { createReducer } from 'reduxsauce'
-import { ExampleTypes } from './Actions'
+import { UserTypes } from './Actions'
 
 export const fetchUserLoading = (state) => ({
   ...state,
@@ -28,11 +28,8 @@ export const fetchUserFailure = (state, { errorMessage }) => ({
   userErrorMessage: errorMessage,
 })
 
-/**
- * @see https://github.com/infinitered/reduxsauce#createreducer
- */
 export const reducer = createReducer(INITIAL_STATE, {
-  [ExampleTypes.FETCH_USER_LOADING]: fetchUserLoading,
-  [ExampleTypes.FETCH_USER_SUCCESS]: fetchUserSuccess,
-  [ExampleTypes.FETCH_USER_FAILURE]: fetchUserFailure,
+  [UserTypes.FETCH_USER_LOADING]: fetchUserLoading,
+  [UserTypes.FETCH_USER_SUCCESS]: fetchUserSuccess,
+  [UserTypes.FETCH_USER_FAILURE]: fetchUserFailure,
 })

@@ -54,6 +54,13 @@ function navigateAndReset(routeName, params) {
   )
 }
 
+function screenWithDarkMode(Component) {
+  return function WrappedComponent(props) {
+    const myHookValue = useMyHook();
+    return <Component {...props} myHookValue={myHookValue} />;
+  }
+}
+
 export default {
   navigate,
   navigateAndReset,

@@ -29,5 +29,5 @@ const { Types, Creators } = createActions({
   fetchUserFailure: ['errorMessage'],
 })
 
-export const ExampleTypes = Types
+export const UserTypes = Types
 export default Creators

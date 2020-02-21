@@ -20,6 +20,7 @@ const lineSpacing = {
 
 const fontWeight = {
   bold: '700',
+  semibold: '600',
   medium: '400',
 }
 
@@ -38,6 +39,11 @@ export default {
     fontSize: size.h3,
     lineHeight: lineSpacing.h3,
     fontWeight: fontWeight.bold,
+  },
+  buttonText: {
+    fontSize: size.body1,
+    lineHeight: lineSpacing.body1,
+    fontWeight: fontWeight.semibold,
   },
   body1: {
     fontSize: size.body1,

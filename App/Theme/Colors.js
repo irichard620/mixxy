@@ -6,6 +6,7 @@
  */
 
 export default {
+  white: "#ffffff",
   // Text colors
   text1Light: '#000000',
   text1Dark: '#ffffff',
