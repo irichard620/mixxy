@@ -1,5 +1,3 @@
-import { StyleSheet } from 'react-native'
-
 const size = {
   h1: 24,
   h2: 22,
@@ -22,6 +20,7 @@ const fontWeight = {
   bold: '700',
   semibold: '600',
   medium: '400',
+  kindabold: '500'
 }
 
 export default {
@@ -60,4 +59,9 @@ export default {
     lineHeight: lineSpacing.body3,
     fontWeight: fontWeight.medium,
   },
+  cardHeader: {
+    fontSize: size.body1,
+    lineHeight: lineSpacing.body1,
+    fontWeight: fontWeight.kindabold,
+  }
 }

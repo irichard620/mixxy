@@ -24,7 +24,9 @@ export default {
   red1TransparentLight: '#EB4B1315',
   red1TransparentDark: '#EB4B1330',
   backgroundColorLight: '#FFFFFF',
+  backgroundColorLightTransparent: '#FFFFFF00',
   backgroundColorDark: '#000000',
+  backgroundColorDarkTransparent: '#00000000',
   cardColorLight: '#FFFFFF',
   cardColorDark: '#2B2B2B',
   // Fill colors

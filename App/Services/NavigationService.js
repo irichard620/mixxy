@@ -1,4 +1,6 @@
 import { NavigationActions, StackActions } from 'react-navigation'
+import { useDarkMode } from 'react-native-dark-mode'
+import React from 'react'
 
 /**
  * The navigation is implemented as a service so that it can be used outside of components, for example in sagas.
@@ -56,8 +58,8 @@ function navigateAndReset(routeName, params) {
 
 function screenWithDarkMode(Component) {
   return function WrappedComponent(props) {
-    const myHookValue = useMyHook();
-    return <Component {...props} myHookValue={myHookValue} />;
+    const darkMode = useDarkMode();
+    return <Component {...props} darkMode={darkMode} />;
   }
 }
 
@@ -65,4 +67,5 @@ export default {
   navigate,
   navigateAndReset,
   setTopLevelNavigator,
+  screenWithDarkMode,
 }

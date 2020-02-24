@@ -1,13 +1,12 @@
 import React from 'react'
-import { ScrollView, Text } from 'react-native'
-import { useDynamicStyleSheet, useDarkMode } from 'react-native-dark-mode'
+import { ScrollView, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { SafeAreaView } from "react-navigation"
-import DynamicStyles from 'App/Theme/ApplicationStyles'
-import HomeStyles from './HomeScreenStyle'
+import getStylesheet from 'App/Theme/ApplicationStyles'
+import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
-import UserActions from 'App/Stores/User/Actions'
+import NavigationService from '../../Services/NavigationService'
 
 
 class HomeScreen extends React.Component {
@@ -18,7 +17,13 @@ class HomeScreen extends React.Component {
         {
           recipeId: '54750894510870724860',
           recipeName: 'Manhattan',
-          recipeType: 'Whiskey Cocktail'
+          recipeType: 'Whiskey Cocktail',
+          recipeDescription: 'The Manhattan was the most famous cocktail in the world shortly after it was invented in New York City’s Manhattan Club, some time around 1880 (as the story goes). Over the years, the whiskey classic has dipped in and out of fashion before finding its footing as one of the cornerstones of the craft cocktail renaissance. Amazingly, the drink that socialites tipped to their lips in the 19th century looks and tastes pretty much the same as the one served today at any decent cocktail bar. The Manhattan’s mix of American whiskey and Italian vermouth, perked up with a few dashes of aromatic bitters, is timeless and tasty—the very definition of what a cocktail should be.',
+          steps: [
+            {
+              title: 'Heat water'
+            }
+          ]
         }
       ],
       favoriteExpanded: false,
@@ -26,7 +31,12 @@ class HomeScreen extends React.Component {
         {
           recipeId: '54750894510870724860',
           recipeName: 'Manhattan',
-          recipeType: 'Whiskey Cocktail'
+          recipeType: 'Whiskey Cocktail',
+          steps: [
+            {
+              title: 'Heat water'
+            }
+          ]
         }
       ],
       allExpanded: false,
@@ -47,35 +57,45 @@ class HomeScreen extends React.Component {
     })
   }
 
-  renderCard = (idx, item) => {
+  onCardClick = (idx, isFavorite) => {
+    const { favoriteRecipes, allRecipes } = this.state;
+    let recipesToUse = favoriteRecipes
+    if (!isFavorite) {
+      recipesToUse = allRecipes
+    }
+    NavigationService.navigate('TutorialScreen', {
+      recipe: recipesToUse[idx]
+    })
+  }
+
+  renderCard = (idx, item, isFavorite) => {
     return (
       <RecipeCard
         key={item.recipeId}
-        index={idx}
-        recipeName={''}
-        recipeType={''}
+        recipeName={item.recipeName}
+        recipeType={item.recipeType}
         disabled={false}
-        onCardClick={this.onCardClick}
+        onCardClick={() => this.onCardClick(idx, isFavorite)}
+        darkMode={this.props.darkMode}
       />
     );
   }
 
   render() {
-    const { user } = this.props;
+    const { darkMode } = this.props;
     const { favoriteRecipes, favoriteExpanded, allRecipes, allExpanded } = this.state;
-    const isDarkMode = useDarkMode()
-    console.log(isDarkMode)
-    const styles = useDynamicStyleSheet(DynamicStyles)
-    const homeStyles = useDynamicStyleSheet(HomeStyles)
+    const styles = getStylesheet(darkMode)
+    const homeStyles = getHomeStylesheet(darkMode)
 
     return (
       <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.outerContainer}>
         <ScrollView style={homeStyles.scrollContainer}>
           <Text style={homeStyles.topHeader}>Good Morning!</Text>
+          <View style={homeStyles.sponsor} />
           <Text style={homeStyles.sectionHeader}>Favorites</Text>
           {favoriteRecipes.map((favorite, idx) => {
             if (idx < 5 || favoriteExpanded) {
-              return this.renderCard(idx, favorite)
+              return this.renderCard(idx, favorite, true)
             }
             return null
           })}
@@ -111,4 +131,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomeScreen)
+)(NavigationService.screenWithDarkMode(HomeScreen))

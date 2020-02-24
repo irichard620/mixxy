@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Colors } from 'App/Theme'
+import Colors from 'App/Theme/Colors'
 
 export default StyleSheet.create({
   backgroundReset: {
@@ -52,8 +52,8 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  fillColCenter: {
-    alignItems: 'center',
+  fillColLeft: {
+    alignItems: 'flex-start',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',

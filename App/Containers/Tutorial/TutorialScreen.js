@@ -1,13 +1,16 @@
 import React from 'react'
-import { View, Dimensions } from 'react-native'
-import { useDynamicStyleSheet } from 'react-native-dark-mode'
+import { View, Dimensions, Image, ScrollView, Text } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { NavigationActions, SafeAreaView } from 'react-navigation'
-import DynamicStyles from 'App/Theme/ApplicationStyles'
+import LinearGradient from 'react-native-linear-gradient';
+import getStylesheet from 'App/Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
-import TutorialStyle from './TutorialScreenStyle'
+import getTutorialStylesheet from './TutorialScreenStyle'
 import ButtonLarge from '../../Components/ButtonLarge'
+import NavigationService from '../../Services/NavigationService'
+import TutorialHome from './TutorialHome'
+import Colors from '../../Theme/Colors'
 
 
 class TutorialScreen extends React.Component {
@@ -17,6 +20,7 @@ class TutorialScreen extends React.Component {
       step: -1,
       recipe: {},
       premium: false,
+      drinkAmount: 1,
     };
   }
 
@@ -41,10 +45,11 @@ class TutorialScreen extends React.Component {
   }
 
   render() {
-    const { step, recipe } = this.state;
+    const { darkMode } = this.props;
+    const { step, recipe, drinkAmount } = this.state;
 
-    const styles = useDynamicStyleSheet(DynamicStyles)
-    const tutorialStyles = useDynamicStyleSheet(TutorialStyle)
+    const styles = getStylesheet(darkMode)
+    const tutorialStyles = getTutorialStylesheet(darkMode)
 
     let headerTitle = '';
     if (step >= 0 && 'recipeName' in recipe) {
@@ -70,7 +75,18 @@ class TutorialScreen extends React.Component {
     return (
       <View style={styles.outerContainer}>
         <SafeAreaView style={styles.outerContainer}>
-          <TopHeader title={headerTitle} onClose={this.onBackScreenClick} showSeparator={false} />
+          <TopHeader title={headerTitle} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
+          {step === -1 && (
+            <TutorialHome recipe={recipe} darkMode={darkMode} drinkAmount={drinkAmount} />
+          )}
+          <View style={tutorialStyles.gradientContainer}>
+            <LinearGradient
+              colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
+              style={{ flex: 1 }}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 0, y: 0 }}
+            />
+          </View>
           <View style={tutorialStyles.buttonView}>
             <ButtonLarge
               onButtonClick={this.onFirstButtonClick}
@@ -80,12 +96,15 @@ class TutorialScreen extends React.Component {
               textColor="#000000"
               backgroundColor="#FFFFFF"
               borderColor="#D3D3D3"
+              darkMode={darkMode}
             />
             <ButtonLarge
               onButtonClick={this.onSecondButtonClick}
               title={secondButtonTitle}
               margin={[0, 0, 0, 0]}
               buttonWidth={buttonWidth}
+              darkMode={darkMode}
+              isPrimary
             />
           </View>
         </SafeAreaView>
@@ -113,4 +132,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TutorialScreen)
+)(NavigationService.screenWithDarkMode(TutorialScreen))

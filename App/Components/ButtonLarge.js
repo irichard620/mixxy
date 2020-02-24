@@ -1,20 +1,19 @@
 
 import React from 'react';
 import {
-  View, Text, TouchableOpacity
+  View, Text, TouchableOpacity, StyleSheet
 } from 'react-native';
-import { DynamicStyleSheet, DynamicValue, useDynamicStyleSheet } from 'react-native-dark-mode'
 import Colors from '../Theme/Colors'
 import Fonts from '../Theme/Fonts'
 
 export default function ButtonLarge(props) {
   const {
     onButtonClick, title, margin, disabled, buttonWidth,
-    buttonHeight, isPrimary
+    buttonHeight, isPrimary, darkMode
   } = props;
 
   // Base button style
-  const buttonStyles = useDynamicStyleSheet(ButtonLargeStyles)
+  const buttonStyles = getButtonLargeStylesheet(darkMode)
   let baseStyle = buttonStyles.primaryButton
   if (!isPrimary) {
     baseStyle = buttonStyles.secondaryButton
@@ -63,23 +62,25 @@ const baseButtonStyle = {
 }
 
 
-const ButtonLargeStyles = new DynamicStyleSheet({
-  primaryButton: {
-    ...baseButtonStyle,
-    backgroundColor: Colors.blue1,
-  },
-  secondaryButton: {
-    ...baseButtonStyle,
-    backgroundColor: new DynamicValue(Colors.darkFill2Light, Colors.darkFill2Dark),
-    borderWidth: 0.5,
-    borderColor: new DynamicValue(Colors.darkFill1Light, Colors.darkFill1Dark)
-  },
-  primaryText: {
-    ...Fonts.buttonText,
-    color: Colors.white,
-  },
-  secondaryText: {
-    ...Fonts.buttonText,
-    color: new DynamicValue(Colors.text1Light, Colors.text1Dark)
-  }
-})
+function getButtonLargeStylesheet(darkMode) {
+  return StyleSheet.create({
+    primaryButton: {
+      ...baseButtonStyle,
+      backgroundColor: Colors.blue1,
+    },
+    secondaryButton: {
+      ...baseButtonStyle,
+      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      borderWidth: 0.5,
+      borderColor: darkMode ? Colors.darkFill1Dark : Colors.darkFill1Light
+    },
+    primaryText: {
+      ...Fonts.buttonText,
+      color: Colors.white,
+    },
+    secondaryText: {
+      ...Fonts.buttonText,
+      color: darkMode ? Colors.text1Dark : Colors.text1Light
+    }
+  })
+}

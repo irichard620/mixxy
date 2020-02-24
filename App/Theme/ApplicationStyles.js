@@ -4,29 +4,24 @@
  * Use it to define generic component styles (e.g. the default text styles, default button styles...).
  */
 import Colors from './Colors'
-import { DynamicStyleSheet, DynamicValue } from 'react-native-dark-mode'
+import { StyleSheet } from 'react-native'
 
-const baseDividerStyle = {
-  height: 0.5,
-  width: '100%',
+export default function getStylesheet(darkMode) {
+  return StyleSheet.create({
+    divider: {
+      flex: 1,
+      height: 0.5,
+      width: '100%',
+      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+    },
+    thickDivider: {
+      height: 8,
+      width: '100%',
+      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+    },
+    outerContainer: {
+      flex: 1,
+      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight
+    },
+  })
 }
-
-const baseThickDividerStyle = {
-  height: 8,
-  width: '100%',
-}
-
-export default new DynamicStyleSheet({
-  divider: {
-    ...baseDividerStyle,
-    backgroundColor: new DynamicValue(Colors.darkFill2Light, Colors.darkFill2Dark),
-  },
-  thickDivider: {
-    ...baseThickDividerStyle,
-    backgroundColor: new DynamicValue(Colors.darkFill2Light, Colors.darkFill2Dark),
-  },
-  outerContainer: {
-    flex: 1,
-    backgroundColor: new DynamicValue(Colors.backgroundColorLight, Colors.backgroundColorDark),
-  },
-})
