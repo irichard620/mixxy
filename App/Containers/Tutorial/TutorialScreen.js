@@ -11,6 +11,7 @@ import ButtonLarge from '../../Components/ButtonLarge'
 import NavigationService from '../../Services/NavigationService'
 import TutorialHome from './TutorialHome'
 import Colors from '../../Theme/Colors'
+import TutorialSteps from './TutorialSteps'
 
 
 class TutorialScreen extends React.Component {
@@ -37,11 +38,25 @@ class TutorialScreen extends React.Component {
   }
 
   onFirstButtonClick = () => {
-
+    const { step } = this.state;
+    // Check step
+    if (step !== -1) {
+      this.setState({
+        step: step - 1
+      })
+    }
   }
 
   onSecondButtonClick = () => {
-
+    const { step, recipe } = this.state;
+    // Check step
+    if (step !== recipe.steps.length - 1) {
+      this.setState({
+        step: step + 1
+      })
+    } else {
+      this.onBackScreenClick();
+    }
   }
 
   render() {
@@ -78,6 +93,9 @@ class TutorialScreen extends React.Component {
           <TopHeader title={headerTitle} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
           {step === -1 && (
             <TutorialHome recipe={recipe} darkMode={darkMode} drinkAmount={drinkAmount} />
+          )}
+          {step !== -1 && (
+            <TutorialSteps recipe={recipe} step={step} />
           )}
           <View style={tutorialStyles.gradientContainer}>
             <LinearGradient

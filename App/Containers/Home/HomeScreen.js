@@ -7,6 +7,7 @@ import getStylesheet from 'App/Theme/ApplicationStyles'
 import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
+import { Recipe } from '../../Storage/Recipe'
 
 
 class HomeScreen extends React.Component {
@@ -14,17 +15,28 @@ class HomeScreen extends React.Component {
     super(props);
     this.state = {
       favoriteRecipes: [
-        {
+        Recipe({
           recipeId: '54750894510870724860',
           recipeName: 'Manhattan',
           recipeType: 'Whiskey Cocktail',
           recipeDescription: 'The Manhattan was the most famous cocktail in the world shortly after it was invented in New York City’s Manhattan Club, some time around 1880 (as the story goes). Over the years, the whiskey classic has dipped in and out of fashion before finding its footing as one of the cornerstones of the craft cocktail renaissance. Amazingly, the drink that socialites tipped to their lips in the 19th century looks and tastes pretty much the same as the one served today at any decent cocktail bar. The Manhattan’s mix of American whiskey and Italian vermouth, perked up with a few dashes of aromatic bitters, is timeless and tasty—the very definition of what a cocktail should be.',
           steps: [
             {
-              title: 'Heat water'
+              title: 'Add Ingredients',
+              ingredients: [{
+                title: "Silver Tequila",
+                amount: "2",
+                amountType: "Ounces"
+              }]
+            },
+            {
+              title: 'Shake',
+              properties: {
+                seconds: 20
+              }
             }
           ]
-        }
+        })
       ],
       favoriteExpanded: false,
       allRecipes: [
