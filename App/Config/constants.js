@@ -17,6 +17,9 @@ export const SERVING_GLASS_TALL = 'Tall Glass';
 export const SERVING_GLASS_SHORT = 'Short Glass';
 export const servingGlasses = [SERVING_GLASS_COCKTAIL, SERVING_GLASS_TALL, SERVING_GLASS_SHORT];
 
+// Other equipment
+export const COCKTAIL_SHAKER = 'Cocktail Shaker';
+
 // Amount types
 export const AMOUNT_TYPE_OZ = 'Ounces';
 export const AMOUNT_TYPE_TSP = 'Teaspoon';

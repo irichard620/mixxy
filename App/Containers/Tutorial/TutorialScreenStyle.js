@@ -13,6 +13,7 @@ export default function getTutorialStylesheet(useDarkMode) {
       marginBottom: 16
     },
     scrollView: {
+      flex: 1,
       paddingBottom: 16,
     },
     drinkAmountView: {
