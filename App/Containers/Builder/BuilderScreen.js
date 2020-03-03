@@ -12,6 +12,8 @@ import Colors from '../../Theme/Colors'
 import BuilderDrinkType from './BuilderDrinkType'
 import BuilderBaseSpirit from './BuilderBaseSpirit'
 import BuilderServingGlass from './BuilderServingGlass'
+import BuilderHome from './BuilderHome'
+import * as constants from '../../Config/constants'
 
 
 class BuilderScreen extends React.Component {
@@ -28,6 +30,7 @@ class BuilderScreen extends React.Component {
       baseSpirit: '',
       servingGlass: '',
       steps: [],
+      selectedStep: 0,
     };
   }
 
@@ -66,9 +69,42 @@ class BuilderScreen extends React.Component {
     });
   }
 
+  onDetailClick = (detail) => {
+    // TODO: pull up modal here
+  }
+
+  getDetailsList = () => {
+    const {
+      recipeName, recipeType, baseSpirit, servingGlass,
+      recipeDescription
+    } = this.state;
+    const arrToUse = [];
+    constants.details.forEach((detail) => {
+      let detailValue = '';
+      if (detail === constants.BUILDER_RECIPE_NAME_DETAIL) {
+        detailValue = recipeName;
+      } else if (detail === constants.BUILDER_DRINK_TYPE_DETAIL) {
+        detailValue = recipeType;
+      } else if (detail === constants.BUILDER_BASE_SPIRIT_DETAIL) {
+        detailValue = baseSpirit;
+      } else if (detail === constants.BUILDER_SERVING_GLASS_DETAIL) {
+        detailValue = servingGlass;
+      } else if (detail === constants.BUILDER_DESCRIPTION_DETAIL) {
+        detailValue = recipeDescription;
+      }
+      arrToUse.push({
+        title: detail,
+        value: detailValue,
+        disabled: false,
+        showArrow: true,
+      });
+    });
+    return arrToUse;
+  };
+
   render() {
     const { darkMode } = this.props;
-    const { step, recipeName, recipeType, baseSpirit, servingGlass } = this.state;
+    const { step, recipeName, recipeType, baseSpirit, servingGlass, steps, selectedStep } = this.state;
 
     const styles = getStylesheet(darkMode)
     const builderStyles = getBuilderStylesheet(darkMode)
@@ -102,6 +138,9 @@ class BuilderScreen extends React.Component {
           )}
           {step === 2 && (
             <BuilderServingGlass darkMode={darkMode} onCardClick={this.onServingGlassClick} selectedServingGlass={servingGlass} />
+          )}
+          {step === 3 && (
+            <BuilderHome darkMode={darkMode} onDetailClick={this.onDetailClick} details={this.getDetailsList()} steps={steps} selectedStep={selectedStep} />
           )}
           <View style={builderStyles.gradientContainer}>
             <LinearGradient

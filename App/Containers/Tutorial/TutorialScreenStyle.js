@@ -44,7 +44,7 @@ export default function getTutorialStylesheet(useDarkMode) {
       width: 144 + 48 + 48,
     },
     gradientContainer: {
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.backgroundColorDarkTransparent,
       height: 24,
       marginTop: -24,
       width: '100%',

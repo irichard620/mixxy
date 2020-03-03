@@ -16,6 +16,8 @@ export default {
   text3Dark: '#ffffff30',
   text4Light: '#00000020',
   text4Dark: '#ffffff20',
+  stepTextLight: '#00000080',
+  stepTextDark: '#ffffff80',
   // Main color palette
   blue1: '#2D8CD3',
   blue1TransparentLight: '#2D8CD315',

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   View, StyleSheet, Image, ScrollView, Text, Dimensions
 } from 'react-native';
-import * as constants from '../../Config/constants';
 import Pagination from '../../Components/Pagination';
 import * as stepModel from '../../Storage/Step';
 import Images from '../../Theme/Images'

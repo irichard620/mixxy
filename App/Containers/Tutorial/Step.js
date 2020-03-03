@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import Colors from '../../Theme/Colors'
 
 export default function Step(props) {
   const { title, description, activeStep } = props
@@ -22,7 +23,7 @@ export default function Step(props) {
 
 const styles = StyleSheet.create({
   description: {
-    color: '#000000',
+    color: Colors.text1Light,
     fontSize: 16,
     marginTop: 4,
     textAlign: 'center',

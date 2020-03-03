@@ -73,4 +73,9 @@ export default {
     lineHeight: lineSpacing.body1,
     fontWeight: fontWeight.semibold,
   },
+  stepTitle: {
+    fontSize: size.body2,
+    lineHeight: lineSpacing.body2,
+    fontWeight: fontWeight.semibold,
+  },
 }

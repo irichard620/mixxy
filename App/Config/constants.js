@@ -83,3 +83,17 @@ export const baseSpirits = [
   BASE_SPIRIT_BRANDY,
   BASE_SPIRIT_OTHER,
 ]
+
+// Builder details
+export const BUILDER_RECIPE_NAME_DETAIL = 'Recipe Name'
+export const BUILDER_DRINK_TYPE_DETAIL = 'Drink Type'
+export const BUILDER_BASE_SPIRIT_DETAIL = 'Base Spirit'
+export const BUILDER_SERVING_GLASS_DETAIL = 'Serving Glass'
+export const BUILDER_DESCRIPTION_DETAIL = 'Recipe Description'
+export const details = [
+  BUILDER_RECIPE_NAME_DETAIL,
+  BUILDER_DRINK_TYPE_DETAIL,
+  BUILDER_BASE_SPIRIT_DETAIL,
+  BUILDER_SERVING_GLASS_DETAIL,
+  BUILDER_DESCRIPTION_DETAIL,
+]
