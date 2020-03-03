@@ -20,7 +20,7 @@ const fontWeight = {
   bold: '700',
   semibold: '600',
   medium: '400',
-  kindabold: '500'
+  kindabold: '500',
 }
 
 export default {
@@ -63,5 +63,14 @@ export default {
     fontSize: size.body1,
     lineHeight: lineSpacing.body1,
     fontWeight: fontWeight.kindabold,
-  }
+  },
+  cardSelectionTitle: {
+    fontSize: 18,
+    fontWeight: fontWeight.semibold,
+  },
+  navHeader: {
+    fontSize: size.body1,
+    lineHeight: lineSpacing.body1,
+    fontWeight: fontWeight.semibold,
+  },
 }

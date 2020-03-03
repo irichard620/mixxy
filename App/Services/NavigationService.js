@@ -58,8 +58,8 @@ function navigateAndReset(routeName, params) {
 
 function screenWithDarkMode(Component) {
   return function WrappedComponent(props) {
-    const darkMode = useDarkMode();
-    return <Component {...props} darkMode={darkMode} />;
+    const darkMode = useDarkMode()
+    return <Component {...props} darkMode={darkMode} />
   }
 }
 

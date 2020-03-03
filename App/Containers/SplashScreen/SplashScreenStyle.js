@@ -4,14 +4,14 @@ import Colors from 'App/Theme/Colors'
 export default function getSplashStylesheet(darkMode) {
   return StyleSheet.create({
     container: {
-      flex: 1,
+      alignItems: 'center',
       backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      alignItems: 'center'
+      flex: 1,
     },
     logo: {
       height: '18%',
+      marginBottom: 50,
       resizeMode: 'contain',
-      marginBottom: 50
     },
   })
 }

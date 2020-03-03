@@ -1,6 +1,5 @@
 import storage from 'redux-persist/lib/storage'
 
-
 // const userApiClient = axios.create({
 //   /**
 //    * Import the config from the App/Config/index.js file
@@ -21,22 +20,23 @@ function fetchUser() {
   //   })
   // }
 
-  return storage.getItem('user')
+  return storage
+    .getItem('user')
     .then((user) => {
-      const userDetails = user ? JSON.parse(user) : {};
+      const userDetails = user ? JSON.parse(user) : {}
       // Add metric variable if needed
-      if (('name' in userDetails)) {
+      if ('name' in userDetails) {
         if (!('premium' in userDetails)) {
-          userDetails.premium = false;
+          userDetails.premium = false
         }
       } else {
-        userDetails.name = "Mixxy User"
-        userDetails.premium = false;
+        userDetails.name = 'Mixxy User'
+        userDetails.premium = false
       }
-      storage.setItem('user', JSON.stringify(userDetails));
+      storage.setItem('user', JSON.stringify(userDetails))
       return userDetails
     })
-    .catch(error => error);
+    .catch((error) => error)
 
   // return userApiClient.get(number.toString()).then((response) => {
   //   if (in200s(response.status)) {

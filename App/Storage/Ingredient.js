@@ -1,34 +1,36 @@
-import * as constants from '../Config/constants';
+import * as constants from '../Config/constants'
 
 export function Ingredient(ingredientObj) {
-  const ingredient = {};
+  const ingredient = {}
 
   // Assign other values
-  ingredient.title = ingredientObj.title;
+  ingredient.title = ingredientObj.title
   if (!('brand' in ingredientObj)) {
-    ingredient.brand = '';
+    ingredient.brand = ''
   } else {
-    ingredient.brand = ingredientObj.brand;
+    ingredient.brand = ingredientObj.brand
   }
-  ingredient.amount = ingredientObj.amount || '0';
-  ingredient.fractionalAmount = ingredientObj.fractionalAmount || '';
-  ingredient.amountType = ingredientObj.amountType;
+  ingredient.amount = ingredientObj.amount || '0'
+  ingredient.fractionalAmount = ingredientObj.fractionalAmount || ''
+  ingredient.amountType = ingredientObj.amountType
 
-  return ingredient;
+  return ingredient
 }
 
 const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_OZ]: 'oz',
   [constants.AMOUNT_TYPE_TSP]: 'tsp',
   [constants.AMOUNT_TYPE_TBSP]: 'tbsp',
-  [constants.AMOUNT_TYPE_PIECE]: 'pc'
+  [constants.AMOUNT_TYPE_PIECE]: 'pc',
 }
 
 export function getIngredientAmount(ingredient) {
   if (ingredient.fractionalAmount !== '') {
-    return `${ingredient.amount} ${ingredient.fractionalAmount}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`;
+    return `${ingredient.amount} ${ingredient.fractionalAmount}${
+      AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]
+    }`
   } else {
-    return `${ingredient.amount}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`;
+    return `${ingredient.amount}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`
   }
 }
 

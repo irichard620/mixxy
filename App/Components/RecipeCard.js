@@ -1,13 +1,11 @@
 import React from 'react'
-import {
-  View, Image, TouchableWithoutFeedback, Text, StyleSheet
-} from 'react-native';
+import { View, Image, TouchableWithoutFeedback, Text, StyleSheet } from 'react-native'
 import { PropTypes } from 'prop-types'
 import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import Helpers from '../Theme/Helpers'
 import Images from '../Theme/Images'
-
+import { useDarkMode } from 'react-native-dark-mode'
 
 export default function RecipeCard(props) {
   const { recipeName, recipeType, disabled, onCardClick, darkMode } = props
@@ -38,35 +36,35 @@ RecipeCard.propTypes = {
 function getCardStylesheet(darkMode) {
   return StyleSheet.create({
     cardOutline: {
+      backgroundColor: darkMode ? Colors.cardColorDark : Colors.cardColorLight,
+      borderRadius: 10,
       marginLeft: 16,
       marginRight: 16,
-      borderRadius: 10,
+      paddingBottom: 18,
       paddingLeft: 12,
       paddingRight: 12,
       paddingTop: 18,
-      paddingBottom: 18,
-      backgroundColor: darkMode ? Colors.cardColorDark : Colors.cardColorLight,
       shadowColor: '#000000',
-      shadowRadius: 12,
       shadowOpacity: 0.14,
+      shadowRadius: 12,
+    },
+    image: {
+      borderRadius: 10,
+      height: 48,
+      marginRight: 14,
+      resizeMode: 'contain',
+      width: 48,
     },
     recipeName: {
       ...Fonts.body1,
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      textAlign: 'left',
       marginBottom: 2,
+      textAlign: 'left',
     },
     recipeType: {
       ...Fonts.body3,
       color: darkMode ? Colors.text2Dark : Colors.text2Light,
-      textAlign: 'left'
+      textAlign: 'left',
     },
-    image: {
-      height: 48,
-      width: 48,
-      borderRadius: 10,
-      resizeMode: 'contain',
-      marginRight: 14,
-    }
   })
 }

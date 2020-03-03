@@ -22,6 +22,11 @@ export default StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  colStart: {
+    flexDirection: 'column',
+    flex: 1,
+    alignItems: 'flex-start',
+  },
   column: {
     flexDirection: 'column',
   },
@@ -52,16 +57,16 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  fillColCross: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'column',
+  },
   fillColLeft: {
     alignItems: 'flex-start',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-  },
-  fillColCross: {
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'column',
   },
   fillColMain: {
     flex: 1,
@@ -147,14 +152,9 @@ export default StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   rowStart: {
+    alignItems: 'flex-start',
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    alignItems: 'flex-start',
-  },
-  colStart: {
-    flexDirection: 'column',
-    flex: 1,
-    alignItems: 'flex-start',
   },
   scrollSpaceAround: {
     flexGrow: 1,

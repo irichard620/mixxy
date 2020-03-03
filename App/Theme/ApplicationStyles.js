@@ -9,19 +9,19 @@ import { StyleSheet } from 'react-native'
 export default function getStylesheet(darkMode) {
   return StyleSheet.create({
     divider: {
+      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       flex: 1,
       height: 0.5,
       width: '100%',
-      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-    },
-    thickDivider: {
-      height: 8,
-      width: '100%',
-      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
     },
     outerContainer: {
+      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flex: 1,
-      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight
+    },
+    thickDivider: {
+      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      height: 8,
+      width: '100%',
     },
   })
 }

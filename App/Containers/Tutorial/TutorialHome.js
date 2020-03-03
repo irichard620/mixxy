@@ -37,8 +37,8 @@ class TutorialHome extends Component {
     for (let i = 0; i < recipe.steps.length; i++) {
       const step = recipe.steps[i];
       if (step.title === constants.STEP_ADD_INGREDIENTS) {
-        for (let j = 0; j < step.properties.ingredients.length; j++) {
-          const ingredient = step.properties.ingredients[j];
+        for (let j = 0; j < step.ingredients.length; j++) {
+          const ingredient = step.ingredients[j];
           options.push({
             title: ingredientModel.getIngredientAmount(ingredient),
             subtitle: ingredient.title,
@@ -58,11 +58,11 @@ class TutorialHome extends Component {
       const step = recipe.steps[i];
       if (step.title === constants.STEP_ADD_INGREDIENTS) {
         equipment.add({
-          title: step.properties.vessel
+          title: step.vessel
         });
       } else if (step.title === constants.STEP_STRAIN) {
         equipment.add({
-          title: step.properties.vessel
+          title: step.vessel
         });
       }
     }

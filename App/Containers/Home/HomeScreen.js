@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { SafeAreaView } from "react-navigation"
@@ -24,15 +24,14 @@ class HomeScreen extends React.Component {
           steps: [
             {
               title: 'Add Ingredients',
-              properties: {
-                ingredients: [{
-                  title: "Silver Tequila",
-                  amount: "2",
-                  fractionalAmount: "",
-                  amountType: "Ounces"
-                }],
-                vessel: 'Cocktail Shaker'
-              }
+              properties: {},
+              ingredients: [{
+                title: "Silver Tequila",
+                amount: "2",
+                fractionalAmount: "",
+                amountType: "Ounces"
+              }],
+              vessel: 'Cocktail Shaker'
             },
             {
               title: 'Shake',
@@ -85,6 +84,10 @@ class HomeScreen extends React.Component {
     })
   }
 
+  onBuilderClick = () => {
+    NavigationService.navigate('BuilderScreen', {})
+  }
+
   renderCard = (idx, item, isFavorite) => {
     return (
       <RecipeCard
@@ -108,7 +111,7 @@ class HomeScreen extends React.Component {
       <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.outerContainer}>
         <ScrollView style={homeStyles.scrollContainer}>
           <Text style={homeStyles.topHeader}>Good Morning!</Text>
-          <View style={homeStyles.sponsor} />
+          <TouchableOpacity style={homeStyles.sponsor} onPress={this.onBuilderClick} />
           <Text style={homeStyles.sectionHeader}>Favorites</Text>
           {favoriteRecipes.map((favorite, idx) => {
             if (idx < 5 || favoriteExpanded) {

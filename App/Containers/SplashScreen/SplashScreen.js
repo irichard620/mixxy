@@ -6,12 +6,12 @@ import NavigationService from '../../Services/NavigationService'
 
 class SplashScreen extends React.Component {
   render() {
-    const { darkMode } = this.props;
+    const { darkMode } = this.props
     const splashStyles = getSplashStylesheet(darkMode)
-    const { height } = Dimensions.get('window');
+    const { height } = Dimensions.get('window')
     const imageContainerMargin = {
-      marginTop: height * 0.35
-    };
+      marginTop: height * 0.35,
+    }
 
     return (
       <View style={splashStyles.container}>

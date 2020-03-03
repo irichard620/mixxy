@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Dimensions, Image, ScrollView, Text } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
-import { PropTypes } from 'prop-types'
 import { NavigationActions, SafeAreaView } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient';
 import getStylesheet from 'App/Theme/ApplicationStyles'
