@@ -3,7 +3,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { SafeAreaView } from "react-navigation"
-import getStylesheet from 'App/Theme/ApplicationStyles'
+import getStylesheet from '../../Theme/ApplicationStyles'
 import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'

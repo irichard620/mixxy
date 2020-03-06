@@ -97,3 +97,11 @@ export const details = [
   BUILDER_SERVING_GLASS_DETAIL,
   BUILDER_DESCRIPTION_DETAIL,
 ]
+
+// Modal types
+export const MODAL_TYPE_BOTTOM = 'bottom'
+export const MODAL_TYPE_CENTER = 'center'
+export const MODAL_ADD_STEP = 'Add Step'
+export const MODAL_DRINK_TYPE = 'Drink Type'
+export const MODAL_BASE_SPIRIT = 'Base Spirit'
+export const MODAL_SERVING_GLASS = 'Serving Glass'

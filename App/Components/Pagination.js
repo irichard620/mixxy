@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
+import { PropTypes } from 'prop-types'
 
 export default function Pagination(props) {
   const { total, index, activeColor } = props
@@ -24,6 +25,12 @@ export default function Pagination(props) {
   }
 
   return <View style={styles.outline}>{items}</View>
+}
+
+Pagination.propTypes = {
+  total: PropTypes.number,
+  index: PropTypes.number,
+  activeColor: PropTypes.string,
 }
 
 const styles = StyleSheet.create({

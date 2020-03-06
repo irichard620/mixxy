@@ -1,6 +1,6 @@
 import { put, call } from 'redux-saga/effects'
-import UserActions from 'App/Stores/User/Actions'
-import { userService } from 'App/Services/UserService'
+import UserActions from '../Stores/User/Actions'
+import { userService } from '../Services/UserService'
 
 export function* fetchUser() {
   yield put(UserActions.fetchUserLoading())

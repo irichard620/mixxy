@@ -3,7 +3,7 @@ import { View, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { NavigationActions, SafeAreaView } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient';
-import getStylesheet from 'App/Theme/ApplicationStyles'
+import getStylesheet from '../../Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
 import getTutorialStylesheet from './TutorialScreenStyle'
 import ButtonLarge from '../../Components/ButtonLarge'

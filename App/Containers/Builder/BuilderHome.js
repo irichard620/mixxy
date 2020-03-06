@@ -1,17 +1,40 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { PropTypes } from 'prop-types'
 import getBuilderStylesheet from './BuilderScreenStyle'
 import BuilderDetailsList from './BuilderDetailsList'
 import BuilderStepList from './BuilderStepList'
+import getStylesheet from '../../Theme/ApplicationStyles'
 
 export default function BuilderHome(props) {
-  const { darkMode, details, onDetailClick, steps, selectedStep } = props
+  const {
+    darkMode,
+    details,
+    onDetailClick,
+    steps,
+    selectedStep,
+    onPressEdit,
+    onPressDelete,
+    onPressUp,
+    onPressDown,
+    onStepClick,
+  } = props
+  const styles = getStylesheet(darkMode)
   const builderStyles = getBuilderStylesheet(darkMode)
   return (
     <ScrollView style={builderStyles.scrollView}>
       <BuilderDetailsList details={details} onDetailClick={onDetailClick} />
-      <BuilderStepList steps={steps} selectedStep={selectedStep} />
+      <View style={styles.thickDivider} />
+      <BuilderStepList
+        steps={steps}
+        selectedStep={selectedStep}
+        darkMode={darkMode}
+        onPressEdit={onPressEdit}
+        onPressDelete={onPressDelete}
+        onPressUp={onPressUp}
+        onPressDown={onPressDown}
+        onStepClick={onStepClick}
+      />
     </ScrollView>
   )
 }
@@ -21,5 +44,10 @@ BuilderHome.propTypes = {
   details: PropTypes.array,
   onDetailClick: PropTypes.func,
   steps: PropTypes.array,
-  selectedStep: PropTypes.integer,
+  selectedStep: PropTypes.number,
+  onPressEdit: PropTypes.func,
+  onPressDelete: PropTypes.func,
+  onPressUp: PropTypes.func,
+  onPressDown: PropTypes.func,
+  onStepClick: PropTypes.func,
 }

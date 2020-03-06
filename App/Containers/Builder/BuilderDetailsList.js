@@ -13,7 +13,7 @@ export default function BuilderDetailsList(props) {
           value={detail.value}
           title={detail.title}
           disabled={detail.disabled}
-          onDetailClick={() => onDetailClick(idx)}
+          onDetailClick={onDetailClick}
           showArrow={detail.showArrow}
           showSeparator={idx < details.length - 1}
           darkMode={darkMode}

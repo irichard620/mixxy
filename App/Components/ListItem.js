@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
 import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
+import { PropTypes } from 'prop-types'
 
 export default function ListItem(props) {
   const { title, subtitle, onClick, darkMode, selected } = props
@@ -23,7 +24,10 @@ export default function ListItem(props) {
   }
 
   return (
-    <TouchableOpacity style={[listItemStyles.container, backgroundColorStyle]} onPress={onClick}>
+    <TouchableOpacity
+      style={[listItemStyles.container, backgroundColorStyle]}
+      onPress={() => onClick(title)}
+    >
       <View style={listItemStyles.textContainer}>
         <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{title}</Text>
         <Text style={listItemStyles.subtitleStyle}>{subtitle}</Text>
@@ -31,6 +35,14 @@ export default function ListItem(props) {
       <View style={styles.divider} />
     </TouchableOpacity>
   )
+}
+
+ListItem.propTypes = {
+  darkMode: PropTypes.bool,
+  selected: PropTypes.bool,
+  onClick: PropTypes.func,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
 }
 
 function getListItemStylesheet(darkMode) {

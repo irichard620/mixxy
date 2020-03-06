@@ -1,6 +1,6 @@
 import { put } from 'redux-saga/effects'
-import UserActions from 'App/Stores/User/Actions'
-import NavigationService from 'App/Services/NavigationService'
+import UserActions from '../Stores/User/Actions'
+import NavigationService from '../Services/NavigationService'
 
 /**
  * The startup saga is the place to define behavior to execute when the application starts.

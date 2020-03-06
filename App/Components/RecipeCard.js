@@ -5,7 +5,6 @@ import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import Helpers from '../Theme/Helpers'
 import Images from '../Theme/Images'
-import { useDarkMode } from 'react-native-dark-mode'
 
 export default function RecipeCard(props) {
   const { recipeName, recipeType, disabled, onCardClick, darkMode } = props
@@ -31,6 +30,7 @@ RecipeCard.propTypes = {
   index: PropTypes.number,
   disabled: PropTypes.bool,
   onCardClick: PropTypes.func,
+  darkMode: PropTypes.bool,
 }
 
 function getCardStylesheet(darkMode) {

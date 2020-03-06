@@ -13,6 +13,7 @@ import { PropTypes } from 'prop-types'
 import Images from '../../Theme/Images'
 import getBuilderStylesheet from './BuilderScreenStyle'
 import Helpers from '../../Theme/Helpers'
+import Button from '../../Components/Button'
 
 const getHighlightedText = (text, builderStyles) => (
   <Text style={builderStyles.stepDescriptionHighlight}>{text}</Text>
@@ -34,7 +35,7 @@ const getStepDescriptionWithHighlights = (step, builderStyles) => {
       </Text>
     )
   }
-  return <Text style={styles.descriptionBase}>{getStepShortDescription(step)}</Text>
+  return <Text style={builderStyles.stepDescriptionBase}>{getStepShortDescription(step)}</Text>
 }
 
 export default function BuilderStep(props) {
@@ -68,7 +69,7 @@ export default function BuilderStep(props) {
       <View style={builderStyles.stepOutline}>
         <View style={Helpers.colStart}>
           <Text style={builderStyles.stepTitle}>{title}</Text>
-          {getStepDescriptionWithHighlights(step)}
+          {getStepDescriptionWithHighlights(step, builderStyles)}
         </View>
         {selected && (
           <View style={builderStyles.stepButtonView}>
@@ -86,14 +87,7 @@ export default function BuilderStep(props) {
               <TouchableOpacity onPress={onPressDelete}>
                 <Image style={builderStyles.stepIcon} source={Images.builderDelete} />
               </TouchableOpacity>
-              {canEdit && (
-                <Button
-                  type={0}
-                  title="Edit"
-                  onButtonClick={onPressEdit}
-                  margin={[0, 0, 0, 0]}
-                />
-              )}
+              {canEdit && <Button title="Edit" onButtonClick={onPressEdit} margin={[0, 0, 0, 0]} />}
             </View>
           </View>
         )}

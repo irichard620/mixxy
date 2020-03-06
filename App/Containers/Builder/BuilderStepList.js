@@ -62,5 +62,5 @@ BuilderStepList.propTypes = {
   onPressEdit: PropTypes.func,
   onPressDelete: PropTypes.func,
   darkMode: PropTypes.bool,
-  selectedStep: PropTypes.integer,
+  selectedStep: PropTypes.number,
 }

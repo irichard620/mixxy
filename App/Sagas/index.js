@@ -1,6 +1,6 @@
 import { takeLatest, all } from 'redux-saga/effects'
-import { UserTypes } from 'App/Stores/User/Actions'
-import { StartupTypes } from 'App/Stores/Startup/Actions'
+import { UserTypes } from '../Stores/User/Actions'
+import { StartupTypes } from '../Stores/Startup/Actions'
 import { fetchUser } from './UserSaga'
 import { startup } from './StartupSaga'
 
