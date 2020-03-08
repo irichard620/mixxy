@@ -1,12 +1,13 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
 import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
+import Images from '../Theme/Images'
 
 export default function ListItem(props) {
-  const { title, subtitle, onClick, darkMode, selected } = props
+  const { title, subtitle, onClick, darkMode, selected, showArrow } = props
 
   const styles = getStylesheet(darkMode)
   const listItemStyles = getListItemStylesheet(darkMode)
@@ -30,7 +31,10 @@ export default function ListItem(props) {
     >
       <View style={listItemStyles.textContainer}>
         <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{title}</Text>
-        <Text style={listItemStyles.subtitleStyle}>{subtitle}</Text>
+        {subtitle && subtitle !== '' && (
+          <Text style={listItemStyles.subtitleStyle}>{subtitle}</Text>
+        )}
+        {showArrow && <Image style={listItemStyles.icon} source={Images.detailArrow} />}
       </View>
       <View style={styles.divider} />
     </TouchableOpacity>
@@ -43,6 +47,7 @@ ListItem.propTypes = {
   onClick: PropTypes.func,
   title: PropTypes.string,
   subtitle: PropTypes.string,
+  showArrow: PropTypes.bool,
 }
 
 function getListItemStylesheet(darkMode) {
@@ -68,6 +73,10 @@ function getListItemStylesheet(darkMode) {
     titleStyle: {
       ...Fonts.body1,
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
+    },
+    icon: {
+      height: 18,
+      resizeMode: 'contain',
     },
   })
 }

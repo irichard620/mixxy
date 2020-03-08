@@ -34,8 +34,25 @@ export const servingGlassDescriptions = {
     'Also known as a rocks or lowball glass, this short glass is for classic cocktails or liquor served neat or on ice.',
 }
 
-// Other equipment
-export const COCKTAIL_SHAKER = 'Cocktail Shaker'
+// Ingredient Vessels
+export const INGREDIENTS_COCKTAIL_SHAKER = 'Cocktail Shaker'
+export const INGREDIENTS_MIXING_GLASS = 'Mixing glass'
+export const INGREDIENTS_SERVING_GLASS = 'Serving glass'
+export const INGREDIENTS_BLENDER = 'Blender'
+export const ingredientsVessels = [
+  INGREDIENTS_COCKTAIL_SHAKER,
+  INGREDIENTS_MIXING_GLASS,
+  INGREDIENTS_SERVING_GLASS,
+  INGREDIENTS_BLENDER,
+]
+export const ingredientsVesselDescriptions = {
+  [INGREDIENTS_COCKTAIL_SHAKER]:
+    'The essential tool for shaking cocktails and quickly chilling them with ice.',
+  [INGREDIENTS_MIXING_GLASS]: 'A dedicated glass for stirring your ingredients together.',
+  [INGREDIENTS_SERVING_GLASS]:
+    "Add ingredients directly into the glass you're serving the final drink in.",
+  [INGREDIENTS_BLENDER]: 'Perfect for crushing up ice and making a slushy frozen drink.',
+}
 
 // Amount types
 export const AMOUNT_TYPE_OZ = 'Ounces'

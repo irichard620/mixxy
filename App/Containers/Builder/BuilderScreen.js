@@ -105,6 +105,9 @@ class BuilderScreen extends React.Component {
     if (item === constants.STEP_STIR) {
       // These require text inputs - open up modal
       this.setState({ visibleModal: true, modalType: item });
+    } else if (item === constants.STEP_ADD_INGREDIENTS) {
+      this.onModalCloseClick()
+      NavigationService.navigate('IngredientsScreen')
     } else {
       // Add new step
       const newStep = stepModel.Step({

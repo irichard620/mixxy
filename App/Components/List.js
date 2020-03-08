@@ -9,10 +9,12 @@ class List extends Component {
   keyExtractor = item => item.title + item.subtitle;
 
   renderItem = ({ item }) => {
+    const showArrow = 'showArrow' in item && item.showArrow
     return (
       <ListItem
         title={item.title}
         subtitle={item.subtitle}
+        showArrow={showArrow}
       />
     );
   };

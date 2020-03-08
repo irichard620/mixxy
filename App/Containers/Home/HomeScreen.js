@@ -85,7 +85,7 @@ class HomeScreen extends React.Component {
   }
 
   onBuilderClick = () => {
-    NavigationService.navigate('BuilderScreen', {})
+    NavigationService.navigate('IngredientsScreen', {})
   }
 
   renderCard = (idx, item, isFavorite) => {
