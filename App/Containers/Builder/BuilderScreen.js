@@ -107,7 +107,13 @@ class BuilderScreen extends React.Component {
       this.setState({ visibleModal: true, modalType: item });
     } else if (item === constants.STEP_ADD_INGREDIENTS) {
       this.onModalCloseClick()
-      NavigationService.navigate('IngredientsScreen')
+      NavigationService.navigate(
+        'IngredientsScreen',
+        {
+          ingredientSaveCallback: this.ingredientSaveCallback,
+          stepType: item
+        }
+      )
     } else {
       // Add new step
       const newStep = stepModel.Step({
@@ -123,6 +129,17 @@ class BuilderScreen extends React.Component {
       });
     }
   };
+
+  ingredientSaveCallback = (ingredientStep) => {
+    const { steps } = this.state;
+    console.log(ingredientStep)
+    this.setState({
+      steps: [
+        ...steps,
+        ingredientStep
+      ],
+    });
+  }
 
   onModalChangeText = (text) => {
     this.setState({
@@ -213,7 +230,7 @@ class BuilderScreen extends React.Component {
   }
 
   onStepPressDelete = (stepIdx) => {
-    const { steps, selectedStep } = this.state;
+    const { steps } = this.state;
     // make a separate copy of the array
     const array = [...steps];
     // Find index

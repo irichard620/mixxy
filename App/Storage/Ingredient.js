@@ -4,6 +4,7 @@ export function Ingredient(ingredientObj) {
   const ingredient = {}
 
   // Assign other values
+  ingredient.ingredientId = ingredientObj.ingredientId || ''
   ingredient.title = ingredientObj.title
   if (!('brand' in ingredientObj)) {
     ingredient.brand = ''

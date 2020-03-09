@@ -4,14 +4,18 @@ import Colors from '../../Theme/Colors'
 
 export default function getIngredientsStylesheet(useDarkMode) {
   return StyleSheet.create({
+    brandSubtitle: {
+      textAlign: 'left',
+      ...Fonts.body2,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginLeft: 16,
+      marginTop: 20,
+    },
     bufferView: {
       height: 24,
     },
     buttonView: {
       alignSelf: 'center',
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      justifyContent: 'space-between',
       marginBottom: 16,
     },
     gradientContainer: {
@@ -32,6 +36,11 @@ export default function getIngredientsStylesheet(useDarkMode) {
     ingredientListOutline: {
       width: '100%',
     },
+    pickerOutline: {
+      flexDirection: 'row',
+      height: 200,
+      marginBottom: 20,
+    },
     scrollView: {
       flex: 1,
       paddingBottom: 16,
@@ -47,6 +56,24 @@ export default function getIngredientsStylesheet(useDarkMode) {
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 24,
       textAlign: 'center',
+    },
+    textInput: {
+      backgroundColor: '#F2F3F6',
+      borderRadius: 10,
+      fontSize: 16,
+      marginBottom: 24,
+      marginLeft: 16,
+      marginRight: 16,
+      marginTop: 16,
+      padding: 16,
+    },
+    horizontalScroll: {
+      marginBottom: 8,
+      maxHeight: 52,
+      paddingBottom: 8,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 8,
     },
   })
 }

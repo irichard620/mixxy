@@ -46,7 +46,7 @@ class IngredientsHome extends React.Component {
           data={data}
           keyExtractor={(item, index) => item.title + index}
           renderItem={({ item, index }) => {
-            return <ListItem title={item.title} onClick={() => onClick(index)} showArrow />
+            return <ListItem title={item.title} onClick={() => onClick(item)} showArrow />
           }}
           style={ingredientStyles.ingredientListOutline}
           ListHeaderComponent={this.renderHeader}

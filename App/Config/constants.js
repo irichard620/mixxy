@@ -54,6 +54,24 @@ export const ingredientsVesselDescriptions = {
   [INGREDIENTS_BLENDER]: 'Perfect for crushing up ice and making a slushy frozen drink.',
 }
 
+// Fraction amounts
+export const AMOUNT_1EIGTH = '1/8'
+export const AMOUNT_1QUARTER = '1/4'
+export const AMOUNT_3EIGTHS = '3/8'
+export const AMOUNT_HALF = '1/2'
+export const AMOUNT_5EIGTHS = '5/8'
+export const AMOUNT_3QUARTER = '3/4'
+export const AMOUNT_7EIGTHS = '7/8'
+export const fractionAmounts = [
+  AMOUNT_1EIGTH,
+  AMOUNT_1QUARTER,
+  AMOUNT_3EIGTHS,
+  AMOUNT_HALF,
+  AMOUNT_5EIGTHS,
+  AMOUNT_3QUARTER,
+  AMOUNT_7EIGTHS,
+]
+
 // Amount types
 export const AMOUNT_TYPE_OZ = 'Ounces'
 export const AMOUNT_TYPE_TSP = 'Teaspoon'

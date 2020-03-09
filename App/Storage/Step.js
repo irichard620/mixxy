@@ -9,7 +9,7 @@ export function Step(stepObj) {
   // Assign other values
   step.title = stepObj.title
   step.notes = stepObj.notes || ''
-  step.properties = stepObj.properties
+  step.properties = stepObj.properties || {}
   if (!('ingredients' in stepObj)) {
     step.ingredients = []
   } else {

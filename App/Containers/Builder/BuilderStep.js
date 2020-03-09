@@ -30,8 +30,10 @@ const getStepDescriptionWithHighlights = (step, builderStyles) => {
     }
     return (
       <Text style={builderStyles.stepDescriptionBase}>
-        {`Add ${getHighlightedText(ingredientDescription, builderStyles)} `}
-        {`to a ${getHighlightedText(step.vessel, builderStyles)}.`}
+        {'Add '}
+        {getHighlightedText(ingredientDescription, builderStyles)}
+        {' to a '}
+        {getHighlightedText(step.vessel, builderStyles)}
       </Text>
     )
   }

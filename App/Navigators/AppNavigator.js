@@ -18,6 +18,7 @@ const StackNavigator = createStackNavigator(
     // By default the application will show the splash screen
     initialRouteName: 'SplashScreen',
     headerMode: 'none',
+    mode: 'modal',
   }
 )
 
