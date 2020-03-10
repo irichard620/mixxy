@@ -15,6 +15,7 @@ import getIngredientsStylesheet from './IngredientsScreenStyle'
 import * as ingredientModel from '../../Storage/Ingredient'
 import * as stepModel from '../../Storage/Step'
 import SelectedItem from '../../Components/SelectedItem'
+import * as constants from '../../Config/constants'
 
 class IngredientsScreen extends React.Component {
   constructor(props) {
@@ -32,6 +33,21 @@ class IngredientsScreen extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const { params } = this.props.navigation.state;
+    if (this.useExistingIngredients(params.stepType)) {
+      this.setState({
+        step: 1,
+      })
+    }
+  }
+
+  useExistingIngredients = (stepType) => {
+    return stepType === constants.STEP_REMOVE_INGREDIENTS
+      || stepType === constants.STEP_MUDDLE
+
+  }
+
   onBackScreenClick = () => {
     const { navigation } = this.props;
     navigation.dispatch(NavigationActions.back());
@@ -42,11 +58,21 @@ class IngredientsScreen extends React.Component {
     const { step, selectedIngredient, selectedIngredients, wholeAmount, fractionAmount, amountType, brand, selectedVessel } = this.state;
     // Check step
     if (step === 0) {
-      // Dispatch ingredients load
-      this.props.fetchIngredients()
-      this.setState({
-        step: step + 1
-      })
+      if (params.stepType === constants.STEP_STRAIN) {
+        // Save step here
+        const newStep = stepModel.Step({
+          title: params.stepType,
+          vessel: selectedVessel
+        })
+        params.ingredientSaveCallback(newStep)
+        this.onBackScreenClick()
+      } else {
+        // Dispatch ingredients load
+        this.props.fetchIngredients()
+        this.setState({
+          step: step + 1
+        })
+      }
     } else if (step === 1) {
       // Save all ingredients - pass back
       const newStep = stepModel.Step({
@@ -69,7 +95,11 @@ class IngredientsScreen extends React.Component {
       selectedIngredients.push(newIngredient)
       this.setState({
         step: 1,
-        selectedIngredients: selectedIngredients
+        selectedIngredients: selectedIngredients,
+        wholeAmount: '0',
+        fractionAmount: '1/8',
+        amountType: '',
+        brand: '',
       })
     }
   }
@@ -81,10 +111,19 @@ class IngredientsScreen extends React.Component {
   }
 
   onListItemClicked = (ingredient) => {
-    this.setState({
-      selectedIngredient: ingredient,
-      step: 2,
-    })
+    const { params } = this.props.navigation.state
+    const { selectedIngredients } = this.state
+    if (this.useExistingIngredients(params.stepType)) {
+      selectedIngredients.push(ingredient)
+      this.setState({
+        selectedIngredients: selectedIngredients,
+      })
+    } else {
+      this.setState({
+        selectedIngredient: ingredient,
+        step: 2,
+      })
+    }
   }
 
   onPickerUpdate = (item, type) => {
@@ -115,6 +154,7 @@ class IngredientsScreen extends React.Component {
   }
 
   render() {
+    const { params } = this.props.navigation.state;
     const { darkMode, ingredients } = this.props;
     const { step, selectedVessel, selectedIngredient, selectedIngredients, wholeAmount, fractionAmount, brand, amountType } = this.state;
 
@@ -124,8 +164,13 @@ class IngredientsScreen extends React.Component {
     const { width } = Dimensions.get('window');
     const buttonWidth = (width - 16 - 16);
 
-    const headerText = step !== 2 ? 'Add Ingredients' : ''
-    const buttonText = step !== 2 ? 'Add Ingredients' : 'Add Ingredient'
+    const headerText = step !== 2 ? params.stepType : ''
+    const buttonText = step !== 2 ? params.stepType : 'Add Ingredient'
+
+    let ingredientsToUse = ingredients
+    if (this.useExistingIngredients(params.stepType)) {
+      ingredientsToUse = params.recipeIngredients
+    }
 
     return (
       <View style={styles.outerContainer}>
@@ -135,7 +180,7 @@ class IngredientsScreen extends React.Component {
             <IngredientsVessel darkMode={darkMode} onCardClick={this.onIngredientVesselClick} selectedVessel={selectedVessel} />
           )}
           {step === 1 && (
-            <IngredientsHome darkMode={darkMode} options={ingredients} onClick={this.onListItemClicked} />
+            <IngredientsHome darkMode={darkMode} options={ingredientsToUse} onClick={this.onListItemClicked} />
           )}
           {step === 2 && (
             <IngredientSelect

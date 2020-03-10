@@ -99,19 +99,36 @@ class BuilderScreen extends React.Component {
     });
   };
 
+  getIngredientsFromRecipe = () => {
+    const { steps } = this.state
+    const allIngredients = []
+    for (let i = 0; i < steps.length; i++) {
+      if (steps[i].title === constants.STEP_ADD_INGREDIENTS) {
+        allIngredients.push(...steps[i].ingredients)
+      }
+    }
+    return allIngredients
+  }
+
   onModalPressItem = (item) => {
     const { steps } = this.state;
     // Open modal if necessary or add step to screen
     if (item === constants.STEP_STIR) {
       // These require text inputs - open up modal
       this.setState({ visibleModal: true, modalType: item });
-    } else if (item === constants.STEP_ADD_INGREDIENTS) {
+    } else if (
+      item === constants.STEP_ADD_INGREDIENTS
+      || item === constants.STEP_REMOVE_INGREDIENTS
+      || item === constants.STEP_MUDDLE
+      || item === constants.STEP_STRAIN
+    ) {
       this.onModalCloseClick()
       NavigationService.navigate(
         'IngredientsScreen',
         {
           ingredientSaveCallback: this.ingredientSaveCallback,
-          stepType: item
+          stepType: item,
+          recipeIngredients: this.getIngredientsFromRecipe(),
         }
       )
     } else {
@@ -132,7 +149,6 @@ class BuilderScreen extends React.Component {
 
   ingredientSaveCallback = (ingredientStep) => {
     const { steps } = this.state;
-    console.log(ingredientStep)
     this.setState({
       steps: [
         ...steps,

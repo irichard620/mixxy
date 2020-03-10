@@ -34,6 +34,45 @@ const getStepDescriptionWithHighlights = (step, builderStyles) => {
         {getHighlightedText(ingredientDescription, builderStyles)}
         {' to a '}
         {getHighlightedText(step.vessel, builderStyles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_REMOVE_INGREDIENTS) {
+    let ingredientDescription = ''
+    for (let i = 0; i < step.ingredients.length; i++) {
+      if (i > 0) {
+        ingredientDescription += ', '
+      }
+      ingredientDescription += step.ingredients[i].title
+    }
+    return (
+      <Text style={builderStyles.stepDescriptionBase}>
+        {'Discard '}
+        {getHighlightedText(ingredientDescription, builderStyles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_MUDDLE) {
+    let ingredientDescription = ''
+    for (let i = 0; i < step.ingredients.length; i++) {
+      if (i > 0) {
+        ingredientDescription += ', '
+      }
+      ingredientDescription += step.ingredients[i].title
+    }
+    return (
+      <Text style={builderStyles.stepDescriptionBase}>
+        {'Muddle '}
+        {getHighlightedText(ingredientDescription, builderStyles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_STRAIN) {
+    return (
+      <Text style={builderStyles.stepDescriptionBase}>
+        {'Pour through a strainer into '}
+        {getHighlightedText(step.vessel, builderStyles)}
+        {'.'}
       </Text>
     )
   }
