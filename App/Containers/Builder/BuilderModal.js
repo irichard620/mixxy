@@ -48,6 +48,12 @@ class BuilderModal extends Component {
       return 'Recipe Name';
     } if (modalType === constants.BUILDER_DESCRIPTION_DETAIL) {
       return 'Recipe Description';
+    } if (modalType === constants.STEP_STIR) {
+      return 'Seconds to Stir'
+    } if (modalType === constants.STEP_BLEND) {
+      return 'What is the final consistency desired?'
+    } if (modalType === constants.STEP_SHAKE) {
+      return 'Seconds to Shake'
     }
     return '';
   };
@@ -131,6 +137,9 @@ class BuilderModal extends Component {
     } else if (modalType === constants.BUILDER_DESCRIPTION_DETAIL) {
       titleToDisplay = 'Recipe Description';
       charLimit = 1000;
+    } else if (modalType === constants.STEP_BLEND) {
+      titleToDisplay = 'Blend'
+      charLimit = 50;
     } else {
       titleToDisplay = modalType;
     }

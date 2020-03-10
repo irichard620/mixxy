@@ -50,3 +50,42 @@ export function getStepShortDescription(step) {
 
   return ''
 }
+
+export function getIngredientsList(step) {
+  let ingredientDescription = ''
+  for (let i = 0; i < step.ingredients.length; i++) {
+    if (i > 0) {
+      ingredientDescription += ', '
+    }
+    if (step.title === constants.STEP_ADD_INGREDIENTS) {
+      ingredientDescription += getIngredientShortDescription(step.ingredients[i])
+    } else {
+      ingredientDescription += step.ingredients[i].title
+    }
+  }
+  return ingredientDescription
+}
+
+export function getStepProperties(modalType, modalText) {
+  // Get properties
+  if (modalType === constants.STEP_STIR) {
+    return { seconds: modalText }
+  } else if (modalType === constants.STEP_BLEND) {
+    return { consistency: modalText }
+  } else if (modalType === constants.STEP_SHAKE) {
+    return { seconds: modalText }
+  }
+  return {}
+}
+
+export function getModalTextProperty(step) {
+  const { title, properties } = step
+  if (title === constants.STEP_STIR) {
+    return properties.seconds
+  } else if (title === constants.STEP_BLEND) {
+    return properties.consistency
+  } else if (title === constants.STEP_SHAKE) {
+    return properties.seconds
+  }
+  return ''
+}

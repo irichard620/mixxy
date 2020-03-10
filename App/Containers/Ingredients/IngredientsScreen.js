@@ -39,13 +39,21 @@ class IngredientsScreen extends React.Component {
       this.setState({
         step: 1,
       })
+    } else if (this.isServingGlassStep(params.stepType)) {
+      this.props.fetchIngredients()
+      this.setState({
+        step: 1,
+      })
     }
+  }
+
+  isServingGlassStep = (stepType) => {
+    return stepType === constants.STEP_RIM_GLASS || stepType === constants.STEP_GARNISH
   }
 
   useExistingIngredients = (stepType) => {
     return stepType === constants.STEP_REMOVE_INGREDIENTS
       || stepType === constants.STEP_MUDDLE
-
   }
 
   onBackScreenClick = () => {
@@ -115,6 +123,15 @@ class IngredientsScreen extends React.Component {
     const { selectedIngredients } = this.state
     if (this.useExistingIngredients(params.stepType)) {
       selectedIngredients.push(ingredient)
+      this.setState({
+        selectedIngredients: selectedIngredients,
+      })
+    } else if (this.isServingGlassStep(params.stepType)) {
+      const newIngredient = ingredientModel.Ingredient({
+        title: ingredient.title,
+        ingredientId: ingredient.ingredient_id,
+      })
+      selectedIngredients.push(newIngredient)
       this.setState({
         selectedIngredients: selectedIngredients,
       })

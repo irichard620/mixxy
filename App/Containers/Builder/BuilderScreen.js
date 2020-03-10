@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Dimensions, Alert, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
+import update from 'immutability-helper';
 import { NavigationActions, SafeAreaView } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient';
 import getStylesheet from '../../Theme/ApplicationStyles'
@@ -35,7 +36,8 @@ class BuilderScreen extends React.Component {
       selectedStep: -1,
       visibleModal: false,
       modalType: '',
-      modalText: ''
+      modalText: '',
+      modalIdx: -1
     };
   }
 
@@ -113,7 +115,11 @@ class BuilderScreen extends React.Component {
   onModalPressItem = (item) => {
     const { steps } = this.state;
     // Open modal if necessary or add step to screen
-    if (item === constants.STEP_STIR) {
+    if (
+      item === constants.STEP_STIR
+      || item === constants.STEP_BLEND
+      || item === constants.STEP_SHAKE
+    ) {
       // These require text inputs - open up modal
       this.setState({ visibleModal: true, modalType: item });
     } else if (
@@ -121,16 +127,31 @@ class BuilderScreen extends React.Component {
       || item === constants.STEP_REMOVE_INGREDIENTS
       || item === constants.STEP_MUDDLE
       || item === constants.STEP_STRAIN
+      || item === constants.STEP_GARNISH
+      || item === constants.STEP_RIM_GLASS
     ) {
-      this.onModalCloseClick()
-      NavigationService.navigate(
-        'IngredientsScreen',
-        {
-          ingredientSaveCallback: this.ingredientSaveCallback,
-          stepType: item,
-          recipeIngredients: this.getIngredientsFromRecipe(),
-        }
-      )
+      const recipeIngredients = this.getIngredientsFromRecipe()
+      if (recipeIngredients.length === 0 && (item === constants.STEP_REMOVE_INGREDIENTS || item === constants.STEP_MUDDLE)) {
+        Alert.alert(
+          'No Ingredients Added',
+          'You must add ingredients before performing this step.',
+          [
+            {
+              text: 'OK'
+            },
+          ],
+        );
+      } else {
+        this.onModalCloseClick()
+        NavigationService.navigate(
+          'IngredientsScreen',
+          {
+            ingredientSaveCallback: this.ingredientSaveCallback,
+            stepType: item,
+            recipeIngredients: recipeIngredients,
+          }
+        )
+      }
     } else {
       // Add new step
       const newStep = stepModel.Step({
@@ -165,7 +186,7 @@ class BuilderScreen extends React.Component {
 
   onModalSave = (item) => {
     const {
-      modalType, modalText, steps, drinkType
+      modalType, modalText, steps, drinkType, modalIdx
     } = this.state;
 
     // Dismiss keyboard for modal
@@ -227,6 +248,37 @@ class BuilderScreen extends React.Component {
         modalType: '',
         modalText: ''
       });
+    } else {
+      if (modalIdx === -1) {
+        // Add new step and update state
+        const newStep = stepModel.Step({
+          title: modalType,
+          properties: stepModel.getStepProperties(modalType, modalText)
+        });
+        const newRecipeSteps = [...steps, newStep];
+        // Get new coffee/water ratio
+        this.setState({
+          visibleModal: false,
+          modalType: '',
+          modalText: '',
+          modalIdx: -1,
+          steps: newRecipeSteps,
+        });
+      } else {
+        this.setState({
+          visibleModal: false,
+          modalType: '',
+          modalText: '',
+          modalIdx: -1,
+          steps: update(steps, {
+            [modalIdx]: {
+              properties: {
+                $set: stepModel.getStepProperties(modalType, modalText)
+              },
+            }
+          }),
+        });
+      }
     }
   };
 
@@ -242,7 +294,29 @@ class BuilderScreen extends React.Component {
   };
 
   onStepPressEdit = (stepIdx, title) => {
-
+    const { steps } = this.state;
+    if (stepIdx === -1) {
+      return
+    }
+    const currentStep = steps[stepIdx];
+    if (currentStep.title === constants.STEP_SHAKE || currentStep.title === constants.STEP_BLEND || currentStep.title === constants.STEP_STIR) {
+      this.setState({
+        visibleModal: true,
+        modalType: title,
+        modalIdx: stepIdx,
+        modalText: stepModel.getModalTextProperty(currentStep),
+      });
+    } else {
+      this.onModalCloseClick()
+      NavigationService.navigate(
+        'IngredientsScreen',
+        {
+          ingredientSaveCallback: this.ingredientSaveCallback,
+          stepType: currentStep.title,
+          recipeIngredients: recipeIngredients,
+        }
+      )
+    }
   }
 
   onStepPressDelete = (stepIdx) => {
