@@ -7,6 +7,7 @@ import {
   Dimensions,
   View,
   StyleSheet,
+  Button,
 } from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
 import Fonts from '../Theme/Fonts'
@@ -14,14 +15,14 @@ import Colors from '../Theme/Colors'
 import Images from '../Theme/Images'
 
 export default function TopHeader(props) {
-  const { title, onClose, showSeparator, useArrow, darkMode } = props
+  const { title, onClose, showSeparator, useArrow, darkMode, rightButtonTitle, onRightButtonPress } = props
 
   const styles = getStylesheet(darkMode)
   const headerStyles = getTopHeaderStylesheet(darkMode)
 
   const { width } = Dimensions.get('window')
   const titleWidth = {
-    width: width - 32 - 40 - 16,
+    width: width - 32 - 70 - 16,
   }
 
   return (
@@ -32,6 +33,13 @@ export default function TopHeader(props) {
           {useArrow && <Image style={headerStyles.close} source={Images.brewBack} />}
         </TouchableOpacity>
         <Text style={[headerStyles.title, titleWidth]}>{title}</Text>
+        {rightButtonTitle !== undefined && rightButtonTitle !== '' && (
+          <Button
+            styles={headerStyles.rightButton}
+            title={rightButtonTitle}
+            onPress={onRightButtonPress}
+          />
+        )}
       </View>
       {showSeparator && <View style={styles.divider} />}
     </SafeAreaView>
@@ -55,11 +63,17 @@ function getTopHeaderStylesheet(darkMode) {
       paddingTop: 14,
       width: '100%',
     },
+    rightButton: {
+      alignSelf: 'center',
+      justifyContent: 'center',
+      width: 20,
+    },
     title: {
       ...Fonts.navHeader,
       alignSelf: 'center',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
       justifyContent: 'center',
+      marginLeft: 15,
       textAlign: 'center',
     },
     touchable: {

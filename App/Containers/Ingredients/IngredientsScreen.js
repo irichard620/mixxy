@@ -13,7 +13,6 @@ import IngredientSelect from './IngredientSelect'
 import { PropTypes } from 'prop-types'
 import getIngredientsStylesheet from './IngredientsScreenStyle'
 import * as ingredientModel from '../../Storage/Ingredient'
-import * as stepModel from '../../Storage/Step'
 import SelectedItem from '../../Components/SelectedItem'
 import * as constants from '../../Config/constants'
 
@@ -35,16 +34,31 @@ class IngredientsScreen extends React.Component {
 
   componentDidMount() {
     const { params } = this.props.navigation.state;
-    if (this.useExistingIngredients(params.stepType)) {
-      this.setState({
-        step: 1,
-      })
-    } else if (this.isServingGlassStep(params.stepType)) {
-      this.props.fetchIngredients()
-      this.setState({
-        step: 1,
-      })
+    // Handle step passed in
+    let selectedVessel = ''
+    let selectedIngredients = []
+    if (Object.keys(params.step).length > 0) {
+      const passedStep = params.step
+      selectedVessel = passedStep.vessel
+      selectedIngredients = passedStep.ingredients
     }
+
+    // Fetch ingredients if needed
+    if (this.isServingGlassStep(params.stepType)) {
+      this.props.fetchIngredients()
+    }
+
+    // Get step to set
+    let stepToUse = 0
+    if (this.useExistingIngredients(params.stepType) || this.isServingGlassStep(params.stepType)) {
+      stepToUse = 1
+    }
+
+    this.setState({
+      step: stepToUse,
+      selectedVessel: selectedVessel,
+      selectedIngredients: selectedIngredients,
+    })
   }
 
   isServingGlassStep = (stepType) => {
@@ -67,12 +81,7 @@ class IngredientsScreen extends React.Component {
     // Check step
     if (step === 0) {
       if (params.stepType === constants.STEP_STRAIN) {
-        // Save step here
-        const newStep = stepModel.Step({
-          title: params.stepType,
-          vessel: selectedVessel
-        })
-        params.ingredientSaveCallback(newStep)
+        params.ingredientSaveCallback(params.stepType, selectedVessel, selectedIngredients, params.stepIdx)
         this.onBackScreenClick()
       } else {
         // Dispatch ingredients load
@@ -82,13 +91,7 @@ class IngredientsScreen extends React.Component {
         })
       }
     } else if (step === 1) {
-      // Save all ingredients - pass back
-      const newStep = stepModel.Step({
-        title: params.stepType,
-        ingredients: selectedIngredients,
-        vessel: selectedVessel
-      })
-      params.ingredientSaveCallback(newStep)
+      params.ingredientSaveCallback(params.stepType, selectedVessel, selectedIngredients, params.stepIdx)
       this.onBackScreenClick()
     } else {
       // Add to list of selected ingredients - saved item

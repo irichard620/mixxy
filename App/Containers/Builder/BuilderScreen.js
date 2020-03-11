@@ -17,7 +17,7 @@ import BuilderHome from './BuilderHome'
 import * as constants from '../../Config/constants'
 import BuilderModal from './BuilderModal'
 import * as stepModel from '../../Storage/Step';
-
+import * as recipeModel from '../../Storage/Recipe'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -148,6 +148,8 @@ class BuilderScreen extends React.Component {
           {
             ingredientSaveCallback: this.ingredientSaveCallback,
             stepType: item,
+            step: {},
+            stepIdx: -1,
             recipeIngredients: recipeIngredients,
           }
         )
@@ -168,14 +170,34 @@ class BuilderScreen extends React.Component {
     }
   };
 
-  ingredientSaveCallback = (ingredientStep) => {
+  ingredientSaveCallback = (stepType, selectedVessel, selectedIngredients, stepIdx) => {
     const { steps } = this.state;
-    this.setState({
-      steps: [
-        ...steps,
-        ingredientStep
-      ],
-    });
+    if (stepIdx === -1) {
+      const newStep = stepModel.Step({
+        title: stepType,
+        ingredients: selectedIngredients,
+        vessel: selectedVessel
+      })
+      this.setState({
+        steps: [
+          ...steps,
+          newStep
+        ],
+      });
+    } else {
+      steps[stepIdx].vessel = selectedVessel
+      steps[stepIdx].ingredients = selectedIngredients
+      this.setState({
+        visibleModal: false,
+        modalType: '',
+        modalText: '',
+        modalIdx: -1,
+        steps: steps,
+      });
+      this.setState({
+        steps: [...steps],
+      });
+    }
   }
 
   onModalChangeText = (text) => {
@@ -307,12 +329,15 @@ class BuilderScreen extends React.Component {
         modalText: stepModel.getModalTextProperty(currentStep),
       });
     } else {
+      const recipeIngredients = this.getIngredientsFromRecipe()
       this.onModalCloseClick()
       NavigationService.navigate(
         'IngredientsScreen',
         {
           ingredientSaveCallback: this.ingredientSaveCallback,
           stepType: currentStep.title,
+          step: currentStep,
+          stepIdx: stepIdx,
           recipeIngredients: recipeIngredients,
         }
       )
@@ -421,6 +446,24 @@ class BuilderScreen extends React.Component {
     return arrToUse;
   };
 
+  onRightButtonPress = () => {
+    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps } = this.state
+    if (step === 2) {
+      this.setState({ step: 3 })
+    } else {
+      // Save recipe
+      const newRecipe = recipeModel.Recipe({
+        recipeName: recipeName,
+        recipeDescription: recipeDescription,
+        recipeType: drinkType,
+        baseSpirit: baseSpirit,
+        servingGlass: servingGlass,
+        totalOunces: 0,  // TODO: fix this
+        steps: steps,
+      })
+    }
+  }
+
   render() {
     const { darkMode } = this.props;
     const { step, recipeName, drinkType, baseSpirit, servingGlass, steps, selectedStep, visibleModal, modalType, modalText } = this.state;
@@ -445,10 +488,17 @@ class BuilderScreen extends React.Component {
       || (step === 1 && baseSpirit === '')
     )
 
+    // Top right button
+    let topRightTitle = '';
+    if (step === 2) {
+      topRightTitle = 'Skip';
+    } else if (step === 3) {
+      topRightTitle = 'Save';
+    }
     return (
       <View style={styles.outerContainer}>
         <SafeAreaView style={styles.outerContainer}>
-          <TopHeader title={headerTitle} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
+          <TopHeader title={headerTitle} rightButtonTitle={topRightTitle} onRightButtonPress={this.onRightButtonPress} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
           {step === 0 && (
             <BuilderDrinkType darkMode={darkMode} onCardClick={this.onDrinkTypeClick} selectedDrinkType={drinkType} />
           )}
