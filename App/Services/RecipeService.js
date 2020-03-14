@@ -1,4 +1,5 @@
 import storage from 'redux-persist/lib/storage'
+import * as recipeModel from '../Storage/Recipe'
 
 function persistRecipe(recipeToSave) {
   return storage
@@ -33,6 +34,22 @@ function persistRecipe(recipeToSave) {
     .catch(() => [[], 'Unexpected error'])
 }
 
+function fetchRecipes() {
+  return storage.getItem('recipes').then((recipes) => {
+    const result = []
+    const r = recipes ? JSON.parse(recipes) : []
+    for (let i = 0; i < r.length; i += 1) {
+      // Create objects and add to result
+      const recipe = recipeModel.Recipe(r[i])
+      if (recipe.status === 'ACTIVE') {
+        result.push(recipe)
+      }
+    }
+    return result
+  })
+}
+
 export const recipeService = {
   persistRecipe,
+  fetchRecipes,
 }

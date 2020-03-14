@@ -7,9 +7,18 @@ export function* persistRecipe() {
 
   // Save recipe locally
   const result = yield call(recipeService.persistRecipe)
-  if (result === ) {
-    yield put(RecipeActions.persistRecipeSuccess(user))
+  const errorMessage = result[1]
+  if (errorMessage === '') {
+    yield put(RecipeActions.persistRecipeSuccess(result[0]))
   } else {
-    yield put(RecipeActions.persistRecipeFailure('There was an error while fetching user informations.'))
+    yield put(RecipeActions.persistRecipeFailure(errorMessage))
   }
+}
+
+export function* fetchRecipes() {
+  yield put(RecipeActions.fetchRecipesLoading())
+
+  // Save recipe locally
+  const result = yield call(recipeService.fetchRecipes)
+  yield put(RecipeActions.fetchRecipesSuccess(result))
 }

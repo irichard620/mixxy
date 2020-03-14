@@ -7,56 +7,20 @@ import getStylesheet from '../../Theme/ApplicationStyles'
 import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
-import { Recipe } from '../../Storage/Recipe'
+import RecipeActions from '../../Stores/Recipe/Actions'
 
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      favoriteRecipes: [
-        Recipe({
-          recipeId: '54750894510870724860',
-          recipeName: 'Manhattan',
-          recipeType: 'Whiskey Cocktail',
-          servingGlass: 'Cocktail Glass',
-          recipeDescription: 'The Manhattan was the most famous cocktail in the world shortly after it was invented in New York City’s Manhattan Club, some time around 1880 (as the story goes). Over the years, the whiskey classic has dipped in and out of fashion before finding its footing as one of the cornerstones of the craft cocktail renaissance. Amazingly, the drink that socialites tipped to their lips in the 19th century looks and tastes pretty much the same as the one served today at any decent cocktail bar. The Manhattan’s mix of American whiskey and Italian vermouth, perked up with a few dashes of aromatic bitters, is timeless and tasty—the very definition of what a cocktail should be.',
-          steps: [
-            {
-              title: 'Add Ingredients',
-              properties: {},
-              ingredients: [{
-                title: "Silver Tequila",
-                amount: "2",
-                fractionalAmount: "",
-                amountType: "Ounces"
-              }],
-              vessel: 'Cocktail Shaker'
-            },
-            {
-              title: 'Shake',
-              properties: {
-                seconds: 20
-              }
-            }
-          ]
-        })
-      ],
       favoriteExpanded: false,
-      allRecipes: [
-        {
-          recipeId: '54750894510870724860',
-          recipeName: 'Manhattan',
-          recipeType: 'Whiskey Cocktail',
-          steps: [
-            {
-              title: 'Heat water'
-            }
-          ]
-        }
-      ],
       allExpanded: false,
     };
+  }
+
+  componentDidMount() {
+    this.props.fetchRecipes()
   }
 
   onFavoriteExpansion = () => {
@@ -102,10 +66,18 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { darkMode } = this.props;
-    const { favoriteRecipes, favoriteExpanded, allRecipes, allExpanded } = this.state;
+    const { darkMode, recipes } = this.props;
+    const { favoriteExpanded, allExpanded } = this.state;
     const styles = getStylesheet(darkMode)
     const homeStyles = getHomeStylesheet(darkMode)
+
+    // Get favorite recipes
+    const favoriteRecipes = []
+    for (let i = 0; i < recipes.length; i++) {
+      if (recipes[i].favorited) {
+        favoriteRecipes.push(recipes[i])
+      }
+    }
 
     return (
       <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.outerContainer}>
@@ -120,7 +92,7 @@ class HomeScreen extends React.Component {
             return null
           })}
           <Text style={homeStyles.sectionHeader}>All Recipes</Text>
-          {allRecipes.map((recipe, idx) => {
+          {recipes.map((recipe, idx) => {
             if (idx < 5 || allExpanded) {
               return this.renderCard(idx, recipe)
             }
@@ -133,19 +105,17 @@ class HomeScreen extends React.Component {
 }
 
 HomeScreen.propTypes = {
-  user: PropTypes.object,
-  userIsLoading: PropTypes.bool,
-  userErrorMessage: PropTypes.string,
+  recipes: PropTypes.array,
+  fetchRecipesIsLoading: PropTypes.bool,
 }
 
 const mapStateToProps = (state) => ({
-  user: state.example.user,
-  userIsLoading: state.example.userIsLoading,
-  userErrorMessage: state.example.userErrorMessage,
+  recipes: state.recipes.recipes,
+  fetchRecipesIsLoading: state.recipes.fetchRecipesIsLoading,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // fetchUser: () => dispatch(UserActions.fetchUser()),
+  fetchRecipes: () => dispatch(RecipeActions.fetchRecipes()),
 })
 
 export default connect(

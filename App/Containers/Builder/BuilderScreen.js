@@ -18,6 +18,7 @@ import * as constants from '../../Config/constants'
 import BuilderModal from './BuilderModal'
 import * as stepModel from '../../Storage/Step';
 import * as recipeModel from '../../Storage/Recipe'
+import RecipeActions from '../../Stores/Recipe/Actions'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -461,6 +462,7 @@ class BuilderScreen extends React.Component {
         totalOunces: 0,  // TODO: fix this
         steps: steps,
       })
+      // persistRecipe()
     }
   }
 
@@ -561,13 +563,12 @@ class BuilderScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  // user: state.example.user,
-  // userIsLoading: state.example.userIsLoading,
-  // userErrorMessage: state.example.userErrorMessage,
+  persistRecipeIsLoading: state.recipes.persistRecipeIsLoading,
+  persistRecipeErrorMessage: state.recipes.persistRecipeErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // fetchUser: () => dispatch(UserActions.fetchUser()),
+  persistRecipe: () => dispatch(RecipeActions.persistRecipe()),
 })
 
 export default connect(

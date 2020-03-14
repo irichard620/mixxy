@@ -21,8 +21,21 @@ export const persistRecipeFailure = (state, { errorMessage }) => ({
   persistRecipeErrorMessage: errorMessage,
 })
 
+export const fetchRecipesLoading = (state) => ({
+  ...state,
+  fetchRecipesIsLoading: true,
+})
+
+export const fetchRecipesSuccess = (state, { recipes }) => ({
+  ...state,
+  recipes: recipes,
+  fetchRecipesIsLoading: false,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.PERSIST_RECIPE_LOADING]: persistRecipeLoading,
   [RecipeTypes.PERSIST_RECIPE_SUCCESS]: persistRecipeSuccess,
   [RecipeTypes.PERSIST_RECIPE_FAILURE]: persistRecipeFailure,
+  [RecipeTypes.FETCH_RECIPES_LOADING]: fetchRecipesLoading,
+  [RecipeTypes.FETCH_RECIPES_SUCCESS]: fetchRecipesSuccess,
 })
