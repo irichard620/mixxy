@@ -5,6 +5,7 @@ import SplashScreen from '../Containers/SplashScreen/SplashScreen'
 import TutorialScreen from '../Containers/Tutorial/TutorialScreen'
 import BuilderScreen from '../Containers/Builder/BuilderScreen'
 import IngredientsScreen from '../Containers/Ingredients/IngredientsScreen'
+import CampaignScreen from '../Containers/Campaign/CampaignScreen'
 
 const StackNavigator = createStackNavigator(
   {
@@ -13,6 +14,7 @@ const StackNavigator = createStackNavigator(
     TutorialScreen: TutorialScreen,
     BuilderScreen: BuilderScreen,
     IngredientsScreen: IngredientsScreen,
+    CampaignScreen: CampaignScreen,
   },
   {
     // By default the application will show the splash screen

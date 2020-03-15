@@ -1,14 +1,16 @@
 import { put } from 'redux-saga/effects'
 import UserActions from '../Stores/User/Actions'
+import SponsorActions from '../Stores/Sponsor/Actions'
+import CampaignActions from '../Stores/Campaign/Actions'
 import NavigationService from '../Services/NavigationService'
 
 /**
  * The startup saga is the place to define behavior to execute when the application starts.
  */
 export function* startup() {
-  // Dispatch a redux action using `put()`
-  // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
   yield put(UserActions.fetchUser())
+  // yield put(SponsorActions.fetchSponsorCards())
+  // yield put(CampaignActions.fetchCampaigns())
 
   // When those operations are finished we redirect to the main screen
   NavigationService.navigateAndReset('HomeScreen')

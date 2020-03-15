@@ -3,10 +3,14 @@ import { UserTypes } from '../Stores/User/Actions'
 import { StartupTypes } from '../Stores/Startup/Actions'
 import { IngredientTypes } from '../Stores/Ingredient/Actions'
 import { RecipeTypes } from '../Stores/Recipe/Actions'
+import { SponsorTypes } from '../Stores/Sponsor/Actions'
+import { CampaignTypes } from '../Stores/Campaign/Actions'
 import { fetchUser } from './UserSaga'
 import { startup } from './StartupSaga'
 import { fetchIngredients } from './IngredientSaga'
 import { persistRecipe, fetchRecipes } from './RecipeSaga'
+import { fetchSponsorCards } from './SponsorSaga'
+import { fetchCampaigns } from './CampaignSaga'
 
 export default function* root() {
   yield all([
@@ -20,5 +24,9 @@ export default function* root() {
     takeLatest(RecipeTypes.PERSIST_RECIPE, persistRecipe),
     // Fetch recipes
     takeLatest(RecipeTypes.FETCH_RECIPES, fetchRecipes),
+    // Fetch sponsor cards
+    takeLatest(SponsorTypes.FETCH_SPONSOR_CARDS, fetchSponsorCards),
+    // Fetch campaigns
+    takeLatest(CampaignTypes.FETCH_CAMPAIGNS, fetchCampaigns),
   ])
 }

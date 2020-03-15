@@ -1,4 +1,5 @@
 const size = {
+  top: 28,
   h1: 24,
   h2: 22,
   h3: 20,
@@ -8,6 +9,7 @@ const size = {
 }
 
 const lineSpacing = {
+  top: 36,
   h1: 31,
   h2: 27,
   h3: 23,
@@ -24,6 +26,11 @@ const fontWeight = {
 }
 
 export default {
+  top: {
+    fontSize: size.top,
+    lineHeight: lineSpacing.top,
+    fontWeight: fontWeight.semibold,
+  },
   h1: {
     fontSize: size.h1,
     lineHeight: lineSpacing.h1,
@@ -76,6 +83,21 @@ export default {
   stepTitle: {
     fontSize: size.body2,
     lineHeight: lineSpacing.body2,
+    fontWeight: fontWeight.semibold,
+  },
+  h2Semibold: {
+    fontSize: size.h2,
+    lineHeight: lineSpacing.h2,
+    fontWeight: fontWeight.semibold,
+  },
+  h1Semibold: {
+    fontSize: size.h1,
+    lineHeight: lineSpacing.h3,
+    fontWeight: fontWeight.semibold,
+  },
+  h3Semibold: {
+    fontSize: size.h3,
+    lineHeight: lineSpacing.h3,
     fontWeight: fontWeight.semibold,
   },
 }
