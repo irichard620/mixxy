@@ -3,5 +3,7 @@ export const INITIAL_STATE = {
   persistRecipeIsLoading: false,
   persistRecipeErrorMessage: null,
   fetchRecipesIsLoading: false,
-
+  remoteRecipes: [],
+  fetchRemoteRecipesIsLoading: false,
+  fetchRemoteRecipesErrorMessage: null,
 }

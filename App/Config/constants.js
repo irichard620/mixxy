@@ -77,7 +77,14 @@ export const AMOUNT_TYPE_OZ = 'Ounces'
 export const AMOUNT_TYPE_TSP = 'Teaspoon'
 export const AMOUNT_TYPE_TBSP = 'Tablespoon'
 export const AMOUNT_TYPE_PIECE = 'Piece'
-export const amountTypes = [AMOUNT_TYPE_OZ, AMOUNT_TYPE_TSP, AMOUNT_TYPE_TBSP, AMOUNT_TYPE_PIECE]
+export const AMOUNT_TYPE_DASH = 'Dashes'
+export const amountTypes = [
+  AMOUNT_TYPE_OZ,
+  AMOUNT_TYPE_TSP,
+  AMOUNT_TYPE_TBSP,
+  AMOUNT_TYPE_PIECE,
+  AMOUNT_TYPE_DASH,
+]
 
 // Drink types
 export const DRINK_TYPE_COCKTAIL = 'Cocktail'

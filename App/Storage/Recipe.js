@@ -32,9 +32,10 @@ export function Recipe(recipeObj) {
   }
 
   // Recipe association data
-  recipe.sponsorId = recipeObj.sponsorId || ''
+  recipe.sponsorCardId = recipeObj.sponsorCardId || ''
+  recipe.masterListId = recipeObj.masterListId || ''
+  recipe.campaignId = recipeObj.campaignId || ''
   recipe.favorited = recipeObj.favorited || false
-  recipe.default = recipeObj.default || false
   recipe.status = recipeObj.status || 'ACTIVE'
 
   return recipe

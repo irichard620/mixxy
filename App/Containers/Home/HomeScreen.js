@@ -11,15 +11,8 @@ import NavigationService from '../../Services/NavigationService'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import HomeDiscoverTab from './HomeDiscoverTab'
 import Images from '../../Theme/Images'
+import HomeLibraryTab from './HomeLibraryTab'
 
-
-const FirstRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
-);
-
-const SecondRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
-);
 
 const ThirdRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
@@ -34,7 +27,7 @@ const routes = [
 ]
 const renderScene = SceneMap({
   discover: HomeDiscoverTab,
-  library: SecondRoute,
+  library: HomeLibraryTab,
   settings: ThirdRoute,
 });
 

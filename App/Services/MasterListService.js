@@ -1,8 +1,8 @@
-import { in200s, defaultApiClient } from './Helpers'
+import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
 
-function fetchCampaigns() {
-  return defaultApiClient('campaigns')
+function fetchMasterLists() {
+  return defaultApiClient('master-lists')
     .get()
     .then((response) => {
       if (in200s(response.status)) {
@@ -13,6 +13,6 @@ function fetchCampaigns() {
     })
 }
 
-export const campaignService = {
-  fetchCampaigns,
+export const masterListService = {
+  fetchMasterLists,
 }

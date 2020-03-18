@@ -156,6 +156,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'nowrap',
   },
+  rowStartWrap: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   scrollSpaceAround: {
     flexGrow: 1,
     justifyContent: 'space-around',

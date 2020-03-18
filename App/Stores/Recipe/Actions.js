@@ -2,7 +2,7 @@ import { createActions } from 'reduxsauce'
 
 const { Types, Creators } = createActions({
   // Save recipe
-  persistRecipe: null,
+  persistRecipe: ['recipeToSave'],
   // The operation has started and is loading
   persistRecipeLoading: null,
   // recipe saved
@@ -16,6 +16,15 @@ const { Types, Creators } = createActions({
   fetchRecipesLoading: null,
   // recipe fetched
   fetchRecipesSuccess: ['recipes'],
+
+  // Fetch remote recipes
+  fetchRemoteRecipes: ['sponsorCardId', 'campaignId', 'masterListId'],
+  // The operation has started and is loading
+  fetchRemoteRecipesLoading: null,
+  // recipe fetched
+  fetchRemoteRecipesSuccess: ['recipes'],
+  // Failure
+  fetchRemoteRecipesFailure: ['errorMessage'],
 })
 
 export const RecipeTypes = Types

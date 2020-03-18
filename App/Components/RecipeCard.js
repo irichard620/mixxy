@@ -38,6 +38,7 @@ function getCardStylesheet(darkMode) {
     cardOutline: {
       backgroundColor: darkMode ? Colors.cardColorDark : Colors.cardColorLight,
       borderRadius: 10,
+      marginBottom: 12,
       marginLeft: 16,
       marginRight: 16,
       paddingBottom: 18,

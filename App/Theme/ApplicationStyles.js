@@ -8,6 +8,9 @@ import { StyleSheet } from 'react-native'
 
 export default function getStylesheet(darkMode) {
   return StyleSheet.create({
+    buffer24: {
+      height: 24,
+    },
     divider: {
       backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       flex: 1,
@@ -22,6 +25,12 @@ export default function getStylesheet(darkMode) {
       backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       height: 8,
       width: '100%',
+    },
+    verticalDivider: {
+      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      height: '100%',
+      marginRight: 16,
+      width: 0.5,
     },
   })
 }

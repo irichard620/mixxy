@@ -4,23 +4,26 @@ import FastImage from 'react-native-fast-image'
 import getHomeStylesheet from './HomeScreenStyle'
 import { PropTypes } from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
-import HomeTags from './HomeTag'
 
-export default function HomeCampaign(props) {
-  const { campaign, disabled, onCampaignClick, darkMode } = props
-  const { name, shortDescription, imageLink, tags } = campaign
+export default function HomeMasterList(props) {
+  const { masterList, disabled, onMasterListClick, darkMode, addRightPadding } = props
+  const { name, imageLink } = masterList
   const { width } = Dimensions.get('window')
   const cardWidth = {
-    width: width - 32,
+    width: (width - 48) / 2,
+  }
+  const marginStyle = {}
+  if (addRightPadding) {
+    marginStyle.marginRight = 16
   }
 
   const homeStyles = getHomeStylesheet(darkMode)
   return (
-    <TouchableWithoutFeedback disabled={disabled} onPress={() => onCampaignClick(campaign)}>
-      <View style={homeStyles.campaignOutline}>
+    <TouchableWithoutFeedback disabled={disabled} onPress={() => onMasterListClick(masterList)}>
+      <View style={[homeStyles.masterListOutline, marginStyle]}>
         {imageLink !== '' && (
           <FastImage
-            style={[homeStyles.campaignImage, cardWidth]}
+            style={[homeStyles.masterListImage, cardWidth]}
             source={{
               uri: imageLink,
               priority: FastImage.priority.normal,
@@ -28,12 +31,8 @@ export default function HomeCampaign(props) {
             resizeMode={FastImage.resizeMode.cover}
           />
         )}
-        <HomeTags tags={tags} darkMode={darkMode} />
-        <View style={homeStyles.sponsorCardDescriptionContainer}>
-          <Text style={homeStyles.campaignTitle}>{name}</Text>
-          <Text style={homeStyles.campaignDescription}>{shortDescription}</Text>
-        </View>
-        <View style={homeStyles.campaignBottomGradientContainer}>
+        <Text style={homeStyles.masterListTitle}>{name}</Text>
+        <View style={homeStyles.masterListBottomGradientContainer}>
           <LinearGradient
             colors={['#00000080', '#00000000']}
             style={homeStyles.linearGradient}
@@ -46,9 +45,10 @@ export default function HomeCampaign(props) {
   )
 }
 
-HomeCampaign.propTypes = {
-  campaign: PropTypes.object,
+HomeMasterList.propTypes = {
+  masterList: PropTypes.object,
   disabled: PropTypes.bool,
-  onCampaignClick: PropTypes.func,
+  onMasterListClick: PropTypes.func,
   darkMode: PropTypes.bool,
+  addRightPadding: PropTypes.bool
 }

@@ -8,9 +8,11 @@ import HomeSponsorCard from './HomeSponsorCard'
 import { PropTypes } from 'prop-types'
 import HomeCampaign from './HomeCampaign'
 import NavigationService from '../../Services/NavigationService'
+import HomeMasterList from './HomeMasterList'
+import Helpers from '../../Theme/Helpers'
 
 function HomeDiscoverTab(props) {
-  const { sponsorCards, campaigns } = props
+  const { sponsorCards, campaigns, masterLists } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
@@ -27,20 +29,37 @@ function HomeDiscoverTab(props) {
       ))}
       <View style={styles.divider} />
       <Text style={homeStyles.sectionHeader}>Featured Recipes</Text>
-      {campaigns &&
-        campaigns.map((campaign) => (
-          <HomeCampaign
-            key={campaign.campaignId}
-            campaign={campaign}
+      {campaigns.map((campaign) => (
+        <HomeCampaign
+          key={campaign.campaignId}
+          campaign={campaign}
+          disabled={false}
+          darkMode={darkMode}
+          onCampaignClick={(campaign) => {
+            NavigationService.navigate('CampaignScreen', {
+              campaign: campaign,
+            })
+          }}
+        />
+      ))}
+      <View style={styles.divider} />
+      <Text style={homeStyles.sectionHeader}>Browse More</Text>
+      <View style={Helpers.rowStartWrap}>
+        {masterLists.map((masterList, idx) => (
+          <HomeMasterList
+            key={masterList.masterListId}
+            masterList={masterList}
             disabled={false}
             darkMode={darkMode}
-            onCampaignClick={(campaign) => {
+            onMasterListClick={(masterList) => {
               NavigationService.navigate('CampaignScreen', {
-                campaign: campaign,
+                campaign: masterList,
               })
             }}
+            addRightPadding={idx / 2.0 === 0}
           />
         ))}
+      </View>
     </ScrollView>
   )
 }
@@ -48,6 +67,7 @@ function HomeDiscoverTab(props) {
 HomeDiscoverTab.propTypes = {
   sponsorCards: PropTypes.array,
   campaigns: PropTypes.array,
+  masterLists: PropTypes.array,
 }
 
 const mapStateToProps = (state) => ({
@@ -57,6 +77,9 @@ const mapStateToProps = (state) => ({
   campaigns: state.campaigns.campaigns,
   campaignsIsLoading: state.campaigns.campaignsIsLoading,
   campaignsErrorMessage: state.campaigns.campaignsErrorMessage,
+  masterLists: state.masterLists.masterLists,
+  masterListsIsLoading: state.masterLists.masterListsIsLoading,
+  masterListsErrorMessage: state.masterLists.masterListsErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({})

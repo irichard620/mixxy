@@ -5,16 +5,42 @@ import NavigationService from '../../Services/NavigationService'
 import getCampaignStylesheet from './CampaignScreenStyle'
 import FastImage from 'react-native-fast-image'
 import getStylesheet from '../../Theme/ApplicationStyles'
-import LinearGradient from "react-native-linear-gradient"
+import LinearGradient from 'react-native-linear-gradient'
+import ModalXButton from '../../Components/ModalXButton'
+import { NavigationActions } from 'react-navigation'
+import RecipeActions from '../../Stores/Recipe/Actions'
+import RecipeCard from '../../Components/RecipeCard'
 
 class CampaignScreen extends React.Component {
+  componentDidMount() {
+    const { navigation } = this.props
+    const campaign = navigation.getParam('campaign', {})
+    if ('masterListId' in campaign) {
+      this.props.fetchRemoteRecipes(campaign.masterListId)
+    } else {
+      this.props.fetchRemoteRecipes(campaign.campaignId)
+    }
+  }
+
+  onBackPress = () => {
+    const { navigation } = this.props
+    navigation.dispatch(NavigationActions.back())
+  }
+
+  onCardClick = (idx) => {
+    const { remoteRecipes } = this.props
+    NavigationService.navigate('TutorialScreen', {
+      recipe: remoteRecipes[idx]
+    })
+  }
+
   render() {
-    const { darkMode, navigation } = this.props
+    const { darkMode, navigation, remoteRecipes } = this.props
     const styles = getStylesheet(darkMode)
     const campaignStyles = getCampaignStylesheet(darkMode)
 
     const campaign = navigation.getParam('campaign', {})
-    const { campaignName, campaignLongDescription, campaignImageLink } = campaign
+    const { name, longDescription, imageLink } = campaign
 
     const { width } = Dimensions.get('window')
     const cardWidth = {
@@ -24,17 +50,20 @@ class CampaignScreen extends React.Component {
       <ScrollView style={campaignStyles.scrollContainer}>
         <StatusBar hidden={true} />
         <View style={campaignStyles.topImageOutline}>
-          {campaignImageLink !== '' && (
+          {imageLink !== '' && (
             <FastImage
               style={[campaignStyles.topImage, cardWidth]}
               source={{
-                uri: campaignImageLink,
+                uri: imageLink,
                 priority: FastImage.priority.normal,
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
           )}
-          <Text style={campaignStyles.title}>{campaignName}</Text>
+          <View style={campaignStyles.backContainer}>
+            <ModalXButton onPress={this.onBackPress}/>
+          </View>
+          <Text style={campaignStyles.title}>{name}</Text>
           <View style={campaignStyles.campaignBottomGradientContainer}>
             <LinearGradient
               colors={['#00000080', '#00000000']}
@@ -45,22 +74,32 @@ class CampaignScreen extends React.Component {
           </View>
         </View>
         <View style={campaignStyles.bufferView} />
-        <View style={campaignStyles.contentContainer}>
-          <Text style={campaignStyles.description}>
-            Whether you’re a budding home bartender or a seasoned vet, you should know how to make
-            these essential cocktails anytime, anywhere. After all, they’re classics for a reason.
-          </Text>
+        {longDescription !== '' && <View style={campaignStyles.contentContainer}>
+          <Text style={campaignStyles.description}>{longDescription}</Text>
           <View style={styles.divider} />
-        </View>
+        </View>}
+        {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
+          <RecipeCard
+            recipeName={recipe.recipeName}
+            recipeType={recipe.recipeType}
+            disabled={false}
+            onCardClick={() => this.onCardClick(idx)}
+            darkMode={darkMode}
+          />
+        ))}
       </ScrollView>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
+  remoteRecipes: state.recipes.remoteRecipes,
+  fetchRemoteRecipesIsLoading: state.recipes.fetchRemoteRecipesIsLoading,
+  fetchRemoteRecipesErrorMessage: state.recipes.fetchRemoteRecipesErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  fetchRemoteRecipes: (campaignId) => dispatch(RecipeActions.fetchRemoteRecipes(null, campaignId, null)),
 })
 
 export default connect(

@@ -4,6 +4,11 @@ import Fonts from '../../Theme/Fonts'
 
 export default function getCampaignStylesheet(useDarkMode) {
   return StyleSheet.create({
+    backContainer: {
+      position: 'absolute',
+      right: 16,
+      top: 56,
+    },
     bufferView: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       borderTopLeftRadius: 10,
@@ -12,7 +17,17 @@ export default function getCampaignStylesheet(useDarkMode) {
       marginTop: -20,
       width: '100%',
     },
+    campaignBottomGradientContainer: {
+      backgroundColor: 'transparent',
+      bottom: 0,
+      height: 144,
+      left: 0,
+      position: 'absolute',
+      right: 0,
+      zIndex: 1,
+    },
     contentContainer: {
+      marginBottom: 24,
       paddingLeft: 16,
       paddingRight: 16,
       paddingTop: 4,
@@ -21,6 +36,9 @@ export default function getCampaignStylesheet(useDarkMode) {
       ...Fonts.body1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 24,
+    },
+    linearGradient: {
+      flex: 1,
     },
     scrollContainer: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
@@ -41,18 +59,6 @@ export default function getCampaignStylesheet(useDarkMode) {
       alignSelf: 'center',
       backgroundColor: useDarkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
       height: 440,
-    },
-    campaignBottomGradientContainer: {
-      backgroundColor: 'transparent',
-      bottom: 0,
-      height: 144,
-      left: 0,
-      position: 'absolute',
-      right: 0,
-      zIndex: 1,
-    },
-    linearGradient: {
-      flex: 1,
     },
   })
 }

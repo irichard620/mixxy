@@ -1,7 +1,11 @@
 import storage from 'redux-persist/lib/storage'
 import * as recipeModel from '../Storage/Recipe'
+import { defaultApiClient, in200s } from './Helpers'
+import camelcaseKeys from 'camelcase-keys'
+import { Recipe } from '../Storage/Recipe'
 
-function persistRecipe(recipeToSave) {
+function persistRecipe(params) {
+  const recipeToSave = params.recipeToSave
   return storage
     .getItem('recipes')
     .then((recipes) => {
@@ -49,7 +53,32 @@ function fetchRecipes() {
   })
 }
 
+function fetchRemoteRecipes(params) {
+  let url = 'recipes'
+  if (params.sponsorCardId) {
+    url += `?sponsor_card_id=${params.sponsorCardId}`
+  } else if (params.campaignId) {
+    url += `?campaign_id=${params.campaignId}`
+  } else if (params.masterListId) {
+    url += `?master_list_id=${params.masterListId}`
+  }
+  return defaultApiClient(url)
+    .get()
+    .then((response) => {
+      if (in200s(response.status)) {
+        const recipes = []
+        for (let i = 0; i < response.data.length; i++) {
+          recipes.push(Recipe(camelcaseKeys(response.data[i])))
+        }
+        return recipes
+      }
+
+      return null
+    })
+}
+
 export const recipeService = {
   persistRecipe,
   fetchRecipes,
+  fetchRemoteRecipes,
 }

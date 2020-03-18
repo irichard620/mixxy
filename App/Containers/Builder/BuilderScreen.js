@@ -448,6 +448,7 @@ class BuilderScreen extends React.Component {
   };
 
   onRightButtonPress = () => {
+    const { persistRecipe } = this.props
     const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps } = this.state
     if (step === 2) {
       this.setState({ step: 3 })
@@ -462,7 +463,7 @@ class BuilderScreen extends React.Component {
         totalOunces: 0,  // TODO: fix this
         steps: steps,
       })
-      // persistRecipe()
+      persistRecipe(newRecipe)
     }
   }
 
@@ -568,7 +569,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  persistRecipe: () => dispatch(RecipeActions.persistRecipe()),
+  persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave)),
 })
 
 export default connect(
