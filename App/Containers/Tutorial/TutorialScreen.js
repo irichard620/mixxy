@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions } from 'react-native'
+import { View, Dimensions, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { NavigationActions, SafeAreaView } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,6 +11,8 @@ import NavigationService from '../../Services/NavigationService'
 import TutorialHome from './TutorialHome'
 import Colors from '../../Theme/Colors'
 import TutorialSteps from './TutorialSteps'
+import { PropTypes } from 'prop-types'
+import RecipeActions from '../../Stores/Recipe/Actions'
 
 
 class TutorialScreen extends React.Component {
@@ -29,6 +31,22 @@ class TutorialScreen extends React.Component {
     const recipe = navigation.getParam('recipe', {});
     const premium = navigation.getParam('premium', false);
     this.setState({ recipe, premium });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
+      if (this.props.persistRecipeErrorMessage) {
+        Alert.alert(
+          'Error saving recipe',
+          `${this.props.persistRecipeErrorMessage}`,
+          [
+            {
+              text: 'OK'
+            },
+          ],
+        );
+      }
+    }
   }
 
   onBackScreenClick = () => {
@@ -58,8 +76,14 @@ class TutorialScreen extends React.Component {
     }
   }
 
+  onSaveClick = () => {
+    // Call persist recipe
+    const { recipe } = this.state
+    this.props.persistRecipe(recipe)
+  }
+
   render() {
-    const { darkMode } = this.props;
+    const { darkMode, recipes } = this.props;
     const { step, recipe, drinkAmount } = this.state;
 
     const styles = getStylesheet(darkMode)
@@ -68,6 +92,14 @@ class TutorialScreen extends React.Component {
     let headerTitle = '';
     if (step >= 0 && 'recipeName' in recipe) {
       headerTitle = recipe.recipeName
+    }
+
+    // Is it in our library?
+    let recipeSaved = false
+    for (let i = 0; i < recipes.length; i++) {
+      if (recipes[i].recipeId === recipe.recipeId) {
+        recipeSaved = true
+      }
     }
 
     // Button style
@@ -85,6 +117,7 @@ class TutorialScreen extends React.Component {
     }
     const { width } = Dimensions.get('window');
     const buttonWidth = (width - 16 - 16 - 9) / 2;
+    const fullButtonWidth = (width - 32)
 
     return (
       <View style={styles.outerContainer}>
@@ -94,7 +127,7 @@ class TutorialScreen extends React.Component {
             <TutorialHome recipe={recipe} darkMode={darkMode} drinkAmount={drinkAmount} />
           )}
           {step !== -1 && (
-            <TutorialSteps recipe={recipe} step={step} />
+            <TutorialSteps recipe={recipe} step={step} darkMode={darkMode} />
           )}
           <View style={tutorialStyles.gradientContainer}>
             <LinearGradient
@@ -105,7 +138,7 @@ class TutorialScreen extends React.Component {
             />
           </View>
           <View style={tutorialStyles.buttonView}>
-            <ButtonLarge
+            {recipeSaved && <ButtonLarge
               onButtonClick={this.onFirstButtonClick}
               title={firstButtonTitle}
               margin={[0, 9, 0, 0]}
@@ -114,15 +147,23 @@ class TutorialScreen extends React.Component {
               backgroundColor="#FFFFFF"
               borderColor="#D3D3D3"
               darkMode={darkMode}
-            />
-            <ButtonLarge
+            />}
+            {recipeSaved && <ButtonLarge
               onButtonClick={this.onSecondButtonClick}
               title={secondButtonTitle}
               margin={[0, 0, 0, 0]}
               buttonWidth={buttonWidth}
               darkMode={darkMode}
               isPrimary
-            />
+            />}
+            {!recipeSaved && <ButtonLarge
+              onButtonClick={this.onSaveClick}
+              title={'Add to Library'}
+              margin={[0, 0, 0, 0]}
+              buttonWidth={fullButtonWidth}
+              darkMode={darkMode}
+              isPrimary
+            />}
           </View>
         </SafeAreaView>
       </View>
@@ -131,19 +172,17 @@ class TutorialScreen extends React.Component {
 }
 
 TutorialScreen.propTypes = {
-  // user: PropTypes.object,
-  // userIsLoading: PropTypes.bool,
-  // userErrorMessage: PropTypes.string,
+  recipes: PropTypes.array,
 }
 
 const mapStateToProps = (state) => ({
-  // user: state.example.user,
-  // userIsLoading: state.example.userIsLoading,
-  // userErrorMessage: state.example.userErrorMessage,
+  recipes: state.recipes.recipes,
+  persistRecipeIsLoading: state.recipes.persistRecipeIsLoading,
+  persistRecipeErrorMessage: state.recipes.persistRecipeErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // fetchUser: () => dispatch(UserActions.fetchUser()),
+  persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave)),
 })
 
 export default connect(

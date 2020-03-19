@@ -13,7 +13,9 @@ export default function RecipeCard(props) {
     <TouchableWithoutFeedback onPress={onCardClick} disabled={disabled}>
       <View style={cardStyles.cardOutline}>
         <View style={Helpers.rowStart}>
-          <Image style={cardStyles.image} source={Images.logo} />
+          <View style={cardStyles.imageContainer}>
+            <Image style={cardStyles.image} source={Images.logo} />
+          </View>
           <View style={Helpers.fillColLeft}>
             <Text style={cardStyles.recipeName}>{recipeName}</Text>
             <Text style={cardStyles.recipeType}>{recipeType}</Text>
@@ -49,12 +51,18 @@ function getCardStylesheet(darkMode) {
       shadowOpacity: 0.14,
       shadowRadius: 12,
     },
-    image: {
+    imageContainer: {
+      alignItems: 'center',
+      backgroundColor: darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight,
       borderRadius: 10,
       height: 48,
+      justifyContent: 'center',
       marginRight: 14,
-      resizeMode: 'contain',
       width: 48,
+    },
+    image: {
+      height: 24,
+      width: 24,
     },
     recipeName: {
       ...Fonts.body1,

@@ -11,12 +11,11 @@ import HomeLibraryMenuButtons from './HomeLibraryMenuButtons'
 
 function HomeLibraryTab(props) {
   const { recipes } = props
-  console.log(recipes)
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(0)
 
   const listHeader = (
     <React.Fragment>
@@ -32,9 +31,16 @@ function HomeLibraryTab(props) {
     </React.Fragment>
   )
 
+  let options = []
+  if (selected === 0) {
+    options = recipes.filter((recipe) => recipe.favorited)
+  } else {
+    options = recipes
+  }
+
   return (
     <FlatList
-      data={recipes}
+      data={options}
       keyExtractor={(recipe) => recipe.recipeId}
       renderItem={({ item }) => (
         <RecipeCard

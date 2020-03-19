@@ -1,5 +1,7 @@
 import { getIngredientShortDescription, Ingredient } from './Ingredient'
 import * as constants from '../Config/constants'
+import { Text } from 'react-native'
+import React from 'react'
 
 const camelcaseKeys = require('camelcase-keys')
 
@@ -88,4 +90,94 @@ export function getModalTextProperty(step) {
     return properties.seconds
   }
   return ''
+}
+
+const getHighlightedText = (text, styles) => (
+  <Text style={styles.stepDescriptionHighlight}>{text}</Text>
+)
+
+export const getStepDescriptionWithHighlights = (step, styles) => {
+  if (step.title === constants.STEP_ADD_INGREDIENTS) {
+    let ingredientDescription = getIngredientsList(step)
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Add '}
+        {getHighlightedText(ingredientDescription, styles)}
+        {' to a '}
+        {getHighlightedText(step.vessel, styles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_REMOVE_INGREDIENTS) {
+    let ingredientDescription = getIngredientsList(step)
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Discard '}
+        {getHighlightedText(ingredientDescription, styles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_MUDDLE) {
+    let ingredientDescription = getIngredientsList(step)
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Muddle '}
+        {getHighlightedText(ingredientDescription, styles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_STRAIN) {
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Pour through a strainer into '}
+        {getHighlightedText(step.vessel, styles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_STIR) {
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Stir for '}
+        {getHighlightedText(step.properties.seconds, styles)}
+        {' seconds.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_BLEND) {
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Blend together until a '}
+        {getHighlightedText(step.properties.consistency, styles)}
+        {' consistency.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_SHAKE) {
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Cover and shake for '}
+        {getHighlightedText(step.properties.seconds, styles)}
+        {' seconds.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_GARNISH) {
+    let ingredientDescription = getIngredientsList(step)
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Garnish the serving glass with '}
+        {getHighlightedText(ingredientDescription, styles)}
+        {'.'}
+      </Text>
+    )
+  } else if (step.title === constants.STEP_RIM_GLASS) {
+    let ingredientDescription = getIngredientsList(step)
+    return (
+      <Text style={styles.stepDescriptionBase}>
+        {'Add '}
+        {getHighlightedText(ingredientDescription, styles)}
+        {' to a shallow dish. Moisten the rim of the glass and rotate it in the '}
+        {getHighlightedText(ingredientDescription, styles)}
+        {' to garnish the rim.'}
+      </Text>
+    )
+  }
+  return <Text style={styles.stepDescriptionBase}>{getStepShortDescription(step)}</Text>
 }

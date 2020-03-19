@@ -16,9 +16,9 @@ class CampaignScreen extends React.Component {
     const { navigation } = this.props
     const campaign = navigation.getParam('campaign', {})
     if ('masterListId' in campaign) {
-      this.props.fetchRemoteRecipes(campaign.masterListId)
+      this.props.fetchRemoteRecipes(null, campaign.masterListId)
     } else {
-      this.props.fetchRemoteRecipes(campaign.campaignId)
+      this.props.fetchRemoteRecipes(campaign.campaignId, null)
     }
   }
 
@@ -99,7 +99,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchRemoteRecipes: (campaignId) => dispatch(RecipeActions.fetchRemoteRecipes(null, campaignId, null)),
+  fetchRemoteRecipes: (campaignId, masterListId) => dispatch(RecipeActions.fetchRemoteRecipes(null, campaignId, masterListId)),
 })
 
 export default connect(

@@ -14,25 +14,14 @@ class TutorialSteps extends Component {
   };
 
   renderStep = (stepObj, idx) => {
-    const { recipe, step } = this.props;
-    const { steps } = recipe;
-
-    let description = '';
-    if (idx < steps.length) {
-      description = stepModel.getStepShortDescription(stepObj);
-      if (('notes' in stepObj) && stepObj.notes !== '') {
-        description = `${description} ${stepObj.notes}`;
-      }
-    } else {
-      description = 'Enjoy your drink!';
-    }
+    const { step, darkMode } = this.props;
 
     return (
       <Step
-        title={stepObj.title}
-        description={description}
+        step={stepObj}
         activeStep={(step === idx)}
         key={idx}
+        darkMode={darkMode}
       />
     );
   };

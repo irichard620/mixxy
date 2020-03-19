@@ -42,6 +42,24 @@ class BuilderScreen extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
+      if (this.props.persistRecipeErrorMessage) {
+        Alert.alert(
+          'Error saving recipe',
+          `${this.props.persistRecipeErrorMessage}`,
+          [
+            {
+              text: 'OK'
+            },
+          ],
+        );
+      } else {
+        this.onBackScreenClick()
+      }
+    }
+  }
+
   onBackScreenClick = () => {
     const { navigation } = this.props;
     navigation.dispatch(NavigationActions.back());

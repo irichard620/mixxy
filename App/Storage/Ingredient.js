@@ -23,6 +23,7 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_TSP]: 'tsp',
   [constants.AMOUNT_TYPE_TBSP]: 'tbsp',
   [constants.AMOUNT_TYPE_PIECE]: 'pc',
+  [constants.AMOUNT_TYPE_DASH]: ' dash',
 }
 
 export function getIngredientAmount(ingredient) {
