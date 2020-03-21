@@ -1,4 +1,4 @@
-import { Alert, ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import React from 'react'
 import getHomeStylesheet from './HomeScreenStyle'
@@ -21,12 +21,10 @@ function HomeDiscoverTab(props) {
       <Text style={homeStyles.topHeader}>Discover</Text>
       {sponsorCards.map((sponsorCard) => (
         <HomeSponsorCard
-          onSponsorCardClick={() => {
-            Alert.alert('Feature not available yet', 'In progress', [
-              {
-                text: 'OK',
-              },
-            ])
+          onSponsorCardClick={(sponsorCard) => {
+            NavigationService.navigate('SponsorScreen', {
+              sponsor: sponsorCard,
+            })
           }}
           key={sponsorCard.cardId}
           sponsorCard={sponsorCard}
