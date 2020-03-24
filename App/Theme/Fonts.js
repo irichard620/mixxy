@@ -100,4 +100,9 @@ export default {
     lineHeight: lineSpacing.h3,
     fontWeight: fontWeight.semibold,
   },
+  uppercaseBold: {
+    fontSize: 13,
+    fontWeight: fontWeight.semibold,
+    textTransform: 'uppercase',
+  },
 }

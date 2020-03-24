@@ -7,7 +7,7 @@ import { PropTypes } from 'prop-types'
 import Images from '../Theme/Images'
 
 export default function ListItem(props) {
-  const { title, subtitle, onClick, darkMode, selected, showArrow } = props
+  const { title, subtitle, onClick, darkMode, selected, showArrow, disabled } = props
 
   const styles = getStylesheet(darkMode)
   const listItemStyles = getListItemStylesheet(darkMode)
@@ -28,6 +28,7 @@ export default function ListItem(props) {
     <TouchableOpacity
       style={[listItemStyles.container, backgroundColorStyle]}
       onPress={() => onClick(title)}
+      disabled={disabled}
     >
       <View style={listItemStyles.textContainer}>
         <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{title}</Text>
@@ -48,6 +49,7 @@ ListItem.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
   showArrow: PropTypes.bool,
+  disabled: PropTypes.bool,
 }
 
 function getListItemStylesheet(darkMode) {

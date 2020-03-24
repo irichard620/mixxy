@@ -12,11 +12,7 @@ import RecipeActions from '../../Stores/Recipe/Actions'
 import HomeDiscoverTab from './HomeDiscoverTab'
 import Images from '../../Theme/Images'
 import HomeLibraryTab from './HomeLibraryTab'
-
-
-const ThirdRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
-);
+import HomeSettingsTab from './HomeSettingsTab'
 
 
 const initialLayout = { width: Dimensions.get('window').width };
@@ -28,7 +24,7 @@ const routes = [
 const renderScene = SceneMap({
   discover: HomeDiscoverTab,
   library: HomeLibraryTab,
-  settings: ThirdRoute,
+  settings: HomeSettingsTab,
 });
 
 class HomeScreen extends React.Component {
@@ -106,6 +102,7 @@ class HomeScreen extends React.Component {
     return (
       <SafeAreaView style={styles.outerContainer}>
         <TabView
+          swipeEnabled={false}
           navigationState={{ index, routes }}
           renderScene={renderScene}
           onIndexChange={(idx) => this.setState({ index: idx })}

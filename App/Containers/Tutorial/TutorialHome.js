@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-  View, Image, Text, FlatList,
+  View, Image, Text, ScrollView,
 } from 'react-native'
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
@@ -72,71 +72,10 @@ class TutorialHome extends Component {
     return Array.from(equipment);
   }
 
-  getHeader = () => {
+  render() {
     const { selected } = this.state;
     const { recipe, darkMode, drinkAmount } = this.props;
     const styles = getStylesheet(darkMode)
-    const tutorialStyles = getTutorialStylesheet(darkMode)
-
-    const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
-
-    return (
-      <React.Fragment>
-        <View style={tutorialStyles.iconView}>
-          {this.getDrinkIcon(tutorialStyles.icon)}
-        </View>
-        <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
-        <View style={tutorialStyles.drinkAmountView}>
-        <View style={tutorialStyles.drinkAmountCircle} />
-        <Text style={tutorialStyles.drinkAmountText}>{drinkAmount + ' drink'}</Text>
-        <View style={tutorialStyles.drinkAmountCircle} />
-        </View>
-        <View style={styles.thickDivider} />
-        <TutorialHomeMenuButtons selected={selected} darkMode={darkMode} onItemClick={this.onItemClick} isDescription={isDescription} />
-      </React.Fragment>
-    )
-  }
-
-  getFooter = () => {
-    const { darkMode } = this.props;
-    const tutorialStyles = getTutorialStylesheet(darkMode)
-    return <View style={tutorialStyles.bufferView} />
-  }
-
-  renderItem = ({ item }) => {
-    const { darkMode } = this.props;
-    const tutorialStyles = getTutorialStylesheet(darkMode)
-    if (!item.isDescription) {
-      return (
-        <ListItem
-          title={item.title}
-          subtitle={item.subtitle}
-        />
-      );
-    } else {
-      return <Text style={tutorialStyles.descriptionText}>{item.title}</Text>
-    }
-  };
-
-  keyExtractor = item => item.title + item.subtitle;
-
-  renderList = (options) => {
-    return (
-      <FlatList
-        data={options}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderItem}
-        style={{ width: '100%' }}
-        ListHeaderComponent={this.getHeader}
-        ListFooterComponent={this.getFooter}
-      />
-    );
-  }
-
-  render() {
-    const { selected } = this.state;
-    const { recipe, darkMode } = this.props;
-
     const tutorialStyles = getTutorialStylesheet(darkMode)
 
     const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
@@ -146,12 +85,49 @@ class TutorialHome extends Component {
     const options = this.getIngredients(recipe)
     const equipmentOptions = this.getEquipment(recipe)
 
+    let qtyNegativeSource = ''
+    if (drinkAmount > 1) {
+      qtyNegativeSource = Images.quantityMinus
+    } else {
+      qtyNegativeSource = darkMode ? Images.quantityMinusInactiveDark : Images.quantityMinusInactiveLight
+    }
+
     return (
-      <View style={tutorialStyles.scrollView}>
-        {selected === 0 && isDescription && this.renderList([{ "title": recipe.recipeDescription, isDescription }])}
-        {isIngredients && this.renderList(options)}
-        {isEquipment && this.renderList(equipmentOptions)}
-      </View>
+      <ScrollView style={tutorialStyles.scrollView}>
+        <View style={tutorialStyles.iconView}>
+          {this.getDrinkIcon(tutorialStyles.icon)}
+        </View>
+        <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
+        <View style={tutorialStyles.drinkAmountView}>
+          <View style={tutorialStyles.drinkAmountCircle}>
+            <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
+          </View>
+          <Text style={tutorialStyles.drinkAmountText}>{drinkAmount + ' drink'}</Text>
+          <View style={tutorialStyles.drinkAmountCircle}>
+            <Image source={Images.quantityPlus} style={tutorialStyles.drinkAmountIcon} />
+          </View>
+        </View>
+        <View style={styles.thickDivider} />
+        <TutorialHomeMenuButtons selected={selected} darkMode={darkMode} onItemClick={this.onItemClick} isDescription={isDescription} />
+        {selected === 0 && isDescription && <Text style={tutorialStyles.descriptionText}>{recipe.recipeDescription}</Text>}
+        {isIngredients && options.map((option) => (
+          <ListItem
+            key={option.title + option.subtitle}
+            title={option.title}
+            subtitle={option.subtitle}
+            disabled
+          />
+        ))}
+        {isEquipment && equipmentOptions.map((equipment) => (
+          <ListItem
+            key={equipment.title + equipment.subtitle}
+            title={equipment.title}
+            subtitle={equipment.subtitle}
+            disabled
+          />
+        ))}
+        <View style={tutorialStyles.bufferView} />
+      </ScrollView>
     );
   }
 }

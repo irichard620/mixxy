@@ -27,6 +27,12 @@ export default function getTutorialStylesheet(useDarkMode) {
       borderWidth: 0.5,
       height: 48,
       width: 48,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    drinkAmountIcon: {
+      height: 16,
+      resizeMode: 'contain',
     },
     drinkAmountText: {
       ...Fonts.h3,

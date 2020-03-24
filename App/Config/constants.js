@@ -147,3 +147,18 @@ export const MODAL_ADD_STEP = 'Add Step'
 export const MODAL_DRINK_TYPE = 'Drink Type'
 export const MODAL_BASE_SPIRIT = 'Base Spirit'
 export const MODAL_SERVING_GLASS = 'Serving Glass'
+
+// Settings sections
+export const SETTINGS_SECTION_GENERAL = 'GENERAL'
+export const SETTINGS_SECTION_CONTACT = 'CONTACT'
+export const settingsSections = [SETTINGS_SECTION_GENERAL, SETTINGS_SECTION_CONTACT]
+
+// Settings options
+export const OPTION_VOLUME_UNITS = 'Volume Units'
+export const OPTION_CONTACT_US = 'Contact Us'
+export const OPTION_JOIN_BETA = 'Join Drippy Beta'
+export const OPTION_INSTAGRAM = 'Follow us on Instagram'
+export const settingsOptions = {
+  [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS],
+  [SETTINGS_SECTION_CONTACT]: [OPTION_CONTACT_US, OPTION_JOIN_BETA, OPTION_INSTAGRAM],
+}

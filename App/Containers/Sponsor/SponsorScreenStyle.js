@@ -56,9 +56,13 @@ export default function getSponsorStylesheet(useDarkMode) {
     logoOutline: {
       width: 168,
       height: 168,
+      borderRadius: 84,
       alignSelf: 'center',
       marginTop: -104,
       marginBottom: 16,
+      shadowColor: '#000000',
+      shadowOpacity: 0.14,
+      shadowRadius: 12,
     },
     logoImage: {
       width: 168,

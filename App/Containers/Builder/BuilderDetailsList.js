@@ -1,14 +1,14 @@
 import React from 'react'
 import { View } from 'react-native'
-import BuilderDetail from './BuilderDetail'
 import { PropTypes } from 'prop-types'
+import Detail from '../../Components/Detail'
 
 export default function BuilderDetailsList(props) {
   const { details, onDetailClick, darkMode } = props
   return (
     <View>
       {details.map((detail, idx) => (
-        <BuilderDetail
+        <Detail
           key={`detail${idx}`}
           value={detail.value}
           title={detail.title}

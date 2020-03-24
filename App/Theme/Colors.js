@@ -22,6 +22,7 @@ export default {
   blue1: '#2D8CD3',
   blue1TransparentLight: '#2D8CD315',
   blue1TransparentDark: '#2D8CD330',
+  yellow: '#FDAE26',
   red1: '#EB4B13',
   red1TransparentLight: '#EB4B1315',
   red1TransparentDark: '#EB4B1330',

@@ -34,12 +34,18 @@ export default function getHomeStylesheet(useDarkMode) {
       color: Colors.white,
     },
     libraryAddButton: {
+      alignItems: 'center',
       borderColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       borderRadius: 18,
       borderWidth: 0.5,
       height: 36,
+      justifyContent: 'center',
       marginRight: 16,
       width: 36,
+    },
+    libraryAddIcon: {
+      height: 14,
+      width: 14,
     },
     libraryMenuItemOutline: {
       alignItems: 'center',
@@ -54,6 +60,7 @@ export default function getHomeStylesheet(useDarkMode) {
     },
     libraryMenuItemTitle: {
       ...Fonts.body1,
+      alignSelf: 'center',
       textAlign: 'center',
     },
     libraryMenuOutline: {
@@ -113,6 +120,49 @@ export default function getHomeStylesheet(useDarkMode) {
       marginBottom: 18,
       marginTop: 24,
       textAlign: 'left',
+    },
+    settingsProImage: {
+      alignSelf: 'center',
+      height: 72,
+      marginBottom: 12,
+      marginTop: 24,
+      resizeMode: 'contain',
+    },
+    settingsProOutline: {
+      borderColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      borderRadius: 10,
+      borderWidth: 0.5,
+      marginBottom: 32,
+      marginLeft: 16,
+      marginRight: 16,
+    },
+    settingsProText: {
+      ...Fonts.body1,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginBottom: 24,
+      marginLeft: 16,
+      marginRight: 16,
+      textAlign: 'left',
+    },
+    settingsProTitle: {
+      ...Fonts.h2Semibold,
+      color: Colors.yellow,
+      marginBottom: 8,
+      textAlign: 'center',
+    },
+    settingsSectionContainer: {},
+    settingsSectionHeader: {
+      color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
+      ...Fonts.uppercaseBold,
+      marginBottom: 12,
+      marginLeft: 16,
+      marginTop: 24,
+    },
+    settingsVersionText: {
+      color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
+      fontSize: 12,
+      marginTop: 24,
+      textAlign: 'center',
     },
     sponsorBottomGradientContainer: {
       backgroundColor: 'transparent',
@@ -178,9 +228,7 @@ export default function getHomeStylesheet(useDarkMode) {
     },
     tagText: {
       color: 'white',
-      fontSize: 13,
-      fontWeight: '600',
-      textTransform: 'uppercase',
+      ...Fonts.uppercaseBold,
     },
     tagsContainer: {
       alignItems: 'flex-start',

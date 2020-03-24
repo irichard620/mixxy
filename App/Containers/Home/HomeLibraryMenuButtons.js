@@ -1,8 +1,9 @@
 import getHomeStylesheet from './HomeScreenStyle'
-import { Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Image, Text, TouchableWithoutFeedback, View } from 'react-native'
 import React from 'react'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import Colors from '../../Theme/Colors'
+import Images from '../../Theme/Images'
 
 export default function HomeLibraryMenuButtons(props) {
   const { darkMode, onNewRecipeClick, onSectionClick, selected } = props
@@ -13,7 +14,9 @@ export default function HomeLibraryMenuButtons(props) {
   return (
     <View style={homeStyles.libraryMenuOutline}>
       <TouchableWithoutFeedback onPress={onNewRecipeClick}>
-        <View style={homeStyles.libraryAddButton} />
+        <View style={homeStyles.libraryAddButton}>
+          <Image source={Images.newRecipe} style={homeStyles.libraryAddIcon} />
+        </View>
       </TouchableWithoutFeedback>
       <View style={styles.verticalDivider} />
       {menuItems.map((item, idx) => {
