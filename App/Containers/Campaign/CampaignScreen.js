@@ -47,47 +47,49 @@ class CampaignScreen extends React.Component {
       width: width,
     }
     return (
-      <ScrollView style={campaignStyles.scrollContainer}>
-        <StatusBar hidden={true} />
-        <View style={campaignStyles.topImageOutline}>
-          {imageLink !== '' && (
-            <FastImage
-              style={[campaignStyles.topImage, cardWidth]}
-              source={{
-                uri: imageLink,
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-            />
-          )}
-          <View style={campaignStyles.backContainer}>
-            <ModalXButton onPress={this.onBackPress}/>
+      <View style={styles.outerContainer}>
+        <ScrollView style={campaignStyles.scrollContainer}>
+          <StatusBar hidden={true} />
+          <View style={campaignStyles.topImageOutline}>
+            {imageLink !== '' && (
+              <FastImage
+                style={[campaignStyles.topImage, cardWidth]}
+                source={{
+                  uri: imageLink,
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            )}
+            <Text style={campaignStyles.title}>{name}</Text>
+            <View style={campaignStyles.campaignBottomGradientContainer}>
+              <LinearGradient
+                colors={['#00000080', '#00000000']}
+                style={campaignStyles.linearGradient}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+              />
+            </View>
           </View>
-          <Text style={campaignStyles.title}>{name}</Text>
-          <View style={campaignStyles.campaignBottomGradientContainer}>
-            <LinearGradient
-              colors={['#00000080', '#00000000']}
-              style={campaignStyles.linearGradient}
-              start={{ x: 0, y: 1 }}
-              end={{ x: 0, y: 0 }}
+          <View style={campaignStyles.bufferView} />
+          {longDescription !== '' && <View style={campaignStyles.contentContainer}>
+            <Text style={campaignStyles.description}>{longDescription}</Text>
+            <View style={styles.divider} />
+          </View>}
+          {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
+            <RecipeCard
+              recipeName={recipe.recipeName}
+              recipeType={recipe.recipeType}
+              disabled={false}
+              onCardClick={() => this.onCardClick(idx)}
+              darkMode={darkMode}
             />
-          </View>
+          ))}
+        </ScrollView>
+        <View style={campaignStyles.backContainer}>
+          <ModalXButton onPress={this.onBackPress}/>
         </View>
-        <View style={campaignStyles.bufferView} />
-        {longDescription !== '' && <View style={campaignStyles.contentContainer}>
-          <Text style={campaignStyles.description}>{longDescription}</Text>
-          <View style={styles.divider} />
-        </View>}
-        {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
-          <RecipeCard
-            recipeName={recipe.recipeName}
-            recipeType={recipe.recipeType}
-            disabled={false}
-            onCardClick={() => this.onCardClick(idx)}
-            darkMode={darkMode}
-          />
-        ))}
-      </ScrollView>
+      </View>
     )
   }
 }

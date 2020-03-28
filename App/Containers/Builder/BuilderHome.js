@@ -23,7 +23,7 @@ export default function BuilderHome(props) {
   const builderStyles = getBuilderStylesheet(darkMode)
   return (
     <ScrollView style={builderStyles.scrollView}>
-      <BuilderDetailsList details={details} onDetailClick={onDetailClick} />
+      <BuilderDetailsList details={details} onDetailClick={onDetailClick} darkMode={darkMode} />
       <View style={styles.thickDivider} />
       <BuilderStepList
         steps={steps}

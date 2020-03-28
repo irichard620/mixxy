@@ -47,64 +47,66 @@ class SponsorScreen extends React.Component {
       marginRight: 12,
     }
     return (
-      <ScrollView style={sponsorStyles.scrollContainer}>
-        <StatusBar hidden={true} />
-        <View style={sponsorStyles.topImageOutline}>
-          {cardImageLink !== '' && (
+      <View style={styles.outerContainer}>
+        <ScrollView style={sponsorStyles.scrollContainer}>
+          <StatusBar hidden={true} />
+          <View style={sponsorStyles.topImageOutline}>
+            {cardImageLink !== '' && (
+              <FastImage
+                style={[sponsorStyles.topImage, cardWidth]}
+                source={{
+                  uri: cardImageLink,
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            )}
+            <View style={sponsorStyles.sponsorBottomGradientContainer}>
+              <LinearGradient
+                colors={['#00000080', '#00000000']}
+                style={sponsorStyles.linearGradient}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+              />
+            </View>
+          </View>
+          <View style={sponsorStyles.bufferView} />
+          <View style={sponsorStyles.logoOutline}>
             <FastImage
-              style={[sponsorStyles.topImage, cardWidth]}
+              style={[sponsorStyles.logoImage]}
               source={{
-                uri: cardImageLink,
+                uri: logoLink,
                 priority: FastImage.priority.normal,
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
-          )}
-          <View style={sponsorStyles.backContainer}>
-            <ModalXButton onPress={this.onBackPress}/>
           </View>
-          <View style={sponsorStyles.sponsorBottomGradientContainer}>
-            <LinearGradient
-              colors={['#00000080', '#00000000']}
-              style={sponsorStyles.linearGradient}
-              start={{ x: 0, y: 1 }}
-              end={{ x: 0, y: 0 }}
+          {about !== '' && <View style={sponsorStyles.contentContainer}>
+            <Text style={sponsorStyles.title}>{sponsorName}</Text>
+            <View style={sponsorStyles.sponsorTypeOutline}>
+              <Image source={Images.logo} style={sponsorStyles.sponsorTypeIcon} />
+              <Text style={[sponsorStyles.sponsorTypeText, extraPadding]}>{hqLocation}</Text>
+              <Image source={Images.logo} style={sponsorStyles.sponsorTypeIcon} />
+              <Text style={sponsorStyles.sponsorTypeText}>{sponsorType}</Text>
+            </View>
+            <View style={styles.divider} />
+            <Text style={sponsorStyles.description}>{about}</Text>
+            <View style={styles.divider} />
+          </View>}
+          {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
+            <RecipeCard
+              recipeName={recipe.recipeName}
+              recipeType={recipe.recipeType}
+              disabled={false}
+              onCardClick={() => this.onCardClick(idx)}
+              darkMode={darkMode}
             />
-          </View>
+          ))}
+        </ScrollView>
+        <View style={sponsorStyles.backContainer}>
+          <ModalXButton onPress={this.onBackPress}/>
         </View>
-        <View style={sponsorStyles.bufferView} />
-        <View style={sponsorStyles.logoOutline}>
-          <FastImage
-            style={[sponsorStyles.logoImage]}
-            source={{
-              uri: logoLink,
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-        </View>
-        {about !== '' && <View style={sponsorStyles.contentContainer}>
-          <Text style={sponsorStyles.title}>{sponsorName}</Text>
-          <View style={sponsorStyles.sponsorTypeOutline}>
-            <Image source={Images.logo} style={sponsorStyles.sponsorTypeIcon} />
-            <Text style={[sponsorStyles.sponsorTypeText, extraPadding]}>{hqLocation}</Text>
-            <Image source={Images.logo} style={sponsorStyles.sponsorTypeIcon} />
-            <Text style={sponsorStyles.sponsorTypeText}>{sponsorType}</Text>
-          </View>
-          <View style={styles.divider} />
-          <Text style={sponsorStyles.description}>{about}</Text>
-          <View style={styles.divider} />
-        </View>}
-        {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
-          <RecipeCard
-            recipeName={recipe.recipeName}
-            recipeType={recipe.recipeType}
-            disabled={false}
-            onCardClick={() => this.onCardClick(idx)}
-            darkMode={darkMode}
-          />
-        ))}
-      </ScrollView>
+      </View>
     )
   }
 }

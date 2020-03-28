@@ -27,10 +27,14 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
 }
 
 export function getIngredientAmount(ingredient) {
-  if (ingredient.fractionalAmount !== '') {
-    return `${ingredient.amount} ${ingredient.fractionalAmount}${
-      AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]
-    }`
+  if (ingredient.fractionalAmount !== '' && ingredient.fractionalAmount !== '0') {
+    if (ingredient.amount !== '' && ingredient.amount !== '0') {
+      return `${ingredient.amount} ${ingredient.fractionalAmount}${
+        AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]
+      }`
+    } else {
+      return `${ingredient.fractionalAmount}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`
+    }
   } else {
     return `${ingredient.amount}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`
   }

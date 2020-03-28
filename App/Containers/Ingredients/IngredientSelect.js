@@ -4,6 +4,7 @@ import getIngredientsStylesheet from './IngredientsScreenStyle'
 import { PropTypes } from 'prop-types'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import * as constants from '../../Config/constants'
+import Colors from '../../Theme/Colors'
 
 export default function IngredientSelect(props) {
   const {
@@ -29,6 +30,7 @@ export default function IngredientSelect(props) {
   const pickerItemStyle = {
     height: 200,
   }
+  const itemColor = darkMode ? Colors.text1Dark : Colors.text1Light
   return (
     <ScrollView style={ingredientStyles.scrollView}>
       <Text style={ingredientStyles.selectionHeader}>{ingredient.title}</Text>
@@ -43,7 +45,7 @@ export default function IngredientSelect(props) {
         >
           {[...Array(5).keys()].map((item) => {
             item = item.toString()
-            return <Picker.Item key={item} label={item} value={item} />
+            return <Picker.Item key={item} label={item} value={item} color={itemColor} />
           })}
         </Picker>
         <Picker
@@ -53,7 +55,7 @@ export default function IngredientSelect(props) {
           itemStyle={pickerItemStyle}
         >
           {constants.fractionAmounts.map((item) => (
-            <Picker.Item key={item} label={item} value={item} />
+            <Picker.Item key={item} label={item} value={item} color={itemColor} />
           ))}
         </Picker>
         <Picker
@@ -63,7 +65,7 @@ export default function IngredientSelect(props) {
           itemStyle={pickerItemStyle}
         >
           {constants.amountTypes.map((item) => (
-            <Picker.Item key={item} label={item} value={item} />
+            <Picker.Item key={item} label={item} value={item} color={itemColor} />
           ))}
         </Picker>
       </View>

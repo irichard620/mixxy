@@ -52,6 +52,17 @@ export const fetchRemoteRecipesFailure = (state, { errorMessage }) => ({
   fetchRemoteRecipesErrorMessage: errorMessage,
 })
 
+export const deleteRecipeLoading = (state) => ({
+  ...state,
+  deleteRecipeIsLoading: true,
+})
+
+export const deleteRecipeSuccess = (state, { recipes }) => ({
+  ...state,
+  recipes: recipes,
+  deleteRecipeIsLoading: false,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.PERSIST_RECIPE_LOADING]: persistRecipeLoading,
   [RecipeTypes.PERSIST_RECIPE_SUCCESS]: persistRecipeSuccess,
@@ -61,4 +72,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.FETCH_REMOTE_RECIPES_LOADING]: fetchRemoteRecipesLoading,
   [RecipeTypes.FETCH_REMOTE_RECIPES_SUCCESS]: fetchRemoteRecipesSuccess,
   [RecipeTypes.FETCH_REMOTE_RECIPES_FAILURE]: fetchRemoteRecipesFailure,
+  [RecipeTypes.DELETE_RECIPE_LOADING]: deleteRecipeLoading,
+  [RecipeTypes.DELETE_RECIPE_SUCCESS]: deleteRecipeSuccess,
 })

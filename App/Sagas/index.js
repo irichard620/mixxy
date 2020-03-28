@@ -9,7 +9,7 @@ import { MasterListTypes } from '../Stores/MasterList/Actions'
 import { fetchUser } from './UserSaga'
 import { startup } from './StartupSaga'
 import { fetchIngredients } from './IngredientSaga'
-import { persistRecipe, fetchRecipes, fetchRemoteRecipes } from './RecipeSaga'
+import { persistRecipe, fetchRecipes, fetchRemoteRecipes, deleteRecipe } from './RecipeSaga'
 import { fetchSponsorCards } from './SponsorSaga'
 import { fetchCampaigns } from './CampaignSaga'
 import { fetchMasterLists } from './MasterListSaga'
@@ -34,5 +34,7 @@ export default function* root() {
     takeLatest(MasterListTypes.FETCH_MASTER_LISTS, fetchMasterLists),
     // Fetch remote recipes
     takeLatest(RecipeTypes.FETCH_REMOTE_RECIPES, fetchRemoteRecipes),
+    // Delete recipe
+    takeLatest(RecipeTypes.DELETE_RECIPE, deleteRecipe),
   ])
 }

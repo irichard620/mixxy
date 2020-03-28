@@ -26,8 +26,8 @@ class IngredientsScreen extends React.Component {
       selectedVessel: '',
       // Ingredient select
       wholeAmount: '0',
-      fractionAmount: '1/8',
-      amountType: '',
+      fractionAmount: '0',
+      amountType: 'Ounces',
       brand: '',
     }
   }
@@ -72,7 +72,18 @@ class IngredientsScreen extends React.Component {
 
   onBackScreenClick = () => {
     const { navigation } = this.props;
-    navigation.dispatch(NavigationActions.back());
+    const { step } = this.state
+    if (step === 2) {
+      this.setState({
+        step: 1,
+        wholeAmount: '0',
+        fractionAmount: '0',
+        amountType: 'Ounces',
+        brand: '',
+      })
+    } else {
+      navigation.dispatch(NavigationActions.back());
+    }
   }
 
   onButtonClick = () => {
@@ -108,8 +119,8 @@ class IngredientsScreen extends React.Component {
         step: 1,
         selectedIngredients: selectedIngredients,
         wholeAmount: '0',
-        fractionAmount: '1/8',
-        amountType: '',
+        fractionAmount: '0',
+        amountType: 'Ounces',
         brand: '',
       })
     }
@@ -195,7 +206,7 @@ class IngredientsScreen extends React.Component {
     return (
       <View style={styles.outerContainer}>
         <SafeAreaView style={styles.outerContainer}>
-          <TopHeader title={headerText} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
+          <TopHeader title={headerText} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} useArrow={step === 2} />
           {step === 0 && (
             <IngredientsVessel darkMode={darkMode} onCardClick={this.onIngredientVesselClick} selectedVessel={selectedVessel} />
           )}

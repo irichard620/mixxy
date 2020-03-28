@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   outline: {
     alignItems: 'center',
-    backgroundColor: Colors.backgroundColorDark,
+    backgroundColor: Colors.stepTextLight,
     borderRadius: 18,
     height: 36,
     justifyContent: 'center',

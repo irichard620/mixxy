@@ -37,3 +37,11 @@ export function* fetchRemoteRecipes(params) {
     )
   }
 }
+
+export function* deleteRecipe(params) {
+  yield put(RecipeActions.deleteRecipeLoading())
+
+  // Save recipe locally
+  const recipes = yield call(recipeService.deleteRecipe, params)
+  yield put(RecipeActions.deleteRecipeSuccess(recipes))
+}

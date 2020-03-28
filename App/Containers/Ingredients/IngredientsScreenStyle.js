@@ -24,6 +24,14 @@ export default function getIngredientsStylesheet(useDarkMode) {
       marginTop: -24,
       width: '100%',
     },
+    horizontalScroll: {
+      marginBottom: 8,
+      maxHeight: 52,
+      paddingBottom: 8,
+      paddingLeft: 16,
+      paddingRight: 16,
+      paddingTop: 8,
+    },
     icon: {
       height: '100%',
       resizeMode: 'contain',
@@ -49,16 +57,20 @@ export default function getIngredientsStylesheet(useDarkMode) {
       ...Fonts.h1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 4,
+      marginLeft: 16,
+      marginRight: 16,
       textAlign: 'center',
     },
     selectionSubtitle: {
       ...Fonts.body2,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 24,
+      marginLeft: 16,
+      marginRight: 16,
       textAlign: 'center',
     },
     textInput: {
-      backgroundColor: '#F2F3F6',
+      backgroundColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       borderRadius: 10,
       fontSize: 16,
       marginBottom: 24,
@@ -66,14 +78,6 @@ export default function getIngredientsStylesheet(useDarkMode) {
       marginRight: 16,
       marginTop: 16,
       padding: 16,
-    },
-    horizontalScroll: {
-      marginBottom: 8,
-      maxHeight: 52,
-      paddingBottom: 8,
-      paddingLeft: 16,
-      paddingRight: 16,
-      paddingTop: 8,
     },
   })
 }

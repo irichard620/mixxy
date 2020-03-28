@@ -25,6 +25,13 @@ const { Types, Creators } = createActions({
   fetchRemoteRecipesSuccess: ['recipes'],
   // Failure
   fetchRemoteRecipesFailure: ['errorMessage'],
+
+  // Delete recipe
+  deleteRecipe: ['recipeId'],
+  // The operation has started and is loading
+  deleteRecipeLoading: null,
+  // recipe deleted
+  deleteRecipeSuccess: ['recipes'],
 })
 
 export const RecipeTypes = Types

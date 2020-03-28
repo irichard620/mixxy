@@ -78,6 +78,7 @@ export default function ModalContentBottom(props) {
                 subtitle={option.subtitle}
                 onClick={onPressItem}
                 selected={option.selected}
+                darkMode={darkMode}
               />
             ))}
           </ScrollView>
@@ -115,7 +116,7 @@ ModalContentBottom.propTypes = {
 function getModalStylesheet(darkMode) {
   return StyleSheet.create({
     content: {
-      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      backgroundColor: darkMode ? Colors.cardColorDark : Colors.backgroundColorLight,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       paddingBottom: 32,
@@ -126,7 +127,7 @@ function getModalStylesheet(darkMode) {
       marginBottom: 8,
     },
     textInput: {
-      backgroundColor: '#F2F3F6',
+      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       borderRadius: 10,
       fontSize: 16,
       marginBottom: 24,

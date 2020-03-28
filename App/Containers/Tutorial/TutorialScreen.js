@@ -13,6 +13,9 @@ import Colors from '../../Theme/Colors'
 import TutorialSteps from './TutorialSteps'
 import { PropTypes } from 'prop-types'
 import RecipeActions from '../../Stores/Recipe/Actions'
+import CustomModal from '../../Components/CustomModal'
+import * as constants from '../../Config/constants'
+import ModalContentBottom from '../../Components/ModalContentBottom'
 
 
 class TutorialScreen extends React.Component {
@@ -23,6 +26,9 @@ class TutorialScreen extends React.Component {
       recipe: {},
       premium: false,
       drinkAmount: 1,
+      visibleModal: false,
+      modalType: '',
+      deleteModal: false,
     };
   }
 
@@ -34,6 +40,8 @@ class TutorialScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log(prevProps)
+    console.log(this.props)
     if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
       if (this.props.persistRecipeErrorMessage) {
         Alert.alert(
@@ -46,7 +54,30 @@ class TutorialScreen extends React.Component {
           ],
         );
       }
+    } if (prevProps.deleteRecipeIsLoading && !this.props.deleteRecipeIsLoading) {
+      this.onBackScreenClick()
     }
+  }
+
+  getModalOptions = () => {
+    const { deleteModal } = this.state;
+
+    if (deleteModal) {
+      return [
+        {
+          title: constants.RECIPE_MENU_CANCEL,
+        },
+        {
+          title: constants.RECIPE_MENU_DELETE,
+        },
+      ]
+    }
+
+    return [{
+      title: constants.RECIPE_MENU_EDIT,
+    }, {
+      title: constants.RECIPE_MENU_DELETE,
+    }]
   }
 
   onBackScreenClick = () => {
@@ -61,6 +92,13 @@ class TutorialScreen extends React.Component {
       this.setState({
         step: step - 1
       })
+    } else {
+      // Settings
+      this.setState({
+        visibleModal: true,
+        modalType: constants.MODAL_TYPE_BOTTOM,
+        deleteModal: false
+      });
     }
   }
 
@@ -82,9 +120,41 @@ class TutorialScreen extends React.Component {
     this.props.persistRecipe(recipe)
   }
 
+  onCloseModalClick = () => {
+    // Close and clear modal
+    this.setState({
+      visibleModal: false
+    })
+  }
+
+  onPressItem = (item) => {
+    const { deleteRecipe } = this.props;
+    const { recipe, deleteModal } = this.state;
+
+    if (item === constants.RECIPE_MENU_EDIT) {
+      // TODO: create this logic
+    } else if (item === constants.RECIPE_MENU_DELETE) {
+      // Call delete recipe
+      if (!deleteModal) {
+        this.setState({
+          deleteModal: true
+        });
+      } else {
+        deleteRecipe(recipe.recipeId);
+        // Hide modal
+        this.setState({
+          visibleModal: false
+        });
+      }
+    } else if (item === constants.RECIPE_MENU_CANCEL) {
+      // Call clear
+      this.onCloseModalClick();
+    }
+  };
+
   render() {
     const { darkMode, recipes } = this.props;
-    const { step, recipe, drinkAmount } = this.state;
+    const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal } = this.state;
 
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
@@ -118,6 +188,12 @@ class TutorialScreen extends React.Component {
     const { width } = Dimensions.get('window');
     const buttonWidth = (width - 16 - 16 - 9) / 2;
     const fullButtonWidth = (width - 32)
+
+    // Modal title
+    let modalTitle = 'Recipe Settings';
+    if (deleteModal) {
+      modalTitle = 'Delete this recipe?';
+    }
 
     return (
       <View style={styles.outerContainer}>
@@ -166,6 +242,23 @@ class TutorialScreen extends React.Component {
             />}
           </View>
         </SafeAreaView>
+        <CustomModal
+          visibleModal={visibleModal}
+          onCloseClick={this.onCloseModalClick}
+          type={modalType}
+        >
+          {modalType === constants.MODAL_TYPE_BOTTOM
+          && (
+            <ModalContentBottom
+              onPressItem={this.onPressItem}
+              title={modalTitle}
+              isListModal
+              isSelectInput={false}
+              options={this.getModalOptions()}
+              darkMode={darkMode}
+            />
+          )}
+        </CustomModal>
       </View>
     )
   }
@@ -179,10 +272,12 @@ const mapStateToProps = (state) => ({
   recipes: state.recipes.recipes,
   persistRecipeIsLoading: state.recipes.persistRecipeIsLoading,
   persistRecipeErrorMessage: state.recipes.persistRecipeErrorMessage,
+  deleteRecipeIsLoading: state.recipes.deleteRecipeIsLoading
 })
 
 const mapDispatchToProps = (dispatch) => ({
   persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave)),
+  deleteRecipe: (recipeId) => dispatch(RecipeActions.deleteRecipe(recipeId)),
 })
 
 export default connect(

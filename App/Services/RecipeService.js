@@ -77,8 +77,25 @@ function fetchRemoteRecipes(params) {
     })
 }
 
+function deleteRecipe(params) {
+  const recipeId = params.recipeId
+  return storage.getItem('recipes').then((recipes) => {
+    const r = recipes ? JSON.parse(recipes) : []
+    for (let i = 0; i < r.length; i += 1) {
+      const recipe = r[i]
+      if (recipe.recipeId === recipeId) {
+        r.splice(i, 1)
+        break
+      }
+    }
+    storage.setItem('recipes', JSON.stringify(r))
+    return r
+  })
+}
+
 export const recipeService = {
   persistRecipe,
   fetchRecipes,
   fetchRemoteRecipes,
+  deleteRecipe,
 }

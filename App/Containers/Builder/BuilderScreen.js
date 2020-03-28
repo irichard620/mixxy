@@ -471,17 +471,29 @@ class BuilderScreen extends React.Component {
     if (step === 2) {
       this.setState({ step: 3 })
     } else {
-      // Save recipe
-      const newRecipe = recipeModel.Recipe({
-        recipeName: recipeName,
-        recipeDescription: recipeDescription,
-        recipeType: drinkType,
-        baseSpirit: baseSpirit,
-        servingGlass: servingGlass,
-        totalOunces: 0,  // TODO: fix this
-        steps: steps,
-      })
-      persistRecipe(newRecipe)
+      if (steps.length === 0) {
+        Alert.alert(
+          'Error saving recipe',
+          'Your recipe must have at least one step',
+          [
+            {
+              text: 'OK'
+            },
+          ],
+        );
+      } else {
+        // Save recipe
+        const newRecipe = recipeModel.Recipe({
+          recipeName: recipeName,
+          recipeDescription: recipeDescription,
+          recipeType: drinkType,
+          baseSpirit: baseSpirit,
+          servingGlass: servingGlass,
+          totalOunces: 0,  // TODO: fix this
+          steps: steps,
+        })
+        persistRecipe(newRecipe)
+      }
     }
   }
 

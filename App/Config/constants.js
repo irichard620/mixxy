@@ -55,6 +55,7 @@ export const ingredientsVesselDescriptions = {
 }
 
 // Fraction amounts
+export const AMOUNT_ZERO = '0'
 export const AMOUNT_1EIGTH = '1/8'
 export const AMOUNT_1QUARTER = '1/4'
 export const AMOUNT_3EIGTHS = '3/8'
@@ -63,6 +64,7 @@ export const AMOUNT_5EIGTHS = '5/8'
 export const AMOUNT_3QUARTER = '3/4'
 export const AMOUNT_7EIGTHS = '7/8'
 export const fractionAmounts = [
+  AMOUNT_ZERO,
   AMOUNT_1EIGTH,
   AMOUNT_1QUARTER,
   AMOUNT_3EIGTHS,
@@ -147,6 +149,11 @@ export const MODAL_ADD_STEP = 'Add Step'
 export const MODAL_DRINK_TYPE = 'Drink Type'
 export const MODAL_BASE_SPIRIT = 'Base Spirit'
 export const MODAL_SERVING_GLASS = 'Serving Glass'
+
+// recipe menu options
+export const RECIPE_MENU_EDIT = 'Edit recipe'
+export const RECIPE_MENU_DELETE = 'Delete'
+export const RECIPE_MENU_CANCEL = 'Cancel'
 
 // Settings sections
 export const SETTINGS_SECTION_GENERAL = 'GENERAL'

@@ -45,6 +45,7 @@ export default function BuilderStepList(props) {
               onPressDown={() => onPressDown(idx)}
               onStepClick={() => onStepClick(idx)}
               margin={[0, 0, 0, 0]}
+              darkMode={darkMode}
             />
             <View style={styles.divider} />
           </React.Fragment>

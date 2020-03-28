@@ -23,6 +23,9 @@ const StackNavigator = createStackNavigator(
     initialRouteName: 'SplashScreen',
     headerMode: 'none',
     mode: 'modal',
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
   }
 )
 

@@ -6,4 +6,5 @@ export const INITIAL_STATE = {
   remoteRecipes: [],
   fetchRemoteRecipesIsLoading: false,
   fetchRemoteRecipesErrorMessage: null,
+  deleteRecipeIsLoading: false,
 }
