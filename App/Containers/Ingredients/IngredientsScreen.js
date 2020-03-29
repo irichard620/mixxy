@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavigationActions, SafeAreaView } from 'react-navigation'
 import getStylesheet from '../../Theme/ApplicationStyles'
-import { Dimensions, ScrollView, View } from 'react-native'
+import { Alert, Dimensions, Keyboard, ScrollView, View } from 'react-native'
 import TopHeader from '../../Components/TopHeader'
 import ButtonLarge from '../../Components/ButtonLarge'
 import IngredientActions from '../../Stores/Ingredient/Actions'
@@ -15,6 +15,8 @@ import getIngredientsStylesheet from './IngredientsScreenStyle'
 import * as ingredientModel from '../../Storage/Ingredient'
 import SelectedItem from '../../Components/SelectedItem'
 import * as constants from '../../Config/constants'
+import ModalContentBottom from '../../Components/ModalContentBottom'
+import CustomModal from '../../Components/CustomModal'
 
 class IngredientsScreen extends React.Component {
   constructor(props) {
@@ -29,6 +31,9 @@ class IngredientsScreen extends React.Component {
       fractionAmount: '0',
       amountType: 'Ounces',
       brand: '',
+      // Modal for custom
+      visibleModal: false,
+      modalText: '',
     }
   }
 
@@ -112,7 +117,7 @@ class IngredientsScreen extends React.Component {
         amountType: amountType,
         brand: brand,
         title: selectedIngredient.title,
-        ingredientId: selectedIngredient.ingredient_id,
+        ingredientId: selectedIngredient.ingredientId,
       })
       selectedIngredients.push(newIngredient)
       this.setState({
@@ -143,17 +148,23 @@ class IngredientsScreen extends React.Component {
     } else if (this.isServingGlassStep(params.stepType)) {
       const newIngredient = ingredientModel.Ingredient({
         title: ingredient.title,
-        ingredientId: ingredient.ingredient_id,
+        ingredientId: ingredient.ingredientId,
       })
       selectedIngredients.push(newIngredient)
       this.setState({
         selectedIngredients: selectedIngredients,
       })
     } else {
-      this.setState({
-        selectedIngredient: ingredient,
-        step: 2,
-      })
+      if (ingredient.title === 'Add Custom Ingredient' && ingredient.ingredientId === '') {
+        this.setState({
+          visibleModal: true
+        })
+      } else {
+        this.setState({
+          selectedIngredient: ingredient,
+          step: 2,
+        })
+      }
     }
   }
 
@@ -184,10 +195,51 @@ class IngredientsScreen extends React.Component {
     }
   }
 
+  onModalTextChange = (text) => {
+    this.setState({
+      modalText: text
+    })
+  }
+
+  onModalCloseClick = () => {
+    // Close and clear modal
+    this.setState({
+      visibleModal: false,
+      modalText: '',
+    });
+  }
+
+  onModalSave = () => {
+    const { modalText } = this.state
+    if (modalText === '') {
+      Alert.alert('No ingredient name', 'Must specify name for custom ingredient.', [
+        {
+          text: 'OK',
+        },
+      ])
+      return
+    }
+
+    // Dismiss keyboard for modal
+    Keyboard.dismiss();
+
+    this.setState({
+      selectedIngredient: {
+        title: modalText,
+        description: '',
+        classification: '',
+        ingredientId: '',
+      },
+      visibleModal: false,
+      modalText: '',
+      step: 2,
+    })
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     const { darkMode, ingredients } = this.props;
-    const { step, selectedVessel, selectedIngredient, selectedIngredients, wholeAmount, fractionAmount, brand, amountType } = this.state;
+    const { step, selectedVessel, selectedIngredient, selectedIngredients, wholeAmount, fractionAmount, brand, amountType, visibleModal } = this.state;
 
     const styles = getStylesheet(darkMode)
     const ingredientStyles = getIngredientsStylesheet(darkMode)
@@ -204,50 +256,63 @@ class IngredientsScreen extends React.Component {
     }
 
     return (
-      <View style={styles.outerContainer}>
-        <SafeAreaView style={styles.outerContainer}>
-          <TopHeader title={headerText} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} useArrow={step === 2} />
-          {step === 0 && (
-            <IngredientsVessel darkMode={darkMode} onCardClick={this.onIngredientVesselClick} selectedVessel={selectedVessel} />
-          )}
-          {step === 1 && (
-            <IngredientsHome darkMode={darkMode} options={ingredientsToUse} onClick={this.onListItemClicked} />
-          )}
-          {step === 2 && (
-            <IngredientSelect
-              darkMode={darkMode}
-              ingredient={selectedIngredient}
-              onBrandUpdate={this.onBrandUpdate}
-              onPickerUpdate={this.onPickerUpdate}
-              wholeAmount={wholeAmount}
-              fractionAmount={fractionAmount}
-              amountType={amountType}
-              brand={brand}
-            />
-          )}
-          {step === 1 && selectedIngredients.length > 0 && (
-            <ScrollView
-              horizontal={true}
-              style={ingredientStyles.horizontalScroll}
-            >
-              {selectedIngredients.map((ingredient, index) => (
-                <SelectedItem title={ingredient.title} darkMode={darkMode} onClick={() => this.onSelectedIngredientClick(index)} />
-              ))}
-            </ScrollView>
-          )}
-          <View style={ingredientStyles.buttonView}>
-            <ButtonLarge
-              onButtonClick={this.onButtonClick}
-              title={buttonText}
-              margin={[0, 16, 0, 16]}
-              buttonWidth={buttonWidth}
-              isPrimary
-              disabled={false}
-              darkMode={darkMode}
-            />
-          </View>
-        </SafeAreaView>
-      </View>
+      <SafeAreaView style={styles.outerContainer}>
+        <TopHeader title={headerText} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} useArrow={step === 2} />
+        {step === 0 && (
+          <IngredientsVessel darkMode={darkMode} onCardClick={this.onIngredientVesselClick} selectedVessel={selectedVessel} />
+        )}
+        {step === 1 && (
+          <IngredientsHome darkMode={darkMode} options={ingredientsToUse} onClick={this.onListItemClicked} />
+        )}
+        {step === 2 && (
+          <IngredientSelect
+            darkMode={darkMode}
+            ingredient={selectedIngredient}
+            onBrandUpdate={this.onBrandUpdate}
+            onPickerUpdate={this.onPickerUpdate}
+            wholeAmount={wholeAmount}
+            fractionAmount={fractionAmount}
+            amountType={amountType}
+            brand={brand}
+          />
+        )}
+        {step === 1 && selectedIngredients.length > 0 && (
+          <ScrollView
+            horizontal={true}
+            style={ingredientStyles.horizontalScroll}
+          >
+            {selectedIngredients.map((ingredient, index) => (
+              <SelectedItem title={ingredient.title} darkMode={darkMode} onClick={() => this.onSelectedIngredientClick(index)} />
+            ))}
+          </ScrollView>
+        )}
+        <View style={ingredientStyles.buttonView}>
+          <ButtonLarge
+            onButtonClick={this.onButtonClick}
+            title={buttonText}
+            margin={[0, 16, 0, 16]}
+            buttonWidth={buttonWidth}
+            isPrimary
+            disabled={false}
+            darkMode={darkMode}
+          />
+        </View>
+        <CustomModal
+          visibleModal={visibleModal}
+          onCloseClick={this.onModalCloseClick}
+          type={constants.MODAL_TYPE_BOTTOM}
+        >
+          <ModalContentBottom
+            title={'Add Custom Ingredient'}
+            textPlaceholder={'What is name of ingredient?'}
+            onChangeText={this.onModalTextChange}
+            onModalSave={this.onModalSave}
+            darkMode={darkMode}
+            charLimit={100}
+            hasSave
+          />
+        </CustomModal>
+      </SafeAreaView>
     )
   }
 }

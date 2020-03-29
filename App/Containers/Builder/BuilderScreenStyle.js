@@ -31,7 +31,7 @@ export default function getBuilderStylesheet(useDarkMode) {
     },
     scrollView: {
       flex: 1,
-      paddingBottom: 16,
+      marginBottom: 16,
     },
     selectionHeader: {
       ...Fonts.h1,

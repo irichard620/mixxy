@@ -24,7 +24,19 @@ export const steps = [
 export const SERVING_GLASS_COCKTAIL = 'Cocktail Glass'
 export const SERVING_GLASS_TALL = 'Tall Glass'
 export const SERVING_GLASS_SHORT = 'Short Glass'
-export const servingGlasses = [SERVING_GLASS_COCKTAIL, SERVING_GLASS_TALL, SERVING_GLASS_SHORT]
+export const SERVING_GLASS_FLUTE = 'Flute Glass'
+export const SERVING_GLASS_MARGARITA = 'Margarita Glass'
+export const SERVING_GLASS_SHOT = 'Shot Glass'
+export const SERVING_GLASS_PITCHER = 'Pitcher'
+export const servingGlasses = [
+  SERVING_GLASS_COCKTAIL,
+  SERVING_GLASS_TALL,
+  SERVING_GLASS_SHORT,
+  SERVING_GLASS_FLUTE,
+  SERVING_GLASS_MARGARITA,
+  SERVING_GLASS_SHOT,
+  SERVING_GLASS_PITCHER,
+]
 export const servingGlassDescriptions = {
   [SERVING_GLASS_COCKTAIL]:
     'Also known as the Martini glass, it’s an iconic piece of glassware perfect for aromas and balancing garnishes.',
@@ -32,6 +44,14 @@ export const servingGlassDescriptions = {
     'A tall, narrow glass like a Collins or Highball (the slightly shorter variant). Great for fizzy, mixer-heavy drinks.',
   [SERVING_GLASS_SHORT]:
     'Also known as a rocks or lowball glass, this short glass is for classic cocktails or liquor served neat or on ice.',
+  [SERVING_GLASS_FLUTE]:
+    'The skinny flute glass is ideal for sparkling wine and carbonated drinks like mimosas and spritzers.',
+  [SERVING_GLASS_MARGARITA]:
+    'The margarita glass is a stepped variant of the cocktail glass with more room for ingredients and a wide rim for salt.',
+  [SERVING_GLASS_SHOT]:
+    'The essential shot glass isn’t just for straight liquor. Build miniature cocktail “shooters” perfect for parties.',
+  [SERVING_GLASS_PITCHER]:
+    'A pitcher is a great way to make batch drinks fit for a crowd without worrying about preparing individual drinks.',
 }
 
 // Ingredient Vessels

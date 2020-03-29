@@ -22,6 +22,8 @@ export default function ListItem(props) {
       ? Colors.blue1TransparentDark
       : Colors.blue1TransparentLight
     titleColorStyle.color = Colors.blue1
+  } else if (title === 'Add Custom Ingredient') {
+    titleColorStyle.color = Colors.blue1
   }
 
   return (

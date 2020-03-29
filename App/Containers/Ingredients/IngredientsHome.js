@@ -4,6 +4,7 @@ import { FlatList, View } from 'react-native'
 import React from 'react'
 import getIngredientsStylesheet from './IngredientsScreenStyle'
 import ListItem from '../../Components/ListItem'
+import getStylesheet from '../../Theme/ApplicationStyles'
 
 class IngredientsHome extends React.Component {
   constructor(props) {
@@ -13,15 +14,19 @@ class IngredientsHome extends React.Component {
     }
   }
 
-  renderHeader = () => {
+  renderHeader = (styles) => {
     return (
-      <SearchBar
-        placeholder="Search"
-        lightTheme
-        round
-        onChangeText={text => this.searchFilterFunction(text)}
-        autoCorrect={false}
-      />
+      <View>
+        <SearchBar
+          placeholder="Search"
+          lightTheme
+          round
+          onChangeText={text => this.searchFilterFunction(text)}
+          autoCorrect={false}
+          searchBarStyle={'minimal'}
+        />
+        <View style={styles.divider} />
+      </View>
     );
   };
 
@@ -40,6 +45,15 @@ class IngredientsHome extends React.Component {
     const { darkMode, onClick } = this.props
     const { data } = this.state
     const ingredientStyles = getIngredientsStylesheet(darkMode)
+    const styles = getStylesheet(darkMode)
+
+    if (data.length === 0 || (data[0].title !== 'Add Custom Ingredient' || data[0].ingredientId !== '')) {
+      // Add custom ingredient item
+      data.unshift({
+        title: "Add Custom Ingredient",
+        ingredientId: ''
+      })
+    }
     return (
       <View style={ingredientStyles.scrollView}>
         <FlatList
@@ -49,7 +63,7 @@ class IngredientsHome extends React.Component {
             return <ListItem title={item.title} onClick={() => onClick(item)} showArrow darkMode={darkMode} />
           }}
           style={ingredientStyles.ingredientListOutline}
-          ListHeaderComponent={this.renderHeader}
+          ListHeaderComponent={() => this.renderHeader(styles)}
         />
       </View>
     )

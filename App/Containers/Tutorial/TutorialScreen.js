@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Dimensions, Alert } from 'react-native'
 import { connect } from 'react-redux'
-import { NavigationActions, SafeAreaView } from 'react-navigation'
+import { NavigationActions, SafeAreaView, withNavigationFocus } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient';
 import getStylesheet from '../../Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
@@ -40,10 +40,8 @@ class TutorialScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps)
-    console.log(this.props)
     if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
-      if (this.props.persistRecipeErrorMessage) {
+      if (this.props.persistRecipeErrorMessage && this.props.isFocused) {
         Alert.alert(
           'Error saving recipe',
           `${this.props.persistRecipeErrorMessage}`,
@@ -53,11 +51,24 @@ class TutorialScreen extends React.Component {
             },
           ],
         );
+      } else {
+        // Update recipe if got updated
+        this.updateRecipe(this.props.recipes)
       }
     } if (prevProps.deleteRecipeIsLoading && !this.props.deleteRecipeIsLoading) {
       this.onBackScreenClick()
     }
   }
+
+  updateRecipe = (nextRecipes) => {
+    const { recipe } = this.state;
+    for (let i = 0; i < nextRecipes.length; i += 1) {
+      // Check IDs and
+      if (nextRecipes[i].recipeId === recipe.recipeId) {
+        this.setState({ recipe: nextRecipes[i] });
+      }
+    }
+  };
 
   getModalOptions = () => {
     const { deleteModal } = this.state;
@@ -132,7 +143,13 @@ class TutorialScreen extends React.Component {
     const { recipe, deleteModal } = this.state;
 
     if (item === constants.RECIPE_MENU_EDIT) {
-      // TODO: create this logic
+      // Go to edit page
+      this.setState({
+        visibleModal: false
+      });
+      NavigationService.navigate('BuilderScreen', {
+        recipe: recipe
+      })
     } else if (item === constants.RECIPE_MENU_DELETE) {
       // Call delete recipe
       if (!deleteModal) {
@@ -196,52 +213,50 @@ class TutorialScreen extends React.Component {
     }
 
     return (
-      <View style={styles.outerContainer}>
-        <SafeAreaView style={styles.outerContainer}>
-          <TopHeader title={headerTitle} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
-          {step === -1 && (
-            <TutorialHome recipe={recipe} darkMode={darkMode} drinkAmount={drinkAmount} />
-          )}
-          {step !== -1 && (
-            <TutorialSteps recipe={recipe} step={step} darkMode={darkMode} />
-          )}
-          <View style={tutorialStyles.gradientContainer}>
-            <LinearGradient
-              colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
-              style={{ flex: 1 }}
-              start={{ x: 0, y: 1 }}
-              end={{ x: 0, y: 0 }}
-            />
-          </View>
-          <View style={tutorialStyles.buttonView}>
-            {recipeSaved && <ButtonLarge
-              onButtonClick={this.onFirstButtonClick}
-              title={firstButtonTitle}
-              margin={[0, 9, 0, 0]}
-              buttonWidth={buttonWidth}
-              textColor="#000000"
-              backgroundColor="#FFFFFF"
-              borderColor="#D3D3D3"
-              darkMode={darkMode}
-            />}
-            {recipeSaved && <ButtonLarge
-              onButtonClick={this.onSecondButtonClick}
-              title={secondButtonTitle}
-              margin={[0, 0, 0, 0]}
-              buttonWidth={buttonWidth}
-              darkMode={darkMode}
-              isPrimary
-            />}
-            {!recipeSaved && <ButtonLarge
-              onButtonClick={this.onSaveClick}
-              title={'Add to Library'}
-              margin={[0, 0, 0, 0]}
-              buttonWidth={fullButtonWidth}
-              darkMode={darkMode}
-              isPrimary
-            />}
-          </View>
-        </SafeAreaView>
+      <SafeAreaView style={styles.outerContainer}>
+        <TopHeader title={headerTitle} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
+        {step === -1 && (
+          <TutorialHome recipe={recipe} darkMode={darkMode} drinkAmount={drinkAmount} />
+        )}
+        {step !== -1 && (
+          <TutorialSteps recipe={recipe} step={step} darkMode={darkMode} />
+        )}
+        <View style={tutorialStyles.gradientContainer}>
+          <LinearGradient
+            colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
+            style={{ flex: 1 }}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          />
+        </View>
+        <View style={tutorialStyles.buttonView}>
+          {recipeSaved && <ButtonLarge
+            onButtonClick={this.onFirstButtonClick}
+            title={firstButtonTitle}
+            margin={[0, 9, 0, 0]}
+            buttonWidth={buttonWidth}
+            textColor="#000000"
+            backgroundColor="#FFFFFF"
+            borderColor="#D3D3D3"
+            darkMode={darkMode}
+          />}
+          {recipeSaved && <ButtonLarge
+            onButtonClick={this.onSecondButtonClick}
+            title={secondButtonTitle}
+            margin={[0, 0, 0, 0]}
+            buttonWidth={buttonWidth}
+            darkMode={darkMode}
+            isPrimary
+          />}
+          {!recipeSaved && <ButtonLarge
+            onButtonClick={this.onSaveClick}
+            title={'Add to Library'}
+            margin={[0, 0, 0, 0]}
+            buttonWidth={fullButtonWidth}
+            darkMode={darkMode}
+            isPrimary
+          />}
+        </View>
         <CustomModal
           visibleModal={visibleModal}
           onCloseClick={this.onCloseModalClick}
@@ -259,7 +274,7 @@ class TutorialScreen extends React.Component {
             />
           )}
         </CustomModal>
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -280,7 +295,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteRecipe: (recipeId) => dispatch(RecipeActions.deleteRecipe(recipeId)),
 })
 
-export default connect(
+export default withNavigationFocus(connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavigationService.screenWithDarkMode(TutorialScreen))
+)(NavigationService.screenWithDarkMode(TutorialScreen)))

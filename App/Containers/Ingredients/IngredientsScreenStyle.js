@@ -53,6 +53,10 @@ export default function getIngredientsStylesheet(useDarkMode) {
       flex: 1,
       paddingBottom: 16,
     },
+    searchContainer: {
+      borderTopColor: 'transparent',
+      height: 50,
+    },
     selectionHeader: {
       ...Fonts.h1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,

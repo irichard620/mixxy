@@ -9,7 +9,7 @@ export default function BuilderDrinkType(props) {
   const { darkMode, selectedDrinkType, onCardClick } = props
   const builderStyles = getBuilderStylesheet(darkMode)
   return (
-    <ScrollView style={builderStyles.scrollContainer}>
+    <ScrollView style={builderStyles.scrollView}>
       <Text style={builderStyles.selectionHeader}>Create a New Recipe</Text>
       <Text style={builderStyles.selectionSubtitle}>What type of drink are you making?</Text>
       {constants.drinkTypes.map((drinkType) => (

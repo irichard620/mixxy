@@ -42,6 +42,24 @@ class BuilderScreen extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { navigation } = this.props;
+    const recipe = navigation.getParam('recipe', {});
+    if (Object.keys(recipe).length !== 0) {
+      this.setState({
+        step: 3,
+        recipeId: recipe.recipeId,
+        recipeName: recipe.recipeName,
+        recipeDescription: recipe.recipeDescription,
+        favorited: recipe.favorited,
+        drinkType: recipe.recipeType,
+        baseSpirit: recipe.baseSpirit,
+        servingGlass: recipe.servingGlass,
+        steps: recipe.steps,
+      });
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
       if (this.props.persistRecipeErrorMessage) {
@@ -467,7 +485,7 @@ class BuilderScreen extends React.Component {
 
   onRightButtonPress = () => {
     const { persistRecipe } = this.props
-    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps } = this.state
+    const { step, recipeId, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps } = this.state
     if (step === 2) {
       this.setState({ step: 3 })
     } else {
@@ -484,6 +502,7 @@ class BuilderScreen extends React.Component {
       } else {
         // Save recipe
         const newRecipe = recipeModel.Recipe({
+          recipeId: recipeId,
           recipeName: recipeName,
           recipeDescription: recipeDescription,
           recipeType: drinkType,
@@ -529,66 +548,64 @@ class BuilderScreen extends React.Component {
       topRightTitle = 'Save';
     }
     return (
-      <View style={styles.outerContainer}>
-        <SafeAreaView style={styles.outerContainer}>
-          <TopHeader title={headerTitle} rightButtonTitle={topRightTitle} onRightButtonPress={this.onRightButtonPress} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
-          {step === 0 && (
-            <BuilderDrinkType darkMode={darkMode} onCardClick={this.onDrinkTypeClick} selectedDrinkType={drinkType} />
-          )}
-          {step === 1 && (
-            <BuilderBaseSpirit darkMode={darkMode} onClick={this.onBaseSpiritClick} selectedBaseSpirit={baseSpirit} />
-          )}
-          {step === 2 && (
-            <BuilderServingGlass darkMode={darkMode} onCardClick={this.onServingGlassClick} selectedServingGlass={servingGlass} />
-          )}
-          {step === 3 && (
-            <BuilderHome
-              darkMode={darkMode}
-              onDetailClick={this.onDetailClick}
-              details={this.getDetailsList()}
-              steps={steps}
-              selectedStep={selectedStep}
-              onPressEdit={this.onStepPressEdit}
-              onPressDelete={this.onStepPressDelete}
-              onPressUp={this.onStepPressUp}
-              onPressDown={this.onStepPressDown}
-              onStepClick={this.onStepClick}
-            />
-          )}
-          <View style={builderStyles.gradientContainer}>
-            <LinearGradient
-              colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
-              style={{ flex: 1 }}
-              start={{ x: 0, y: 1 }}
-              end={{ x: 0, y: 0 }}
-            />
-          </View>
-          <View style={builderStyles.buttonView}>
-            <ButtonLarge
-              onButtonClick={this.onButtonClick}
-              title={buttonTitle}
-              margin={[0, 16, 0, 16]}
-              buttonWidth={buttonWidth}
-              isPrimary
-              disabled={buttonDisabled}
-              darkMode={darkMode}
-            />
-          </View>
-          <BuilderModal
-            visibleModal={visibleModal}
-            modalType={modalType}
-            modalText={modalText}
-            drinkType={drinkType}
-            baseSpirit={baseSpirit}
-            servingGlass={servingGlass}
-            onCloseClick={this.onModalCloseClick}
-            onPressItem={this.onModalPressItem}
-            onChangeText={this.onModalChangeText}
-            onModalSave={this.onModalSave}
+      <SafeAreaView style={styles.outerContainer}>
+        <TopHeader title={headerTitle} rightButtonTitle={topRightTitle} onRightButtonPress={this.onRightButtonPress} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
+        {step === 0 && (
+          <BuilderDrinkType darkMode={darkMode} onCardClick={this.onDrinkTypeClick} selectedDrinkType={drinkType} />
+        )}
+        {step === 1 && (
+          <BuilderBaseSpirit darkMode={darkMode} onClick={this.onBaseSpiritClick} selectedBaseSpirit={baseSpirit} />
+        )}
+        {step === 2 && (
+          <BuilderServingGlass darkMode={darkMode} onCardClick={this.onServingGlassClick} selectedServingGlass={servingGlass} />
+        )}
+        {step === 3 && (
+          <BuilderHome
+            darkMode={darkMode}
+            onDetailClick={this.onDetailClick}
+            details={this.getDetailsList()}
+            steps={steps}
+            selectedStep={selectedStep}
+            onPressEdit={this.onStepPressEdit}
+            onPressDelete={this.onStepPressDelete}
+            onPressUp={this.onStepPressUp}
+            onPressDown={this.onStepPressDown}
+            onStepClick={this.onStepClick}
+          />
+        )}
+        <View style={builderStyles.gradientContainer}>
+          <LinearGradient
+            colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
+            style={{ flex: 1 }}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          />
+        </View>
+        <View style={builderStyles.buttonView}>
+          <ButtonLarge
+            onButtonClick={this.onButtonClick}
+            title={buttonTitle}
+            margin={[0, 16, 0, 16]}
+            buttonWidth={buttonWidth}
+            isPrimary
+            disabled={buttonDisabled}
             darkMode={darkMode}
           />
-        </SafeAreaView>
-      </View>
+        </View>
+        <BuilderModal
+          visibleModal={visibleModal}
+          modalType={modalType}
+          modalText={modalText}
+          drinkType={drinkType}
+          baseSpirit={baseSpirit}
+          servingGlass={servingGlass}
+          onCloseClick={this.onModalCloseClick}
+          onPressItem={this.onModalPressItem}
+          onChangeText={this.onModalChangeText}
+          onModalSave={this.onModalSave}
+          darkMode={darkMode}
+        />
+      </SafeAreaView>
     )
   }
 }

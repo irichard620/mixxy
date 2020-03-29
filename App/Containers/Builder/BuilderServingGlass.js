@@ -10,7 +10,7 @@ export default function BuilderServingGlass(props) {
   const { darkMode, selectedServingGlass, onCardClick } = props
   const builderStyles = getBuilderStylesheet(darkMode)
   return (
-    <ScrollView style={builderStyles.scrollContainer}>
+    <ScrollView style={builderStyles.scrollView}>
       <View style={builderStyles.iconView}>
         <Image style={builderStyles.icon} source={Images.logo} />
       </View>
