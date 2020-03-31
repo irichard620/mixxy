@@ -51,7 +51,6 @@ export default function getIngredientsStylesheet(useDarkMode) {
     },
     scrollView: {
       flex: 1,
-      paddingBottom: 16,
     },
     searchContainer: {
       borderTopColor: 'transparent',

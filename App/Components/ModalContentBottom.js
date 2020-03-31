@@ -15,6 +15,7 @@ import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import ListItem from './ListItem'
+import Textbox from './Textbox'
 
 export default function ModalContentBottom(props) {
   const {
@@ -59,14 +60,12 @@ export default function ModalContentBottom(props) {
         <Text style={modalStyles.title}>{title}</Text>
         <View style={styles.divider} />
         {isTextInput && (
-          <TextInput
-            onChangeText={(text) => onChangeText(text)}
-            value={modalText}
-            placeholder={textPlaceholder}
-            placeholderTextColor="#898989"
-            style={modalStyles.textInput}
-            maxLength={charLimit}
-            multiline={false}
+          <Textbox
+            onChangeText={onChangeText}
+            modalText={modalText}
+            textPlaceholder={textPlaceholder}
+            charLimit={charLimit}
+            darkMode={darkMode}
           />
         )}
         {isListModal && (

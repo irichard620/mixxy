@@ -10,22 +10,54 @@ import SponsorScreen from '../Containers/Sponsor/SponsorScreen'
 
 const StackNavigator = createStackNavigator(
   {
-    SplashScreen: SplashScreen,
-    HomeScreen: HomeScreen,
-    TutorialScreen: TutorialScreen,
-    BuilderScreen: BuilderScreen,
-    IngredientsScreen: IngredientsScreen,
-    CampaignScreen: CampaignScreen,
-    SponsorScreen: SponsorScreen,
+    SplashScreen: {
+      screen: SplashScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    HomeScreen: {
+      screen: HomeScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    TutorialScreen: {
+      screen: TutorialScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    BuilderScreen: {
+      screen: BuilderScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    IngredientsScreen: {
+      screen: IngredientsScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    CampaignScreen: {
+      screen: CampaignScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    SponsorScreen: {
+      screen: SponsorScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
   },
   {
     // By default the application will show the splash screen
     initialRouteName: 'SplashScreen',
     headerMode: 'none',
     mode: 'modal',
-    navigationOptions: {
-      gesturesEnabled: false,
-    },
   }
 )
 

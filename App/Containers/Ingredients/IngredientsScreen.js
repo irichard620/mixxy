@@ -17,6 +17,8 @@ import SelectedItem from '../../Components/SelectedItem'
 import * as constants from '../../Config/constants'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 import CustomModal from '../../Components/CustomModal'
+import LinearGradient from "react-native-linear-gradient"
+import Colors from '../../Theme/Colors'
 
 class IngredientsScreen extends React.Component {
   constructor(props) {
@@ -146,16 +148,22 @@ class IngredientsScreen extends React.Component {
         selectedIngredients: selectedIngredients,
       })
     } else if (this.isServingGlassStep(params.stepType)) {
-      const newIngredient = ingredientModel.Ingredient({
-        title: ingredient.title,
-        ingredientId: ingredient.ingredientId,
-      })
-      selectedIngredients.push(newIngredient)
-      this.setState({
-        selectedIngredients: selectedIngredients,
-      })
+      if (ingredient.title === constants.ADD_CUSTOM_INGREDIENT && ingredient.ingredientId === '') {
+        this.setState({
+          visibleModal: true
+        })
+      } else {
+        const newIngredient = ingredientModel.Ingredient({
+          title: ingredient.title,
+          ingredientId: ingredient.ingredientId,
+        })
+        selectedIngredients.push(newIngredient)
+        this.setState({
+          selectedIngredients: selectedIngredients,
+        })
+      }
     } else {
-      if (ingredient.title === 'Add Custom Ingredient' && ingredient.ingredientId === '') {
+      if (ingredient.title === constants.ADD_CUSTOM_INGREDIENT && ingredient.ingredientId === '') {
         this.setState({
           visibleModal: true
         })
@@ -210,7 +218,8 @@ class IngredientsScreen extends React.Component {
   }
 
   onModalSave = () => {
-    const { modalText } = this.state
+    const { params } = this.props.navigation.state
+    const { modalText, selectedIngredients } = this.state
     if (modalText === '') {
       Alert.alert('No ingredient name', 'Must specify name for custom ingredient.', [
         {
@@ -223,17 +232,31 @@ class IngredientsScreen extends React.Component {
     // Dismiss keyboard for modal
     Keyboard.dismiss();
 
-    this.setState({
-      selectedIngredient: {
+    if (this.isServingGlassStep(params.stepType)) {
+      // Add to selected ingredients immediately
+      const newIngredient = ingredientModel.Ingredient({
         title: modalText,
-        description: '',
-        classification: '',
         ingredientId: '',
-      },
-      visibleModal: false,
-      modalText: '',
-      step: 2,
-    })
+      })
+      selectedIngredients.push(newIngredient)
+      this.setState({
+        visibleModal: false,
+        modalText: '',
+        selectedIngredients: selectedIngredients,
+      })
+    } else {
+      this.setState({
+        selectedIngredient: {
+          title: modalText,
+          description: '',
+          classification: '',
+          ingredientId: '',
+        },
+        visibleModal: false,
+        modalText: '',
+        step: 2,
+      })
+    }
   }
 
   render() {
@@ -262,7 +285,12 @@ class IngredientsScreen extends React.Component {
           <IngredientsVessel darkMode={darkMode} onCardClick={this.onIngredientVesselClick} selectedVessel={selectedVessel} />
         )}
         {step === 1 && (
-          <IngredientsHome darkMode={darkMode} options={ingredientsToUse} onClick={this.onListItemClicked} />
+          <IngredientsHome
+            useExisting={this.useExistingIngredients(params.stepType)}
+            darkMode={darkMode}
+            options={ingredientsToUse}
+            onClick={this.onListItemClicked}
+          />
         )}
         {step === 2 && (
           <IngredientSelect
@@ -276,13 +304,21 @@ class IngredientsScreen extends React.Component {
             brand={brand}
           />
         )}
+        <View style={ingredientStyles.gradientContainer}>
+          <LinearGradient
+            colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
+            style={{ flex: 1 }}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          />
+        </View>
         {step === 1 && selectedIngredients.length > 0 && (
           <ScrollView
             horizontal={true}
             style={ingredientStyles.horizontalScroll}
           >
             {selectedIngredients.map((ingredient, index) => (
-              <SelectedItem title={ingredient.title} darkMode={darkMode} onClick={() => this.onSelectedIngredientClick(index)} />
+              <SelectedItem key={`selected${index}`} title={ingredient.title} darkMode={darkMode} onClick={() => this.onSelectedIngredientClick(index)} />
             ))}
           </ScrollView>
         )}
@@ -303,7 +339,7 @@ class IngredientsScreen extends React.Component {
           type={constants.MODAL_TYPE_BOTTOM}
         >
           <ModalContentBottom
-            title={'Add Custom Ingredient'}
+            title={constants.ADD_CUSTOM_INGREDIENT}
             textPlaceholder={'What is name of ingredient?'}
             onChangeText={this.onModalTextChange}
             onModalSave={this.onModalSave}

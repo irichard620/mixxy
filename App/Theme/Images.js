@@ -28,4 +28,5 @@ export default {
   quantityMinus: require('../Assets/Images/buttons/Qty_Minus.png'),
   quantityMinusInactiveLight: require('../Assets/Images/buttons/Qty_Minus_Inactive_LIGHT.png'),
   quantityMinusInactiveDark: require('../Assets/Images/buttons/Qty_Minus_Inactive_DARK.png'),
+  ingredientX: require('../Assets/Images/buttons/Ingredient_X.png'),
 }

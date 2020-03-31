@@ -8,7 +8,7 @@ import HomeTags from './HomeTag'
 
 export default function HomeCampaign(props) {
   const { campaign, disabled, onCampaignClick, darkMode } = props
-  const { name, shortDescription, imageLink, tags } = campaign
+  const { name, shortDescription, imageLink, tags, tagColor } = campaign
   const { width } = Dimensions.get('window')
   const cardWidth = {
     width: width - 32,
@@ -28,7 +28,7 @@ export default function HomeCampaign(props) {
             resizeMode={FastImage.resizeMode.cover}
           />
         )}
-        <HomeTags tags={tags} darkMode={darkMode} />
+        <HomeTags tags={tags} darkMode={darkMode} tagColor={tagColor} />
         <View style={homeStyles.sponsorCardDescriptionContainer}>
           <Text style={homeStyles.campaignTitle}>{name}</Text>
           <Text style={homeStyles.campaignDescription}>{shortDescription}</Text>

@@ -16,6 +16,9 @@ function HomeDiscoverTab(props) {
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
+  const marginTopStyle = {
+    marginTop: 6,
+  }
   return (
     <ScrollView style={homeStyles.scrollContainer}>
       <Text style={homeStyles.topHeader}>Discover</Text>
@@ -47,7 +50,7 @@ function HomeDiscoverTab(props) {
           }}
         />
       ))}
-      <View style={styles.divider} />
+      <View style={[styles.divider, marginTopStyle]} />
       <Text style={homeStyles.sectionHeader}>Browse More</Text>
       <View style={Helpers.rowStartWrap}>
         {masterLists.map((masterList, idx) => (

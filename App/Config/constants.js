@@ -189,3 +189,6 @@ export const settingsOptions = {
   [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS],
   [SETTINGS_SECTION_CONTACT]: [OPTION_CONTACT_US, OPTION_JOIN_BETA, OPTION_INSTAGRAM],
 }
+
+// Add custom ingredient
+export const ADD_CUSTOM_INGREDIENT = 'Add Custom Ingredient'

@@ -12,7 +12,7 @@ export default function SelectedItem(props) {
     <TouchableWithoutFeedback onPress={onClick}>
       <View style={selectedItemStyles.outline}>
         <Text style={selectedItemStyles.text}>{title}</Text>
-        <Image style={selectedItemStyles.icon} source={Images.xButton} />
+        <Image style={selectedItemStyles.icon} source={Images.ingredientX} />
       </View>
     </TouchableWithoutFeedback>
   )
@@ -35,19 +35,25 @@ function getSelectedItemStylesheet(darkMode) {
       height: 36,
       justifyContent: 'center',
       marginRight: 8,
-      paddingBottom: 8,
       paddingLeft: 16,
       paddingRight: 16,
-      paddingTop: 8,
     },
     text: {
       ...Fonts.body1,
+      alignSelf: 'center',
       color: Colors.blue1,
+      height: 20,
+      justifyContent: 'center',
       marginRight: 8,
+      textAlign: 'center',
+      marginTop: 6,
+      marginBottom: 10,
     },
     icon: {
       height: 8,
       width: 8,
+      marginTop: 14,
+      marginBottom: 14,
     },
   })
 }

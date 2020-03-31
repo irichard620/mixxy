@@ -57,10 +57,10 @@ function getTopHeaderStylesheet(darkMode) {
       backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      paddingBottom: 14,
+      paddingBottom: 5,
       paddingLeft: 8,
       paddingRight: 16,
-      paddingTop: 14,
+      paddingTop: 5,
       width: '100%',
     },
     rightButton: {

@@ -5,6 +5,7 @@ import React from 'react'
 import getIngredientsStylesheet from './IngredientsScreenStyle'
 import ListItem from '../../Components/ListItem'
 import getStylesheet from '../../Theme/ApplicationStyles'
+import * as constants from '../../Config/constants'
 
 class IngredientsHome extends React.Component {
   constructor(props) {
@@ -14,7 +15,9 @@ class IngredientsHome extends React.Component {
     }
   }
 
-  renderHeader = (styles) => {
+  renderHeader = () => {
+    const { darkMode } = this.props
+    const styles = getStylesheet(darkMode)
     return (
       <View>
         <SearchBar
@@ -42,15 +45,14 @@ class IngredientsHome extends React.Component {
   };
 
   render() {
-    const { darkMode, onClick } = this.props
+    const { darkMode, onClick, useExisting } = this.props
     const { data } = this.state
     const ingredientStyles = getIngredientsStylesheet(darkMode)
-    const styles = getStylesheet(darkMode)
 
-    if (data.length === 0 || (data[0].title !== 'Add Custom Ingredient' || data[0].ingredientId !== '')) {
+    if (!useExisting && (data.length === 0 || (data[0].title !== constants.ADD_CUSTOM_INGREDIENT || data[0].ingredientId !== ''))) {
       // Add custom ingredient item
       data.unshift({
-        title: "Add Custom Ingredient",
+        title: constants.ADD_CUSTOM_INGREDIENT,
         ingredientId: ''
       })
     }
@@ -63,7 +65,7 @@ class IngredientsHome extends React.Component {
             return <ListItem title={item.title} onClick={() => onClick(item)} showArrow darkMode={darkMode} />
           }}
           style={ingredientStyles.ingredientListOutline}
-          ListHeaderComponent={() => this.renderHeader(styles)}
+          ListHeaderComponent={this.renderHeader}
         />
       </View>
     )

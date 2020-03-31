@@ -3,11 +3,12 @@ import React from 'react'
 import FastImage from 'react-native-fast-image'
 import getHomeStylesheet from './HomeScreenStyle'
 import { PropTypes } from 'prop-types'
-import LinearGradient from "react-native-linear-gradient"
+import LinearGradient from 'react-native-linear-gradient'
+import HomeTags from './HomeTag'
 
 export default function HomeSponsorCard(props) {
   const { sponsorCard, disabled, onSponsorCardClick, darkMode } = props
-  const { cardTitle, cardImageLink, tags } = sponsorCard
+  const { cardTitle, cardImageLink, tags, tagColor } = sponsorCard
   const { width } = Dimensions.get('window')
   const cardWidth = {
     width: width - 32,
@@ -27,6 +28,7 @@ export default function HomeSponsorCard(props) {
             resizeMode={FastImage.resizeMode.cover}
           />
         )}
+        <HomeTags tags={tags} darkMode={darkMode} tagColor={tagColor} />
         <View style={homeStyles.sponsorCardDescriptionContainer}>
           <Text style={homeStyles.sponsorCardDescription}>{cardTitle}</Text>
         </View>
