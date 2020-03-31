@@ -24,13 +24,18 @@ export default function TopHeader(props) {
   const titleWidth = {
     width: width - 32 - 70 - 16,
   }
+  let imageToUse = ''
+  if (!useArrow) {
+    imageToUse = darkMode ? Images.topHeaderXDark : Images.topHeaderXLight
+  } else {
+    imageToUse = darkMode ? Images.topHeaderBackDark : Images.topHeaderBackLight
+  }
 
   return (
     <SafeAreaView>
       <View style={headerStyles.header}>
         <TouchableOpacity style={headerStyles.touchable} onPress={onClose}>
-          {!useArrow && <Image style={headerStyles.close} source={Images.xButton} />}
-          {useArrow && <Image style={headerStyles.close} source={Images.brewBack} />}
+          <Image style={headerStyles.close} source={imageToUse} />
         </TouchableOpacity>
         <Text style={[headerStyles.title, titleWidth]}>{title}</Text>
         {rightButtonTitle !== undefined && rightButtonTitle !== '' && (

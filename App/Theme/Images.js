@@ -4,8 +4,6 @@
 
 export default {
   logo: require('../Assets/Images/mixxy_logo.png'),
-  xButton: require('../Assets/Images/buttons/Modal_X.png'),
-  brewBack: require('../Assets/Images/buttons/Brew_Back.png'),
   builderUp: require('../Assets/Images/buttons/Builder_Up.png'),
   builderDown: require('../Assets/Images/buttons/Builder_Down.png'),
   builderDelete: require('../Assets/Images/buttons/Builder_Delete.png'),
@@ -29,4 +27,8 @@ export default {
   quantityMinusInactiveLight: require('../Assets/Images/buttons/Qty_Minus_Inactive_LIGHT.png'),
   quantityMinusInactiveDark: require('../Assets/Images/buttons/Qty_Minus_Inactive_DARK.png'),
   ingredientX: require('../Assets/Images/buttons/Ingredient_X.png'),
+  topHeaderXLight: require('../Assets/Images/buttons/TopBar_X_DARK.png'),
+  topHeaderXDark: require('../Assets/Images/buttons/TopBar_X_LIGHT.png'),
+  topHeaderBackLight: require('../Assets/Images/buttons/TopBar_Back_DARK.png'),
+  topHeaderBackDark: require('../Assets/Images/buttons/TopBar_Back_LIGHT.png'),
 }

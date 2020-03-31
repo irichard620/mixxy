@@ -115,6 +115,7 @@ class TutorialHome extends Component {
             key={option.title + option.subtitle}
             title={option.title}
             subtitle={option.subtitle}
+            darkMode={darkMode}
             disabled
           />
         ))}
@@ -123,6 +124,7 @@ class TutorialHome extends Component {
             key={equipment.title + equipment.subtitle}
             title={equipment.title}
             subtitle={equipment.subtitle}
+            darkMode={darkMode}
             disabled
           />
         ))}
