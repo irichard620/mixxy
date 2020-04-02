@@ -14,7 +14,7 @@ class TutorialSteps extends Component {
   };
 
   renderStep = (stepObj, idx) => {
-    const { step, darkMode } = this.props;
+    const { step, darkMode, drinkAmount } = this.props;
 
     return (
       <Step
@@ -22,6 +22,7 @@ class TutorialSteps extends Component {
         activeStep={(step === idx)}
         key={idx}
         darkMode={darkMode}
+        drinkAmount={drinkAmount}
       />
     );
   };

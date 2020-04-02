@@ -28,7 +28,7 @@ function HomeSettingsTab(props) {
       // Pull up email
       let emailLink = 'mailto:drippyapp@gmail.com'
       if (option === constants.OPTION_JOIN_BETA) {
-        emailLink = `${emailLink}?subject=Request to join Drippy Beta`
+        emailLink = `${emailLink}?subject=Request to join Mixxy Beta`
       }
       Linking.canOpenURL(emailLink).then((supported) => {
         if (supported) {

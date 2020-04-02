@@ -13,6 +13,15 @@ export default function getHomeStylesheet(useDarkMode) {
       right: 0,
       zIndex: 1,
     },
+    campaignTopGradientContainer: {
+      backgroundColor: 'transparent',
+      height: 56,
+      left: 0,
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      zIndex: 1,
+    },
     campaignDescription: {
       ...Fonts.body2,
       color: Colors.white,

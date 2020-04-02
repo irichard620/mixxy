@@ -4,7 +4,7 @@ import * as constants from '../Config/constants'
 import { PropTypes } from 'prop-types'
 
 export default function CustomModal(props) {
-  const { visibleModal, onCloseClick, type, children } = props
+  const { visibleModal, onCloseClick, type, children, darkMode } = props
 
   // Swipe and style
   let swipeDirections = [];
@@ -23,6 +23,13 @@ export default function CustomModal(props) {
     }
   }
 
+  let backdropColor = 'black'
+  let backdropOpacity = 0.7
+  if (darkMode) {
+    backdropColor = 'gray'
+    backdropOpacity = 0.3
+  }
+
   return (
     <Modal
       isVisible={visibleModal}
@@ -31,6 +38,8 @@ export default function CustomModal(props) {
       propagateSwipe
       style={modalStyle}
       onBackdropPress={onCloseClick}
+      backdropColor={backdropColor}
+      backdropOpacity={backdropOpacity}
     >
       {children}
     </Modal>
@@ -42,4 +51,5 @@ CustomModal.propTypes = {
   type: PropTypes.string,
   onCloseClick: PropTypes.func,
   children: PropTypes.node,
+  darkMode: PropTypes.bool,
 }

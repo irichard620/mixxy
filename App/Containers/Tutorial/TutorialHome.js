@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-  View, Image, Text, ScrollView,
+  View, Image, Text, ScrollView, TouchableWithoutFeedback,
 } from 'react-native'
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
@@ -30,6 +30,7 @@ class TutorialHome extends Component {
   };
 
   getIngredients = (recipe) => {
+    const { drinkAmount } = this.props
     if (!recipe || !('steps' in recipe)) {
       return [];
     }
@@ -40,7 +41,7 @@ class TutorialHome extends Component {
         for (let j = 0; j < step.ingredients.length; j++) {
           const ingredient = step.ingredients[j];
           options.push({
-            title: ingredientModel.getIngredientAmount(ingredient),
+            title: ingredientModel.getIngredientAmount(ingredient, drinkAmount),
             subtitle: ingredient.title,
           })
         }
@@ -74,7 +75,7 @@ class TutorialHome extends Component {
 
   render() {
     const { selected } = this.state;
-    const { recipe, darkMode, drinkAmount } = this.props;
+    const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity } = this.props;
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
 
@@ -92,6 +93,9 @@ class TutorialHome extends Component {
       qtyNegativeSource = darkMode ? Images.quantityMinusInactiveDark : Images.quantityMinusInactiveLight
     }
 
+    // Total recipe amount
+    const totalRecipeOunces = Math.round(recipe.totalOunces * drinkAmount * 10) / 10
+
     return (
       <ScrollView style={tutorialStyles.scrollView}>
         <View style={tutorialStyles.iconView}>
@@ -99,13 +103,20 @@ class TutorialHome extends Component {
         </View>
         <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
         <View style={tutorialStyles.drinkAmountView}>
-          <View style={tutorialStyles.drinkAmountCircle}>
-            <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
+          <TouchableWithoutFeedback onPress={reduceDrinkQuantity}>
+            <View style={tutorialStyles.drinkAmountCircle}>
+              <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
+            </View>
+          </TouchableWithoutFeedback>
+          <View style={tutorialStyles.drinkAmountCenterView}>
+            <Text style={tutorialStyles.drinkAmountText}>{`${drinkAmount} drink${drinkAmount > 1 ? 's' : ''}`}</Text>
+            {drinkAmount > 1 && <Text style={tutorialStyles.drinkAmountOuncesText}>{`${totalRecipeOunces} oz`}</Text>}
           </View>
-          <Text style={tutorialStyles.drinkAmountText}>{drinkAmount + ' drink'}</Text>
-          <View style={tutorialStyles.drinkAmountCircle}>
-            <Image source={Images.quantityPlus} style={tutorialStyles.drinkAmountIcon} />
-          </View>
+          <TouchableWithoutFeedback onPress={increaseDrinkQuantity}>
+            <View style={tutorialStyles.drinkAmountCircle}>
+              <Image source={Images.quantityPlus} style={tutorialStyles.drinkAmountIcon} />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
         <View style={styles.thickDivider} />
         <TutorialHomeMenuButtons selected={selected} darkMode={darkMode} onItemClick={this.onItemClick} isDescription={isDescription} />

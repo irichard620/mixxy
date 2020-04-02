@@ -75,7 +75,7 @@ export const ingredientsVesselDescriptions = {
 }
 
 // Fraction amounts
-export const AMOUNT_ZERO = '0'
+export const AMOUNT_ZERO = ''
 export const AMOUNT_1EIGTH = '1/8'
 export const AMOUNT_1QUARTER = '1/4'
 export const AMOUNT_3EIGTHS = '3/8'
@@ -95,18 +95,48 @@ export const fractionAmounts = [
 ]
 
 // Amount types
-export const AMOUNT_TYPE_OZ = 'Ounces'
+export const AMOUNT_TYPE_OZ = 'Ounce'
 export const AMOUNT_TYPE_TSP = 'Teaspoon'
 export const AMOUNT_TYPE_TBSP = 'Tablespoon'
-export const AMOUNT_TYPE_PIECE = 'Piece'
-export const AMOUNT_TYPE_DASH = 'Dashes'
-export const amountTypes = [
+export const AMOUNT_TYPE_CUP = 'Cup'
+export const AMOUNT_TYPE_DASH = 'Dash'
+export const AMOUNT_TYPE_DROP = 'Drop'
+export const amountTypesLiquid = [
   AMOUNT_TYPE_OZ,
   AMOUNT_TYPE_TSP,
   AMOUNT_TYPE_TBSP,
-  AMOUNT_TYPE_PIECE,
+  AMOUNT_TYPE_CUP,
   AMOUNT_TYPE_DASH,
+  AMOUNT_TYPE_DROP,
 ]
+export const AMOUNT_TYPE_PIECE = 'Piece'
+export const AMOUNT_TYPE_PINCH = 'Pinch'
+export const AMOUNT_TYPE_SLICE = 'Slice'
+export const AMOUNT_TYPE_SPRIG = 'Sprig'
+export const AMOUNT_TYPE_LEAF = 'Leaf'
+export const AMOUNT_TYPE_GRIND = 'Grind'
+export const amountTypesNonLiquid = [
+  AMOUNT_TYPE_PIECE,
+  AMOUNT_TYPE_PINCH,
+  AMOUNT_TYPE_SLICE,
+  AMOUNT_TYPE_SPRIG,
+  AMOUNT_TYPE_LEAF,
+  AMOUNT_TYPE_GRIND,
+]
+export const allAmountTypes = [...amountTypesLiquid, ...amountTypesNonLiquid]
+
+// Ingredient classifications
+export const CLASSIFICATION_ALCOHOLIC = 'Alcoholic'
+export const CLASSIFICATION_NON_ALCOHOLIC = 'Non-alcoholic'
+export const CLASSIFICATION_CULINARY = 'Culinary'
+export const CLASSIFICATION_ICE = 'Ice'
+export const classificationToAmountTypes = {
+  [CLASSIFICATION_ALCOHOLIC]: amountTypesLiquid,
+  [CLASSIFICATION_NON_ALCOHOLIC]: amountTypesLiquid,
+  [CLASSIFICATION_CULINARY]: amountTypesNonLiquid,
+  [CLASSIFICATION_ICE]: [AMOUNT_TYPE_PIECE],
+  '': allAmountTypes,
+}
 
 // Drink types
 export const DRINK_TYPE_COCKTAIL = 'Cocktail'
@@ -131,6 +161,9 @@ export const drinkTypeDescriptions = {
 }
 
 // Base spirits
+export const BASE_SPIRIT_BEER = 'Beer'
+export const BASE_SPIRIT_WINE = 'Wine'
+export const BASE_SPIRIT_NON_ALCOHOLIC = 'Non-Alcoholic'
 export const BASE_SPIRIT_VODKA = 'Vodka'
 export const BASE_SPIRIT_TEQUILA = 'Tequila'
 export const BASE_SPIRIT_WHISKEY = 'Whiskey'
@@ -147,6 +180,11 @@ export const baseSpirits = [
   BASE_SPIRIT_BRANDY,
   BASE_SPIRIT_OTHER,
 ]
+export const drinkTypeBaseSpirits = {
+  [DRINK_TYPE_BEER_COCKTAILS]: BASE_SPIRIT_BEER,
+  [DRINK_TYPE_WINE_COCKTAILS]: BASE_SPIRIT_WINE,
+  [DRINK_TYPE_NON_ALCOHOLIC]: BASE_SPIRIT_NON_ALCOHOLIC,
+}
 
 // Builder details
 export const BUILDER_RECIPE_NAME_DETAIL = 'Recipe Name'
@@ -183,7 +221,7 @@ export const settingsSections = [SETTINGS_SECTION_GENERAL, SETTINGS_SECTION_CONT
 // Settings options
 export const OPTION_VOLUME_UNITS = 'Volume Units'
 export const OPTION_CONTACT_US = 'Contact Us'
-export const OPTION_JOIN_BETA = 'Join Drippy Beta'
+export const OPTION_JOIN_BETA = 'Join Mixxy Beta'
 export const OPTION_INSTAGRAM = 'Follow us on Instagram'
 export const settingsOptions = {
   [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS],

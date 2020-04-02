@@ -21,18 +21,30 @@ export default function getTutorialStylesheet(useDarkMode) {
       paddingRight: 16,
       textAlign: 'left',
     },
+    drinkAmountCenterView: {
+      flexDirection: 'column',
+      height: 48,
+      justifyContent: 'center',
+      width: 144,
+    },
     drinkAmountCircle: {
+      alignItems: 'center',
       borderColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       borderRadius: 24,
-      borderWidth: 0.5,
+      borderWidth: 2,
       height: 48,
-      width: 48,
-      alignItems: 'center',
       justifyContent: 'center',
+      width: 48,
     },
     drinkAmountIcon: {
       height: 16,
       resizeMode: 'contain',
+    },
+    drinkAmountOuncesText: {
+      ...Fonts.body1,
+      alignSelf: 'center',
+      color: Colors.orange1,
+      textAlign: 'center',
     },
     drinkAmountText: {
       ...Fonts.h3,
@@ -48,6 +60,7 @@ export default function getTutorialStylesheet(useDarkMode) {
       justifyContent: 'center',
       marginBottom: 32,
       width: 144 + 48 + 48,
+      height: 48,
     },
     gradientContainer: {
       backgroundColor: Colors.backgroundColorDarkTransparent,

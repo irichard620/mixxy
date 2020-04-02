@@ -24,12 +24,14 @@ export default function getIngredientsStylesheet(useDarkMode) {
       marginTop: -24,
       width: '100%',
     },
+    horizontalBuffer: {
+      width: 16,
+    },
     horizontalScroll: {
       marginBottom: 8,
       maxHeight: 52,
       paddingBottom: 8,
       paddingLeft: 16,
-      paddingRight: 16,
       paddingTop: 8,
     },
     icon: {

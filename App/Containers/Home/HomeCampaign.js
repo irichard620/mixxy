@@ -33,6 +33,14 @@ export default function HomeCampaign(props) {
           <Text style={homeStyles.campaignTitle}>{name}</Text>
           <Text style={homeStyles.campaignDescription}>{shortDescription}</Text>
         </View>
+        <View style={homeStyles.campaignTopGradientContainer}>
+          <LinearGradient
+            colors={['#00000015', '#00000000']}
+            style={homeStyles.linearGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          />
+        </View>
         <View style={homeStyles.campaignBottomGradientContainer}>
           <LinearGradient
             colors={['#00000080', '#00000000']}

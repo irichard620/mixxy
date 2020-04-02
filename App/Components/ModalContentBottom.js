@@ -115,7 +115,7 @@ ModalContentBottom.propTypes = {
 function getModalStylesheet(darkMode) {
   return StyleSheet.create({
     content: {
-      backgroundColor: darkMode ? Colors.cardColorDark : Colors.backgroundColorLight,
+      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       paddingBottom: 32,

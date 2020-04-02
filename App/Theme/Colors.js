@@ -24,6 +24,7 @@ export default {
   blue1TransparentDark: '#2D8CD330',
   yellow: '#FDAE26',
   red1: '#EB4B13',
+  orange1: '#EF5B18',
   red1TransparentLight: '#EB4B1315',
   red1TransparentDark: '#EB4B1330',
   backgroundColorLight: '#FFFFFF',

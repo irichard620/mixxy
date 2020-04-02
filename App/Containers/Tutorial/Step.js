@@ -6,7 +6,7 @@ import { getStepDescriptionWithHighlights } from '../../Storage/Step'
 import { PropTypes } from 'prop-types'
 
 export default function Step(props) {
-  const { step, activeStep, darkMode } = props
+  const { step, activeStep, darkMode, drinkAmount } = props
 
   const stepStyle = getStepStylesheet(darkMode)
   const titleColor = {
@@ -19,7 +19,7 @@ export default function Step(props) {
   return (
     <View style={stepStyle.outline}>
       <Text style={[stepStyle.title, titleColor]}>{step.title}</Text>
-      {activeStep && getStepDescriptionWithHighlights(step, stepStyle)}
+      {activeStep && getStepDescriptionWithHighlights(step, stepStyle, drinkAmount)}
       <View style={stepStyle.mainSeparator} />
     </View>
   )
@@ -29,6 +29,7 @@ Step.propTypes = {
   step: PropTypes.object,
   activeStep: PropTypes.bool,
   darkMode: PropTypes.bool,
+  drinkAmount: PropTypes.number,
 }
 
 function getStepStylesheet(useDarkMode) {

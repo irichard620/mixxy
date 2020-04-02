@@ -84,12 +84,19 @@ class BuilderScreen extends React.Component {
   }
 
   onButtonClick = () => {
-    const { step } = this.state;
+    const { step, drinkType } = this.state;
     // Check step
     if (step !== 3) {
-      this.setState({
-        step: step + 1
-      })
+      if (step === 0 && drinkType in constants.drinkTypeBaseSpirits) {
+        this.setState({
+          step: 2,
+          baseSpirit: constants.drinkTypeBaseSpirits[drinkType]
+        })
+      } else {
+        this.setState({
+          step: step + 1
+        })
+      }
     } else {
       // Pull up add menu
       this.setState({ visibleModal: true, modalType: constants.MODAL_ADD_STEP });
@@ -467,6 +474,9 @@ class BuilderScreen extends React.Component {
       } else if (detail === constants.BUILDER_DRINK_TYPE_DETAIL) {
         detailValue = drinkType;
       } else if (detail === constants.BUILDER_BASE_SPIRIT_DETAIL) {
+        if (drinkType in constants.drinkTypeBaseSpirits) {
+          return
+        }
         detailValue = baseSpirit;
       } else if (detail === constants.BUILDER_SERVING_GLASS_DETAIL) {
         detailValue = servingGlass;
@@ -508,9 +518,10 @@ class BuilderScreen extends React.Component {
           recipeType: drinkType,
           baseSpirit: baseSpirit,
           servingGlass: servingGlass,
-          totalOunces: 0,  // TODO: fix this
+          totalOunces: 0,
           steps: steps,
         })
+        newRecipe.totalOunces = recipeModel.getTotalOuncesForRecipe(newRecipe)
         persistRecipe(newRecipe)
       }
     }

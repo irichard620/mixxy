@@ -32,6 +32,8 @@ export default function IngredientSelect(props) {
     height: 200,
   }
   const itemColor = darkMode ? Colors.text1Dark : Colors.text1Light
+  const classification = ingredient.classification || ''
+  const amountTypeOptions = constants.classificationToAmountTypes[classification]
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
       <ScrollView style={ingredientStyles.scrollView}>
@@ -45,7 +47,7 @@ export default function IngredientSelect(props) {
             style={pickerStyle}
             itemStyle={pickerItemStyle}
           >
-            {[...Array(5).keys()].map((item) => {
+            {[...Array(99).keys()].map((item) => {
               item = item.toString()
               return <Picker.Item key={item} label={item} value={item} color={itemColor} />
             })}
@@ -66,7 +68,7 @@ export default function IngredientSelect(props) {
             style={pickerStyle}
             itemStyle={pickerItemStyle}
           >
-            {constants.amountTypes.map((item) => (
+            {amountTypeOptions.map((item) => (
               <Picker.Item key={item} label={item} value={item} color={itemColor} />
             ))}
           </Picker>

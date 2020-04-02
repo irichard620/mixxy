@@ -32,6 +32,14 @@ export default function HomeSponsorCard(props) {
         <View style={homeStyles.sponsorCardDescriptionContainer}>
           <Text style={homeStyles.sponsorCardDescription}>{cardTitle}</Text>
         </View>
+        <View style={homeStyles.campaignTopGradientContainer}>
+          <LinearGradient
+            colors={['#00000015', '#00000000']}
+            style={homeStyles.linearGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          />
+        </View>
         <View style={homeStyles.sponsorBottomGradientContainer}>
           <LinearGradient
             colors={['#00000080', '#00000000']}

@@ -1,4 +1,8 @@
-import { getIngredientShortDescription, Ingredient } from './Ingredient'
+import {
+  getIngredientShortDescription,
+  getOunceAmountFromIngredient,
+  Ingredient,
+} from './Ingredient'
 import * as constants from '../Config/constants'
 import { Text } from 'react-native'
 import React from 'react'
@@ -23,6 +27,17 @@ export function Step(stepObj) {
   }
   step.vessel = stepObj.vessel
   return step
+}
+
+export function getStepTotalOunces(step) {
+  if (step.title === constants.STEP_ADD_INGREDIENTS) {
+    let totalOunces = 0
+    for (let i = 0; i < step.ingredients.length; i++) {
+      totalOunces += getOunceAmountFromIngredient(step.ingredients[i])
+    }
+    return totalOunces
+  }
+  return 0
 }
 
 export function getStepShortDescription(step) {
@@ -53,14 +68,14 @@ export function getStepShortDescription(step) {
   return ''
 }
 
-export function getIngredientsList(step) {
+export function getIngredientsList(step, drinkAmount) {
   let ingredientDescription = ''
   for (let i = 0; i < step.ingredients.length; i++) {
     if (i > 0) {
       ingredientDescription += ', '
     }
     if (step.title === constants.STEP_ADD_INGREDIENTS) {
-      ingredientDescription += getIngredientShortDescription(step.ingredients[i])
+      ingredientDescription += getIngredientShortDescription(step.ingredients[i], drinkAmount)
     } else {
       ingredientDescription += step.ingredients[i].title
     }
@@ -96,9 +111,9 @@ const getHighlightedText = (text, styles) => (
   <Text style={styles.stepDescriptionHighlight}>{text}</Text>
 )
 
-export const getStepDescriptionWithHighlights = (step, styles) => {
+export const getStepDescriptionWithHighlights = (step, styles, drinkAmount) => {
   if (step.title === constants.STEP_ADD_INGREDIENTS) {
-    let ingredientDescription = getIngredientsList(step)
+    let ingredientDescription = getIngredientsList(step, drinkAmount)
     return (
       <Text style={styles.stepDescriptionBase}>
         {'Add '}

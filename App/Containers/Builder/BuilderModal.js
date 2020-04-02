@@ -149,6 +149,7 @@ class BuilderModal extends Component {
         visibleModal={visibleModal}
         onCloseClick={this.onModalCloseClick}
         type={constants.MODAL_TYPE_BOTTOM}
+        darkMode={darkMode}
       >
         <ModalContentBottom
           modalText={modalText}

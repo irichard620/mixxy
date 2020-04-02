@@ -1,5 +1,5 @@
 import uuidv4 from 'uuid/v4'
-import { Step } from './Step'
+import { getStepTotalOunces, Step } from './Step'
 
 const camelcaseKeys = require('camelcase-keys')
 
@@ -39,4 +39,12 @@ export function Recipe(recipeObj) {
   recipe.status = recipeObj.status || 'ACTIVE'
 
   return recipe
+}
+
+export function getTotalOuncesForRecipe(recipe) {
+  let totalOunces = 0
+  for (let i = 0; i < recipe.steps.length; i++) {
+    totalOunces += getStepTotalOunces(recipe.steps[i])
+  }
+  return Math.round(totalOunces * 10) / 10
 }

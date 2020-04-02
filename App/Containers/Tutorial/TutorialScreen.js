@@ -179,6 +179,19 @@ class TutorialScreen extends React.Component {
     }
   }
 
+  reduceDrinkQuantity = () => {
+    const { drinkAmount } = this.state
+    if (drinkAmount <= 1) {
+      return
+    }
+    this.setState({ drinkAmount: drinkAmount - 1 })
+  }
+
+  increaseDrinkQuantity = () => {
+    const { drinkAmount } = this.state
+    this.setState({ drinkAmount: drinkAmount + 1 })
+  }
+
   render() {
     const { darkMode, recipes } = this.props;
     const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal } = this.state;
@@ -234,10 +247,16 @@ class TutorialScreen extends React.Component {
           onFavoriteClick={this.onFavoriteClick}
         />
         {step === -1 && (
-          <TutorialHome recipe={recipe} darkMode={darkMode} drinkAmount={drinkAmount} />
+          <TutorialHome
+            recipe={recipe}
+            darkMode={darkMode}
+            drinkAmount={drinkAmount}
+            reduceDrinkQuantity={this.reduceDrinkQuantity}
+            increaseDrinkQuantity={this.increaseDrinkQuantity}
+          />
         )}
         {step !== -1 && (
-          <TutorialSteps recipe={recipe} step={step} darkMode={darkMode} />
+          <TutorialSteps recipe={recipe} step={step} darkMode={darkMode} drinkAmount={drinkAmount} />
         )}
         <View style={tutorialStyles.gradientContainer}>
           <LinearGradient
@@ -279,6 +298,7 @@ class TutorialScreen extends React.Component {
           visibleModal={visibleModal}
           onCloseClick={this.onCloseModalClick}
           type={modalType}
+          darkMode={darkMode}
         >
           {modalType === constants.MODAL_TYPE_BOTTOM
           && (

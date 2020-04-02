@@ -30,8 +30,8 @@ class IngredientsScreen extends React.Component {
       selectedVessel: '',
       // Ingredient select
       wholeAmount: '0',
-      fractionAmount: '0',
-      amountType: 'Ounces',
+      fractionAmount: '',
+      amountType: 'Ounce',
       brand: '',
       // Modal for custom
       visibleModal: false,
@@ -109,9 +109,25 @@ class IngredientsScreen extends React.Component {
         })
       }
     } else if (step === 1) {
+      if (selectedIngredients.length === 0) {
+        Alert.alert('No ingredients specified', 'Must add ingredients for this step.', [
+          {
+            text: 'OK',
+          },
+        ])
+        return
+      }
       params.ingredientSaveCallback(params.stepType, selectedVessel, selectedIngredients, params.stepIdx)
       this.onBackScreenClick()
     } else {
+      if (fractionAmount === '' && wholeAmount === '0') {
+        Alert.alert('No amount added', 'Must add non-zero amount for ingredient.', [
+          {
+            text: 'OK',
+          },
+        ])
+        return
+      }
       // Add to list of selected ingredients - saved item
       const newIngredient = ingredientModel.Ingredient({
         amount: wholeAmount,
@@ -271,7 +287,11 @@ class IngredientsScreen extends React.Component {
     const buttonWidth = (width - 16 - 16);
 
     const headerText = step !== 2 ? params.stepType : ''
-    const buttonText = step !== 2 ? params.stepType : 'Add Ingredient'
+    let buttonText = step !== 2 ? params.stepType : 'Add Ingredient'
+    if (step === 0 && params.stepType === constants.STEP_ADD_INGREDIENTS) {
+      buttonText = 'Continue'
+    }
+    const buttonDisabled = (step === 0 && params.stepType === constants.STEP_ADD_INGREDIENTS && selectedVessel === '')
 
     let ingredientsToUse = ingredients
     if (this.useExistingIngredients(params.stepType)) {
@@ -316,10 +336,12 @@ class IngredientsScreen extends React.Component {
           <ScrollView
             horizontal={true}
             style={ingredientStyles.horizontalScroll}
+            showsHorizontalScrollIndicator={false}
           >
             {selectedIngredients.map((ingredient, index) => (
               <SelectedItem key={`selected${index}`} title={ingredient.title} darkMode={darkMode} onClick={() => this.onSelectedIngredientClick(index)} />
             ))}
+            <View style={ingredientStyles.horizontalBuffer} />
           </ScrollView>
         )}
         <View style={ingredientStyles.buttonView}>
@@ -329,7 +351,7 @@ class IngredientsScreen extends React.Component {
             margin={[0, 16, 0, 16]}
             buttonWidth={buttonWidth}
             isPrimary
-            disabled={false}
+            disabled={buttonDisabled}
             darkMode={darkMode}
           />
         </View>
@@ -337,6 +359,7 @@ class IngredientsScreen extends React.Component {
           visibleModal={visibleModal}
           onCloseClick={this.onModalCloseClick}
           type={constants.MODAL_TYPE_BOTTOM}
+          darkMode={darkMode}
         >
           <ModalContentBottom
             title={constants.ADD_CUSTOM_INGREDIENT}
