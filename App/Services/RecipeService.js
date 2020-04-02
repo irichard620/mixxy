@@ -93,9 +93,41 @@ function deleteRecipe(params) {
   })
 }
 
+function favoriteRecipe(params) {
+  const recipeId = params.recipeId
+  return storage.getItem('recipes').then((recipes) => {
+    const r = recipes ? JSON.parse(recipes) : []
+    for (let i = 0; i < r.length; i += 1) {
+      if (r[i].recipeId === recipeId) {
+        r[i].favorited = true
+        break
+      }
+    }
+    storage.setItem('recipes', JSON.stringify(r))
+    return r
+  })
+}
+
+function unfavoriteRecipe(params) {
+  const recipeId = params.recipeId
+  return storage.getItem('recipes').then((recipes) => {
+    const r = recipes ? JSON.parse(recipes) : []
+    for (let i = 0; i < r.length; i += 1) {
+      if (r[i].recipeId === recipeId) {
+        r[i].favorited = false
+        break
+      }
+    }
+    storage.setItem('recipes', JSON.stringify(r))
+    return r
+  })
+}
+
 export const recipeService = {
   persistRecipe,
   fetchRecipes,
   fetchRemoteRecipes,
   deleteRecipe,
+  favoriteRecipe,
+  unfavoriteRecipe,
 }

@@ -15,7 +15,18 @@ import Colors from '../Theme/Colors'
 import Images from '../Theme/Images'
 
 export default function TopHeader(props) {
-  const { title, onClose, showSeparator, useArrow, darkMode, rightButtonTitle, onRightButtonPress } = props
+  const {
+    title,
+    onClose,
+    showSeparator,
+    useArrow,
+    darkMode,
+    rightButtonTitle,
+    onRightButtonPress,
+    showFavorited,
+    favorited,
+    onFavoriteClick,
+  } = props
 
   const styles = getStylesheet(darkMode)
   const headerStyles = getTopHeaderStylesheet(darkMode)
@@ -45,6 +56,12 @@ export default function TopHeader(props) {
             onPress={onRightButtonPress}
           />
         )}
+        {showFavorited && (
+          <TouchableOpacity style={headerStyles.favoriteOutline} onPress={onFavoriteClick}>
+            {favorited && <Image style={headerStyles.favorite} source={Images.favoriteFull} />}
+            {!favorited && <Image style={headerStyles.favorite} source={Images.favoriteEmpty} />}
+          </TouchableOpacity>
+        )}
       </View>
       {showSeparator && <View style={styles.divider} />}
     </SafeAreaView>
@@ -56,6 +73,19 @@ function getTopHeaderStylesheet(darkMode) {
     close: {
       height: 20,
       width: 20,
+    },
+    favorite: {
+      height: 15,
+      resizeMode: 'contain',
+    },
+    favoriteOutline: {
+      alignItems: 'center',
+      borderColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      borderRadius: 18,
+      borderWidth: 0.5,
+      height: 36,
+      justifyContent: 'center',
+      width: 36,
     },
     header: {
       alignItems: 'center',

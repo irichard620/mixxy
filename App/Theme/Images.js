@@ -31,4 +31,6 @@ export default {
   topHeaderXDark: require('../Assets/Images/buttons/TopBar_X_LIGHT.png'),
   topHeaderBackLight: require('../Assets/Images/buttons/TopBar_Back_DARK.png'),
   topHeaderBackDark: require('../Assets/Images/buttons/TopBar_Back_LIGHT.png'),
+  favoriteEmpty: require('../Assets/Images/buttons/Favorite_Empty.png'),
+  favoriteFull: require('../Assets/Images/buttons/Favorite_Full.png'),
 }

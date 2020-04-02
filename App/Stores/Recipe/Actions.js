@@ -32,6 +32,11 @@ const { Types, Creators } = createActions({
   deleteRecipeLoading: null,
   // recipe deleted
   deleteRecipeSuccess: ['recipes'],
+
+  // Favorite
+  favoriteRecipe: ['recipeId'],
+  // Unfavorite
+  unfavoriteRecipe: ['recipeId'],
 })
 
 export const RecipeTypes = Types

@@ -169,6 +169,16 @@ class TutorialScreen extends React.Component {
     }
   };
 
+  onFavoriteClick = () => {
+    const { favoriteRecipe, unfavoriteRecipe } = this.props
+    const { recipe } = this.state
+    if (recipe.favorited) {
+      unfavoriteRecipe(recipe.recipeId)
+    } else {
+      favoriteRecipe(recipe.recipeId)
+    }
+  }
+
   render() {
     const { darkMode, recipes } = this.props;
     const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal } = this.state;
@@ -214,7 +224,15 @@ class TutorialScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.outerContainer}>
-        <TopHeader title={headerTitle} onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
+        <TopHeader
+          title={headerTitle}
+          onClose={this.onBackScreenClick}
+          showSeparator={false}
+          darkMode={darkMode}
+          showFavorited
+          favorited={recipe.favorited}
+          onFavoriteClick={this.onFavoriteClick}
+        />
         {step === -1 && (
           <TutorialHome recipe={recipe} darkMode={darkMode} drinkAmount={drinkAmount} />
         )}
@@ -293,6 +311,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave)),
   deleteRecipe: (recipeId) => dispatch(RecipeActions.deleteRecipe(recipeId)),
+  favoriteRecipe: (recipeId) => dispatch(RecipeActions.favoriteRecipe(recipeId)),
+  unfavoriteRecipe: (recipeId) => dispatch(RecipeActions.unfavoriteRecipe(recipeId)),
 })
 
 export default withNavigationFocus(connect(

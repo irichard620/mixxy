@@ -45,3 +45,19 @@ export function* deleteRecipe(params) {
   const recipes = yield call(recipeService.deleteRecipe, params)
   yield put(RecipeActions.deleteRecipeSuccess(recipes))
 }
+
+export function* favoriteRecipe(params) {
+  yield put(RecipeActions.persistRecipeLoading())
+
+  // Save recipe locally
+  const recipes = yield call(recipeService.favoriteRecipe, params)
+  yield put(RecipeActions.persistRecipeSuccess(recipes))
+}
+
+export function* unfavoriteRecipe(params) {
+  yield put(RecipeActions.persistRecipeLoading())
+
+  // Save recipe locally
+  const recipes = yield call(recipeService.unfavoriteRecipe, params)
+  yield put(RecipeActions.persistRecipeSuccess(recipes))
+}
