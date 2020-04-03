@@ -49,11 +49,11 @@ class BuilderModal extends Component {
     } if (modalType === constants.BUILDER_DESCRIPTION_DETAIL) {
       return 'Recipe Description';
     } if (modalType === constants.STEP_STIR) {
-      return 'Seconds to Stir'
+      return 'Stir until...'
     } if (modalType === constants.STEP_BLEND) {
       return 'What is the final consistency desired?'
     } if (modalType === constants.STEP_SHAKE) {
-      return 'Seconds to Shake'
+      return 'Shake until...'
     }
     return '';
   };
@@ -100,7 +100,7 @@ class BuilderModal extends Component {
     let isListModal = false;
     let options = [];
     let titleToDisplay = '';
-    let charLimit = 4;
+    let charLimit = 100;
     let hasSave = true;
     if (modalType === constants.MODAL_ADD_STEP) {
       titleToDisplay = 'Step Options';

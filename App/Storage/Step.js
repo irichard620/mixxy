@@ -60,9 +60,9 @@ export function getStepShortDescription(step) {
     }
     return ingredientDescription
   } else if (step.title === constants.STEP_STIR) {
-    return `Stir the drink for about ${step.properties.seconds} seconds`
+    return `Stir the drink until ${step.properties.prompt}`
   } else if (step.title === constants.STEP_SHAKE) {
-    return `Cover and shake the cocktail shaker for about ${step.properties.seconds} seconds`
+    return `Cover and shake the cocktail shaker until ${step.properties.prompt}`
   }
 
   return ''
@@ -86,11 +86,11 @@ export function getIngredientsList(step, drinkAmount) {
 export function getStepProperties(modalType, modalText) {
   // Get properties
   if (modalType === constants.STEP_STIR) {
-    return { seconds: modalText }
+    return { prompt: modalText }
   } else if (modalType === constants.STEP_BLEND) {
     return { consistency: modalText }
   } else if (modalType === constants.STEP_SHAKE) {
-    return { seconds: modalText }
+    return { prompt: modalText }
   }
   return {}
 }
@@ -98,17 +98,17 @@ export function getStepProperties(modalType, modalText) {
 export function getModalTextProperty(step) {
   const { title, properties } = step
   if (title === constants.STEP_STIR) {
-    return properties.seconds
+    return properties.prompt
   } else if (title === constants.STEP_BLEND) {
     return properties.consistency
   } else if (title === constants.STEP_SHAKE) {
-    return properties.seconds
+    return properties.prompt
   }
   return ''
 }
 
 const getHighlightedText = (text, styles) => (
-  <Text style={styles.stepDescriptionHighlight}>{text}</Text>
+  <Text style={styles.stepDescriptionHighlight}>{text.toLowerCase()}</Text>
 )
 
 export const getStepDescriptionWithHighlights = (step, styles, drinkAmount) => {
@@ -152,9 +152,9 @@ export const getStepDescriptionWithHighlights = (step, styles, drinkAmount) => {
   } else if (step.title === constants.STEP_STIR) {
     return (
       <Text style={styles.stepDescriptionBase}>
-        {'Stir for '}
-        {getHighlightedText(step.properties.seconds, styles)}
-        {' seconds.'}
+        {'Stir until '}
+        {getHighlightedText(step.properties.prompt, styles)}
+        {'.'}
       </Text>
     )
   } else if (step.title === constants.STEP_BLEND) {
@@ -168,9 +168,9 @@ export const getStepDescriptionWithHighlights = (step, styles, drinkAmount) => {
   } else if (step.title === constants.STEP_SHAKE) {
     return (
       <Text style={styles.stepDescriptionBase}>
-        {'Cover and shake for '}
-        {getHighlightedText(step.properties.seconds, styles)}
-        {' seconds.'}
+        {'Cover and shake until '}
+        {getHighlightedText(step.properties.prompt, styles)}
+        {'.'}
       </Text>
     )
   } else if (step.title === constants.STEP_GARNISH) {

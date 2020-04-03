@@ -131,11 +131,11 @@ export const CLASSIFICATION_NON_ALCOHOLIC = 'Non-alcoholic'
 export const CLASSIFICATION_CULINARY = 'Culinary'
 export const CLASSIFICATION_ICE = 'Ice'
 export const classificationToAmountTypes = {
-  [CLASSIFICATION_ALCOHOLIC]: amountTypesLiquid,
-  [CLASSIFICATION_NON_ALCOHOLIC]: amountTypesLiquid,
-  [CLASSIFICATION_CULINARY]: amountTypesNonLiquid,
-  [CLASSIFICATION_ICE]: [AMOUNT_TYPE_PIECE],
-  '': allAmountTypes,
+  [CLASSIFICATION_ALCOHOLIC]: ['', ...amountTypesLiquid],
+  [CLASSIFICATION_NON_ALCOHOLIC]: ['', ...amountTypesLiquid],
+  [CLASSIFICATION_CULINARY]: ['', ...amountTypesNonLiquid],
+  [CLASSIFICATION_ICE]: ['', AMOUNT_TYPE_PIECE],
+  '': ['', ...allAmountTypes],
 }
 
 // Drink types

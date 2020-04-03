@@ -29,6 +29,8 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_PIECE]: ' pc',
   [constants.AMOUNT_TYPE_PINCH]: ' pinch',
   [constants.AMOUNT_TYPE_SLICE]: ' slice',
+  [constants.AMOUNT_TYPE_SPRIG]: ' sprig',
+  [constants.AMOUNT_TYPE_GRIND]: ' grind',
 }
 
 const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
@@ -41,6 +43,8 @@ const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
   [constants.AMOUNT_TYPE_PIECE]: 0,
   [constants.AMOUNT_TYPE_PINCH]: 0,
   [constants.AMOUNT_TYPE_SLICE]: 0,
+  [constants.AMOUNT_TYPE_SPRIG]: 0,
+  [constants.AMOUNT_TYPE_GRIND]: 0,
 }
 
 export function getOunceAmountFromIngredient(ingredient) {

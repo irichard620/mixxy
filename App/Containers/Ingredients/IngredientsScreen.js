@@ -31,7 +31,7 @@ class IngredientsScreen extends React.Component {
       // Ingredient select
       wholeAmount: '0',
       fractionAmount: '',
-      amountType: 'Ounce',
+      amountType: '',
       brand: '',
       // Modal for custom
       visibleModal: false,
@@ -85,7 +85,7 @@ class IngredientsScreen extends React.Component {
         step: 1,
         wholeAmount: '0',
         fractionAmount: '0',
-        amountType: 'Ounces',
+        amountType: '',
         brand: '',
       })
     } else {
@@ -143,7 +143,7 @@ class IngredientsScreen extends React.Component {
         selectedIngredients: selectedIngredients,
         wholeAmount: '0',
         fractionAmount: '0',
-        amountType: 'Ounces',
+        amountType: '',
         brand: '',
       })
     }
