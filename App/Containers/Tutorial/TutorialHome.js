@@ -20,7 +20,21 @@ class TutorialHome extends Component {
   }
 
   getDrinkIcon = (iconStyle) => {
-    return (<Image style={iconStyle} source={Images.logo} />);
+    const { recipe } = this.props
+    if (recipe.servingGlass === constants.SERVING_GLASS_PITCHER) {
+      return (<Image style={iconStyle} source={Images.glassPitcher} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_SHOT) {
+      return (<Image style={iconStyle} source={Images.glassShot} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_MARGARITA) {
+      return (<Image style={iconStyle} source={Images.glassMarg} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_FLUTE) {
+      return (<Image style={iconStyle} source={Images.glassFlute} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_TALL) {
+      return (<Image style={iconStyle} source={Images.glassTall} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_COCKTAIL) {
+      return (<Image style={iconStyle} source={Images.glassMartini} />)
+    }
+    return (<Image style={iconStyle} source={Images.glassShort} />)
   }
 
   onItemClick = (index) => {
@@ -54,23 +68,22 @@ class TutorialHome extends Component {
     if (!recipe || !('steps' in recipe)) {
       return [];
     }
-    const equipment = new Set();
+    const equipmentSet = new Set();
     for (let i = 0; i < recipe.steps.length; i++) {
       const step = recipe.steps[i];
-      if (step.title === constants.STEP_ADD_INGREDIENTS) {
-        equipment.add({
-          title: step.vessel
-        });
-      } else if (step.title === constants.STEP_STRAIN) {
-        equipment.add({
-          title: step.vessel
-        });
+      if ((step.title === constants.STEP_ADD_INGREDIENTS || step.title === constants.STEP_STRAIN) && step.vessel !== constants.INGREDIENTS_SERVING_GLASS) {
+        equipmentSet.add(step.vessel);
       }
     }
-    equipment.add({
-      title: recipe.servingGlass
-    });
-    return Array.from(equipment);
+    equipmentSet.add(recipe.servingGlass)
+    const equipmentArray = Array.from(equipmentSet)
+    const equipment = []
+    for (let i = 0; i < equipmentArray.length; i++) {
+      equipment.push({
+        title: equipmentArray[i]
+      })
+    }
+    return equipment
   }
 
   render() {

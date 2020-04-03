@@ -242,7 +242,7 @@ class TutorialScreen extends React.Component {
           onClose={this.onBackScreenClick}
           showSeparator={false}
           darkMode={darkMode}
-          showFavorited
+          showFavorited={step === -1}
           favorited={recipe.favorited}
           onFavoriteClick={this.onFavoriteClick}
         />

@@ -24,6 +24,11 @@ export default function Detail(props) {
     marginLeft: 16,
   }
 
+  let arrowIcon = Images.arrowLight
+  if (darkMode) {
+    arrowIcon = Images.arrowDark
+  }
+
   return (
     <TouchableOpacity onPress={() => onDetailClick(title)} disabled={disabled}>
       <View style={detailStyles.outline}>
@@ -32,7 +37,7 @@ export default function Detail(props) {
           {descriptionValue !== '' && (
             <Text style={detailStyles.description}>{descriptionValue}</Text>
           )}
-          {showArrow && <Image style={detailStyles.icon} source={Images.detailArrow} />}
+          {showArrow && <Image style={detailStyles.icon} source={arrowIcon} />}
         </View>
       </View>
       {showSeparator && <View style={[styles.divider, marginLeftStyle]} />}

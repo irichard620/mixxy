@@ -26,6 +26,11 @@ export default function ListItem(props) {
     titleColorStyle.color = Colors.blue1
   }
 
+  let arrowIcon = Images.arrowLight
+  if (darkMode) {
+    arrowIcon = Images.arrowDark
+  }
+
   return (
     <TouchableOpacity
       style={[listItemStyles.container, backgroundColorStyle]}
@@ -37,7 +42,7 @@ export default function ListItem(props) {
         {subtitle && subtitle !== '' && (
           <Text style={listItemStyles.subtitleStyle}>{subtitle}</Text>
         )}
-        {showArrow && <Image style={listItemStyles.icon} source={Images.detailArrow} />}
+        {showArrow && <Image style={listItemStyles.icon} source={arrowIcon} />}
       </View>
       <View style={styles.divider} />
     </TouchableOpacity>
@@ -71,8 +76,7 @@ function getListItemStylesheet(darkMode) {
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingRight: 16,
-      paddingTop: 15,
-      paddingBottom: 15,
+      height: 48,
     },
     titleStyle: {
       ...Fonts.body1,

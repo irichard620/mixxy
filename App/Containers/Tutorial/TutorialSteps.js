@@ -6,6 +6,8 @@ import Pagination from '../../Components/Pagination';
 import * as stepModel from '../../Storage/Step';
 import Images from '../../Theme/Images'
 import Step from './Step'
+import getStylesheet from '../../Theme/ApplicationStyles'
+import Colors from '../../Theme/Colors'
 
 class TutorialSteps extends Component {
   getIcon = () => {
@@ -43,13 +45,19 @@ class TutorialSteps extends Component {
   };
 
   render() {
-    const { recipe, step } = this.props;
+    const { recipe, step, darkMode } = this.props;
     const { steps } = recipe;
+
+    const styles = getStylesheet(darkMode)
 
     const { height } = Dimensions.get('window');
     const iconHeight = {
       height: height * 0.32,
     };
+
+    const marginTopStyle = {
+      marginTop: 32,
+    }
 
     return (
       <ScrollView
@@ -63,9 +71,10 @@ class TutorialSteps extends Component {
         <Pagination
           total={steps.length}
           index={step}
-          activeColor="#1D5E9E"
+          activeColor={Colors.blue1}
+          darkMode={darkMode}
         />
-        <View style={styles.topSeparator} />
+        <View style={[marginTopStyle, styles.divider]} />
         {steps && steps.length > 0 && this.renderSteps()}
       </ScrollView>
     );
@@ -87,18 +96,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: '100%',
-    resizeMode: 'contain'
-  },
-  topSeparator: {
-    height: 1,
-    width: '100%',
-    backgroundColor: '#F1F3F6',
-    marginTop: 32,
-  },
-  mainSeparator: {
-    height: 1,
-    width: '100%',
-    backgroundColor: '#F1F3F6',
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   brewSteps: {
     width: '100%'

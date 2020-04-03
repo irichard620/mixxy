@@ -23,12 +23,12 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_OZ]: 'oz',
   [constants.AMOUNT_TYPE_TSP]: 'tsp',
   [constants.AMOUNT_TYPE_TBSP]: 'Tbs',
-  [constants.AMOUNT_TYPE_CUP]: 'cup',
-  [constants.AMOUNT_TYPE_DASH]: 'dash',
-  [constants.AMOUNT_TYPE_DROP]: 'drop',
-  [constants.AMOUNT_TYPE_PIECE]: 'pc',
-  [constants.AMOUNT_TYPE_PINCH]: 'pinch',
-  [constants.AMOUNT_TYPE_SLICE]: 'slice',
+  [constants.AMOUNT_TYPE_CUP]: ' cup',
+  [constants.AMOUNT_TYPE_DASH]: ' dash',
+  [constants.AMOUNT_TYPE_DROP]: ' drop',
+  [constants.AMOUNT_TYPE_PIECE]: ' pc',
+  [constants.AMOUNT_TYPE_PINCH]: ' pinch',
+  [constants.AMOUNT_TYPE_SLICE]: ' slice',
 }
 
 const AMOUNT_TYPE_OUNCE_MULTIPLIER = {

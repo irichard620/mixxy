@@ -4,23 +4,27 @@ import Colors from '../../Theme/Colors'
 import Fonts from '../../Theme/Fonts'
 import { getStepDescriptionWithHighlights } from '../../Storage/Step'
 import { PropTypes } from 'prop-types'
+import getStylesheet from '../../Theme/ApplicationStyles'
 
 export default function Step(props) {
   const { step, activeStep, darkMode, drinkAmount } = props
-
+  const styles = getStylesheet(darkMode)
   const stepStyle = getStepStylesheet(darkMode)
   const titleColor = {
-    color: '#2D8CD3',
+    color: Colors.blue1,
   }
   if (!activeStep) {
-    titleColor.color = '#898989'
+    titleColor.color = darkMode ? Colors.text2Dark : Colors.text2Light
+  }
+  const marginTopStyle = {
+    marginTop: 16
   }
 
   return (
     <View style={stepStyle.outline}>
       <Text style={[stepStyle.title, titleColor]}>{step.title}</Text>
       {activeStep && getStepDescriptionWithHighlights(step, stepStyle, drinkAmount)}
-      <View style={stepStyle.mainSeparator} />
+      <View style={[marginTopStyle, styles.divider]} />
     </View>
   )
 }
@@ -39,12 +43,6 @@ function getStepStylesheet(useDarkMode) {
       fontSize: 16,
       marginTop: 4,
       textAlign: 'center',
-    },
-    mainSeparator: {
-      backgroundColor: '#F1F3F6',
-      height: 1,
-      marginTop: 16,
-      width: '100%',
     },
     outline: {
       alignItems: 'center',
