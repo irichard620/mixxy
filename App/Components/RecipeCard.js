@@ -5,16 +5,35 @@ import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import Helpers from '../Theme/Helpers'
 import Images from '../Theme/Images'
+import * as constants from '../Config/constants'
 
 export default function RecipeCard(props) {
-  const { recipeName, recipeType, disabled, onCardClick, darkMode } = props
+  const { recipeName, recipeType, disabled, onCardClick, darkMode, servingGlass } = props
   const cardStyles = getCardStylesheet(darkMode)
+
+  const getDrinkIcon = () => {
+    if (servingGlass === constants.SERVING_GLASS_PITCHER) {
+      return Images.iconPitcher
+    } else if (servingGlass === constants.SERVING_GLASS_SHOT) {
+      return Images.iconShot
+    } else if (servingGlass === constants.SERVING_GLASS_MARGARITA) {
+      return Images.iconMarg
+    } else if (servingGlass === constants.SERVING_GLASS_FLUTE) {
+      return Images.iconFlute
+    } else if (servingGlass === constants.SERVING_GLASS_TALL) {
+      return Images.iconTall
+    } else if (servingGlass === constants.SERVING_GLASS_COCKTAIL) {
+      return Images.iconMartini
+    }
+    return Images.iconShort
+  }
+
   return (
     <TouchableWithoutFeedback onPress={onCardClick} disabled={disabled}>
       <View style={cardStyles.cardOutline}>
         <View style={Helpers.rowStart}>
           <View style={cardStyles.imageContainer}>
-            <Image style={cardStyles.image} source={Images.logo} />
+            <Image style={cardStyles.image} source={getDrinkIcon()} />
           </View>
           <View style={Helpers.fillColLeft}>
             <Text style={cardStyles.recipeName}>{recipeName}</Text>
@@ -61,8 +80,9 @@ function getCardStylesheet(darkMode) {
       width: 48,
     },
     image: {
-      height: 24,
-      width: 24,
+      height: 48,
+      width: 48,
+      borderRadius: 10,
     },
     recipeName: {
       ...Fonts.body1,

@@ -4,13 +4,11 @@ import getStylesheet from '../../Theme/ApplicationStyles'
 import { Alert, Dimensions, Keyboard, ScrollView, View } from 'react-native'
 import TopHeader from '../../Components/TopHeader'
 import ButtonLarge from '../../Components/ButtonLarge'
-import IngredientActions from '../../Stores/Ingredient/Actions'
 import { connect } from 'react-redux'
 import NavigationService from '../../Services/NavigationService'
 import IngredientsVessel from './IngredientsVessel'
 import IngredientsHome from './IngredientsHome'
 import IngredientSelect from './IngredientSelect'
-import { PropTypes } from 'prop-types'
 import getIngredientsStylesheet from './IngredientsScreenStyle'
 import * as ingredientModel from '../../Storage/Ingredient'
 import SelectedItem from '../../Components/SelectedItem'
@@ -48,11 +46,6 @@ class IngredientsScreen extends React.Component {
       const passedStep = params.step
       selectedVessel = passedStep.vessel
       selectedIngredients = passedStep.ingredients
-    }
-
-    // Fetch ingredients if needed
-    if (this.isServingGlassStep(params.stepType)) {
-      this.props.fetchIngredients()
     }
 
     // Get step to set
@@ -102,8 +95,6 @@ class IngredientsScreen extends React.Component {
         params.ingredientSaveCallback(params.stepType, selectedVessel, selectedIngredients, params.stepIdx)
         this.onBackScreenClick()
       } else {
-        // Dispatch ingredients load
-        this.props.fetchIngredients()
         this.setState({
           step: step + 1
         })
@@ -122,6 +113,13 @@ class IngredientsScreen extends React.Component {
     } else {
       if (fractionAmount === '' && wholeAmount === '0') {
         Alert.alert('No amount added', 'Must add non-zero amount for ingredient.', [
+          {
+            text: 'OK',
+          },
+        ])
+        return
+      } else if (amountType === '') {
+        Alert.alert('No amount type', 'Must add amount type for ingredient.', [
           {
             text: 'OK',
           },
@@ -376,10 +374,6 @@ class IngredientsScreen extends React.Component {
   }
 }
 
-IngredientsScreen.propTypes = {
-  fetchIngredients: PropTypes.func,
-}
-
 const mapStateToProps = (state) => ({
   ingredients: state.ingredients.ingredients,
   ingredientsIsLoading: state.ingredients.ingredientsIsLoading,
@@ -387,7 +381,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchIngredients: () => dispatch(IngredientActions.fetchIngredients()),
+  // fetchIngredients: () => dispatch(IngredientActions.fetchIngredients()),
 })
 
 export default connect(

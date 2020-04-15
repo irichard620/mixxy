@@ -60,6 +60,7 @@ class HomeScreen extends React.Component {
         key={item.recipeId}
         recipeName={item.recipeName}
         recipeType={item.recipeType}
+        servingGlass={item.servingGlass}
         disabled={false}
         onCardClick={() => this.onCardClick(idx, isFavorite)}
         darkMode={this.props.darkMode}

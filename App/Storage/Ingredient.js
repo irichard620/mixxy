@@ -20,9 +20,9 @@ export function Ingredient(ingredientObj) {
 }
 
 const AMOUNT_TYPE_ABBREVIATIONS = {
-  [constants.AMOUNT_TYPE_OZ]: 'oz',
-  [constants.AMOUNT_TYPE_TSP]: 'tsp',
-  [constants.AMOUNT_TYPE_TBSP]: 'Tbs',
+  [constants.AMOUNT_TYPE_OZ]: ' oz',
+  [constants.AMOUNT_TYPE_TSP]: ' tsp',
+  [constants.AMOUNT_TYPE_TBSP]: ' Tbs',
   [constants.AMOUNT_TYPE_CUP]: ' cup',
   [constants.AMOUNT_TYPE_DASH]: ' dash',
   [constants.AMOUNT_TYPE_DROP]: ' drop',
@@ -31,6 +31,22 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_SLICE]: ' slice',
   [constants.AMOUNT_TYPE_SPRIG]: ' sprig',
   [constants.AMOUNT_TYPE_GRIND]: ' grind',
+  [constants.AMOUNT_TYPE_LEAF]: ' leaf',
+}
+
+const AMOUNT_TYPE_ABBREVIATIONS_PLURAL = {
+  [constants.AMOUNT_TYPE_OZ]: ' oz',
+  [constants.AMOUNT_TYPE_TSP]: ' tsp',
+  [constants.AMOUNT_TYPE_TBSP]: ' Tbs',
+  [constants.AMOUNT_TYPE_CUP]: ' cups',
+  [constants.AMOUNT_TYPE_DASH]: ' dashes',
+  [constants.AMOUNT_TYPE_DROP]: ' drops',
+  [constants.AMOUNT_TYPE_PIECE]: ' pcs',
+  [constants.AMOUNT_TYPE_PINCH]: ' pinches',
+  [constants.AMOUNT_TYPE_SLICE]: ' slices',
+  [constants.AMOUNT_TYPE_SPRIG]: ' sprigs',
+  [constants.AMOUNT_TYPE_GRIND]: ' grinds',
+  [constants.AMOUNT_TYPE_LEAF]: ' leafs',
 }
 
 const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
@@ -45,6 +61,7 @@ const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
   [constants.AMOUNT_TYPE_SLICE]: 0,
   [constants.AMOUNT_TYPE_SPRIG]: 0,
   [constants.AMOUNT_TYPE_GRIND]: 0,
+  [constants.AMOUNT_TYPE_LEAF]: 0,
 }
 
 export function getOunceAmountFromIngredient(ingredient) {
@@ -64,17 +81,25 @@ export function getOunceAmountFromIngredient(ingredient) {
 }
 
 export function getIngredientAmount(ingredient, drinkAmount) {
-  let baseFraction = new Fraction(parseInt(ingredient.amount), 1)
+  let isPlural = false
+  let wholeNumberAmount = parseInt(ingredient.amount)
+  if (wholeNumberAmount > 1) isPlural = true
+  let baseFraction = new Fraction(wholeNumberAmount, 1)
   if (ingredient.fractionalAmount !== '') {
     const splits = ingredient.fractionalAmount.split('/')
     if (splits.length === 2) {
       baseFraction = baseFraction.add(new Fraction(parseInt(splits[0]), parseInt(splits[1])))
+      if (wholeNumberAmount === 1) isPlural = true
     }
   }
   if (drinkAmount) {
     baseFraction = baseFraction.multiply(new Fraction(drinkAmount, 1))
   }
-  return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`
+  if (isPlural) {
+    return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS_PLURAL[ingredient.amountType]}`
+  } else {
+    return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`
+  }
 }
 
 export function getIngredientShortDescription(ingredient, drinkAmount) {

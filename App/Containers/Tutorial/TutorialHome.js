@@ -109,6 +109,11 @@ class TutorialHome extends Component {
     // Total recipe amount
     const totalRecipeOunces = Math.round(recipe.totalOunces * drinkAmount * 10) / 10
 
+    const dividerStyle = {
+      marginTop: -16.5,
+      marginBottom: 16,
+    }
+
     return (
       <ScrollView style={tutorialStyles.scrollView}>
         <View style={tutorialStyles.iconView}>
@@ -133,6 +138,7 @@ class TutorialHome extends Component {
         </View>
         <View style={styles.thickDivider} />
         <TutorialHomeMenuButtons selected={selected} darkMode={darkMode} onItemClick={this.onItemClick} isDescription={isDescription} />
+        <View style={[styles.divider, dividerStyle]} />
         {selected === 0 && isDescription && <Text style={tutorialStyles.descriptionText}>{recipe.recipeDescription}</Text>}
         {isIngredients && options.map((option) => (
           <ListItem

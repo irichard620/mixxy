@@ -97,6 +97,7 @@ class SponsorScreen extends React.Component {
             <RecipeCard
               recipeName={recipe.recipeName}
               recipeType={recipe.recipeType}
+              servingGlass={recipe.servingGlass}
               disabled={false}
               onCardClick={() => this.onCardClick(idx)}
               darkMode={darkMode}

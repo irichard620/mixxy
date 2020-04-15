@@ -19,6 +19,7 @@ import BuilderModal from './BuilderModal'
 import * as stepModel from '../../Storage/Step';
 import * as recipeModel from '../../Storage/Recipe'
 import RecipeActions from '../../Stores/Recipe/Actions'
+import IngredientActions from '../../Stores/Ingredient/Actions'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -43,8 +44,9 @@ class BuilderScreen extends React.Component {
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, fetchIngredients } = this.props;
     const recipe = navigation.getParam('recipe', {});
+    fetchIngredients()
     if (Object.keys(recipe).length !== 0) {
       this.setState({
         step: 3,
@@ -624,10 +626,14 @@ class BuilderScreen extends React.Component {
 const mapStateToProps = (state) => ({
   persistRecipeIsLoading: state.recipes.persistRecipeIsLoading,
   persistRecipeErrorMessage: state.recipes.persistRecipeErrorMessage,
+  ingredients: state.ingredients.ingredients,
+  ingredientsIsLoading: state.ingredients.ingredientsIsLoading,
+  ingredientsErrorMessage: state.ingredients.ingredientsErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave)),
+  fetchIngredients: () => dispatch(IngredientActions.fetchIngredients()),
 })
 
 export default connect(

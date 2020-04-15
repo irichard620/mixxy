@@ -10,8 +10,8 @@ export default {
   // Text colors
   text1Light: '#000000',
   text1Dark: '#ffffff',
-  text2Light: '#00000050',
-  text2Dark: '#ffffff50',
+  text2Light: '#00000065',
+  text2Dark: '#ffffff65',
   text3Light: '#00000030',
   text3Dark: '#ffffff30',
   text4Light: '#00000020',

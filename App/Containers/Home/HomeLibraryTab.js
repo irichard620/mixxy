@@ -46,6 +46,7 @@ function HomeLibraryTab(props) {
         <RecipeCard
           recipeName={item.recipeName}
           recipeType={item.recipeType}
+          servingGlass={item.servingGlass}
           onCardClick={(campaign) => {
             NavigationService.navigate('TutorialScreen', {
               recipe: item,

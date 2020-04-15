@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableWithoutFeedback, Dimensions } from 'react-native'
+import { View, StyleSheet, Text, TouchableWithoutFeedback, Dimensions, ScrollView } from 'react-native'
 import Colors from '../../Theme/Colors'
 import Fonts from '../../Theme/Fonts'
 import getStylesheet from '../../Theme/ApplicationStyles'
@@ -53,7 +53,6 @@ export default function TutorialHomeMenuButtons(props) {
           </TouchableWithoutFeedback>
         )
       })}
-      <View style={styles.divider} />
       <View style={[menuStyle.selectedButtonOutline, selectedButtonStyle]} />
     </View>
   )

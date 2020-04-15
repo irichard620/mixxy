@@ -41,4 +41,11 @@ export default {
   glassTall: require('../Assets/Images/glasses/Glass_Tall.png'),
   arrowDark: require('../Assets/Images/buttons/Arrow_Small_DARK.png'),
   arrowLight: require('../Assets/Images/buttons/Arrow_Small_LIGHT.png'),
+  iconFlute: require('../Assets/Images/glasses/Icon_Flute.png'),
+  iconMarg: require('../Assets/Images/glasses/Icon_Margarita.png'),
+  iconMartini: require('../Assets/Images/glasses/Icon_CocktailGlass.png'),
+  iconPitcher: require('../Assets/Images/glasses/Icon_Pitcher.png'),
+  iconShort: require('../Assets/Images/glasses/Icon_ShortGlass.png'),
+  iconShot: require('../Assets/Images/glasses/Icon_Shot.png'),
+  iconTall: require('../Assets/Images/glasses/Icon_TallGlass.png'),
 }
