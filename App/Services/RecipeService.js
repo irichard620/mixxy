@@ -2,6 +2,7 @@ import storage from 'redux-persist/lib/storage'
 import * as recipeModel from '../Storage/Recipe'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
+import snakeCaseKeys from 'snakecase-keys'
 import { Recipe } from '../Storage/Recipe'
 
 function persistRecipe(params) {
@@ -77,6 +78,48 @@ function fetchRemoteRecipes(params) {
     })
 }
 
+function fetchSharedRecipe(params) {
+  let url = `recipes/${params.recipeId}`
+  return defaultApiClient(url)
+    .get()
+    .then((response) => {
+      if (in200s(response.status)) {
+        return Recipe(camelcaseKeys(response.data))
+      }
+
+      return null
+    })
+    .catch((error) => {
+      console.log(error.response)
+      return null
+    })
+}
+
+function createSharedRecipe(params) {
+  // Snake case the whole payload
+  const recipe = snakeCaseKeys(params.recipe)
+  for (let i = 0; i < recipe.steps.length; i++) {
+    snakeCaseKeys(recipe.steps[i])
+    for (let j = 0; j < recipe.steps[i].ingredients; j++) {
+      snakeCaseKeys(recipe.steps[i].ingredients[j])
+    }
+  }
+
+  let url = `recipes/`
+  return defaultApiClient(url)
+    .put(recipe.recipe_id, recipe)
+    .then((response) => {
+      if (in200s(response.status)) {
+        return response.data
+      }
+
+      return null
+    })
+    .catch((error) => {
+      console.log(error.response)
+    })
+}
+
 function deleteRecipe(params) {
   const recipeId = params.recipeId
   return storage.getItem('recipes').then((recipes) => {
@@ -127,6 +170,8 @@ export const recipeService = {
   persistRecipe,
   fetchRecipes,
   fetchRemoteRecipes,
+  fetchSharedRecipe,
+  createSharedRecipe,
   deleteRecipe,
   favoriteRecipe,
   unfavoriteRecipe,

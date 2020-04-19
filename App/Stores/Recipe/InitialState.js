@@ -7,4 +7,9 @@ export const INITIAL_STATE = {
   fetchRemoteRecipesIsLoading: false,
   fetchRemoteRecipesErrorMessage: null,
   deleteRecipeIsLoading: false,
+  sharedRecipe: null,
+  fetchSharedRecipeIsLoading: false,
+  shareLink: null,
+  createSharedRecipeIsLoading: false,
+  createSharedRecipeErrorMessage: null,
 }

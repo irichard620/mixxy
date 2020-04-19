@@ -38,6 +38,27 @@ export function* fetchRemoteRecipes(params) {
   }
 }
 
+export function* fetchSharedRecipe(params) {
+  yield put(RecipeActions.fetchSharedRecipeLoading())
+  // Fetch recipe from an API
+  const recipe = yield call(recipeService.fetchSharedRecipe, params)
+  yield put(RecipeActions.fetchSharedRecipeSuccess(recipe))
+}
+
+export function* createSharedRecipe(params) {
+  yield put(RecipeActions.createSharedRecipeLoading())
+
+  // Create recipe from an API
+  const shareLink = yield call(recipeService.createSharedRecipe, params)
+  if (shareLink) {
+    yield put(RecipeActions.createSharedRecipeSuccess(shareLink))
+  } else {
+    yield put(
+      RecipeActions.createSharedRecipeFailure('There was an error while creating shared recipe.')
+    )
+  }
+}
+
 export function* deleteRecipe(params) {
   yield put(RecipeActions.deleteRecipeLoading())
 

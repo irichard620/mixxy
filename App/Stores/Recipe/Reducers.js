@@ -63,6 +63,37 @@ export const deleteRecipeSuccess = (state, { recipes }) => ({
   deleteRecipeIsLoading: false,
 })
 
+export const fetchSharedRecipeLoading = (state) => ({
+  ...state,
+  fetchSharedRecipeIsLoading: true,
+})
+
+export const fetchSharedRecipeSuccess = (state, { recipe }) => ({
+  ...state,
+  fetchSharedRecipeIsLoading: false,
+  sharedRecipe: recipe,
+})
+
+export const createSharedRecipeLoading = (state) => ({
+  ...state,
+  shareLink: null,
+  createSharedRecipeIsLoading: true,
+  createSharedRecipeErrorMessage: null,
+})
+
+export const createSharedRecipeSuccess = (state, { shareLink }) => ({
+  ...state,
+  shareLink: shareLink,
+  createSharedRecipeIsLoading: false,
+  createSharedRecipeErrorMessage: null,
+})
+
+export const createSharedRecipeFailure = (state, { errorMessage }) => ({
+  ...state,
+  createSharedRecipeIsLoading: false,
+  createSharedRecipeErrorMessage: errorMessage,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.PERSIST_RECIPE_LOADING]: persistRecipeLoading,
   [RecipeTypes.PERSIST_RECIPE_SUCCESS]: persistRecipeSuccess,
@@ -74,4 +105,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.FETCH_REMOTE_RECIPES_FAILURE]: fetchRemoteRecipesFailure,
   [RecipeTypes.DELETE_RECIPE_LOADING]: deleteRecipeLoading,
   [RecipeTypes.DELETE_RECIPE_SUCCESS]: deleteRecipeSuccess,
+  [RecipeTypes.FETCH_SHARED_RECIPE_LOADING]: fetchSharedRecipeLoading,
+  [RecipeTypes.FETCH_SHARED_RECIPE_SUCCESS]: fetchSharedRecipeSuccess,
+  [RecipeTypes.CREATE_SHARED_RECIPE_LOADING]: createSharedRecipeLoading,
+  [RecipeTypes.CREATE_SHARED_RECIPE_SUCCESS]: createSharedRecipeSuccess,
+  [RecipeTypes.CREATE_SHARED_RECIPE_FAILURE]: createSharedRecipeFailure,
 })

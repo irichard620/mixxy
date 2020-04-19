@@ -1,8 +1,8 @@
 import React from 'react'
-import { Dimensions, View, StyleSheet, Image } from 'react-native'
+import { Dimensions, Image, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
-import { SafeAreaView } from "react-navigation"
+import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import getHomeStylesheet from './HomeScreenStyle'
@@ -13,6 +13,10 @@ import HomeDiscoverTab from './HomeDiscoverTab'
 import Images from '../../Theme/Images'
 import HomeLibraryTab from './HomeLibraryTab'
 import HomeSettingsTab from './HomeSettingsTab'
+import DynamicLinkListener from '../../Components/DynamicLinkListener'
+import CustomModal from '../../Components/CustomModal'
+import ModalContentSharedRecipe from '../../Components/ModalContentSharedRecipe'
+import * as constants from '../../Config/constants'
 
 
 const initialLayout = { width: Dimensions.get('window').width };
@@ -31,12 +35,25 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      index: 0
+      index: 0,
+      visibleModal: false,
+      modalType: constants.MODAL_TYPE_BOTTOM,
     };
   }
 
   componentDidMount() {
     this.props.fetchRecipes()
+  }
+
+  handleDynamicLink = (link) => {
+    if (link) {
+      NavigationService.goBackToRoute('HomeScreen')
+      const pathname = link.url.split('/')[3]
+      this.props.fetchSharedRecipe(pathname)
+      this.setState({
+        visibleModal: true
+      })
+    }
   }
 
   onCardClick = (idx, isFavorite) => {
@@ -52,6 +69,19 @@ class HomeScreen extends React.Component {
 
   onBuilderClick = () => {
     NavigationService.navigate('BuilderScreen', {})
+  }
+
+  onCloseModalClick = () => {
+    this.setState({
+      visibleModal: false
+    })
+  }
+
+  onSharedRecipeClick = () => {
+    this.onCloseModalClick()
+    NavigationService.navigate('TutorialScreen', {
+      recipe: this.props.sharedRecipe
+    })
   }
 
   renderCard = (idx, item, isFavorite) => {
@@ -95,8 +125,8 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { darkMode } = this.props;
-    const { index } = this.state;
+    const { darkMode, fetchSharedRecipeIsLoading, sharedRecipe } = this.props;
+    const { index, visibleModal, modalType } = this.state;
     const styles = getStylesheet(darkMode)
     const homeStyles = getHomeStylesheet(darkMode)
 
@@ -122,16 +152,24 @@ class HomeScreen extends React.Component {
             />
           }
         />
+        <CustomModal
+          visibleModal={visibleModal}
+          onCloseClick={this.onCloseModalClick}
+          type={modalType}
+          darkMode={darkMode}
+        >
+          <ModalContentSharedRecipe
+            onCardClick={this.onSharedRecipeClick}
+            fetchSharedRecipeIsLoading={fetchSharedRecipeIsLoading}
+            sharedRecipe={sharedRecipe}
+            darkMode={darkMode}
+          />
+        </CustomModal>
+        <DynamicLinkListener handleDynamicLink={this.handleDynamicLink} />
       </SafeAreaView>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
-});
 
 HomeScreen.propTypes = {
   recipes: PropTypes.array,
@@ -141,13 +179,16 @@ HomeScreen.propTypes = {
 const mapStateToProps = (state) => ({
   recipes: state.recipes.recipes,
   fetchRecipesIsLoading: state.recipes.fetchRecipesIsLoading,
+  fetchSharedRecipeIsLoading: state.recipes.fetchSharedRecipeIsLoading,
+  sharedRecipe: state.recipes.sharedRecipe,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   fetchRecipes: () => dispatch(RecipeActions.fetchRecipes()),
+  fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
 })
 
-export default connect(
+export default withNavigationFocus(connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavigationService.screenWithDarkMode(HomeScreen))
+)(NavigationService.screenWithDarkMode(HomeScreen)))

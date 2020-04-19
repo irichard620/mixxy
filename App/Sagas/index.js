@@ -16,6 +16,8 @@ import {
   deleteRecipe,
   favoriteRecipe,
   unfavoriteRecipe,
+  fetchSharedRecipe,
+  createSharedRecipe,
 } from './RecipeSaga'
 import { fetchSponsorCards } from './SponsorSaga'
 import { fetchCampaigns } from './CampaignSaga'
@@ -47,5 +49,9 @@ export default function* root() {
     takeLatest(RecipeTypes.FAVORITE_RECIPE, favoriteRecipe),
     // Unfavorite
     takeLatest(RecipeTypes.UNFAVORITE_RECIPE, unfavoriteRecipe),
+    // Fetch shared recipe
+    takeLatest(RecipeTypes.FETCH_SHARED_RECIPE, fetchSharedRecipe),
+    // Create shared recipe
+    takeLatest(RecipeTypes.CREATE_SHARED_RECIPE, createSharedRecipe),
   ])
 }

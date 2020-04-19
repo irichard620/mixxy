@@ -39,10 +39,3 @@ target 'Mixxy' do
   end
   use_native_modules!
 end
-target 'Mixxy-tvOS' do
-  # Pods for Mixxy-tvOS
-  target 'Mixxy-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-end

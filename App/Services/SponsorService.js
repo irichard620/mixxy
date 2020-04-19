@@ -13,13 +13,18 @@ const sponsorCardApiClient = axios.create({
 })
 
 function fetchSponsorCards() {
-  return sponsorCardApiClient.get().then((response) => {
-    if (in200s(response.status)) {
-      return camelcaseKeys(response.data)
-    }
+  return sponsorCardApiClient
+    .get()
+    .then((response) => {
+      if (in200s(response.status)) {
+        return camelcaseKeys(response.data)
+      }
 
-    return null
-  })
+      return null
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
 export const sponsorService = {

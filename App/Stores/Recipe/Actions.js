@@ -26,6 +26,22 @@ const { Types, Creators } = createActions({
   // Failure
   fetchRemoteRecipesFailure: ['errorMessage'],
 
+  // Fetch shared recipe
+  fetchSharedRecipe: ['recipeId'],
+  // Loading
+  fetchSharedRecipeLoading: null,
+  // recipe retrieved
+  fetchSharedRecipeSuccess: ['recipe'],
+
+  // Create shared recipe
+  createSharedRecipe: ['recipe'],
+  // Loading
+  createSharedRecipeLoading: null,
+  // Success
+  createSharedRecipeSuccess: ['shareLink'],
+  // Failure
+  createSharedRecipeFailure: ['errorMessage'],
+
   // Delete recipe
   deleteRecipe: ['recipeId'],
   // The operation has started and is loading

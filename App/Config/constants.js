@@ -210,6 +210,7 @@ export const MODAL_SERVING_GLASS = 'Serving Glass'
 
 // recipe menu options
 export const RECIPE_MENU_EDIT = 'Edit recipe'
+export const RECIPE_MENU_SHARE = 'Share recipe'
 export const RECIPE_MENU_DELETE = 'Delete'
 export const RECIPE_MENU_CANCEL = 'Cancel'
 

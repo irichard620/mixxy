@@ -52,6 +52,7 @@ RecipeCard.propTypes = {
   disabled: PropTypes.bool,
   onCardClick: PropTypes.func,
   darkMode: PropTypes.bool,
+  servingGlass: PropTypes.string,
 }
 
 function getCardStylesheet(darkMode) {

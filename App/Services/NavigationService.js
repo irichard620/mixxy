@@ -56,6 +56,13 @@ function navigateAndReset(routeName, params) {
   )
 }
 
+function goBackToRoute(routeName) {
+  navigator.dispatch({
+    routeName: routeName,
+    type: 'GoToRoute',
+  })
+}
+
 function screenWithDarkMode(Component) {
   return function WrappedComponent(props) {
     const darkMode = useDarkMode()
@@ -68,4 +75,5 @@ export default {
   navigateAndReset,
   setTopLevelNavigator,
   screenWithDarkMode,
+  goBackToRoute,
 }

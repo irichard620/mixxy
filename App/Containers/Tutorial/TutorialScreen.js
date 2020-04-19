@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Dimensions, Alert } from 'react-native'
 import { connect } from 'react-redux'
+import Share from 'react-native-share';
 import { NavigationActions, SafeAreaView, withNavigationFocus } from 'react-navigation'
 import LinearGradient from 'react-native-linear-gradient';
 import getStylesheet from '../../Theme/ApplicationStyles'
@@ -16,6 +17,7 @@ import RecipeActions from '../../Stores/Recipe/Actions'
 import CustomModal from '../../Components/CustomModal'
 import * as constants from '../../Config/constants'
 import ModalContentBottom from '../../Components/ModalContentBottom'
+import ModalContentCreateShare from '../../Components/ModalContentCreateShare'
 
 
 class TutorialScreen extends React.Component {
@@ -28,6 +30,7 @@ class TutorialScreen extends React.Component {
       drinkAmount: 1,
       visibleModal: false,
       modalType: '',
+      isShareModal: false,
       deleteModal: false,
     };
   }
@@ -57,7 +60,50 @@ class TutorialScreen extends React.Component {
       }
     } if (prevProps.deleteRecipeIsLoading && !this.props.deleteRecipeIsLoading) {
       this.onBackScreenClick()
+    } if (prevProps.createSharedRecipeIsLoading && !this.props.createSharedRecipeIsLoading) {
+      if (this.props.createSharedRecipeErrorMessage && this.props.isFocused) {
+        Alert.alert(
+          'Error creating shared recipe',
+          `${this.props.createSharedRecipeErrorMessage}`,
+          [
+            {
+              text: 'OK'
+            },
+          ],
+        );
+      } else {
+        // Open share sheet
+        this.openShareSheet()
+      }
+    } if (prevProps.fetchSharedRecipeIsLoading && !this.props.fetchSharedRecipeIsLoading) {
+      if (this.props.sharedRecipe) {
+        // Open the share sheet
+        // this.onCloseModalClick()
+        this.openShareSheet()
+      } else {
+        this.setState({
+          visibleModal: true,
+          isShareModal: true,
+        })
+      }
     }
+  }
+
+  getShareLink = () => {
+    const { recipe } = this.state;
+    return `https://mixxy.page.link/?link=https://mixxy.page.link/${recipe.recipeId}&ibi=com.IanRichard.Mixxy`
+  }
+
+  openShareSheet = () => {
+    const { recipe } = this.state;
+    const options = {
+      message: `Check out this recipe for ${recipe.recipeName} on Mixxy!`,
+      url: this.getShareLink(),
+      failOnCancel: false,
+    }
+    Share.open(options)
+      .then((res) => { console.log(res) })
+      .catch((err) => { err && console.log(err); });
   }
 
   updateRecipe = (nextRecipes) => {
@@ -86,6 +132,8 @@ class TutorialScreen extends React.Component {
 
     return [{
       title: constants.RECIPE_MENU_EDIT,
+    }, {
+      title: constants.RECIPE_MENU_SHARE,
     }, {
       title: constants.RECIPE_MENU_DELETE,
     }]
@@ -134,12 +182,13 @@ class TutorialScreen extends React.Component {
   onCloseModalClick = () => {
     // Close and clear modal
     this.setState({
-      visibleModal: false
+      visibleModal: false,
+      isShareModal: false,
     })
   }
 
   onPressItem = (item) => {
-    const { deleteRecipe } = this.props;
+    const { deleteRecipe, fetchSharedRecipe } = this.props;
     const { recipe, deleteModal } = this.state;
 
     if (item === constants.RECIPE_MENU_EDIT) {
@@ -150,6 +199,13 @@ class TutorialScreen extends React.Component {
       NavigationService.navigate('BuilderScreen', {
         recipe: recipe
       })
+    } else if (item === constants.RECIPE_MENU_SHARE) {
+      // First, check if already shared
+      fetchSharedRecipe(recipe.recipeId)
+      // // Pull share modal
+      // this.setState({
+      //   isShareModal: true,
+      // })
     } else if (item === constants.RECIPE_MENU_DELETE) {
       // Call delete recipe
       if (!deleteModal) {
@@ -192,9 +248,14 @@ class TutorialScreen extends React.Component {
     this.setState({ drinkAmount: drinkAmount + 1 })
   }
 
+  onCreateShareLink = () => {
+    const { recipe } = this.state;
+    this.props.createSharedRecipe(recipe);
+  }
+
   render() {
-    const { darkMode, recipes } = this.props;
-    const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal } = this.state;
+    const { darkMode, recipes, createSharedRecipeIsLoading } = this.props;
+    const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal, isShareModal } = this.state;
 
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
@@ -300,7 +361,7 @@ class TutorialScreen extends React.Component {
           type={modalType}
           darkMode={darkMode}
         >
-          {modalType === constants.MODAL_TYPE_BOTTOM
+          {!isShareModal
           && (
             <ModalContentBottom
               onPressItem={this.onPressItem}
@@ -308,6 +369,14 @@ class TutorialScreen extends React.Component {
               isListModal
               isSelectInput={false}
               options={this.getModalOptions()}
+              darkMode={darkMode}
+            />
+          )}
+          {isShareModal
+          && (
+            <ModalContentCreateShare
+              onShareRecipe={this.onCreateShareLink}
+              createSharedRecipeIsLoading={createSharedRecipeIsLoading}
               darkMode={darkMode}
             />
           )}
@@ -325,7 +394,12 @@ const mapStateToProps = (state) => ({
   recipes: state.recipes.recipes,
   persistRecipeIsLoading: state.recipes.persistRecipeIsLoading,
   persistRecipeErrorMessage: state.recipes.persistRecipeErrorMessage,
-  deleteRecipeIsLoading: state.recipes.deleteRecipeIsLoading
+  deleteRecipeIsLoading: state.recipes.deleteRecipeIsLoading,
+  shareLink: state.recipes.shareLink,
+  createSharedRecipeIsLoading: state.recipes.createSharedRecipeIsLoading,
+  createSharedRecipeErrorMessage: state.recipes.createSharedRecipeErrorMessage,
+  sharedRecipe: state.recipes.sharedRecipe,
+  fetchSharedRecipeIsLoading: state.recipes.fetchSharedRecipeIsLoading,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -333,6 +407,8 @@ const mapDispatchToProps = (dispatch) => ({
   deleteRecipe: (recipeId) => dispatch(RecipeActions.deleteRecipe(recipeId)),
   favoriteRecipe: (recipeId) => dispatch(RecipeActions.favoriteRecipe(recipeId)),
   unfavoriteRecipe: (recipeId) => dispatch(RecipeActions.unfavoriteRecipe(recipeId)),
+  createSharedRecipe: (recipe) => dispatch(RecipeActions.createSharedRecipe(recipe)),
+  fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
 })
 
 export default withNavigationFocus(connect(

@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import { connect } from 'react-redux'
 import StartupActions from '../../Stores/Startup/Actions'
 import { PropTypes } from 'prop-types'
-import Helpers from '../../Theme/Helpers'
+import getStylesheet from '../../Theme/ApplicationStyles'
 
 class RootScreen extends Component {
   componentDidMount() {
@@ -14,8 +14,9 @@ class RootScreen extends Component {
   }
 
   render() {
+    const styles = getStylesheet(this.props.darkMode)
     return (
-      <View style={Helpers.fill}>
+      <View style={styles.outerContainer}>
         <AppNavigator
           // Initialize the NavigationService (see https://reactnavigation.org/docs/en/navigating-without-navigation-prop.html)
           ref={(navigatorRef) => {
@@ -29,6 +30,7 @@ class RootScreen extends Component {
 
 RootScreen.propTypes = {
   startup: PropTypes.func,
+  darkMode: PropTypes.bool,
 }
 
 const mapStateToProps = (state) => ({})
@@ -37,4 +39,7 @@ const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(StartupActions.startup()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavigationService.screenWithDarkMode(RootScreen))
