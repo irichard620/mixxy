@@ -1,16 +1,15 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
+import Colors from '../Theme/Colors'
 
-export default function PullDown() {
-  return <View style={styles.pulldown} />
-}
-
-const styles = StyleSheet.create({
-  pulldown: {
+export default function PullDown(props) {
+  const { darkMode } = props
+  const pulldownStyle = {
     alignSelf: 'center',
-    backgroundColor: '#E3E3E3',
+    backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
     borderRadius: 3,
     height: 6,
     width: 40,
-  },
-})
+  }
+  return <View style={pulldownStyle} />
+}

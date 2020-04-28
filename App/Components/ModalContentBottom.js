@@ -42,7 +42,7 @@ export default function ModalContentBottom(props) {
 
   const imageListStyle = {
     marginTop: 8,
-    height: 56 * options.length,
+    height: options ? 56 * options.length : 0,
   }
 
   return (

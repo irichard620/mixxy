@@ -132,7 +132,7 @@ class IngredientsScreen extends React.Component {
         fractionalAmount: fractionAmount,
         amountType: amountType,
         brand: brand,
-        title: selectedIngredient.title,
+        title: selectedIngredient.commonName || selectedIngredient.title,
         ingredientId: selectedIngredient.ingredientId,
       })
       selectedIngredients.push(newIngredient)

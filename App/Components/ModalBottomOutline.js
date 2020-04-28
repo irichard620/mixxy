@@ -22,7 +22,7 @@ export default function ModalBottomOutline(props) {
   return (
     <KeyboardAvoidingView behavior="position" enabled>
       <View style={[modalStyles.content, maxHeightModal]}>
-        <PullDown />
+        <PullDown darkMode={darkMode} />
         <Text style={modalStyles.title}>{title}</Text>
         <View style={styles.divider} />
         {children}
