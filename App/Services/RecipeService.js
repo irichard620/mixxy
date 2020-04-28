@@ -3,10 +3,12 @@ import * as recipeModel from '../Storage/Recipe'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
 import snakeCaseKeys from 'snakecase-keys'
+import uuidv4 from 'uuid/v4'
 import { Recipe } from '../Storage/Recipe'
 
 function persistRecipe(params) {
   const recipeToSave = params.recipeToSave
+  const isExternal = params.isExternal
   return storage
     .getItem('recipes')
     .then((recipes) => {
@@ -27,16 +29,20 @@ function persistRecipe(params) {
 
       if (duplicateName) {
         // Handle duplicate name error
-        return [[], 'A recipe with this name already exists']
+        return [[], 'A recipe with this name already exists', false]
       } else {
         if (!found) {
+          // Assign new ID if external
+          if (isExternal) {
+            recipeToSave.recipeId = uuidv4()
+          }
           r.push(recipeToSave)
         }
         storage.setItem('recipes', JSON.stringify(r))
-        return [r, '']
+        return [r, '', isExternal]
       }
     })
-    .catch(() => [[], 'Unexpected error'])
+    .catch(() => [[], 'Unexpected error', false])
 }
 
 function fetchRecipes() {

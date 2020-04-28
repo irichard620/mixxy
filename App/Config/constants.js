@@ -213,6 +213,7 @@ export const RECIPE_MENU_EDIT = 'Edit recipe'
 export const RECIPE_MENU_SHARE = 'Share recipe'
 export const RECIPE_MENU_DELETE = 'Delete'
 export const RECIPE_MENU_CANCEL = 'Cancel'
+export const RECIPE_MENU_VIEW = 'Open recipe'
 
 // Settings sections
 export const SETTINGS_SECTION_GENERAL = 'GENERAL'

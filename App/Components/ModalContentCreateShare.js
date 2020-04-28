@@ -1,91 +1,93 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Dimensions,
-} from 'react-native'
-import PullDown from './Pulldown'
-import ButtonLarge from './ButtonLarge'
+import { View, Text, StyleSheet } from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
 import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
+import ModalBottomOutline from './ModalBottomOutline'
+import RecipeCard from './RecipeCard'
+import ImageListItem from './ImageListItem'
+import * as constants from '../Config/constants'
 
 export default function ModalContentCreateShare(props) {
-  const { onShareRecipe, darkMode, createSharedRecipeIsLoading } = props
+  const {
+    onShareRecipe,
+    sharedRecipe,
+    darkMode,
+    onCancelClick,
+    createSharedRecipeIsLoading,
+    isNew,
+  } = props
 
   const styles = getStylesheet(darkMode)
   const modalStyles = getModalStylesheet(darkMode)
 
-  // Max height for modal
-  const { height, width } = Dimensions.get('window')
-  const maxHeightModal = {
-    maxHeight: height * 0.75,
+  let textToUse =
+    'You’ve already shared this recipe. Do you want to overwrite the existing link with this recipe?'
+  if (isNew) {
+    textToUse =
+      'To share a recipe, we will generate a link that can be sent. Anyone who has the link can access your shared recipe. Do you want to proceed?'
+  }
+
+  const marginTopStyle = {
+    marginTop: 12,
+  }
+  const paddingStyle = {
+    height: 24,
   }
 
   return (
-    <KeyboardAvoidingView behavior="position" enabled>
-      <View style={[modalStyles.content, maxHeightModal]}>
-        <PullDown />
-        <Text style={modalStyles.title}>{'Share Recipe'}</Text>
-        <Text style={modalStyles.description}>
-          {
-            'To share a recipe, we will generate a link that can be sent. Anyone who has the link can access your shared recipe.'
-          }
-        </Text>
-        <View style={styles.divider} />
-        <View style={modalStyles.saveContainer}>
-          <ButtonLarge
-            disabled={createSharedRecipeIsLoading}
-            onButtonClick={onShareRecipe}
-            title="Create Share Link"
-            margin={[0, 16, 0, 16]}
-            buttonWidth={width - 32}
-            isPrimary
-          />
-        </View>
+    <ModalBottomOutline title={'Share Recipe'} darkMode={darkMode}>
+      <View style={paddingStyle} />
+      <RecipeCard
+        recipeName={sharedRecipe.recipeName}
+        recipeType={sharedRecipe.recipeType}
+        servingGlass={sharedRecipe.servingGlass}
+        darkMode={darkMode}
+        disabled
+      />
+      <View style={[styles.divider, marginTopStyle]} />
+      <Text style={modalStyles.description}>{textToUse}</Text>
+      <View style={modalStyles.itemsOutline}>
+        <ImageListItem
+          darkMode={darkMode}
+          title={constants.RECIPE_MENU_SHARE}
+          onClick={onShareRecipe}
+          disabled={createSharedRecipeIsLoading}
+        />
+        <ImageListItem
+          darkMode={darkMode}
+          title={constants.RECIPE_MENU_CANCEL}
+          onClick={onCancelClick}
+          disabled={createSharedRecipeIsLoading}
+        />
       </View>
-    </KeyboardAvoidingView>
+    </ModalBottomOutline>
   )
 }
 
 ModalContentCreateShare.propTypes = {
   onShareRecipe: PropTypes.func,
+  onCancelClick: PropTypes.func,
   createSharedRecipeIsLoading: PropTypes.bool,
   darkMode: PropTypes.bool,
+  isNew: PropTypes.bool,
+  sharedRecipe: PropTypes.object,
 }
 
 function getModalStylesheet(darkMode) {
   return StyleSheet.create({
-    content: {
-      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      paddingBottom: 32,
-      paddingTop: 8,
-    },
-    saveContainer: {
-      alignItems: 'center',
-      marginBottom: 8,
-    },
-    title: {
-      alignSelf: 'flex-start',
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      ...Fonts.cardSelectionTitle,
-      marginBottom: 8,
-      marginLeft: 16,
-      marginTop: 36,
-    },
     description: {
       alignSelf: 'flex-start',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
       ...Fonts.body1,
       marginLeft: 16,
       marginRight: 16,
-      marginTop: 8,
+      marginTop: 16,
       marginBottom: 16,
+    },
+    itemsOutline: {
+      height: 112,
     },
   })
 }

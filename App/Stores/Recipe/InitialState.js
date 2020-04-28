@@ -2,6 +2,7 @@ export const INITIAL_STATE = {
   recipes: [],
   persistRecipeIsLoading: false,
   persistRecipeErrorMessage: null,
+  recipeIsExternal: false,
   fetchRecipesIsLoading: false,
   remoteRecipes: [],
   fetchRemoteRecipesIsLoading: false,

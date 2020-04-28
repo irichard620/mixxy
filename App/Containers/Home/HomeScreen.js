@@ -159,7 +159,8 @@ class HomeScreen extends React.Component {
           darkMode={darkMode}
         >
           <ModalContentSharedRecipe
-            onCardClick={this.onSharedRecipeClick}
+            onViewClick={this.onSharedRecipeClick}
+            onCancelClick={this.onCloseModalClick}
             fetchSharedRecipeIsLoading={fetchSharedRecipeIsLoading}
             sharedRecipe={sharedRecipe}
             darkMode={darkMode}

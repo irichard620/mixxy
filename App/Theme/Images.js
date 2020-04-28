@@ -48,4 +48,12 @@ export default {
   iconShort: require('../Assets/Images/glasses/Icon_ShortGlass.png'),
   iconShot: require('../Assets/Images/glasses/Icon_Shot.png'),
   iconTall: require('../Assets/Images/glasses/Icon_TallGlass.png'),
+  modalEditDark: require('../Assets/Images/modal/Modal_Edit_DARK.png'),
+  modalEditLight: require('../Assets/Images/modal/Modal_Edit_LIGHT.png'),
+  modalShareDark: require('../Assets/Images/modal/Modal_Share_DARK.png'),
+  modalShareLight: require('../Assets/Images/modal/Modal_Share_LIGHT.png'),
+  modalViewDark: require('../Assets/Images/modal/Modal_View_DARK.png'),
+  modalViewLight: require('../Assets/Images/modal/Modal_View_LIGHT.png'),
+  modalTrash: require('../Assets/Images/modal/Modal_Trash.png'),
+  modalNo: require('../Assets/Images/modal/Modal_No.png'),
 }

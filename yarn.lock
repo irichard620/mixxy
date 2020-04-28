@@ -2417,6 +2417,11 @@ domutils@^1.5.1:
     dom-serializer "0"
     domelementtype "1"
 
+dooboolab-welcome@^1.1.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/dooboolab-welcome/-/dooboolab-welcome-1.2.0.tgz#295818ce85a8e97dc90c0ec0510b4008e2d722dc"
+  integrity sha512-XgEbjJHAsKLge/e8jtuHsv84Ovg1Gx0GvnOTOmOlVGV1643nduTAkT3fyo/mxKbzvyXBr47RHaJAY4R2toI0UA==
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -5765,6 +5770,13 @@ react-native-gesture-handler@^1.3.0:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-iap@^4.4.6:
+  version "4.4.6"
+  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-4.4.6.tgz#764830b3ae7953fd4e6edba0da5bb6fd95064db5"
+  integrity sha512-m69b0zQ2/acW9sVHpFBdiN3ceiZnRUkfT7Y3Z/K50nUsmctV8d0DjiWxtD8m3jNP4kFrCddmdCKhd9Mt3uETSg==
+  dependencies:
+    dooboolab-welcome "^1.1.1"
 
 react-native-linear-gradient@^2.5.6:
   version "2.5.6"

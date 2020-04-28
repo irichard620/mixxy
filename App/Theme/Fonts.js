@@ -75,6 +75,11 @@ export default {
     fontSize: 18,
     fontWeight: fontWeight.semibold,
   },
+  modalImageTitle: {
+    fontSize: 18,
+    fontWeight: fontWeight.medium,
+    lineHeight: lineSpacing.h3,
+  },
   navHeader: {
     fontSize: size.body1,
     lineHeight: lineSpacing.body1,

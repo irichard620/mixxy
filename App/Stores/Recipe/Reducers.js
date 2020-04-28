@@ -4,19 +4,22 @@ import { RecipeTypes } from './Actions'
 
 export const persistRecipeLoading = (state) => ({
   ...state,
+  recipeIsExternal: false,
   persistRecipeIsLoading: true,
   persistRecipeErrorMessage: null,
 })
 
-export const persistRecipeSuccess = (state, { recipes }) => ({
+export const persistRecipeSuccess = (state, { recipes, isExternal }) => ({
   ...state,
   recipes: recipes,
+  recipeIsExternal: isExternal,
   persistRecipeIsLoading: false,
   persistRecipeErrorMessage: null,
 })
 
 export const persistRecipeFailure = (state, { errorMessage }) => ({
   ...state,
+  recipeIsExternal: false,
   persistRecipeIsLoading: false,
   persistRecipeErrorMessage: errorMessage,
 })

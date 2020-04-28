@@ -31,6 +31,7 @@ class TutorialScreen extends React.Component {
       visibleModal: false,
       modalType: '',
       isShareModal: false,
+      isSharedPreviously: false,
       deleteModal: false,
     };
   }
@@ -55,8 +56,22 @@ class TutorialScreen extends React.Component {
           ],
         );
       } else {
-        // Update recipe if got updated
-        this.updateRecipe(this.props.recipes)
+        if (this.props.recipeIsExternal) {
+          // Say recipe saved and close screen
+          this.onBackScreenClick()
+          Alert.alert(
+            'Added to Library',
+            `Recipe successfully added to library.`,
+            [
+              {
+                text: 'OK'
+              },
+            ],
+          );
+        } else {
+          // Update recipe if got updated
+          this.updateRecipe(this.props.recipes)
+        }
       }
     } if (prevProps.deleteRecipeIsLoading && !this.props.deleteRecipeIsLoading) {
       this.onBackScreenClick()
@@ -77,13 +92,16 @@ class TutorialScreen extends React.Component {
       }
     } if (prevProps.fetchSharedRecipeIsLoading && !this.props.fetchSharedRecipeIsLoading) {
       if (this.props.sharedRecipe) {
-        // Open the share sheet
-        // this.onCloseModalClick()
-        this.openShareSheet()
+        this.setState({
+          visibleModal: true,
+          isShareModal: true,
+          isSharedPreviously: true,
+        })
       } else {
         this.setState({
           visibleModal: true,
           isShareModal: true,
+          isSharedPreviously: false,
         })
       }
     }
@@ -91,7 +109,7 @@ class TutorialScreen extends React.Component {
 
   getShareLink = () => {
     const { recipe } = this.state;
-    return `https://mixxy.page.link/?link=https://mixxy.page.link/${recipe.recipeId}&ibi=com.IanRichard.Mixxy`
+    return `https://mixxy.page.link/?link=https://mixxyapp.com/${recipe.recipeId}&ibi=com.IanRichard.Mixxy`
   }
 
   openShareSheet = () => {
@@ -176,7 +194,7 @@ class TutorialScreen extends React.Component {
   onSaveClick = () => {
     // Call persist recipe
     const { recipe } = this.state
-    this.props.persistRecipe(recipe)
+    this.props.persistRecipe(recipe, true)
   }
 
   onCloseModalClick = () => {
@@ -255,7 +273,7 @@ class TutorialScreen extends React.Component {
 
   render() {
     const { darkMode, recipes, createSharedRecipeIsLoading } = this.props;
-    const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal, isShareModal } = this.state;
+    const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal, isShareModal, isSharedPreviously } = this.state;
 
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
@@ -303,7 +321,7 @@ class TutorialScreen extends React.Component {
           onClose={this.onBackScreenClick}
           showSeparator={false}
           darkMode={darkMode}
-          showFavorited={step === -1}
+          showFavorited={step === -1 && recipeSaved}
           favorited={recipe.favorited}
           onFavoriteClick={this.onFavoriteClick}
         />
@@ -366,7 +384,7 @@ class TutorialScreen extends React.Component {
             <ModalContentBottom
               onPressItem={this.onPressItem}
               title={modalTitle}
-              isListModal
+              isImageListModal
               isSelectInput={false}
               options={this.getModalOptions()}
               darkMode={darkMode}
@@ -375,9 +393,12 @@ class TutorialScreen extends React.Component {
           {isShareModal
           && (
             <ModalContentCreateShare
+              sharedRecipe={recipe}
               onShareRecipe={this.onCreateShareLink}
+              onCancelClick={this.onCloseModalClick}
               createSharedRecipeIsLoading={createSharedRecipeIsLoading}
               darkMode={darkMode}
+              isNew={!isSharedPreviously}
             />
           )}
         </CustomModal>
@@ -394,6 +415,7 @@ const mapStateToProps = (state) => ({
   recipes: state.recipes.recipes,
   persistRecipeIsLoading: state.recipes.persistRecipeIsLoading,
   persistRecipeErrorMessage: state.recipes.persistRecipeErrorMessage,
+  recipeIsExternal: state.recipes.recipeIsExternal,
   deleteRecipeIsLoading: state.recipes.deleteRecipeIsLoading,
   shareLink: state.recipes.shareLink,
   createSharedRecipeIsLoading: state.recipes.createSharedRecipeIsLoading,
@@ -403,7 +425,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave)),
+  persistRecipe: (recipeToSave, isExternal) => dispatch(RecipeActions.persistRecipe(recipeToSave, isExternal)),
   deleteRecipe: (recipeId) => dispatch(RecipeActions.deleteRecipe(recipeId)),
   favoriteRecipe: (recipeId) => dispatch(RecipeActions.favoriteRecipe(recipeId)),
   unfavoriteRecipe: (recipeId) => dispatch(RecipeActions.unfavoriteRecipe(recipeId)),

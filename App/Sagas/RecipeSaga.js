@@ -2,15 +2,16 @@ import { put, call } from 'redux-saga/effects'
 import RecipeActions from '../Stores/Recipe/Actions'
 import { recipeService } from '../Services/RecipeService'
 
-export function* persistRecipe(recipeToSave) {
+export function* persistRecipe(params) {
   yield put(RecipeActions.persistRecipeLoading())
 
   // Save recipe locally
-  const result = yield call(recipeService.persistRecipe, recipeToSave)
+  const result = yield call(recipeService.persistRecipe, params)
+  const isExternal = result[2]
   const errorMessage = result[1]
   const recipes = result[0]
   if (errorMessage === '') {
-    yield put(RecipeActions.persistRecipeSuccess(recipes))
+    yield put(RecipeActions.persistRecipeSuccess(recipes, isExternal))
   } else {
     yield put(RecipeActions.persistRecipeFailure(errorMessage))
   }

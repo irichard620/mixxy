@@ -13,7 +13,6 @@ export default function getStylesheet(darkMode) {
     },
     divider: {
       backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-      flex: 1,
       height: 0.5,
       width: '100%',
     },

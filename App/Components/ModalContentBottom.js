@@ -1,21 +1,13 @@
 import React from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  KeyboardAvoidingView,
-  Dimensions,
-  ScrollView,
-} from 'react-native'
-import PullDown from './Pulldown'
+import { View, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import ButtonLarge from './ButtonLarge'
-import getStylesheet from '../Theme/ApplicationStyles'
 import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import ListItem from './ListItem'
 import Textbox from './Textbox'
+import ModalBottomOutline from './ModalBottomOutline'
+import ImageListItem from './ImageListItem'
 
 export default function ModalContentBottom(props) {
   const {
@@ -25,6 +17,7 @@ export default function ModalContentBottom(props) {
     onChangeText,
     onModalSave,
     isListModal,
+    isImageListModal,
     options,
     title,
     charLimit,
@@ -32,69 +25,76 @@ export default function ModalContentBottom(props) {
     darkMode,
   } = props
 
-  const styles = getStylesheet(darkMode)
   const modalStyles = getModalStylesheet(darkMode)
 
   // Elems with atleast one text
-  const isTextInput = !isListModal
+  const isTextInput = !isListModal && !isImageListModal
 
   // Max height for modal
-  const { height, width } = Dimensions.get('window')
-  const maxHeightModal = {
-    maxHeight: height * 0.75,
-  }
+  const { width } = Dimensions.get('window')
 
   const listPadding = {
-    paddingTop: 16,
-    paddingBottom: 24,
+    paddingBottom: 8,
   }
   if (isListModal && !hasSave) {
-    listPadding.paddingTop = 0
     listPadding.paddingBottom = 0
   }
 
+  const imageListStyle = {
+    marginTop: 8,
+    height: 56 * options.length,
+  }
+
   return (
-    <KeyboardAvoidingView behavior="position" enabled>
-      <View style={[modalStyles.content, maxHeightModal]}>
-        <PullDown />
-        <Text style={modalStyles.title}>{title}</Text>
-        <View style={styles.divider} />
-        {isTextInput && (
-          <Textbox
-            onChangeText={onChangeText}
-            modalText={modalText}
-            textPlaceholder={textPlaceholder}
-            charLimit={charLimit}
-            darkMode={darkMode}
-          />
-        )}
-        {isListModal && (
-          <ScrollView style={listPadding}>
-            {options.map((option) => (
-              <ListItem
-                key={`${option.title}${option.subtitle}`}
-                title={option.title}
-                subtitle={option.subtitle}
-                onClick={onPressItem}
-                selected={option.selected}
-                darkMode={darkMode}
-              />
-            ))}
-          </ScrollView>
-        )}
-        {hasSave && (
-          <View style={modalStyles.saveContainer}>
-            <ButtonLarge
-              onButtonClick={onModalSave}
-              title="Save"
-              margin={[0, 16, 0, 16]}
-              buttonWidth={width - 32}
-              isPrimary
+    <ModalBottomOutline title={title} darkMode={darkMode}>
+      {isTextInput && (
+        <Textbox
+          onChangeText={onChangeText}
+          modalText={modalText}
+          textPlaceholder={textPlaceholder}
+          charLimit={charLimit}
+          darkMode={darkMode}
+        />
+      )}
+      {isListModal && (
+        <ScrollView style={listPadding}>
+          {options.map((option) => (
+            <ListItem
+              key={`${option.title}${option.subtitle}`}
+              title={option.title}
+              subtitle={option.subtitle}
+              onClick={onPressItem}
+              selected={option.selected}
+              darkMode={darkMode}
             />
-          </View>
-        )}
-      </View>
-    </KeyboardAvoidingView>
+          ))}
+        </ScrollView>
+      )}
+      {isImageListModal && (
+        <View style={imageListStyle}>
+          {options.map((option) => (
+            <ImageListItem
+              key={option.title}
+              title={option.title}
+              onClick={onPressItem}
+              selected={option.selected}
+              darkMode={darkMode}
+            />
+          ))}
+        </View>
+      )}
+      {hasSave && (
+        <View style={modalStyles.saveContainer}>
+          <ButtonLarge
+            onButtonClick={onModalSave}
+            title="Save"
+            margin={[0, 16, 0, 16]}
+            buttonWidth={width - 32}
+            isPrimary
+          />
+        </View>
+      )}
+    </ModalBottomOutline>
   )
 }
 
@@ -105,6 +105,7 @@ ModalContentBottom.propTypes = {
   onChangeText: PropTypes.func,
   onModalSave: PropTypes.func,
   isListModal: PropTypes.bool,
+  isImageListModal: PropTypes.bool,
   options: PropTypes.array,
   title: PropTypes.string,
   charLimit: PropTypes.number,
