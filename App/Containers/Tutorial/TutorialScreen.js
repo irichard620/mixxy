@@ -206,10 +206,22 @@ class TutorialScreen extends React.Component {
   }
 
   onPressItem = (item) => {
-    const { deleteRecipe, fetchSharedRecipe } = this.props;
+    const { deleteRecipe, fetchSharedRecipe, user } = this.props;
     const { recipe, deleteModal } = this.state;
 
     if (item === constants.RECIPE_MENU_EDIT) {
+      if (!user.premium) {
+        Alert.alert(
+          'Mixxy Pro Feature',
+          'The ability to edit recipes is a Mixxy Pro feature.',
+          [
+            {
+              text: 'OK',
+            },
+          ]
+        )
+        return
+      }
       // Go to edit page
       this.setState({
         visibleModal: false
@@ -220,10 +232,6 @@ class TutorialScreen extends React.Component {
     } else if (item === constants.RECIPE_MENU_SHARE) {
       // First, check if already shared
       fetchSharedRecipe(recipe.recipeId)
-      // // Pull share modal
-      // this.setState({
-      //   isShareModal: true,
-      // })
     } else if (item === constants.RECIPE_MENU_DELETE) {
       // Call delete recipe
       if (!deleteModal) {
@@ -412,6 +420,7 @@ TutorialScreen.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
+  user: state.user.user,
   recipes: state.recipes.recipes,
   persistRecipeIsLoading: state.recipes.persistRecipeIsLoading,
   persistRecipeErrorMessage: state.recipes.persistRecipeErrorMessage,

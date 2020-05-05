@@ -6,7 +6,7 @@ import { RecipeTypes } from '../Stores/Recipe/Actions'
 import { SponsorTypes } from '../Stores/Sponsor/Actions'
 import { CampaignTypes } from '../Stores/Campaign/Actions'
 import { MasterListTypes } from '../Stores/MasterList/Actions'
-import { fetchUser } from './UserSaga'
+import { fetchUser, requestPurchaseIAP, restoreIAP, upgradeIAP } from './UserSaga'
 import { startup } from './StartupSaga'
 import { fetchIngredients } from './IngredientSaga'
 import {
@@ -29,6 +29,12 @@ export default function* root() {
     takeLatest(StartupTypes.STARTUP, startup),
     // Call `fetchUser()` when a `FETCH_USER` action is triggered
     takeLatest(UserTypes.FETCH_USER, fetchUser),
+    // IAP upgrade
+    takeLatest(UserTypes.UPGRADE_IAP, upgradeIAP),
+    // IAP Restore
+    takeLatest(UserTypes.RESTORE_IAP, restoreIAP),
+    // IAP Purchase
+    takeLatest(UserTypes.REQUEST_PURCHASE_IAP, requestPurchaseIAP),
     // Call fetchIngredients when action triggered
     takeLatest(IngredientTypes.FETCH_INGREDIENTS, fetchIngredients),
     // Save recipe

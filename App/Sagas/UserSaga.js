@@ -13,3 +13,29 @@ export function* fetchUser() {
     yield put(UserActions.fetchUserFailure('There was an error while fetching user informations.'))
   }
 }
+
+export function* upgradeIAP() {
+  yield put(UserActions.upgradeIAPLoading())
+  const results = yield call(userService.upgradeIAP)
+  yield put(UserActions.upgradeIAPSuccess(results[0], results[1]))
+}
+
+export function* restoreIAP() {
+  yield put(UserActions.restoreIAPLoading())
+  const results = yield call(userService.restoreIAP)
+  if (!results[1]) {
+    yield put(UserActions.restoreIAPSuccess(results[0]))
+  } else {
+    yield put(UserActions.restoreIAPFailure(results[0], results[1]))
+  }
+}
+
+export function* requestPurchaseIAP() {
+  yield put(UserActions.requestPurchaseIAPLoading())
+  const error = yield call(userService.requestPurchaseIAP)
+  if (!error) {
+    yield put(UserActions.requestPurchaseIAPSuccess())
+  } else {
+    yield put(UserActions.requestPurchaseIAPFailure(error))
+  }
+}

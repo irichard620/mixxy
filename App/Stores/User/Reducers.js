@@ -28,8 +28,71 @@ export const fetchUserFailure = (state, { errorMessage }) => ({
   userErrorMessage: errorMessage,
 })
 
+export const upgradeIAPLoading = (state) => ({
+  ...state,
+  upgradeIAPIsLoading: true,
+  upgradeIAPErrorMessage: null,
+})
+
+export const upgradeIAPSuccess = (state, { userDetails, purchase }) => ({
+  ...state,
+  user: userDetails,
+  purchase: purchase,
+  upgradeIAPIsLoading: false,
+  upgradeIAPErrorMessage: null,
+})
+
+export const restoreIAPLoading = (state) => {
+  return {
+    ...state,
+    restoreIAPIsLoading: true,
+    restoreIAPErrorMessage: null,
+  }
+}
+
+export const restoreIAPSuccess = (state, { userDetails }) => ({
+  ...state,
+  user: userDetails,
+  restoreIAPIsLoading: false,
+  restoreIAPErrorMessage: null,
+})
+
+export const restoreIAPFailure = (state, { userDetails, errorMessage }) => {
+  return {
+    ...state,
+    restoreIAPIsLoading: false,
+    restoreIAPErrorMessage: errorMessage,
+  }
+}
+
+export const requestPurchaseIAPLoading = (state) => ({
+  ...state,
+  restoreIAPIsLoading: true,
+  restoreIAPErrorMessage: null,
+})
+
+export const requestPurchaseIAPSuccess = (state) => ({
+  ...state,
+  requestPurchaseIAPIsLoading: false,
+  requestPurchaseIAPErrorMessage: null,
+})
+
+export const requestPurchaseIAPFailure = (state, { errorMessage }) => ({
+  ...state,
+  requestPurchaseIAPIsLoading: false,
+  requestPurchaseIAPErrorMessage: errorMessage,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [UserTypes.FETCH_USER_LOADING]: fetchUserLoading,
   [UserTypes.FETCH_USER_SUCCESS]: fetchUserSuccess,
   [UserTypes.FETCH_USER_FAILURE]: fetchUserFailure,
+  [UserTypes.UPGRADE_IAP_LOADING]: upgradeIAPLoading,
+  [UserTypes.UPGRADE_IAP_SUCCESS]: upgradeIAPSuccess,
+  [UserTypes.RESTORE_IAP_LOADING]: restoreIAPLoading,
+  [UserTypes.RESTORE_IAP_SUCCESS]: restoreIAPSuccess,
+  [UserTypes.RESTORE_IAP_FAILURE]: restoreIAPFailure,
+  [UserTypes.REQUEST_PURCHASE_IAP_LOADING]: requestPurchaseIAPLoading,
+  [UserTypes.REQUEST_PURCHASE_IAP_SUCCESS]: requestPurchaseIAPSuccess,
+  [UserTypes.REQUEST_PURCHASE_IAP_FAILURE]: requestPurchaseIAPFailure,
 })

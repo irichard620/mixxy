@@ -130,6 +130,19 @@ export default function getHomeStylesheet(useDarkMode) {
       marginTop: 24,
       textAlign: 'left',
     },
+    settingsProButton1Text: {
+      ...Fonts.body1,
+      color: Colors.yellow,
+    },
+    settingsProButton2Text: {
+      ...Fonts.body1,
+      color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
+    },
+    settingsProButtonOutline: {
+      alignItems: 'center',
+      height: 48,
+      justifyContent: 'center',
+    },
     settingsProImage: {
       alignSelf: 'center',
       height: 72,

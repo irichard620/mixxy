@@ -56,4 +56,7 @@ export default {
   modalViewLight: require('../Assets/Images/modal/Modal_View_LIGHT.png'),
   modalTrash: require('../Assets/Images/modal/Modal_Trash.png'),
   modalNo: require('../Assets/Images/modal/Modal_No.png'),
+  builderDrinkType: require('../Assets/Images/builder/DrinkType_Select.png'),
+  builderSpiritType: require('../Assets/Images/builder/SpiritType_Select.png'),
+  proModalBadge: require('../Assets/Images/modal/Badge_MixxyPro.png'),
 }

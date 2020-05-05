@@ -22,20 +22,18 @@ function fetchUser() {
     .catch((error) => error)
 }
 
-export function requestPurchaseIAP() {
-  return RNIap.getProducts([Config.MIXXY_PRO_IOS])
-    .then(() => {
-      RNIap.requestPurchase(Config.MIXXY_PRO_IOS, false)
-        .then(() => {
-          return null
-        })
-        .catch((error) => {
-          return error
-        })
-    })
-    .catch((error) => {
-      return error
-    })
+export async function requestPurchaseIAP() {
+  try {
+    const canMakePayments = await RNIap.initConnection()
+    if (!canMakePayments) {
+      return "Can't connect to Itunes Store"
+    }
+    await RNIap.getProducts([Config.MIXXY_PRO_IOS])
+    await RNIap.requestPurchase(Config.MIXXY_PRO_IOS, false)
+    return null
+  } catch (err) {
+    return err
+  }
 }
 
 export function upgradeIAP(purchase) {
@@ -47,34 +45,32 @@ export function upgradeIAP(purchase) {
   })
 }
 
-export function restoreIAP() {
-  return storage.getItem('user').then((user) => {
+async function restoreIAP() {
+  try {
+    const canMakePayments = await RNIap.initConnection()
+    if (!canMakePayments) {
+      return "Can't connect to Itunes Store"
+    }
+    const user = await storage.getItem('user')
     const userDetails = user ? JSON.parse(user) : {}
-    RNIap.getAvailablePurchases([Config.MIXXY_PRO_IOS])
-      .then((purchases) => {
-        // Check if user has premium
-        let isPremium = false
-        purchases.forEach((purchase) => {
-          switch (purchase.productId) {
-            case Config.MIXXY_PRO_IOS:
-              isPremium = true
-              break
-            default:
-              break
-          }
-        })
-        // Update user
-        userDetails.premium = isPremium
-        storage.setItem('user', JSON.stringify(userDetails))
-        return [userDetails, null]
-      })
-      .catch((error) => {
-        // Assume premium false in error
-        userDetails.premium = false
-        storage.setItem('user', JSON.stringify(userDetails))
-        return [userDetails, error]
-      })
-  })
+    const purchases = await RNIap.getAvailablePurchases([Config.MIXXY_PRO_IOS])
+    let isPremium = false
+    purchases.forEach((purchase) => {
+      switch (purchase.productId) {
+        case Config.MIXXY_PRO_IOS:
+          isPremium = true
+          break
+        default:
+          break
+      }
+    })
+    // Update user
+    userDetails.premium = isPremium
+    await storage.setItem('user', JSON.stringify(userDetails))
+    return [userDetails, null]
+  } catch (err) {
+    return [null, err]
+  }
 }
 
 export const userService = {

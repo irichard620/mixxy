@@ -4,11 +4,16 @@ import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { SafeAreaView, withNavigationFocus } from 'react-navigation'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
+import RNIap, {
+  purchaseErrorListener,
+  purchaseUpdatedListener
+} from 'react-native-iap';
 import getStylesheet from '../../Theme/ApplicationStyles'
 import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
 import RecipeActions from '../../Stores/Recipe/Actions'
+import UserActions from '../../Stores/User/Actions'
 import HomeDiscoverTab from './HomeDiscoverTab'
 import Images from '../../Theme/Images'
 import HomeLibraryTab from './HomeLibraryTab'
@@ -32,6 +37,10 @@ const renderScene = SceneMap({
 });
 
 class HomeScreen extends React.Component {
+  purchaseUpdatePro = null;
+
+  purchaseErrorPro = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +51,78 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    const { upgradeMixxyPro } = this.props
+    // Purchase success handler
+    this.purchaseUpdatePro = purchaseUpdatedListener((purchase) => {
+      const receipt = purchase.transactionReceipt;
+      if (receipt) {
+        // Update in our system - wait for callback
+        upgradeMixxyPro(purchase);
+      }
+    });
+
+    // Purchase error handler
+    this.purchaseErrorPro = purchaseErrorListener(() => {
+      // Show alert
+      Alert.alert(
+        'Error purchasing Mixxy Pro',
+        'An error occurred purchasing pro version of Mixxy.',
+        [
+          {
+            text: 'OK',
+          },
+        ],
+      );
+    });
+
     this.props.fetchRecipes()
+  }
+
+  componentDidUpdate(prevProps) {
+    const nextUser = this.props.user
+    if (prevProps.upgradeIAPIsLoading && !this.props.upgradeIAPIsLoading && nextUser) {
+      // Finish transaction
+      if (Platform.OS === 'ios') {
+        RNIap.finishTransactionIOS(nextUser.purchase.transactionId);
+      } else if (Platform.OS === 'android') {
+        RNIap.acknowledgePurchaseAndroid(nextUser.purchase.purchaseToken);
+      }
+    } if (nextUser && prevProps.restoreIAPIsLoading && !this.props.restoreIAPIsLoading) {
+      // Update user
+      if (!nextUser.premium) {
+        Alert.alert(
+          'Problem restoring Mixxy Pro',
+          'There was an issue restoring your Mixxy Pro. '
+          + 'It might be an issue with your connection, or no past purchase was found.',
+          [
+            {
+              text: 'OK',
+            },
+          ],
+        );
+        return
+      }
+      Alert.alert(
+        'Mixxy Pro Restored',
+        'Thanks for your continued support as a Mixxy Pro user!',
+        [
+          {
+            text: 'OK',
+          },
+        ],
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.purchaseUpdatePro) {
+      this.purchaseUpdatePro.remove();
+      this.purchaseUpdatePro = null;
+    }
+    if (this.purchaseErrorPro) {
+      this.purchaseErrorPro.remove();
+      this.purchaseErrorPro = null;
+    }
   }
 
   handleDynamicLink = (link) => {
@@ -182,9 +262,14 @@ const mapStateToProps = (state) => ({
   fetchRecipesIsLoading: state.recipes.fetchRecipesIsLoading,
   fetchSharedRecipeIsLoading: state.recipes.fetchSharedRecipeIsLoading,
   sharedRecipe: state.recipes.sharedRecipe,
+  upgradeIAPIsLoading: state.user.upgradeIAPIsLoading,
+  restoreIAPIsLoading: state.user.restoreIAPIsLoading,
+  user: state.user.user,
+  restoreIAPErrorMessage: state.user.restoreIAPErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  upgradeMixxyPro: (purchase) => dispatch(UserActions.upgradeIAP(purchase)),
   fetchRecipes: () => dispatch(RecipeActions.fetchRecipes()),
   fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
 })

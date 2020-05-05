@@ -12,7 +12,7 @@ export default function BuilderServingGlass(props) {
   return (
     <ScrollView style={builderStyles.scrollView}>
       <View style={builderStyles.iconView}>
-        <Image style={builderStyles.icon} source={Images.logo} />
+        <Image style={builderStyles.icon} source={Images.builderDrinkType} />
       </View>
       <Text style={builderStyles.selectionHeader}>Choose a Serving Glass</Text>
       <Text style={builderStyles.selectionSubtitle}>

@@ -10,7 +10,7 @@ import { reducer as MasterListReducer } from './MasterList/Reducers'
 
 export default () => {
   const rootReducer = combineReducers({
-    example: UserReducer,
+    user: UserReducer,
     ingredients: IngredientReducer,
     recipes: RecipeReducer,
     sponsors: SponsorReducer,

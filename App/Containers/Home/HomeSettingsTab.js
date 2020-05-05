@@ -1,14 +1,17 @@
-import { Alert, ScrollView, Text, View, Linking, Image } from 'react-native'
+import { Alert, ScrollView, Text, View, Linking, Image, TouchableOpacity } from 'react-native'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import React from 'react'
+import { PropTypes } from 'prop-types'
 import getHomeStylesheet from './HomeScreenStyle'
 import { useDarkMode } from 'react-native-dark-mode'
 import { connect } from 'react-redux'
 import * as constants from '../../Config/constants'
 import Detail from '../../Components/Detail'
 import Images from '../../Theme/Images'
+import UserActions from '../../Stores/User/Actions'
 
 function HomeSettingsTab(props) {
+  const { user } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
@@ -59,6 +62,41 @@ function HomeSettingsTab(props) {
     }
   }
 
+  const onPurchaseMixxyClicked = () => {
+    const { requestPurchaseIAP } = props
+    Alert.alert(
+      'Buy Mixxy Pro',
+      'Would you like to purchase the pro version of Mixxy? This will give you ' +
+        'the ability to create and edit recipes, and will unlock unlimited recipe storage.',
+      [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Buy',
+          onPress: () => {
+            requestPurchaseIAP()
+          },
+        },
+      ]
+    )
+  }
+
+  const onRestorePurchaseClicked = () => {
+    const { restoreIAP } = props
+    Alert.alert('Restore Mixxy Pro', 'Would you like to restore the pro version of Mixxy?', [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Restore',
+        onPress: () => {
+          restoreIAP()
+        },
+      },
+    ])
+  }
+
   const renderOption = (option) => {
     return (
       <Detail
@@ -70,7 +108,7 @@ function HomeSettingsTab(props) {
         showSeparator
         darkMode={darkMode}
       />
-    );
+    )
   }
 
   const renderSection = (section, idx) => {
@@ -82,15 +120,37 @@ function HomeSettingsTab(props) {
     )
   }
 
+  let proText = 'Thanks for being a Mixxy Pro user and supporting our team.'
+  if (!user.premium) {
+    proText =
+      'Unlimited recipe storage, recipe editing, and custom drink creation. (And all our future Pro features, too.) Mixxy Pro is a one-time purchase that also supports our two person team.'
+  }
+
   return (
     <ScrollView style={styles.outerContainer}>
       <Text style={homeStyles.topHeaderLibrary}>Settings</Text>
       <View style={homeStyles.settingsProOutline}>
         <Image source={Images.proBadge} style={homeStyles.settingsProImage} />
         <Text style={homeStyles.settingsProTitle}>{'Mixxy Pro'}</Text>
-        <Text style={homeStyles.settingsProText}>
-          {'Thanks for being a Mixxy Pro user and supporting our team.'}
-        </Text>
+        <Text style={homeStyles.settingsProText}>{proText}</Text>
+        {!user.premium && <View style={styles.divider} />}
+        {!user.premium && (
+          <TouchableOpacity
+            style={homeStyles.settingsProButtonOutline}
+            onPress={onPurchaseMixxyClicked}
+          >
+            <Text style={homeStyles.settingsProButton1Text}>{'Get Mixxy Pro'}</Text>
+          </TouchableOpacity>
+        )}
+        {!user.premium && <View style={styles.divider} />}
+        {!user.premium && (
+          <TouchableOpacity
+            style={homeStyles.settingsProButtonOutline}
+            onPress={onRestorePurchaseClicked}
+          >
+            <Text style={homeStyles.settingsProButton2Text}>{'Restore Purchase'}</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={[styles.divider, extraPadding]} />
       {constants.settingsSections.map((section, idx) => renderSection(section, idx))}
@@ -100,11 +160,18 @@ function HomeSettingsTab(props) {
 }
 
 HomeSettingsTab.propTypes = {
+  user: PropTypes.object,
+  requestPurchaseIAP: PropTypes.func,
+  restoreIAP: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
+  user: state.user.user,
 })
 
-const mapDispatchToProps = (dispatch) => ({})
+const mapDispatchToProps = (dispatch) => ({
+  requestPurchaseIAP: () => dispatch(UserActions.requestPurchaseIAP()),
+  restoreIAP: () => dispatch(UserActions.restoreIAP()),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeSettingsTab)

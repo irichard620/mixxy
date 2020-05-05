@@ -12,7 +12,7 @@ export default function BuilderBaseSpirit(props) {
   return (
     <ScrollView style={builderStyles.scrollView}>
       <View style={builderStyles.iconView}>
-        <Image style={builderStyles.icon} source={Images.logo} />
+        <Image style={builderStyles.icon} source={Images.builderSpiritType} />
       </View>
       <Text style={builderStyles.selectionHeader}>Choose a Base Spirit</Text>
       <Text style={builderStyles.selectionSubtitle}>
