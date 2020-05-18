@@ -23,13 +23,14 @@ export default function Textbox(props) {
 function getTextboxStylesheet(darkMode) {
   return StyleSheet.create({
     textContainer: {
-      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      borderColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       borderRadius: 10,
+      borderWidth: 0.5,
       marginBottom: 24,
       marginLeft: 16,
       marginRight: 16,
-      marginTop: 16,
-      padding: 16,
+      padding: 14,
     },
     textInput: {
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
