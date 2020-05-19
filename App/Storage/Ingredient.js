@@ -6,7 +6,7 @@ export function Ingredient(ingredientObj) {
 
   // Assign other values
   ingredient.ingredientId = ingredientObj.ingredientId || ''
-  ingredient.title = ingredientObj.title
+  ingredient.title = ingredientObj.title || ''
   if (!('brand' in ingredientObj)) {
     ingredient.brand = ''
   } else {
@@ -14,7 +14,7 @@ export function Ingredient(ingredientObj) {
   }
   ingredient.amount = ingredientObj.amount || '0'
   ingredient.fractionalAmount = ingredientObj.fractionalAmount || ''
-  ingredient.amountType = ingredientObj.amountType
+  ingredient.amountType = ingredientObj.amountType || ''
 
   return ingredient
 }

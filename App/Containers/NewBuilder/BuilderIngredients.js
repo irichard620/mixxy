@@ -2,12 +2,11 @@ import React from 'react'
 import { Text, ScrollView, KeyboardAvoidingView } from 'react-native'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
-import Textbox from '../../Components/Textbox'
-import ClickableTextbox from '../../Components/ClickableTextbox'
-import * as constants from '../../Config/constants'
+import AddButton from '../../Components/AddButton'
+import IngredientTextbox from './IngredientTextbox'
 
 export default function BuilderIngredients(props) {
-  const { darkMode } = props
+  const { darkMode, ingredients, onAddIngredientClick, onUnitClick, onChangeText } = props
   const builderStyles = getBuilderStylesheet(darkMode)
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
@@ -18,6 +17,17 @@ export default function BuilderIngredients(props) {
             'List out all the ingredients and their amounts here. If you’re using an ingredient to rim or garnish your drink, you can indicate that with the respective units.'
           }
         </Text>
+        {ingredients.map((ingredient, idx) => (
+          <IngredientTextbox
+            key={`ingredient${idx}`}
+            unitText={'99 Oz'}
+            onUnitClick={() => onUnitClick(idx)}
+            ingredientText={ingredient.title}
+            onChangeText={(text) => onChangeText(text, idx)}
+            darkMode={darkMode}
+          />
+        ))}
+        <AddButton onPress={onAddIngredientClick} />
       </ScrollView>
     </KeyboardAvoidingView>
   )
@@ -25,4 +35,8 @@ export default function BuilderIngredients(props) {
 
 BuilderIngredients.propTypes = {
   darkMode: PropTypes.bool,
+  onAddIngredientClick: PropTypes.func,
+  ingredients: PropTypes.array,
+  onUnitClick: PropTypes.func,
+  onChangeText: PropTypes.func,
 }

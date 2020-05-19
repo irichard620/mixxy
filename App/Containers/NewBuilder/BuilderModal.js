@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CustomModal from '../../Components/CustomModal'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 import * as constants from '../../Config/constants';
+import IngredientUnitModal from './IngredientUnitModal'
 
 class BuilderModal extends Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class BuilderModal extends Component {
 
   render() {
     const {
-      visibleModal, modalType, drinkType, baseSpirit, servingGlass, darkMode
+      visibleModal, modalType, modalIdx, drinkType, baseSpirit, servingGlass, darkMode, wholeAmount, fractionAmount, amountType,
     } = this.props;
     const { selectedModalItem } = this.state;
 
@@ -97,15 +98,27 @@ class BuilderModal extends Component {
         type={constants.MODAL_TYPE_BOTTOM}
         darkMode={darkMode}
       >
-        <ModalContentBottom
-          isListModal={true}
-          options={options}
-          title={titleToDisplay}
-          onPressItem={this.onModalPressItem}
-          onModalSave={this.onModalSavePressed}
-          hasSave={true}
-          darkMode={darkMode}
-        />
+        {modalType !== constants.MODAL_INGREDIENT_UNIT && (
+          <ModalContentBottom
+            isListModal={true}
+            options={options}
+            title={titleToDisplay}
+            onPressItem={this.onModalPressItem}
+            onModalSave={this.onModalSavePressed}
+            hasSave={true}
+            darkMode={darkMode}
+          />
+        )}
+        {modalType === constants.MODAL_INGREDIENT_UNIT && (
+          <IngredientUnitModal
+            darkMode={darkMode}
+            wholeAmount={}
+            fractionAmount={}
+            amountType={}
+            onModalSave={}
+            onPickerUpdate={}
+          />
+        )}
       </CustomModal>
     );
   }

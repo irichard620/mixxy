@@ -207,6 +207,7 @@ export const MODAL_ADD_STEP = 'Add Step'
 export const MODAL_DRINK_TYPE = 'Drink Type'
 export const MODAL_BASE_SPIRIT = 'Base Spirit'
 export const MODAL_SERVING_GLASS = 'Serving Glass'
+export const MODAL_INGREDIENT_UNIT = 'Set Ingredient Unit'
 
 // recipe menu options
 export const RECIPE_MENU_EDIT = 'Edit recipe'

@@ -16,6 +16,8 @@ import * as recipeModel from '../../Storage/Recipe'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import BuilderBasicDetails from './BuilderBasicDetails'
 import BuilderModal from './BuilderModal'
+import BuilderIngredients from './BuilderIngredients'
+import * as ingredientModel from '../../Storage/Ingredient'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -32,8 +34,10 @@ class BuilderScreen extends React.Component {
       servingGlass: '',
       steps: [],
       selectedStep: -1,
+      ingredients: [],
       visibleModal: false,
       modalType: '',
+      modalIdx: -1,
     };
   }
 
@@ -94,6 +98,7 @@ class BuilderScreen extends React.Component {
     this.setState({
       visibleModal: false,
       modalType: '',
+      modalIdx: -1,
     });
   };
 
@@ -175,9 +180,41 @@ class BuilderScreen extends React.Component {
     })
   }
 
+  onAddIngredientClick = () => {
+    const { ingredients } = this.state
+    const newIngredient = ingredientModel.Ingredient({});
+    this.setState({
+      ingredients: [
+        ...ingredients,
+        newIngredient
+      ],
+    });
+  }
+
+  onIngredientUnitClick = (idx) => {
+    this.setState({
+      visibleModal: true,
+      modalIdx: idx,
+      modalType: constants.MODAL_INGREDIENT_UNIT
+    })
+  }
+
+  onIngredientTextUpdate = (text, idx) => {
+    const { ingredients } = this.state
+    this.setState({
+      ingredients: update(ingredients, {
+        [idx]: {
+          title: {
+            $set: text
+          },
+        }
+      }),
+    });
+  }
+
   render() {
     const { darkMode } = this.props;
-    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, selectedStep, visibleModal, modalType } = this.state;
+    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx } = this.state;
 
     const styles = getStylesheet(darkMode)
     const builderStyles = getBuilderStylesheet(darkMode)
@@ -193,6 +230,15 @@ class BuilderScreen extends React.Component {
       (step === 0 && (recipeName === '' || drinkType === ''))
       || (step === 2 && steps.length === 0)
     )
+
+    let wholeAmount = ''
+    let fractionAmount = ''
+    let amountType = ''
+    if (modalIdx < ingredients.length && modalIdx >= 0) {
+      wholeAmount = ingredients[modalIdx].amount
+      fractionAmount = ingredients[modalIdx].fractionalAmount
+      amountType = ingredients[modalIdx].amountType
+    }
 
     return (
       <SafeAreaView style={styles.outerContainer}>
@@ -220,6 +266,15 @@ class BuilderScreen extends React.Component {
             onBaseSpiritClick={this.onBaseSpiritClick}
           />
         )}
+        {step === 1 && (
+          <BuilderIngredients
+            darkMode={darkMode}
+            onAddIngredientClick={this.onAddIngredientClick}
+            ingredients={ingredients}
+            onUnitClick={this.onIngredientUnitClick}
+            onChangeText={this.onIngredientTextUpdate}
+          />
+        )}
         <View style={builderStyles.gradientContainer}>
           <LinearGradient
             colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
@@ -242,12 +297,16 @@ class BuilderScreen extends React.Component {
         <BuilderModal
           visibleModal={visibleModal}
           modalType={modalType}
+          modalIdx={modalIdx}
           drinkType={drinkType}
           baseSpirit={baseSpirit}
           servingGlass={servingGlass}
           onCloseClick={this.onModalCloseClick}
           onModalSave={this.onModalSave}
           darkMode={darkMode}
+          wholeAmount={wholeAmount}
+          fractionAmount={fractionAmount}
+          amountType={amountType}
         />
       </SafeAreaView>
     )
