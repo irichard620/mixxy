@@ -81,6 +81,9 @@ export function getOunceAmountFromIngredient(ingredient) {
 }
 
 export function getIngredientAmount(ingredient, drinkAmount) {
+  if (ingredient.amount === '0' && ingredient.fractionalAmount === '') {
+    return ''
+  }
   let isPlural = false
   let wholeNumberAmount = parseInt(ingredient.amount)
   if (wholeNumberAmount > 1) isPlural = true

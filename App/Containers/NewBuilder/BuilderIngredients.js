@@ -1,13 +1,30 @@
 import React from 'react'
-import { Text, ScrollView, KeyboardAvoidingView } from 'react-native'
+import { Text, ScrollView, KeyboardAvoidingView, View } from 'react-native'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
 import AddButton from '../../Components/AddButton'
 import IngredientTextbox from './IngredientTextbox'
+import * as ingredientModel from '../../Storage/Ingredient'
+import DeleteButton from '../../Components/DeleteButton'
 
 export default function BuilderIngredients(props) {
-  const { darkMode, ingredients, onAddIngredientClick, onUnitClick, onChangeText } = props
+  const {
+    darkMode,
+    ingredients,
+    onAddIngredientClick,
+    onUnitClick,
+    onChangeText,
+    onDeletePress,
+    isEditMode,
+  } = props
   const builderStyles = getBuilderStylesheet(darkMode)
+  let leftMargin = -30
+  if (isEditMode) {
+    leftMargin = 16
+  }
+  const leftMarginStyle = {
+    marginLeft: leftMargin,
+  }
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
       <ScrollView style={builderStyles.scrollView}>
@@ -18,14 +35,17 @@ export default function BuilderIngredients(props) {
           }
         </Text>
         {ingredients.map((ingredient, idx) => (
-          <IngredientTextbox
-            key={`ingredient${idx}`}
-            unitText={'99 Oz'}
-            onUnitClick={() => onUnitClick(idx)}
-            ingredientText={ingredient.title}
-            onChangeText={(text) => onChangeText(text, idx)}
-            darkMode={darkMode}
-          />
+          <View key={`ingredient${idx}view`} style={[builderStyles.ingredientRow, leftMarginStyle]}>
+            <DeleteButton onPress={() => onDeletePress(idx)} />
+            <IngredientTextbox
+              key={`ingredient${idx}`}
+              unitText={ingredientModel.getIngredientAmount(ingredient, 1)}
+              onUnitClick={() => onUnitClick(idx)}
+              ingredientText={ingredient.title}
+              onChangeText={(text) => onChangeText(text, idx)}
+              darkMode={darkMode}
+            />
+          </View>
         ))}
         <AddButton onPress={onAddIngredientClick} />
       </ScrollView>
@@ -35,8 +55,10 @@ export default function BuilderIngredients(props) {
 
 BuilderIngredients.propTypes = {
   darkMode: PropTypes.bool,
+  isEditMode: PropTypes.bool,
   onAddIngredientClick: PropTypes.func,
   ingredients: PropTypes.array,
   onUnitClick: PropTypes.func,
   onChangeText: PropTypes.func,
+  onDeletePress: PropTypes.func,
 }

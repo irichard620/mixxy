@@ -67,8 +67,7 @@ function getTextboxStylesheet(darkMode) {
       borderColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       borderRadius: 10,
       borderWidth: 0.5,
-      marginBottom: 12,
-      marginLeft: 16,
+      flexDirection: 'row',
     },
     textInput: {
       color: darkMode ? Colors.text1Dark : Colors.text1Light,

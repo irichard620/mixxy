@@ -23,6 +23,11 @@ export default function getBuilderStylesheet(useDarkMode) {
       ...Fonts.body1,
       color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
     },
+    ingredientRow: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginBottom: 12,
+    },
     scrollView: {
       flex: 1,
       marginBottom: 16,

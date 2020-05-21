@@ -7,7 +7,7 @@ import ModalBottomOutline from '../../Components/ModalBottomOutline'
 import * as constants from '../../Config/constants'
 
 export default function IngredientUnitModal(props) {
-  const { wholeAmount, fractionAmount, amountType, onModalSave, onPickerUpdate, darkMode } = props
+  const { amount, fractionalAmount, amountType, onModalSave, onPickerUpdate, darkMode } = props
 
   const modalStyles = getModalStylesheet(darkMode)
 
@@ -28,7 +28,7 @@ export default function IngredientUnitModal(props) {
     <ModalBottomOutline title={'Select ingredient units'} darkMode={darkMode}>
       <View style={modalStyles.pickerOutline}>
         <Picker
-          selectedValue={wholeAmount}
+          selectedValue={amount}
           onValueChange={(itemValue) => onPickerUpdate(itemValue, 0)}
           style={pickerStyle}
           itemStyle={pickerItemStyle}
@@ -39,7 +39,7 @@ export default function IngredientUnitModal(props) {
           })}
         </Picker>
         <Picker
-          selectedValue={fractionAmount}
+          selectedValue={fractionalAmount}
           onValueChange={(itemValue) => onPickerUpdate(itemValue, 1)}
           style={pickerStyle}
           itemStyle={pickerItemStyle}
@@ -75,8 +75,8 @@ export default function IngredientUnitModal(props) {
 IngredientUnitModal.propTypes = {
   onModalSave: PropTypes.func,
   darkMode: PropTypes.bool,
-  wholeAmount: PropTypes.string,
-  fractionAmount: PropTypes.string,
+  amount: PropTypes.string,
+  fractionalAmount: PropTypes.string,
   amountType: PropTypes.string,
   onPickerUpdate: PropTypes.func,
 }

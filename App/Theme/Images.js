@@ -60,4 +60,5 @@ export default {
   builderSpiritType: require('../Assets/Images/builder/SpiritType_Select.png'),
   proModalBadge: require('../Assets/Images/modal/Badge_MixxyPro.png'),
   builderAddNew: require('../Assets/Images/new_builder/Builder_NewStep.png'),
+  builderDeleteIngredient: require('../Assets/Images/new_builder/Builder_DeleteIngredient.png'),
 }

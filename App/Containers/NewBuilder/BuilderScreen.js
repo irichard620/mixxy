@@ -11,13 +11,13 @@ import ButtonLarge from '../../Components/ButtonLarge'
 import NavigationService from '../../Services/NavigationService'
 import Colors from '../../Theme/Colors'
 import * as constants from '../../Config/constants'
-import * as stepModel from '../../Storage/Step';
-import * as recipeModel from '../../Storage/Recipe'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import BuilderBasicDetails from './BuilderBasicDetails'
 import BuilderModal from './BuilderModal'
 import BuilderIngredients from './BuilderIngredients'
 import * as ingredientModel from '../../Storage/Ingredient'
+import * as stepModel from '../../Storage/Step'
+import BuilderSteps from './BuilderSteps'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -38,6 +38,7 @@ class BuilderScreen extends React.Component {
       visibleModal: false,
       modalType: '',
       modalIdx: -1,
+      isEditMode: false,
     };
   }
 
@@ -82,6 +83,16 @@ class BuilderScreen extends React.Component {
     navigation.dispatch(NavigationActions.back());
   }
 
+  onRightButtonPress = () => {
+    const { step, isEditMode } = this.state
+    if (step === 1) {
+      // Show delete buttons for ingredients
+      this.setState({
+        isEditMode: !isEditMode
+      })
+    }
+  }
+
   onBackScreenClick = () => {
     const { step } = this.state
     if (step === 0) {
@@ -114,9 +125,9 @@ class BuilderScreen extends React.Component {
     }
   }
 
-  onModalSave = (item) => {
+  onModalSave = (item, modalIdx, amount, fractionalAmount, amountType) => {
     const {
-      modalType, drinkType
+      modalType, drinkType, ingredients
     } = this.state;
 
     if (modalType === constants.BUILDER_DRINK_TYPE_DETAIL) {
@@ -141,6 +152,25 @@ class BuilderScreen extends React.Component {
       // Update glass
       this.setState({
         servingGlass: item,
+        visibleModal: false,
+        modalType: ''
+      });
+    } else if (modalType === constants.MODAL_INGREDIENT_UNIT) {
+      // Update units for ingredient
+      this.setState({
+        ingredients: update(ingredients, {
+          [modalIdx]: {
+            amount: {
+              $set: amount
+            },
+            fractionalAmount: {
+              $set: fractionalAmount
+            },
+            amountType: {
+              $set: amountType
+            }
+          }
+        }),
         visibleModal: false,
         modalType: ''
       });
@@ -212,9 +242,33 @@ class BuilderScreen extends React.Component {
     });
   }
 
+  onDeleteIngredientPress = (idx) => {
+    const { ingredients } = this.state
+    // make a separate copy of the array
+    const array = [...ingredients];
+    // Find index
+    if (idx !== -1) {
+      array.splice(idx, 1);
+      this.setState({
+        ingredients: array,
+      });
+    }
+  }
+
+  onAddStepClick = () => {
+    const { steps } = this.state
+    const newStep = stepModel.Step({});
+    this.setState({
+      steps: [
+        ...steps,
+        newStep
+      ],
+    });
+  }
+
   render() {
     const { darkMode } = this.props;
-    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx } = this.state;
+    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx, isEditMode } = this.state;
 
     const styles = getStylesheet(darkMode)
     const builderStyles = getBuilderStylesheet(darkMode)
@@ -231,13 +285,20 @@ class BuilderScreen extends React.Component {
       || (step === 2 && steps.length === 0)
     )
 
-    let wholeAmount = ''
-    let fractionAmount = ''
+    let amount = ''
+    let fractionalAmount = ''
     let amountType = ''
     if (modalIdx < ingredients.length && modalIdx >= 0) {
-      wholeAmount = ingredients[modalIdx].amount
-      fractionAmount = ingredients[modalIdx].fractionalAmount
+      amount = ingredients[modalIdx].amount
+      fractionalAmount = ingredients[modalIdx].fractionalAmount
       amountType = ingredients[modalIdx].amountType
+    }
+
+    let rightButtonTitle = ''
+    if (step === 1 && isEditMode) {
+      rightButtonTitle = 'Done'
+    } else if (step === 1 && !isEditMode) {
+      rightButtonTitle = 'Edit'
     }
 
     return (
@@ -245,7 +306,7 @@ class BuilderScreen extends React.Component {
         <TopHeader
           useArrow={step !== 0}
           title={''}
-          rightButtonTitle={step !== 0 ? 'Edit' : ''}
+          rightButtonTitle={rightButtonTitle}
           onRightButtonPress={this.onRightButtonPress}
           onClose={this.onBackScreenClick}
           showSeparator={false}
@@ -273,6 +334,16 @@ class BuilderScreen extends React.Component {
             ingredients={ingredients}
             onUnitClick={this.onIngredientUnitClick}
             onChangeText={this.onIngredientTextUpdate}
+            isEditMode={isEditMode}
+            onDeletePress={this.onDeleteIngredientPress}
+          />
+        )}
+        {step === 2 && (
+          <BuilderSteps
+            darkMode={darkMode}
+            onAddStepClick={this.onAddStepClick}
+            steps={steps}
+            recipeName={recipeName}
           />
         )}
         <View style={builderStyles.gradientContainer}>
@@ -304,8 +375,8 @@ class BuilderScreen extends React.Component {
           onCloseClick={this.onModalCloseClick}
           onModalSave={this.onModalSave}
           darkMode={darkMode}
-          wholeAmount={wholeAmount}
-          fractionAmount={fractionAmount}
+          amount={amount}
+          fractionalAmount={fractionalAmount}
           amountType={amountType}
         />
       </SafeAreaView>

@@ -4,33 +4,32 @@ import Colors from '../Theme/Colors'
 import Images from '../Theme/Images'
 import { PropTypes } from 'prop-types'
 
-export default function AddButton(props) {
+export default function DeleteButton(props) {
   return (
     <TouchableWithoutFeedback onPress={props.onPress}>
       <View style={styles.outline}>
-        <Image style={styles.image} source={Images.builderAddNew} />
+        <Image style={styles.image} source={Images.builderDeleteIngredient} />
       </View>
     </TouchableWithoutFeedback>
   )
 }
 
-AddButton.propTypes = {
+DeleteButton.propTypes = {
   onPress: PropTypes.func,
 }
 
 const styles = StyleSheet.create({
   image: {
-    height: 14,
+    height: 2,
     resizeMode: 'contain',
   },
   outline: {
     alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: Colors.blue1,
-    borderRadius: 20,
-    height: 40,
+    backgroundColor: Colors.red1,
+    borderRadius: 15,
+    height: 30,
     justifyContent: 'center',
-    marginTop: 6,
-    width: 40,
+    marginRight: 16,
+    width: 30,
   },
 })

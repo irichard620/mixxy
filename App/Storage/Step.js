@@ -14,8 +14,6 @@ export function Step(stepObj) {
 
   // Assign other values
   step.title = stepObj.title
-  step.notes = stepObj.notes || ''
-  step.properties = stepObj.properties || {}
   if (!('ingredients' in stepObj)) {
     step.ingredients = []
   } else {
@@ -25,7 +23,6 @@ export function Step(stepObj) {
     }
     step.ingredients = ingredientList
   }
-  step.vessel = stepObj.vessel
   return step
 }
 

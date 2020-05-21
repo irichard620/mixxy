@@ -3,13 +3,26 @@ import CustomModal from '../../Components/CustomModal'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 import * as constants from '../../Config/constants';
 import IngredientUnitModal from './IngredientUnitModal'
+import { Alert } from 'react-native'
 
 class BuilderModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedModalItem: '',
+      amount: '0',
+      fractionalAmount: '',
+      amountType: '',
     };
+  }
+
+  componentDidMount() {
+    const { amount, fractionalAmount, amountType } = this.props;
+    this.setState({
+      amount: amount,
+      fractionalAmount: fractionalAmount,
+      amountType: amountType,
+    });
   }
 
   drinkTypeOptions = (existingDrinkType) => {
@@ -43,11 +56,40 @@ class BuilderModal extends Component {
   };
 
   onModalSavePressed = () => {
-    const { onModalSave } = this.props;
-    const { selectedModalItem } = this.state;
-    onModalSave(selectedModalItem);
+    const { onModalSave, modalType, modalIdx } = this.props;
+    const { selectedModalItem, amount, fractionalAmount, amountType } = this.state;
+    if (modalType === constants.MODAL_INGREDIENT_UNIT) {
+      if (fractionalAmount === '' && amount === '0') {
+        Alert.alert('No amount added', 'Must add non-zero amount for ingredient.', [
+          {
+            text: 'OK',
+          },
+        ])
+        return
+      } else if (amountType === '') {
+        Alert.alert('No amount type', 'Must add amount type for ingredient.', [
+          {
+            text: 'OK',
+          },
+        ])
+        return
+      }
+    } else {
+      if (selectedModalItem === '') {
+        Alert.alert('Must Select Option', 'Cannot save without selecting an option.', [
+          {
+            text: 'OK',
+          },
+        ])
+        return
+      }
+    }
+    onModalSave(selectedModalItem, modalIdx, amount, fractionalAmount, amountType);
     this.setState({
-      selectedModalItem: ''
+      selectedModalItem: '',
+      amount: '0',
+      fractionalAmount: '',
+      amountType: '',
     });
   };
 
@@ -59,11 +101,21 @@ class BuilderModal extends Component {
     });
   };
 
+  onPickerUpdate = (item, type) => {
+    if (type === 0) {
+      this.setState({ amount: item })
+    } else if (type === 1) {
+      this.setState({ fractionalAmount: item })
+    } else {
+      this.setState({ amountType: item })
+    }
+  }
+
   render() {
     const {
-      visibleModal, modalType, modalIdx, drinkType, baseSpirit, servingGlass, darkMode, wholeAmount, fractionAmount, amountType,
+      visibleModal, modalType, drinkType, baseSpirit, servingGlass, darkMode,
     } = this.props;
-    const { selectedModalItem } = this.state;
+    const { selectedModalItem, amount, fractionalAmount, amountType } = this.state;
 
     // Get content
     let options = [];
@@ -112,11 +164,11 @@ class BuilderModal extends Component {
         {modalType === constants.MODAL_INGREDIENT_UNIT && (
           <IngredientUnitModal
             darkMode={darkMode}
-            wholeAmount={}
-            fractionAmount={}
-            amountType={}
-            onModalSave={}
-            onPickerUpdate={}
+            amount={amount}
+            fractionalAmount={fractionalAmount}
+            amountType={amountType}
+            onModalSave={this.onModalSavePressed}
+            onPickerUpdate={this.onPickerUpdate}
           />
         )}
       </CustomModal>
