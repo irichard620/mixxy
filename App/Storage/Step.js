@@ -1,7 +1,6 @@
 import {
   getIngredientShortDescription,
   getOunceAmountFromIngredient,
-  Ingredient,
 } from './Ingredient'
 import * as constants from '../Config/constants'
 import { Text } from 'react-native'
@@ -9,20 +8,23 @@ import React from 'react'
 
 const camelcaseKeys = require('camelcase-keys')
 
+// export function ReferenceIngredient(ingredientObj) {
+//   const ingredient = {}
+//
+//   ingredient.ingredientId = ingredientObj.ingredientId || ''
+//   ingredient.startLocation = ingredientObj.startLocation || 0
+//   ingredient.endLocation = ingredientObj.endLocation || 0
+//   return ingredient
+// }
+
 export function Step(stepObj) {
   const step = {}
 
   // Assign other values
-  step.title = stepObj.title
-  if (!('ingredients' in stepObj)) {
-    step.ingredients = []
-  } else {
-    let ingredientList = []
-    for (let i = 0; i < stepObj.ingredients.length; i++) {
-      ingredientList.push(Ingredient(camelcaseKeys(stepObj.ingredients[i])))
-    }
-    step.ingredients = ingredientList
-  }
+  step.title = stepObj.title || ''
+  step.ingredients = stepObj.ingredients || []
+  step.startLocation = stepObj.startLocation || -1
+  step.endLocation = stepObj.endLocation || -1
   return step
 }
 

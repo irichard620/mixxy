@@ -11,6 +11,10 @@ export default function IngredientUnitModal(props) {
 
   const modalStyles = getModalStylesheet(darkMode)
 
+  const itemColor = darkMode ? Colors.text1Dark : Colors.text1Light
+  const isGarnishOrRim =
+    amountType === constants.AMOUNT_TYPE_GARNISH || amountType === constants.AMOUNT_TYPE_RIM
+
   // Max height for modal
   const { width } = Dimensions.get('window')
   const pickerWidth = width / 3
@@ -21,17 +25,18 @@ export default function IngredientUnitModal(props) {
   const pickerItemStyle = {
     height: 200,
   }
-  const itemColor = darkMode ? Colors.text1Dark : Colors.text1Light
-  const amountTypeOptions = constants.classificationToAmountTypes['']
+  const pickerItemStyleNums = {
+    height: isGarnishOrRim ? 0 : 200,
+  }
 
   return (
-    <ModalBottomOutline title={'Select ingredient units'} darkMode={darkMode}>
+    <ModalBottomOutline title={'Select Units'} darkMode={darkMode}>
       <View style={modalStyles.pickerOutline}>
         <Picker
           selectedValue={amount}
           onValueChange={(itemValue) => onPickerUpdate(itemValue, 0)}
           style={pickerStyle}
-          itemStyle={pickerItemStyle}
+          itemStyle={pickerItemStyleNums}
         >
           {[...Array(99).keys()].map((item) => {
             item = item.toString()
@@ -42,7 +47,7 @@ export default function IngredientUnitModal(props) {
           selectedValue={fractionalAmount}
           onValueChange={(itemValue) => onPickerUpdate(itemValue, 1)}
           style={pickerStyle}
-          itemStyle={pickerItemStyle}
+          itemStyle={pickerItemStyleNums}
         >
           {constants.fractionAmounts.map((item) => (
             <Picker.Item key={item} label={item} value={item} color={itemColor} />
@@ -54,7 +59,7 @@ export default function IngredientUnitModal(props) {
           style={pickerStyle}
           itemStyle={pickerItemStyle}
         >
-          {amountTypeOptions.map((item) => (
+          {constants.allAmountTypes.map((item) => (
             <Picker.Item key={item} label={item} value={item} color={itemColor} />
           ))}
         </Picker>

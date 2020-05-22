@@ -3,16 +3,29 @@ import {
   View, StyleSheet, Image, ScrollView, Text, Dimensions
 } from 'react-native';
 import Pagination from '../../Components/Pagination';
-import * as stepModel from '../../Storage/Step';
 import Images from '../../Theme/Images'
 import Step from './Step'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import Colors from '../../Theme/Colors'
+import * as constants from '../../Config/constants'
 
 class TutorialSteps extends Component {
   getIcon = () => {
-    // End image
-    return (<Image style={styles.icon} source={Images.logo} />);
+    const { recipe } = this.props
+    if (recipe.servingGlass === constants.SERVING_GLASS_PITCHER) {
+      return (<Image style={styles.icon} source={Images.glassPitcher} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_SHOT) {
+      return (<Image style={styles.icon} source={Images.glassShot} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_MARGARITA) {
+      return (<Image style={styles.icon} source={Images.glassMarg} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_FLUTE) {
+      return (<Image style={styles.icon} source={Images.glassFlute} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_TALL) {
+      return (<Image style={styles.icon} source={Images.glassTall} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_COCKTAIL) {
+      return (<Image style={styles.icon} source={Images.glassMartini} />)
+    }
+    return (<Image style={styles.icon} source={Images.glassShort} />)
   };
 
   renderStep = (stepObj, idx) => {

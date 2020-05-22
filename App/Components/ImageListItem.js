@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import getStylesheet from '../Theme/ApplicationStyles'
 import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
@@ -10,7 +9,6 @@ import * as constants from '../Config/constants'
 export default function ImageListItem(props) {
   const { title, onClick, darkMode, disabled } = props
 
-  const styles = getStylesheet(darkMode)
   const listItemStyles = getListItemStylesheet(darkMode)
 
   // Conditional styles
@@ -30,6 +28,10 @@ export default function ImageListItem(props) {
     imageToUse = Images.modalNo
   } else if (title === constants.RECIPE_MENU_VIEW) {
     imageToUse = darkMode ? Images.modalViewDark : Images.modalViewLight
+  } else if (title === constants.BUILDER_MENU_BASIC_DETAILS) {
+    imageToUse = darkMode ? Images.modalEditDark : Images.modalEditLight
+  } else if (title === constants.BUILDER_MENU_INGREDIENTS) {
+    imageToUse = darkMode ? Images.modalEditDark : Images.modalEditLight
   }
 
   return (

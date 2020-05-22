@@ -8,6 +8,7 @@ import ListItem from './ListItem'
 import Textbox from './Textbox'
 import ModalBottomOutline from './ModalBottomOutline'
 import ImageListItem from './ImageListItem'
+import MultiSelectListItem from './MultiselectListItem'
 
 export default function ModalContentBottom(props) {
   const {
@@ -18,6 +19,7 @@ export default function ModalContentBottom(props) {
     onModalSave,
     isListModal,
     isImageListModal,
+    isMultiSelectModal,
     options,
     title,
     charLimit,
@@ -28,7 +30,7 @@ export default function ModalContentBottom(props) {
   const modalStyles = getModalStylesheet(darkMode)
 
   // Elems with atleast one text
-  const isTextInput = !isListModal && !isImageListModal
+  const isTextInput = !isListModal && !isImageListModal && !isMultiSelectModal
 
   // Max height for modal
   const { width } = Dimensions.get('window')
@@ -83,11 +85,24 @@ export default function ModalContentBottom(props) {
           ))}
         </View>
       )}
+      {isMultiSelectModal && (
+        <ScrollView style={listPadding}>
+          {options.map((option, idx) => (
+            <MultiSelectListItem
+              key={`${option.title}`}
+              title={option.title}
+              onClick={(title) => onPressItem(title, idx)}
+              selected={option.selected}
+              darkMode={darkMode}
+            />
+          ))}
+        </ScrollView>
+      )}
       {hasSave && (
         <View style={modalStyles.saveContainer}>
           <ButtonLarge
             onButtonClick={onModalSave}
-            title="Save"
+            title={isMultiSelectModal ? 'Insert Ingredients' : 'Save'}
             margin={[0, 16, 0, 16]}
             buttonWidth={width - 32}
             isPrimary
@@ -111,6 +126,7 @@ ModalContentBottom.propTypes = {
   charLimit: PropTypes.number,
   hasSave: PropTypes.bool,
   darkMode: PropTypes.bool,
+  isMultiSelectModal: PropTypes.bool,
 }
 
 function getModalStylesheet(darkMode) {

@@ -84,9 +84,9 @@ class SponsorScreen extends React.Component {
           {about !== '' && <View style={sponsorStyles.contentContainer}>
             <Text style={sponsorStyles.title}>{sponsorName}</Text>
             <View style={sponsorStyles.sponsorTypeOutline}>
-              <Image source={Images.logo} style={sponsorStyles.sponsorTypeIcon} />
+              <Image source={Images.spotlightLocation} style={sponsorStyles.sponsorTypeIcon} />
               <Text style={[sponsorStyles.sponsorTypeText, extraPadding]}>{hqLocation}</Text>
-              <Image source={Images.logo} style={sponsorStyles.sponsorTypeIcon} />
+              <Image source={Images.spotlightType} style={sponsorStyles.sponsorTypeIcon} />
               <Text style={sponsorStyles.sponsorTypeText}>{sponsorType}</Text>
             </View>
             <View style={styles.divider} />

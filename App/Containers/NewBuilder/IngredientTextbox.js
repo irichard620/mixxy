@@ -64,7 +64,7 @@ function getTextboxStylesheet(darkMode) {
   return StyleSheet.create({
     textContainer: {
       backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      borderColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      borderColor: darkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
       borderRadius: 10,
       borderWidth: 0.5,
       flexDirection: 'row',

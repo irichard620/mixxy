@@ -1,11 +1,16 @@
 import * as constants from '../Config/constants'
 import { Fraction } from 'fractional'
+import uuidv4 from 'uuid/v4'
 
 export function Ingredient(ingredientObj) {
   const ingredient = {}
 
   // Assign other values
-  ingredient.ingredientId = ingredientObj.ingredientId || ''
+  if (!('ingredientId' in ingredientObj) || ingredientObj.ingredientId === '') {
+    ingredient.ingredientId = uuidv4()
+  } else {
+    ingredient.ingredientId = ingredientObj.ingredientId
+  }
   ingredient.title = ingredientObj.title || ''
   if (!('brand' in ingredientObj)) {
     ingredient.brand = ''
@@ -28,10 +33,6 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_DROP]: ' drop',
   [constants.AMOUNT_TYPE_PIECE]: ' pc',
   [constants.AMOUNT_TYPE_PINCH]: ' pinch',
-  [constants.AMOUNT_TYPE_SLICE]: ' slice',
-  [constants.AMOUNT_TYPE_SPRIG]: ' sprig',
-  [constants.AMOUNT_TYPE_GRIND]: ' grind',
-  [constants.AMOUNT_TYPE_LEAF]: ' leaf',
 }
 
 const AMOUNT_TYPE_ABBREVIATIONS_PLURAL = {
@@ -43,10 +44,6 @@ const AMOUNT_TYPE_ABBREVIATIONS_PLURAL = {
   [constants.AMOUNT_TYPE_DROP]: ' drops',
   [constants.AMOUNT_TYPE_PIECE]: ' pcs',
   [constants.AMOUNT_TYPE_PINCH]: ' pinches',
-  [constants.AMOUNT_TYPE_SLICE]: ' slices',
-  [constants.AMOUNT_TYPE_SPRIG]: ' sprigs',
-  [constants.AMOUNT_TYPE_GRIND]: ' grinds',
-  [constants.AMOUNT_TYPE_LEAF]: ' leafs',
 }
 
 const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
@@ -58,10 +55,6 @@ const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
   [constants.AMOUNT_TYPE_DROP]: 0,
   [constants.AMOUNT_TYPE_PIECE]: 0,
   [constants.AMOUNT_TYPE_PINCH]: 0,
-  [constants.AMOUNT_TYPE_SLICE]: 0,
-  [constants.AMOUNT_TYPE_SPRIG]: 0,
-  [constants.AMOUNT_TYPE_GRIND]: 0,
-  [constants.AMOUNT_TYPE_LEAF]: 0,
 }
 
 export function getOunceAmountFromIngredient(ingredient) {
@@ -81,6 +74,12 @@ export function getOunceAmountFromIngredient(ingredient) {
 }
 
 export function getIngredientAmount(ingredient, drinkAmount) {
+  if (
+    ingredient.amountType === constants.AMOUNT_TYPE_GARNISH ||
+    ingredient.amountType === constants.AMOUNT_TYPE_RIM
+  ) {
+    return ingredient.amountType
+  }
   if (ingredient.amount === '0' && ingredient.fractionalAmount === '') {
     return ''
   }

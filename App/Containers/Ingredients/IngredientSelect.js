@@ -32,8 +32,6 @@ export default function IngredientSelect(props) {
     height: 200,
   }
   const itemColor = darkMode ? Colors.text1Dark : Colors.text1Light
-  const classification = ingredient.classification || ''
-  const amountTypeOptions = constants.classificationToAmountTypes[classification]
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
       <ScrollView style={ingredientStyles.scrollView}>
@@ -68,7 +66,7 @@ export default function IngredientSelect(props) {
             style={pickerStyle}
             itemStyle={pickerItemStyle}
           >
-            {amountTypeOptions.map((item) => (
+            {constants.allAmountTypes.map((item) => (
               <Picker.Item key={item} label={item} value={item} color={itemColor} />
             ))}
           </Picker>

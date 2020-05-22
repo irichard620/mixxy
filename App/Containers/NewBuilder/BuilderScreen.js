@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions, Alert, Keyboard } from 'react-native'
+import { View, Dimensions, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import update from 'immutability-helper';
 import { NavigationActions, SafeAreaView } from 'react-navigation'
@@ -39,6 +39,8 @@ class BuilderScreen extends React.Component {
       modalType: '',
       modalIdx: -1,
       isEditMode: false,
+      isEditModeSteps: false,
+      cursorLocation: -1,
     };
   }
 
@@ -84,11 +86,15 @@ class BuilderScreen extends React.Component {
   }
 
   onRightButtonPress = () => {
-    const { step, isEditMode } = this.state
+    const { step, isEditMode, isEditModeSteps } = this.state
     if (step === 1) {
       // Show delete buttons for ingredients
       this.setState({
         isEditMode: !isEditMode
+      })
+    } else if (step === 2) {
+      this.setState({
+        isEditModeSteps: !isEditModeSteps
       })
     }
   }
@@ -117,17 +123,22 @@ class BuilderScreen extends React.Component {
     const { step } = this.state;
     // Check step
     if (step !== 2) {
-      this.setState({
-        step: step + 1
-      })
+      if (step === 1) {
+        // Refresh ingredients
+        this.refreshStepIngredients()
+      } else {
+        this.setState({
+          step: step + 1
+        })
+      }
     } else {
       // Save recipe here
     }
   }
 
-  onModalSave = (item, modalIdx, amount, fractionalAmount, amountType) => {
+  onModalSave = (item, modalIdx, amount, fractionalAmount, amountType, ingredientOptions) => {
     const {
-      modalType, drinkType, ingredients
+      modalType, drinkType, ingredients, steps, cursorLocation
     } = this.state;
 
     if (modalType === constants.BUILDER_DRINK_TYPE_DETAIL) {
@@ -172,10 +183,111 @@ class BuilderScreen extends React.Component {
           }
         }),
         visibleModal: false,
-        modalType: ''
+        modalType: '',
+        modalIdx: -1,
       });
+    } else if (modalType === constants.MODAL_SELECT_INGREDIENTS) {
+      // Track an ingredients list
+      const ingredientsList = []
+
+      // Add ingredients to step with correct start and end indexes
+      let ingredientDescription = ''
+      for (let i = 0; i < ingredientOptions.length; i++) {
+        if (ingredientOptions[i].selected) {
+          // Get display of ingredient so we can get end index
+          if (ingredientsList.length) {
+            ingredientDescription += ', '
+          }
+          ingredientDescription += ingredientOptions[i].title
+          ingredientsList.push(ingredientOptions[i].ingredientId)
+        }
+      }
+
+      // Sort ingredients by start
+      const oldTitle = steps[modalIdx].title
+      const addition = oldTitle.substring(cursorLocation).length ? '' : ' '
+      const newTitle = oldTitle.substring(0, cursorLocation) + ingredientDescription + oldTitle.substring(cursorLocation) + addition
+      this.setState({
+        steps: update(steps, {
+          [modalIdx]: {
+            title: {
+              $set: newTitle
+            },
+            ingredients: {
+              $set: ingredientsList
+            },
+            startLocation: {
+              $set: cursorLocation
+            },
+            endLocation: {
+              $set: cursorLocation + ingredientDescription.length,
+            },
+          }
+        }),
+        visibleModal: false,
+        modalType: '',
+        modalIdx: -1,
+      })
     }
   };
+
+  createIngredientDict = () => {
+    const { ingredients } = this.state
+    const ingredientDict = {}
+    for (let i = 0; i < ingredients.length; i++) {
+      ingredientDict[ingredients[i].ingredientId] = ingredients[i]
+    }
+    return ingredientDict
+  }
+
+  refreshStepIngredients = () => {
+    const { steps } = this.state
+    const copiedSteps = [ ...steps ]
+
+    // Go through each step
+    for (let i = 0; i < steps.length; i++) {
+      const copiedStep = { ...steps[i] }
+      // 1) Remove ingredient text
+      if (copiedStep.startLocation !== -1 && copiedStep.endLocation !== -1) {
+        copiedStep.title =
+          copiedStep.title.substring(0, copiedStep.startLocation) + copiedStep.title.substring(copiedStep.endLocation, copiedStep.title.length)
+      } else {
+        continue
+      }
+      // 2) Add back updated ingredient description
+      const ingredientDict = this.createIngredientDict()
+      let ingredientDescription = ''
+      for (let j = 0; j < copiedStep.ingredients.length; j++) {
+        // Get display of ingredient so we can get end index
+        if (j > 0) {
+          ingredientDescription += ', '
+        }
+        ingredientDescription += ingredientModel.getIngredientShortDescription(ingredientDict[copiedStep.ingredients[j]])
+      }
+      // Sort ingredients by start
+      const diff = ingredientDescription.length - (copiedStep.endLocation - copiedStep.startLocation)
+      const addition = copiedStep.title.substring(copiedStep.startLocation).length ? '' : ' '
+      copiedStep.title = copiedStep.title.substring(0, copiedStep.startLocation) + ingredientDescription + copiedStep.title.substring(copiedStep.startLocation) + addition
+      copiedStep.endLocation += diff
+      copiedSteps[i] = copiedStep
+    }
+    this.setState({
+      steps: copiedSteps,
+      step: 2
+    })
+  }
+
+  onModalPressItem = (item, idx) => {
+    const { modalType } = this.state
+    if (modalType === constants.MODAL_BUILDER_NAV) {
+      let step = item === constants.BUILDER_MENU_BASIC_DETAILS ? 0 : 1
+      this.setState({
+        step: step,
+        visibleModal: false,
+        modalType: '',
+      })
+    }
+  }
 
   onRecipeNameUpdate = (text) => {
     this.setState({
@@ -266,9 +378,131 @@ class BuilderScreen extends React.Component {
     });
   }
 
+  onChangeStepText = (text, selection, idx) => {
+    const { steps } = this.state
+    const currentStep = steps[idx]
+    let ingredientsToSet = [ ...currentStep.ingredients ]
+    let startToSet = currentStep.startLocation
+    let endToSet = currentStep.endLocation
+    const diff = text.length - currentStep.title.length
+    if (
+      (
+        diff === (currentStep.startLocation - currentStep.endLocation)
+        && (selection.start === currentStep.startLocation && selection.end === currentStep.startLocation)
+      )
+      ||
+      (
+        diff === (currentStep.startLocation - currentStep.endLocation - 1)
+        && (selection.start === currentStep.startLocation - 1 && selection.end === currentStep.startLocation - 1)
+      )
+    ) {
+      // Clear ingredients
+      ingredientsToSet = []
+      startToSet = -1
+      endToSet = -1
+    } else if (selection.start < currentStep.startLocation) {
+      // Check if need to push ingredient back{
+      const diff = text.length - currentStep.title.length
+      startToSet += diff
+      endToSet += diff
+    }
+    this.setState({
+      steps: update(steps, {
+        [idx]: {
+          title: {
+            $set: text
+          },
+          ingredients: {
+            $set: ingredientsToSet
+          },
+          startLocation: {
+            $set: startToSet
+          },
+          endLocation: {
+            $set: endToSet
+          }
+        }
+      }),
+    });
+  }
+
+  onDeleteStepPress = (idx) => {
+    const { steps } = this.state
+    // make a separate copy of the array
+    const array = [...steps];
+    // Find index
+    if (idx !== -1) {
+      array.splice(idx, 1);
+      this.setState({
+        steps: array,
+      });
+    }
+  }
+
+  onAddIngredientToStep = (idx, cursor) => {
+    const { ingredients } = this.state
+    if (ingredients.length === 0) {
+      Alert.alert(
+        'No Ingredients',
+        'This recipe has no ingredients to add yet. Go to last page to create some.',
+        [
+          {
+            text: 'OK'
+          },
+        ],
+      );
+      return
+    }
+    this.setState({
+      visibleModal: true,
+      modalType: constants.MODAL_SELECT_INGREDIENTS,
+      modalIdx: idx,
+      cursorLocation: cursor,
+    })
+  }
+
+  onMorePress = () => {
+    this.setState({
+      visibleModal: true,
+      modalType: constants.MODAL_BUILDER_NAV,
+    })
+  }
+
+  getIngredientOptions = () => {
+    const { modalType, steps } = this.state
+    if (modalType !== constants.MODAL_SELECT_INGREDIENTS) {
+      return []
+    }
+    // Compare full list of ingredients against what's already in steps
+    // First, create full dictionary with all ingredients
+    const ingredientDict = this.createIngredientDict()
+
+    // Now, go through each step and remove used items
+    for (let i = 0; i < steps.length; i++) {
+      for (let j = 0; j < steps[i].ingredients.length; j++) {
+        let currentIngredientId = steps[i].ingredients[j]
+        if (currentIngredientId in ingredientDict) {
+          delete ingredientDict[currentIngredientId]
+        }
+      }
+    }
+
+    // Whatever is left is our options
+    const finalOptions = []
+    const keys = Object.keys(ingredientDict)
+    for (let i = 0; i < keys.length; i++) {
+      finalOptions.push({
+        ingredientId: keys[i],
+        title: ingredientModel.getIngredientShortDescription(ingredientDict[keys[i]]),
+        selected: false,
+      })
+    }
+    return finalOptions
+  }
+
   render() {
     const { darkMode } = this.props;
-    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx, isEditMode } = this.state;
+    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx, isEditMode, isEditModeSteps } = this.state;
 
     const styles = getStylesheet(darkMode)
     const builderStyles = getBuilderStylesheet(darkMode)
@@ -280,10 +514,11 @@ class BuilderScreen extends React.Component {
     }
     const { width } = Dimensions.get('window');
     const buttonWidth = (width - 16 - 16);
-    const buttonDisabled = (
-      (step === 0 && (recipeName === '' || drinkType === ''))
-      || (step === 2 && steps.length === 0)
-    )
+    const buttonDisabled = false
+    //   = (
+    //   (step === 0 && (recipeName === '' || drinkType === ''))
+    //   || (step === 2 && steps.length === 0)
+    // )
 
     let amount = ''
     let fractionalAmount = ''
@@ -295,9 +530,9 @@ class BuilderScreen extends React.Component {
     }
 
     let rightButtonTitle = ''
-    if (step === 1 && isEditMode) {
+    if ((step === 1 && isEditMode) || (step === 2 && isEditModeSteps)) {
       rightButtonTitle = 'Done'
-    } else if (step === 1 && !isEditMode) {
+    } else if ((step === 1 && !isEditMode) || (step === 2 && !isEditModeSteps)) {
       rightButtonTitle = 'Edit'
     }
 
@@ -344,6 +579,12 @@ class BuilderScreen extends React.Component {
             onAddStepClick={this.onAddStepClick}
             steps={steps}
             recipeName={recipeName}
+            onChangeText={this.onChangeStepText}
+            isEditMode={isEditModeSteps}
+            onDeletePress={this.onDeleteStepPress}
+            onMorePress={this.onMorePress}
+            onAddIngredient={this.onAddIngredientToStep}
+            ingredients={ingredients}
           />
         )}
         <View style={builderStyles.gradientContainer}>
@@ -374,10 +615,12 @@ class BuilderScreen extends React.Component {
           servingGlass={servingGlass}
           onCloseClick={this.onModalCloseClick}
           onModalSave={this.onModalSave}
+          onPressItem={this.onModalPressItem}
           darkMode={darkMode}
           amount={amount}
           fractionalAmount={fractionalAmount}
           amountType={amountType}
+          ingredientOptions={this.getIngredientOptions()}
         />
       </SafeAreaView>
     )

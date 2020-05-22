@@ -77,7 +77,7 @@ export default function getSponsorStylesheet(useDarkMode) {
     sponsorTypeOutline: {
       alignSelf: 'center',
       flexDirection: 'row',
-      alignItems: 'flex-start',
+      alignItems: 'center',
       justifyContent: 'center',
       marginBottom: 24,
     },
@@ -86,9 +86,9 @@ export default function getSponsorStylesheet(useDarkMode) {
       color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
     },
     sponsorTypeIcon: {
-      width: 16,
       height: 16,
       marginRight: 6,
-    }
+      resizeMode: 'contain',
+    },
   })
 }

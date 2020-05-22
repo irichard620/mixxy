@@ -4,6 +4,7 @@ import ModalContentBottom from '../../Components/ModalContentBottom'
 import * as constants from '../../Config/constants';
 import IngredientUnitModal from './IngredientUnitModal'
 import { Alert } from 'react-native'
+import update from 'immutability-helper'
 
 class BuilderModal extends Component {
   constructor(props) {
@@ -13,16 +14,20 @@ class BuilderModal extends Component {
       amount: '0',
       fractionalAmount: '',
       amountType: '',
+      ingredientOptions: [],
     };
   }
 
-  componentDidMount() {
-    const { amount, fractionalAmount, amountType } = this.props;
-    this.setState({
-      amount: amount,
-      fractionalAmount: fractionalAmount,
-      amountType: amountType,
-    });
+  componentDidUpdate(prevProps) {
+    const { amount, fractionalAmount, amountType, visibleModal, ingredientOptions } = this.props;
+    if (!prevProps.visibleModal && visibleModal) {
+      this.setState({
+        amount: amount,
+        fractionalAmount: fractionalAmount,
+        amountType: amountType,
+        ingredientOptions: ingredientOptions,
+      });
+    }
   }
 
   drinkTypeOptions = (existingDrinkType) => {
@@ -49,17 +54,36 @@ class BuilderModal extends Component {
     return arrToUse;
   };
 
-  onModalPressItem = (item) => {
-    this.setState({
-      selectedModalItem: item
-    });
+  onModalPressItem = (item, idx) => {
+    const { onPressItem, modalType } = this.props
+    const { ingredientOptions } = this.state
+    if (modalType === constants.MODAL_SELECT_INGREDIENTS) {
+      // Update at index to selected
+      this.setState({
+        ingredientOptions: update(ingredientOptions, {
+          [idx]: {
+            selected: {
+              $set: !ingredientOptions[idx].selected
+            },
+          }
+        }),
+      });
+    } else if (modalType === constants.MODAL_BUILDER_NAV) {
+      onPressItem(item)
+    } else {
+      this.setState({
+        selectedModalItem: item
+      });
+    }
   };
 
   onModalSavePressed = () => {
     const { onModalSave, modalType, modalIdx } = this.props;
-    const { selectedModalItem, amount, fractionalAmount, amountType } = this.state;
+    const { selectedModalItem, amount, fractionalAmount, amountType, ingredientOptions } = this.state;
     if (modalType === constants.MODAL_INGREDIENT_UNIT) {
-      if (fractionalAmount === '' && amount === '0') {
+      const isGarnishOrRim =
+        amountType === constants.AMOUNT_TYPE_GARNISH || amountType === constants.AMOUNT_TYPE_RIM
+      if ((fractionalAmount === '' && amount === '0') && !isGarnishOrRim) {
         Alert.alert('No amount added', 'Must add non-zero amount for ingredient.', [
           {
             text: 'OK',
@@ -74,7 +98,7 @@ class BuilderModal extends Component {
         ])
         return
       }
-    } else {
+    } else if (modalType !== constants.MODAL_SELECT_INGREDIENTS) {
       if (selectedModalItem === '') {
         Alert.alert('Must Select Option', 'Cannot save without selecting an option.', [
           {
@@ -84,7 +108,7 @@ class BuilderModal extends Component {
         return
       }
     }
-    onModalSave(selectedModalItem, modalIdx, amount, fractionalAmount, amountType);
+    onModalSave(selectedModalItem, modalIdx, amount, fractionalAmount, amountType, ingredientOptions);
     this.setState({
       selectedModalItem: '',
       amount: '0',
@@ -115,7 +139,7 @@ class BuilderModal extends Component {
     const {
       visibleModal, modalType, drinkType, baseSpirit, servingGlass, darkMode,
     } = this.props;
-    const { selectedModalItem, amount, fractionalAmount, amountType } = this.state;
+    const { selectedModalItem, amount, fractionalAmount, amountType, ingredientOptions } = this.state;
 
     // Get content
     let options = [];
@@ -141,6 +165,12 @@ class BuilderModal extends Component {
         existingItem = selectedModalItem;
       }
       options = this.servingGlassOptions(existingItem);
+    } else if (modalType === constants.MODAL_BUILDER_NAV) {
+      options = [{
+        title: constants.BUILDER_MENU_BASIC_DETAILS,
+      }, {
+        title: constants.BUILDER_MENU_INGREDIENTS,
+      }]
     }
 
     return (
@@ -150,7 +180,7 @@ class BuilderModal extends Component {
         type={constants.MODAL_TYPE_BOTTOM}
         darkMode={darkMode}
       >
-        {modalType !== constants.MODAL_INGREDIENT_UNIT && (
+        {(modalType === constants.BUILDER_DRINK_TYPE_DETAIL || modalType === constants.BUILDER_BASE_SPIRIT_DETAIL || modalType === constants.BUILDER_SERVING_GLASS_DETAIL) && (
           <ModalContentBottom
             isListModal={true}
             options={options}
@@ -158,6 +188,27 @@ class BuilderModal extends Component {
             onPressItem={this.onModalPressItem}
             onModalSave={this.onModalSavePressed}
             hasSave={true}
+            darkMode={darkMode}
+          />
+        )}
+        {modalType === constants.MODAL_SELECT_INGREDIENTS && (
+          <ModalContentBottom
+            onPressItem={this.onModalPressItem}
+            title={'Add Ingredients'}
+            isMultiSelectModal
+            options={ingredientOptions}
+            hasSave={true}
+            onModalSave={this.onModalSavePressed}
+            darkMode={darkMode}
+          />
+        )}
+        {modalType === constants.MODAL_BUILDER_NAV && (
+          <ModalContentBottom
+            onPressItem={this.onModalPressItem}
+            title={'Edit Recipe Info'}
+            isImageListModal
+            isSelectInput={false}
+            options={options}
             darkMode={darkMode}
           />
         )}

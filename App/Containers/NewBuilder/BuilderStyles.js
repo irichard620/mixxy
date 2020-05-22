@@ -14,6 +14,15 @@ export default function getBuilderStylesheet(useDarkMode) {
       ...Fonts.top,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
     },
+    headingContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 18,
+      marginTop: 8,
+      paddingLeft: 16,
+      paddingRight: 16,
+    },
     headingDescription: {
       alignSelf: 'flex-start',
       marginBottom: 18,
@@ -22,6 +31,12 @@ export default function getBuilderStylesheet(useDarkMode) {
       textAlign: 'left',
       ...Fonts.body1,
       color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
+    },
+    headingWithinContainer: {
+      alignSelf: 'flex-start',
+      textAlign: 'left',
+      ...Fonts.top,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
     },
     ingredientRow: {
       alignItems: 'center',

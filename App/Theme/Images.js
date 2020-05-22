@@ -56,9 +56,10 @@ export default {
   modalViewLight: require('../Assets/Images/modal/Modal_View_LIGHT.png'),
   modalTrash: require('../Assets/Images/modal/Modal_Trash.png'),
   modalNo: require('../Assets/Images/modal/Modal_No.png'),
-  builderDrinkType: require('../Assets/Images/builder/DrinkType_Select.png'),
-  builderSpiritType: require('../Assets/Images/builder/SpiritType_Select.png'),
   proModalBadge: require('../Assets/Images/modal/Badge_MixxyPro.png'),
   builderAddNew: require('../Assets/Images/new_builder/Builder_NewStep.png'),
   builderDeleteIngredient: require('../Assets/Images/new_builder/Builder_DeleteIngredient.png'),
+  builderMoreDetails: require('../Assets/Images/new_builder/Builder_ThreeDots.png'),
+  spotlightLocation: require('../Assets/Images/Spotlight_Location.png'),
+  spotlightType: require('../Assets/Images/Spotlight_Type.png'),
 }

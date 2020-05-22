@@ -101,42 +101,36 @@ export const AMOUNT_TYPE_TBSP = 'Tablespoon'
 export const AMOUNT_TYPE_CUP = 'Cup'
 export const AMOUNT_TYPE_DASH = 'Dash'
 export const AMOUNT_TYPE_DROP = 'Drop'
-export const amountTypesLiquid = [
+export const AMOUNT_TYPE_PIECE = 'Piece'
+export const AMOUNT_TYPE_PINCH = 'Pinch'
+export const AMOUNT_TYPE_GARNISH = 'Garnish'
+export const AMOUNT_TYPE_RIM = 'Rim'
+export const allAmountTypes = [
+  '',
   AMOUNT_TYPE_OZ,
   AMOUNT_TYPE_TSP,
   AMOUNT_TYPE_TBSP,
   AMOUNT_TYPE_CUP,
   AMOUNT_TYPE_DASH,
   AMOUNT_TYPE_DROP,
-]
-export const AMOUNT_TYPE_PIECE = 'Piece'
-export const AMOUNT_TYPE_PINCH = 'Pinch'
-export const AMOUNT_TYPE_SLICE = 'Slice'
-export const AMOUNT_TYPE_SPRIG = 'Sprig'
-export const AMOUNT_TYPE_LEAF = 'Leaf'
-export const AMOUNT_TYPE_GRIND = 'Grind'
-export const amountTypesNonLiquid = [
   AMOUNT_TYPE_PIECE,
   AMOUNT_TYPE_PINCH,
-  AMOUNT_TYPE_SLICE,
-  AMOUNT_TYPE_SPRIG,
-  AMOUNT_TYPE_LEAF,
-  AMOUNT_TYPE_GRIND,
+  AMOUNT_TYPE_GARNISH,
+  AMOUNT_TYPE_RIM,
 ]
-export const allAmountTypes = [...amountTypesLiquid, ...amountTypesNonLiquid]
 
 // Ingredient classifications
 export const CLASSIFICATION_ALCOHOLIC = 'Alcoholic'
 export const CLASSIFICATION_NON_ALCOHOLIC = 'Non-alcoholic'
 export const CLASSIFICATION_CULINARY = 'Culinary'
 export const CLASSIFICATION_ICE = 'Ice'
-export const classificationToAmountTypes = {
-  [CLASSIFICATION_ALCOHOLIC]: ['', ...amountTypesLiquid],
-  [CLASSIFICATION_NON_ALCOHOLIC]: ['', ...amountTypesLiquid],
-  [CLASSIFICATION_CULINARY]: ['', ...amountTypesNonLiquid],
-  [CLASSIFICATION_ICE]: ['', AMOUNT_TYPE_PIECE],
-  '': ['', ...allAmountTypes],
-}
+// export const classificationToAmountTypes = {
+//   [CLASSIFICATION_ALCOHOLIC]: ['', ...amountTypesLiquid],
+//   [CLASSIFICATION_NON_ALCOHOLIC]: ['', ...amountTypesLiquid],
+//   [CLASSIFICATION_CULINARY]: ['', ...amountTypesNonLiquid],
+//   [CLASSIFICATION_ICE]: ['', AMOUNT_TYPE_PIECE],
+//   '': ['', ...allAmountTypes],
+// }
 
 // Drink types
 export const DRINK_TYPE_COCKTAIL = 'Cocktail'
@@ -202,12 +196,10 @@ export const details = [
 
 // Modal types
 export const MODAL_TYPE_BOTTOM = 'bottom'
-export const MODAL_TYPE_CENTER = 'center'
 export const MODAL_ADD_STEP = 'Add Step'
-export const MODAL_DRINK_TYPE = 'Drink Type'
-export const MODAL_BASE_SPIRIT = 'Base Spirit'
-export const MODAL_SERVING_GLASS = 'Serving Glass'
 export const MODAL_INGREDIENT_UNIT = 'Set Ingredient Unit'
+export const MODAL_BUILDER_NAV = 'Edit Recipe Info'
+export const MODAL_SELECT_INGREDIENTS = 'Select Ingredients'
 
 // recipe menu options
 export const RECIPE_MENU_EDIT = 'Edit recipe'
@@ -215,6 +207,8 @@ export const RECIPE_MENU_SHARE = 'Share recipe'
 export const RECIPE_MENU_DELETE = 'Delete'
 export const RECIPE_MENU_CANCEL = 'Cancel'
 export const RECIPE_MENU_VIEW = 'Open recipe'
+export const BUILDER_MENU_BASIC_DETAILS = 'Basic Details'
+export const BUILDER_MENU_INGREDIENTS = 'Ingredients'
 
 // Settings sections
 export const SETTINGS_SECTION_GENERAL = 'GENERAL'
