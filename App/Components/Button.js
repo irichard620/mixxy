@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Colors from '../Theme/Colors'
 
 export default function Button(props) {
-  const { onButtonClick, title, margin, disabled } = props
+  const { onButtonClick, title, margin, disabled, darkMode } = props
 
   const backgroundStyle = {
     marginTop: margin[0],
@@ -11,9 +11,9 @@ export default function Button(props) {
     marginBottom: margin[2],
     marginLeft: margin[3],
   }
-  backgroundStyle.backgroundColor = Colors.blue1
+  backgroundStyle.backgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
   const titleStyle = {
-    color: '#FFFFFF',
+    color: Colors.blue1,
   }
   return (
     <TouchableOpacity
@@ -30,9 +30,10 @@ export default function Button(props) {
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 20,
+    borderRadius: 10,
     height: 40,
     justifyContent: 'center',
+    alignItems: 'center',
     paddingLeft: 18,
     paddingRight: 18,
     shadowColor: Colors.backgroundColorDark,

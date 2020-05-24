@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, StyleSheet, Image, ScrollView, Text, Dimensions
+  View, Image, ScrollView, Dimensions
 } from 'react-native';
 import Pagination from '../../Components/Pagination';
 import Images from '../../Theme/Images'
@@ -8,10 +8,11 @@ import Step from './Step'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import Colors from '../../Theme/Colors'
 import * as constants from '../../Config/constants'
+import getTutorialStylesheet from './TutorialScreenStyle'
+import * as ingredientModel from '../../Storage/Ingredient'
 
 class TutorialSteps extends Component {
-  getIcon = () => {
-    const { recipe } = this.props
+  getIcon = (recipe, styles) => {
     if (recipe.servingGlass === constants.SERVING_GLASS_PITCHER) {
       return (<Image style={styles.icon} source={Images.glassPitcher} />)
     } if (recipe.servingGlass === constants.SERVING_GLASS_SHOT) {
@@ -28,7 +29,7 @@ class TutorialSteps extends Component {
     return (<Image style={styles.icon} source={Images.glassShort} />)
   };
 
-  renderStep = (stepObj, idx) => {
+  renderStep = (stepObj, idx, ingredientDict) => {
     const { step, darkMode, drinkAmount } = this.props;
 
     return (
@@ -38,20 +39,23 @@ class TutorialSteps extends Component {
         key={idx}
         darkMode={darkMode}
         drinkAmount={drinkAmount}
+        ingredientDict={ingredientDict}
       />
     );
   };
 
-  renderSteps = () => {
+  renderSteps = (styles) => {
     const { recipe, step } = this.props;
-    const { steps } = recipe;
+    const { steps, ingredients } = recipe;
 
     const stepsToUse = steps.slice(step);
 
+    const ingredientDict = ingredientModel.createIngredientDic(ingredients)
+
     return (
-      <View style={styles.brewSteps}>
+      <View style={styles.stepContainer}>
         {stepsToUse.map((stepObj, idx) => (
-          this.renderStep(stepObj, idx + step)
+          this.renderStep(stepObj, idx + step, ingredientDict)
         ))}
       </View>
     );
@@ -62,24 +66,26 @@ class TutorialSteps extends Component {
     const { steps } = recipe;
 
     const styles = getStylesheet(darkMode)
+    const tutorialStyles = getTutorialStylesheet(darkMode)
 
-    const { height } = Dimensions.get('window');
+    const { height, width } = Dimensions.get('window');
     const iconHeight = {
       height: height * 0.32,
     };
 
     const marginTopStyle = {
       marginTop: 32,
+      width: width - 32
     }
 
     return (
       <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
+        style={tutorialStyles.scrollView}
+        contentContainerStyle={tutorialStyles.scrollViewContent}
         scrollEnabled={false}
       >
-        <View style={[styles.iconView, iconHeight]}>
-          {this.getIcon(recipe)}
+        <View style={[tutorialStyles.iconView, iconHeight]}>
+          {this.getIcon(recipe, tutorialStyles)}
         </View>
         <Pagination
           total={steps.length}
@@ -87,34 +93,11 @@ class TutorialSteps extends Component {
           activeColor={Colors.blue1}
           darkMode={darkMode}
         />
-        <View style={[marginTopStyle, styles.divider]} />
-        {steps && steps.length > 0 && this.renderSteps()}
+        <View style={[styles.divider, marginTopStyle]} />
+        {steps && steps.length > 0 && this.renderSteps(tutorialStyles)}
       </ScrollView>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    padding: 16,
-  },
-  scrollViewContent: {
-    alignItems: 'center'
-  },
-  iconView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: 8,
-  },
-  icon: {
-    height: '100%',
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
-  brewSteps: {
-    width: '100%'
-  }
-});
 
 export default TutorialSteps;

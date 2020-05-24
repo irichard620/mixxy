@@ -1,17 +1,14 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableWithoutFeedback, Dimensions, ScrollView } from 'react-native'
+import { View, StyleSheet, Text, TouchableWithoutFeedback, Dimensions } from 'react-native'
 import Colors from '../../Theme/Colors'
 import Fonts from '../../Theme/Fonts'
-import getStylesheet from '../../Theme/ApplicationStyles'
 
 export default function TutorialHomeMenuButtons(props) {
   const { selected, onItemClick, isDescription, darkMode } = props
 
-  const styles = getStylesheet(darkMode)
-
-  let renderOrder = [0, 1, 2]
+  let renderOrder = [0, 1]
   if (!isDescription) {
-    renderOrder = [0, 1]
+    renderOrder = [0]
   }
   const { width } = Dimensions.get('window')
   const buttonWidth = {
@@ -42,8 +39,6 @@ export default function TutorialHomeMenuButtons(props) {
           title = 'Description'
         } else if ((item === 0 && !isDescription) || (item === 1 && isDescription)) {
           title = 'Ingredients'
-        } else {
-          title = 'Equipment'
         }
         return (
           <TouchableWithoutFeedback onPress={() => onItemClick(item)} key={title}>

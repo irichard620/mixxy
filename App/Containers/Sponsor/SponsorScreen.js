@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, Image, ScrollView, StatusBar, Text, View } from 'react-native'
+import { Dimensions, Image, ScrollView, StatusBar, Text, View, Linking, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import NavigationService from '../../Services/NavigationService'
 import getSponsorStylesheet from './SponsorScreenStyle'
@@ -11,6 +11,7 @@ import { NavigationActions } from 'react-navigation'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import RecipeCard from '../../Components/RecipeCard'
 import Images from '../../Theme/Images'
+import Button from '../../Components/Button'
 
 class SponsorScreen extends React.Component {
   componentDidMount() {
@@ -31,13 +32,27 @@ class SponsorScreen extends React.Component {
     })
   }
 
+  onVisitWebsiteClicked = (website) => {
+    Linking.canOpenURL(website).then(supported => {
+      if (supported) {
+        Linking.openURL(website)
+      } else {
+        Alert.alert('Cannot Open URL', 'Not able to open this website link.', [
+          {
+            text: 'OK',
+          },
+        ])
+      }
+    })
+  }
+
   render() {
     const { darkMode, navigation, remoteRecipes } = this.props
     const styles = getStylesheet(darkMode)
     const sponsorStyles = getSponsorStylesheet(darkMode)
 
     const sponsor = navigation.getParam('sponsor', {})
-    const { sponsorName, sponsorType, hqLocation, about, logoLink, cardImageLink } = sponsor
+    const { sponsorName, sponsorType, hqLocation, about, logoLink, cardImageLink, website } = sponsor
 
     const { width } = Dimensions.get('window')
     const cardWidth = {
@@ -89,12 +104,14 @@ class SponsorScreen extends React.Component {
               <Image source={Images.spotlightType} style={sponsorStyles.sponsorTypeIcon} />
               <Text style={sponsorStyles.sponsorTypeText}>{sponsorType}</Text>
             </View>
+            {website !== '' && <Button darkMode={darkMode} title={'Visit Website'} onButtonClick={() => this.onVisitWebsiteClicked(website)} margin={[0, 0, 24, 0]} />}
             <View style={styles.divider} />
             <Text style={sponsorStyles.description}>{about}</Text>
             <View style={styles.divider} />
           </View>}
           {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
             <RecipeCard
+              key={`recipe${idx}`}
               recipeName={recipe.recipeName}
               recipeType={recipe.recipeType}
               servingGlass={recipe.servingGlass}

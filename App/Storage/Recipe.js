@@ -1,5 +1,6 @@
 import uuidv4 from 'uuid/v4'
-import { getStepTotalOunces, Step } from './Step'
+import { Step } from './Step'
+import { getOunceAmountFromIngredient, Ingredient } from './Ingredient'
 
 const camelcaseKeys = require('camelcase-keys')
 
@@ -30,6 +31,15 @@ export function Recipe(recipeObj) {
     }
     recipe.steps = stepList
   }
+  if (!('ingredients' in recipeObj)) {
+    recipe.ingredients = []
+  } else {
+    let ingredientList = []
+    for (let i = 0; i < recipeObj.ingredients.length; i++) {
+      ingredientList.push(Ingredient(camelcaseKeys(recipeObj.ingredients[i])))
+    }
+    recipe.ingredients = ingredientList
+  }
 
   // Recipe association data
   recipe.sponsorCardId = recipeObj.sponsorCardId || ''
@@ -42,9 +52,10 @@ export function Recipe(recipeObj) {
 }
 
 export function getTotalOuncesForRecipe(recipe) {
+  // Total ounces
   let totalOunces = 0
-  for (let i = 0; i < recipe.steps.length; i++) {
-    totalOunces += getStepTotalOunces(recipe.steps[i])
+  for (let i = 0; i < recipe.ingredients.length; i++) {
+    totalOunces += getOunceAmountFromIngredient(recipe.ingredients[i])
   }
-  return Math.round(totalOunces * 10) / 10
+  return totalOunces
 }

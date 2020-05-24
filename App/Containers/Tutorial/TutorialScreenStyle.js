@@ -81,11 +81,21 @@ export default function getTutorialStylesheet(useDarkMode) {
       ...Fonts.h1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 32,
+      marginLeft: 16,
+      marginRight: 16,
       textAlign: 'center',
     },
     scrollView: {
       flex: 1,
       paddingBottom: 16,
+    },
+    scrollViewContent: {
+      alignItems: 'center',
+    },
+    stepContainer: {
+      marginLeft: 16,
+      marginRight: 16,
+      width: '100%',
     },
   })
 }

@@ -11,6 +11,7 @@ import Colors from '../../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import Fonts from '../../Theme/Fonts'
 import getStylesheet from '../../Theme/ApplicationStyles'
+import * as stepModel from '../../Storage/Step'
 
 export default function RecipeStep(props) {
   const { step, stepIdx, darkMode, onChangeText, onAddIngredient } = props
@@ -27,20 +28,7 @@ export default function RecipeStep(props) {
   }
 
   // Create text sequences
-  const textSequences = []
-  if (step.startLocation === -1) {
-    textSequences.push({ title: step.title, highlighted: false })
-  } else {
-    textSequences.push({ title: step.title.substring(0, step.startLocation), highlighted: false })
-    textSequences.push({
-      title: step.title.substring(step.startLocation, step.endLocation),
-      highlighted: true,
-    })
-    textSequences.push({
-      title: step.title.substring(step.endLocation, step.title.length),
-      highlighted: false,
-    })
-  }
+  const textSequences = stepModel.getStepTextSequeunces(step)
 
   const handleSelectionChange = (e) => {
     // Check if selection within our ingredients

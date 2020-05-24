@@ -24,6 +24,14 @@ export function Ingredient(ingredientObj) {
   return ingredient
 }
 
+export function createIngredientDic(ingredients) {
+  const ingredientDict = {}
+  for (let i = 0; i < ingredients.length; i++) {
+    ingredientDict[ingredients[i].ingredientId] = ingredients[i]
+  }
+  return ingredientDict
+}
+
 const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_OZ]: ' oz',
   [constants.AMOUNT_TYPE_TSP]: ' tsp',
@@ -55,6 +63,8 @@ const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
   [constants.AMOUNT_TYPE_DROP]: 0,
   [constants.AMOUNT_TYPE_PIECE]: 0,
   [constants.AMOUNT_TYPE_PINCH]: 0,
+  [constants.AMOUNT_TYPE_GARNISH]: 0,
+  [constants.AMOUNT_TYPE_RIM]: 0,
 }
 
 export function getOunceAmountFromIngredient(ingredient) {

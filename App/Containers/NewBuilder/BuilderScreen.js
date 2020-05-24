@@ -18,6 +18,7 @@ import BuilderIngredients from './BuilderIngredients'
 import * as ingredientModel from '../../Storage/Ingredient'
 import * as stepModel from '../../Storage/Step'
 import BuilderSteps from './BuilderSteps'
+import * as recipeModel from '../../Storage/Recipe'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -48,8 +49,10 @@ class BuilderScreen extends React.Component {
     const { navigation } = this.props;
     const recipe = navigation.getParam('recipe', {});
     if (Object.keys(recipe).length !== 0) {
+      // add ingredient descriptions back into step titles
+      const updatedSteps = this.addIngredientsToStepTitles([ ... recipe.steps ], recipe.ingredients)
       this.setState({
-        step: 3,
+        step: 2,
         recipeId: recipe.recipeId,
         recipeName: recipe.recipeName,
         recipeDescription: recipe.recipeDescription,
@@ -57,7 +60,8 @@ class BuilderScreen extends React.Component {
         drinkType: recipe.recipeType,
         baseSpirit: recipe.baseSpirit,
         servingGlass: recipe.servingGlass,
-        steps: recipe.steps,
+        steps: updatedSteps,
+        ingredients: recipe.ingredients,
       });
     }
   }
@@ -120,7 +124,8 @@ class BuilderScreen extends React.Component {
   };
 
   onButtonClick = () => {
-    const { step } = this.state;
+    const { persistRecipe } = this.props
+    const { step, recipeId, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients } = this.state;
     // Check step
     if (step !== 2) {
       if (step === 1) {
@@ -132,7 +137,22 @@ class BuilderScreen extends React.Component {
         })
       }
     } else {
+      // Clear ingredient text out of steps before saving
+      const clearedSteps = this.clearIngredientsFromStepTitles(steps)
       // Save recipe here
+      const newRecipe = recipeModel.Recipe({
+        recipeId: recipeId,
+        recipeName: recipeName,
+        recipeDescription: recipeDescription,
+        recipeType: drinkType,
+        baseSpirit: baseSpirit,
+        servingGlass: servingGlass,
+        totalOunces: 0,
+        steps: clearedSteps,
+        ingredients: ingredients,
+      })
+      newRecipe.totalOunces = recipeModel.getTotalOuncesForRecipe(newRecipe)
+      persistRecipe(newRecipe)
     }
   }
 
@@ -231,19 +251,8 @@ class BuilderScreen extends React.Component {
     }
   };
 
-  createIngredientDict = () => {
-    const { ingredients } = this.state
-    const ingredientDict = {}
-    for (let i = 0; i < ingredients.length; i++) {
-      ingredientDict[ingredients[i].ingredientId] = ingredients[i]
-    }
-    return ingredientDict
-  }
-
-  refreshStepIngredients = () => {
-    const { steps } = this.state
+  clearIngredientsFromStepTitles = (steps) => {
     const copiedSteps = [ ...steps ]
-
     // Go through each step
     for (let i = 0; i < steps.length; i++) {
       const copiedStep = { ...steps[i] }
@@ -251,11 +260,18 @@ class BuilderScreen extends React.Component {
       if (copiedStep.startLocation !== -1 && copiedStep.endLocation !== -1) {
         copiedStep.title =
           copiedStep.title.substring(0, copiedStep.startLocation) + copiedStep.title.substring(copiedStep.endLocation, copiedStep.title.length)
-      } else {
-        continue
       }
-      // 2) Add back updated ingredient description
-      const ingredientDict = this.createIngredientDict()
+      copiedSteps[i] = copiedStep
+    }
+    return copiedSteps
+  }
+
+  addIngredientsToStepTitles = (steps, ingredients) => {
+    // Ingredient dict
+    const ingredientDict = ingredientModel.createIngredientDic(ingredients)
+    for (let i = 0; i < steps.length; i++) {
+      const copiedStep = {  ...steps[i] }
+      // Create updated ingredient description
       let ingredientDescription = ''
       for (let j = 0; j < copiedStep.ingredients.length; j++) {
         // Get display of ingredient so we can get end index
@@ -264,13 +280,23 @@ class BuilderScreen extends React.Component {
         }
         ingredientDescription += ingredientModel.getIngredientShortDescription(ingredientDict[copiedStep.ingredients[j]])
       }
-      // Sort ingredients by start
+      // Update variables
       const diff = ingredientDescription.length - (copiedStep.endLocation - copiedStep.startLocation)
       const addition = copiedStep.title.substring(copiedStep.startLocation).length ? '' : ' '
       copiedStep.title = copiedStep.title.substring(0, copiedStep.startLocation) + ingredientDescription + copiedStep.title.substring(copiedStep.startLocation) + addition
       copiedStep.endLocation += diff
-      copiedSteps[i] = copiedStep
+      steps[i] = copiedStep
     }
+    return steps
+  }
+
+  refreshStepIngredients = () => {
+    const { steps, ingredients } = this.state
+    // Clear ingredient data
+    let copiedSteps = this.clearIngredientsFromStepTitles(steps)
+
+    // Add back ingredient data
+    copiedSteps = this.addIngredientsToStepTitles(copiedSteps, ingredients)
     this.setState({
       steps: copiedSteps,
       step: 2
@@ -439,12 +465,11 @@ class BuilderScreen extends React.Component {
     }
   }
 
-  onAddIngredientToStep = (idx, cursor) => {
-    const { ingredients } = this.state
-    if (ingredients.length === 0) {
+  onAddIngredientToStep = (idx, cursor, ingredientOptions) => {
+    if (ingredientOptions.length === 0) {
       Alert.alert(
         'No Ingredients',
-        'This recipe has no ingredients to add yet. Go to last page to create some.',
+        'No available ingredients to add. You are either using them in another step or none have been added.',
         [
           {
             text: 'OK'
@@ -469,13 +494,11 @@ class BuilderScreen extends React.Component {
   }
 
   getIngredientOptions = () => {
-    const { modalType, steps } = this.state
-    if (modalType !== constants.MODAL_SELECT_INGREDIENTS) {
-      return []
-    }
+    const { steps, ingredients } = this.state
+
     // Compare full list of ingredients against what's already in steps
     // First, create full dictionary with all ingredients
-    const ingredientDict = this.createIngredientDict()
+    const ingredientDict = ingredientModel.createIngredientDic(ingredients)
 
     // Now, go through each step and remove used items
     for (let i = 0; i < steps.length; i++) {
@@ -514,11 +537,11 @@ class BuilderScreen extends React.Component {
     }
     const { width } = Dimensions.get('window');
     const buttonWidth = (width - 16 - 16);
-    const buttonDisabled = false
-    //   = (
-    //   (step === 0 && (recipeName === '' || drinkType === ''))
-    //   || (step === 2 && steps.length === 0)
-    // )
+    const buttonDisabled = (
+      (step === 0 && (recipeName === '' || drinkType === ''))
+      || (step === 1 && ingredients.length === 0)
+      || (step === 2 && steps.length === 0)
+    )
 
     let amount = ''
     let fractionalAmount = ''
@@ -535,6 +558,9 @@ class BuilderScreen extends React.Component {
     } else if ((step === 1 && !isEditMode) || (step === 2 && !isEditModeSteps)) {
       rightButtonTitle = 'Edit'
     }
+
+    // Ingredient options
+    const ingredientOptions = this.getIngredientOptions()
 
     return (
       <SafeAreaView style={styles.outerContainer}>
@@ -583,7 +609,7 @@ class BuilderScreen extends React.Component {
             isEditMode={isEditModeSteps}
             onDeletePress={this.onDeleteStepPress}
             onMorePress={this.onMorePress}
-            onAddIngredient={this.onAddIngredientToStep}
+            onAddIngredient={(idx, cursor) => this.onAddIngredientToStep(idx, cursor, ingredientOptions)}
             ingredients={ingredients}
           />
         )}
@@ -620,7 +646,7 @@ class BuilderScreen extends React.Component {
           amount={amount}
           fractionalAmount={fractionalAmount}
           amountType={amountType}
-          ingredientOptions={this.getIngredientOptions()}
+          ingredientOptions={ingredientOptions}
         />
       </SafeAreaView>
     )

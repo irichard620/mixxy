@@ -45,46 +45,41 @@ class TutorialHome extends Component {
 
   getIngredients = (recipe) => {
     const { drinkAmount } = this.props
-    if (!recipe || !('steps' in recipe)) {
+    if (!recipe || !('ingredients' in recipe)) {
       return [];
     }
     const options = [];
-    for (let i = 0; i < recipe.steps.length; i++) {
-      const step = recipe.steps[i];
-      if (step.title === constants.STEP_ADD_INGREDIENTS) {
-        for (let j = 0; j < step.ingredients.length; j++) {
-          const ingredient = step.ingredients[j];
-          options.push({
-            title: ingredientModel.getIngredientAmount(ingredient, drinkAmount),
-            subtitle: ingredient.title,
-          })
-        }
-      }
+    for (let i = 0; i < recipe.ingredients.length; i++) {
+      const ingredient = recipe.ingredients[i];
+      options.push({
+        title: ingredientModel.getIngredientAmount(ingredient, drinkAmount),
+        subtitle: ingredient.title,
+      })
     }
     return options;
   }
 
-  getEquipment = (recipe) => {
-    if (!recipe || !('steps' in recipe)) {
-      return [];
-    }
-    const equipmentSet = new Set();
-    for (let i = 0; i < recipe.steps.length; i++) {
-      const step = recipe.steps[i];
-      if ((step.title === constants.STEP_ADD_INGREDIENTS || step.title === constants.STEP_STRAIN) && step.vessel !== constants.INGREDIENTS_SERVING_GLASS) {
-        equipmentSet.add(step.vessel);
-      }
-    }
-    equipmentSet.add(recipe.servingGlass)
-    const equipmentArray = Array.from(equipmentSet)
-    const equipment = []
-    for (let i = 0; i < equipmentArray.length; i++) {
-      equipment.push({
-        title: equipmentArray[i]
-      })
-    }
-    return equipment
-  }
+  // getEquipment = (recipe) => {
+  //   if (!recipe || !('steps' in recipe)) {
+  //     return [];
+  //   }
+  //   const equipmentSet = new Set();
+  //   for (let i = 0; i < recipe.steps.length; i++) {
+  //     const step = recipe.steps[i];
+  //     if ((step.title === constants.STEP_ADD_INGREDIENTS || step.title === constants.STEP_STRAIN) && step.vessel !== constants.INGREDIENTS_SERVING_GLASS) {
+  //       equipmentSet.add(step.vessel);
+  //     }
+  //   }
+  //   equipmentSet.add(recipe.servingGlass)
+  //   const equipmentArray = Array.from(equipmentSet)
+  //   const equipment = []
+  //   for (let i = 0; i < equipmentArray.length; i++) {
+  //     equipment.push({
+  //       title: equipmentArray[i]
+  //     })
+  //   }
+  //   return equipment
+  // }
 
   render() {
     const { selected } = this.state;
@@ -94,10 +89,8 @@ class TutorialHome extends Component {
 
     const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
     const isIngredients = (selected === 1 && isDescription) || (selected === 0 && !isDescription);
-    const isEquipment = (selected === 1 && !isDescription) || (selected === 2 && isDescription);
 
     const options = this.getIngredients(recipe)
-    const equipmentOptions = this.getEquipment(recipe)
 
     let qtyNegativeSource = ''
     if (drinkAmount > 1) {
@@ -145,15 +138,6 @@ class TutorialHome extends Component {
             key={option.title + option.subtitle}
             title={option.title}
             subtitle={option.subtitle}
-            darkMode={darkMode}
-            disabled
-          />
-        ))}
-        {isEquipment && equipmentOptions.map((equipment) => (
-          <ListItem
-            key={equipment.title + equipment.subtitle}
-            title={equipment.title}
-            subtitle={equipment.subtitle}
             darkMode={darkMode}
             disabled
           />

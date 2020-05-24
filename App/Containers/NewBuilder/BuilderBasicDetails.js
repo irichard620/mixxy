@@ -33,7 +33,7 @@ export default function BuilderBasicDetails(props) {
           onChangeText={onRecipeNameUpdate}
           modalText={recipeName}
           textPlaceholder={'Recipe Name'}
-          charLimit={30}
+          charLimit={50}
           darkMode={darkMode}
         />
         <Text style={builderStyles.sectionHeading}>{'Describe this drink a little better.'}</Text>
