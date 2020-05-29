@@ -1,3 +1,5 @@
+import { LayoutAnimation } from 'react-native'
+
 // Cocktail steps
 export const STEP_ADD_INGREDIENTS = 'Add Ingredients'
 export const STEP_REMOVE_INGREDIENTS = 'Remove Ingredients'
@@ -227,3 +229,19 @@ export const settingsOptions = {
 
 // Add custom ingredient
 export const ADD_CUSTOM_INGREDIENT = 'Add Custom Ingredient'
+
+export const CustomLayoutEaseIn = {
+  duration: 200,
+  create: {
+    type: LayoutAnimation.Types.easeInEaseOut,
+    property: LayoutAnimation.Properties.opacity,
+  },
+  update: {
+    type: LayoutAnimation.Types.easeInEaseOut,
+    property: LayoutAnimation.Properties.opacity
+  },
+  delete: {
+    type: LayoutAnimation.Types.easeInEaseOut,
+    property: LayoutAnimation.Properties.opacity,
+  },
+}

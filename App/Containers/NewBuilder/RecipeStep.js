@@ -1,5 +1,5 @@
 import {
-  Dimensions,
+  Dimensions, KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,

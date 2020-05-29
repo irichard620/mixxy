@@ -1,11 +1,12 @@
 import React from 'react'
-import { Text, ScrollView, KeyboardAvoidingView, View } from 'react-native'
+import { Text, ScrollView, View } from 'react-native'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
 import AddButton from '../../Components/AddButton'
 import IngredientTextbox from './IngredientTextbox'
 import * as ingredientModel from '../../Storage/Ingredient'
 import DeleteButton from '../../Components/DeleteButton'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function BuilderIngredients(props) {
   const {
@@ -26,7 +27,7 @@ export default function BuilderIngredients(props) {
     marginLeft: leftMargin,
   }
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+    <KeyboardAwareScrollView extraScrollHeight={30}>
       <ScrollView style={builderStyles.scrollView}>
         <Text style={builderStyles.heading}>{'Ingredients'}</Text>
         <Text style={builderStyles.headingDescription}>
@@ -47,9 +48,9 @@ export default function BuilderIngredients(props) {
             />
           </View>
         ))}
-        <AddButton onPress={onAddIngredientClick} />
+        {!isEditMode && <AddButton onPress={onAddIngredientClick} />}
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   )
 }
 

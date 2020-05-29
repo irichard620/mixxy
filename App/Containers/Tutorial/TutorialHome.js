@@ -59,28 +59,6 @@ class TutorialHome extends Component {
     return options;
   }
 
-  // getEquipment = (recipe) => {
-  //   if (!recipe || !('steps' in recipe)) {
-  //     return [];
-  //   }
-  //   const equipmentSet = new Set();
-  //   for (let i = 0; i < recipe.steps.length; i++) {
-  //     const step = recipe.steps[i];
-  //     if ((step.title === constants.STEP_ADD_INGREDIENTS || step.title === constants.STEP_STRAIN) && step.vessel !== constants.INGREDIENTS_SERVING_GLASS) {
-  //       equipmentSet.add(step.vessel);
-  //     }
-  //   }
-  //   equipmentSet.add(recipe.servingGlass)
-  //   const equipmentArray = Array.from(equipmentSet)
-  //   const equipment = []
-  //   for (let i = 0; i < equipmentArray.length; i++) {
-  //     equipment.push({
-  //       title: equipmentArray[i]
-  //     })
-  //   }
-  //   return equipment
-  // }
-
   render() {
     const { selected } = this.state;
     const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity } = this.props;
@@ -97,6 +75,12 @@ class TutorialHome extends Component {
       qtyNegativeSource = Images.quantityMinus
     } else {
       qtyNegativeSource = darkMode ? Images.quantityMinusInactiveDark : Images.quantityMinusInactiveLight
+    }
+    let qtyPositiveSource = ''
+    if (drinkAmount < 10) {
+      qtyPositiveSource = Images.quantityPlus
+    } else {
+      qtyPositiveSource = darkMode ? Images.quantityPlusInactiveDark : Images.quantityPlusInactiveLight
     }
 
     // Total recipe amount
@@ -125,7 +109,7 @@ class TutorialHome extends Component {
           </View>
           <TouchableWithoutFeedback onPress={increaseDrinkQuantity}>
             <View style={tutorialStyles.drinkAmountCircle}>
-              <Image source={Images.quantityPlus} style={tutorialStyles.drinkAmountIcon} />
+              <Image source={qtyPositiveSource} style={tutorialStyles.drinkAmountIcon} />
             </View>
           </TouchableWithoutFeedback>
         </View>

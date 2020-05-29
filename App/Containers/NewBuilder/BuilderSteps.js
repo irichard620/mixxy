@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, ScrollView, KeyboardAvoidingView, View } from 'react-native'
+import { Text, ScrollView, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
 import AddButton from '../../Components/AddButton'
@@ -29,7 +30,7 @@ export default function BuilderSteps(props) {
     marginLeft: leftMargin,
   }
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+    <KeyboardAwareScrollView extraScrollHeight={100} keyboardShouldPersistTaps={'handled'}>
       <ScrollView style={builderStyles.scrollView} keyboardShouldPersistTaps={'handled'}>
         <View style={builderStyles.headingContainer}>
           <Text style={builderStyles.headingWithinContainer}>{recipeName}</Text>
@@ -37,7 +38,7 @@ export default function BuilderSteps(props) {
         </View>
         <Text style={builderStyles.headingDescription}>
           {
-            'Build out your recipe step by step. When you want to use ingredients in a step, just tap “Add Ingredient” to open the list.'
+            'Build out your recipe step by step. When you call an ingredient in a step for the first time, use "Add Ingredients" to open the list.'
           }
         </Text>
         {steps.map((step, idx) => (
@@ -54,9 +55,9 @@ export default function BuilderSteps(props) {
             />
           </View>
         ))}
-        <AddButton onPress={onAddStepClick} />
+        {!isEditMode && <AddButton onPress={onAddStepClick} />}
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   )
 }
 
@@ -70,4 +71,5 @@ BuilderSteps.propTypes = {
   onMorePress: PropTypes.func,
   onAddIngredient: PropTypes.func,
   recipeName: PropTypes.string,
+  ingredients: PropTypes.array,
 }

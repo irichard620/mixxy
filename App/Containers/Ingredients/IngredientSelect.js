@@ -33,7 +33,7 @@ export default function IngredientSelect(props) {
   }
   const itemColor = darkMode ? Colors.text1Dark : Colors.text1Light
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="position" enabled>
       <ScrollView style={ingredientStyles.scrollView}>
         <Text style={ingredientStyles.selectionHeader}>{ingredient.title}</Text>
         <Text style={ingredientStyles.selectionSubtitle}>{ingredient.description}</Text>

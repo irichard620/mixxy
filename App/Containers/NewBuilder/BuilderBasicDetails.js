@@ -22,7 +22,7 @@ export default function BuilderBasicDetails(props) {
   } = props
   const builderStyles = getBuilderStylesheet(darkMode)
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+    <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }} behavior="padding" enabled>
       <ScrollView style={builderStyles.scrollView}>
         <Text style={builderStyles.heading}>{'New Recipe'}</Text>
         <Text style={builderStyles.headingDescription}>

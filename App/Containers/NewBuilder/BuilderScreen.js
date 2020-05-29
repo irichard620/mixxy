@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions, Alert } from 'react-native'
+import { View, Dimensions, Alert, LayoutAnimation, Keyboard } from 'react-native'
 import { connect } from 'react-redux'
 import update from 'immutability-helper';
 import { NavigationActions, SafeAreaView } from 'react-navigation'
@@ -91,6 +91,7 @@ class BuilderScreen extends React.Component {
 
   onRightButtonPress = () => {
     const { step, isEditMode, isEditModeSteps } = this.state
+    LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
     if (step === 1) {
       // Show delete buttons for ingredients
       this.setState({
@@ -109,7 +110,9 @@ class BuilderScreen extends React.Component {
       this.dismissNavScreen()
     } else {
       this.setState({
-        step: step - 1
+        step: step - 1,
+        isEditMode: false,
+        isEditModeSteps: false,
       })
     }
   }
@@ -123,12 +126,61 @@ class BuilderScreen extends React.Component {
     });
   };
 
+  validateIngredients = () => {
+    const { ingredients } = this.state
+    for (let i = 0; i < ingredients.length; i++) {
+      const currentIngredient = ingredients[i]
+      if (
+        currentIngredient.amountType === ''
+        || (currentIngredient.amount === '0' && currentIngredient.fractionalAmount === '')
+        || currentIngredient.title === ''
+      ) {
+        Alert.alert(
+          'Ingredients Error',
+          'One or more of your ingredients is missing a name or unit.',
+          [
+            {
+              text: 'OK'
+            },
+          ],
+        );
+        return false
+      }
+    }
+    return true
+  }
+
+  validateSteps = () => {
+    const { steps } = this.state
+    for (let i = 0; i < steps.length; i++) {
+      const currentStep = steps[i]
+      if (currentStep.title === '' && currentStep.startLocation === -1) {
+        Alert.alert(
+          'Recipe Error',
+          "You can't save a recipe with a blank step.",
+          [
+            {
+              text: 'OK'
+            },
+          ],
+        );
+        return false
+      }
+    }
+    return true
+  }
+
   onButtonClick = () => {
     const { persistRecipe } = this.props
     const { step, recipeId, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients } = this.state;
     // Check step
     if (step !== 2) {
       if (step === 1) {
+        // Validate ingredients
+        const valid = this.validateIngredients()
+        if (!valid) {
+          return
+        }
         // Refresh ingredients
         this.refreshStepIngredients()
       } else {
@@ -137,6 +189,10 @@ class BuilderScreen extends React.Component {
         })
       }
     } else {
+      const valid = this.validateSteps()
+      if (!valid) {
+        return
+      }
       // Clear ingredient text out of steps before saving
       const clearedSteps = this.clearIngredientsFromStepTitles(steps)
       // Save recipe here
@@ -224,6 +280,7 @@ class BuilderScreen extends React.Component {
       }
 
       // Sort ingredients by start
+      console.log(`cursor ${cursorLocation}`)
       const oldTitle = steps[modalIdx].title
       const addition = oldTitle.substring(cursorLocation).length ? '' : ' '
       const newTitle = oldTitle.substring(0, cursorLocation) + ingredientDescription + oldTitle.substring(cursorLocation) + addition
@@ -257,7 +314,7 @@ class BuilderScreen extends React.Component {
     for (let i = 0; i < steps.length; i++) {
       const copiedStep = { ...steps[i] }
       // 1) Remove ingredient text
-      if (copiedStep.startLocation !== -1 && copiedStep.endLocation !== -1) {
+      if (!(copiedStep.startLocation === -1 && copiedStep.endLocation === -1)) {
         copiedStep.title =
           copiedStep.title.substring(0, copiedStep.startLocation) + copiedStep.title.substring(copiedStep.endLocation, copiedStep.title.length)
       }
@@ -311,6 +368,8 @@ class BuilderScreen extends React.Component {
         step: step,
         visibleModal: false,
         modalType: '',
+        isEditMode: false,
+        isEditModeSteps: false,
       })
     }
   }
@@ -411,6 +470,11 @@ class BuilderScreen extends React.Component {
     let startToSet = currentStep.startLocation
     let endToSet = currentStep.endLocation
     const diff = text.length - currentStep.title.length
+    console.log(diff)
+    console.log(currentStep.startLocation)
+    console.log(currentStep.endLocation)
+    console.log(`${selection.start} ${selection.end}`)
+    // 3 cases - delete exact selection, delete plus whitespace prior, delete and replace with char
     if (
       (
         diff === (currentStep.startLocation - currentStep.endLocation)
@@ -420,6 +484,11 @@ class BuilderScreen extends React.Component {
       (
         diff === (currentStep.startLocation - currentStep.endLocation - 1)
         && (selection.start === currentStep.startLocation - 1 && selection.end === currentStep.startLocation - 1)
+      )
+      ||
+      (
+        diff === (currentStep.startLocation - currentStep.endLocation + 1)
+        && (selection.start === currentStep.startLocation && selection.end === currentStep.endLocation)
       )
     ) {
       // Clear ingredients
@@ -469,7 +538,7 @@ class BuilderScreen extends React.Component {
     if (ingredientOptions.length === 0) {
       Alert.alert(
         'No Ingredients',
-        'No available ingredients to add. You are either using them in another step or none have been added.',
+        'Your ingredients are all used in other steps. When calling an ingredient for the second time, you can just type it in normally.',
         [
           {
             text: 'OK'
@@ -478,6 +547,7 @@ class BuilderScreen extends React.Component {
       );
       return
     }
+    Keyboard.dismiss()
     this.setState({
       visibleModal: true,
       modalType: constants.MODAL_SELECT_INGREDIENTS,
@@ -538,7 +608,7 @@ class BuilderScreen extends React.Component {
     const { width } = Dimensions.get('window');
     const buttonWidth = (width - 16 - 16);
     const buttonDisabled = (
-      (step === 0 && (recipeName === '' || drinkType === ''))
+      (step === 0 && (recipeName === '' || drinkType === '' || (drinkType === constants.DRINK_TYPE_COCKTAIL && baseSpirit === '') || servingGlass === ''))
       || (step === 1 && ingredients.length === 0)
       || (step === 2 && steps.length === 0)
     )

@@ -4,6 +4,7 @@ import Colors from '../../Theme/Colors'
 import { getStepDescriptionWithHighlights } from '../../Storage/Step'
 import { PropTypes } from 'prop-types'
 import getStylesheet from '../../Theme/ApplicationStyles'
+import Fonts from '../../Theme/Fonts'
 
 export default function Step(props) {
   const { step, activeStep, darkMode, drinkAmount, ingredientDict } = props
@@ -48,20 +49,17 @@ function getStepStylesheet(useDarkMode) {
     },
     stepDescriptionBase: {
       color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
-      fontSize: 18,
-      fontWeight: '600',
+      ...Fonts.body1,
       textAlign: 'center',
     },
     stepDescriptionHighlight: {
       color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
-      fontSize: 18,
-      fontWeight: '600',
+      ...Fonts.body1,
       textAlign: 'center',
     },
     stepDescriptionActive: {
       color: Colors.blue1,
-      fontSize: 18,
-      fontWeight: '600',
+      ...Fonts.body1,
       textAlign: 'center',
     },
   })

@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Colors from '../Theme/Colors'
+import Fonts from '../Theme/Fonts'
 
 export default function Button(props) {
   const { onButtonClick, title, margin, disabled, darkMode } = props
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   title: {
-    fontSize: 14,
-    fontWeight: '600',
+    ...Fonts.buttonText,
   },
 })

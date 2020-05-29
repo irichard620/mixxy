@@ -271,6 +271,9 @@ class TutorialScreen extends React.Component {
 
   increaseDrinkQuantity = () => {
     const { drinkAmount } = this.state
+    if (drinkAmount >= 10) {
+      return
+    }
     this.setState({ drinkAmount: drinkAmount + 1 })
   }
 
