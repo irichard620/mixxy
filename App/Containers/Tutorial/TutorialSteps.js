@@ -64,6 +64,7 @@ class TutorialSteps extends Component {
   render() {
     const { recipe, step, darkMode } = this.props;
     const { steps } = recipe;
+    console.log(recipe)
 
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)

@@ -97,5 +97,18 @@ export default function getTutorialStylesheet(useDarkMode) {
       marginRight: 16,
       width: '100%',
     },
+    menuButtonsOutline: {
+      alignItems: 'center',
+      alignSelf: 'center',
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+      width: '100%',
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight
+    },
+    menuButtonSeparator: {
+      height: 24,
+    },
   })
 }

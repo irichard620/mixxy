@@ -20,17 +20,17 @@ export default function MultiSelectListItem(props) {
   }
 
   return (
-    <View style={listItemStyles.container}>
-      <View style={listItemStyles.textContainer}>
-        <TouchableWithoutFeedback onPress={() => onClick(title)}>
+    <TouchableWithoutFeedback onPress={() => onClick(title)}>
+      <View style={listItemStyles.container}>
+        <View style={listItemStyles.textContainer}>
           <View style={listItemStyles.selectOuterContainer}>
             {selected && <View style={listItemStyles.selectInnerContainer} />}
           </View>
-        </TouchableWithoutFeedback>
-        <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{title}</Text>
+          <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{title}</Text>
+        </View>
+        <View style={styles.divider} />
       </View>
-      <View style={styles.divider} />
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 

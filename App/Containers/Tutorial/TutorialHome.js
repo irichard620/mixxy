@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-  View, Image, Text, ScrollView, TouchableWithoutFeedback,
+  View, Image, Text, ScrollView, TouchableWithoutFeedback, FlatList,
 } from 'react-native'
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
@@ -61,7 +61,7 @@ class TutorialHome extends Component {
 
   render() {
     const { selected } = this.state;
-    const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity } = this.props;
+    const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity, recipeSaved } = this.props;
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
 
@@ -92,12 +92,12 @@ class TutorialHome extends Component {
     }
 
     return (
-      <ScrollView style={tutorialStyles.scrollView}>
+      <ScrollView style={tutorialStyles.scrollView} stickyHeaderIndices={[5]}>
         <View style={tutorialStyles.iconView}>
           {this.getDrinkIcon(tutorialStyles.icon)}
         </View>
         <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
-        <View style={tutorialStyles.drinkAmountView}>
+        {recipeSaved && <View style={tutorialStyles.drinkAmountView}>
           <TouchableWithoutFeedback onPress={reduceDrinkQuantity}>
             <View style={tutorialStyles.drinkAmountCircle}>
               <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
@@ -112,8 +112,9 @@ class TutorialHome extends Component {
               <Image source={qtyPositiveSource} style={tutorialStyles.drinkAmountIcon} />
             </View>
           </TouchableWithoutFeedback>
-        </View>
+        </View>}
         <View style={styles.thickDivider} />
+        <View style={tutorialStyles.menuButtonSeparator} />
         <TutorialHomeMenuButtons selected={selected} darkMode={darkMode} onItemClick={this.onItemClick} isDescription={isDescription} />
         <View style={[styles.divider, dividerStyle]} />
         {selected === 0 && isDescription && <Text style={tutorialStyles.descriptionText}>{recipe.recipeDescription}</Text>}

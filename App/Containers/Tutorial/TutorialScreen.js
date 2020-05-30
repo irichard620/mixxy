@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions, Alert } from 'react-native'
+import { View, Dimensions, Alert, LayoutAnimation } from 'react-native'
 import { connect } from 'react-redux'
 import Share from 'react-native-share';
 import { NavigationActions, SafeAreaView, withNavigationFocus } from 'react-navigation'
@@ -166,6 +166,9 @@ class TutorialScreen extends React.Component {
     const { step } = this.state;
     // Check step
     if (step !== -1) {
+      if (step > 0) {
+        LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
+      }
       this.setState({
         step: step - 1
       })
@@ -183,6 +186,9 @@ class TutorialScreen extends React.Component {
     const { step, recipe } = this.state;
     // Check step
     if (step !== recipe.steps.length - 1) {
+      if (step > -1) {
+        LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
+      }
       this.setState({
         step: step + 1
       })
@@ -343,6 +349,7 @@ class TutorialScreen extends React.Component {
             drinkAmount={drinkAmount}
             reduceDrinkQuantity={this.reduceDrinkQuantity}
             increaseDrinkQuantity={this.increaseDrinkQuantity}
+            recipeSaved={recipeSaved}
           />
         )}
         {step !== -1 && (

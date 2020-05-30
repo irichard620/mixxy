@@ -131,9 +131,7 @@ class BuilderScreen extends React.Component {
     for (let i = 0; i < ingredients.length; i++) {
       const currentIngredient = ingredients[i]
       if (
-        currentIngredient.amountType === ''
-        || (currentIngredient.amount === '0' && currentIngredient.fractionalAmount === '')
-        || currentIngredient.title === ''
+        currentIngredient.amountType === '' || currentIngredient.title === ''
       ) {
         Alert.alert(
           'Ingredients Error',
@@ -265,6 +263,7 @@ class BuilderScreen extends React.Component {
     } else if (modalType === constants.MODAL_SELECT_INGREDIENTS) {
       // Track an ingredients list
       const ingredientsList = []
+      const ingredientDict = ingredientModel.createIngredientDic(ingredients)
 
       // Add ingredients to step with correct start and end indexes
       let ingredientDescription = ''
@@ -274,13 +273,12 @@ class BuilderScreen extends React.Component {
           if (ingredientsList.length) {
             ingredientDescription += ', '
           }
-          ingredientDescription += ingredientOptions[i].title
+          ingredientDescription += ingredientModel.getIngredientShortDescription(ingredientDict[ingredientOptions[i].ingredientId], 1, true)
           ingredientsList.push(ingredientOptions[i].ingredientId)
         }
       }
 
       // Sort ingredients by start
-      console.log(`cursor ${cursorLocation}`)
       const oldTitle = steps[modalIdx].title
       const addition = oldTitle.substring(cursorLocation).length ? '' : ' '
       const newTitle = oldTitle.substring(0, cursorLocation) + ingredientDescription + oldTitle.substring(cursorLocation) + addition
@@ -335,11 +333,11 @@ class BuilderScreen extends React.Component {
         if (j > 0) {
           ingredientDescription += ', '
         }
-        ingredientDescription += ingredientModel.getIngredientShortDescription(ingredientDict[copiedStep.ingredients[j]])
+        ingredientDescription += ingredientModel.getIngredientShortDescription(ingredientDict[copiedStep.ingredients[j]], 1, true)
       }
       // Update variables
       const diff = ingredientDescription.length - (copiedStep.endLocation - copiedStep.startLocation)
-      const addition = copiedStep.title.substring(copiedStep.startLocation).length ? '' : ' '
+      const addition = !copiedStep.title.substring(copiedStep.startLocation).length && ingredientDescription.length ? ' ' : ''
       copiedStep.title = copiedStep.title.substring(0, copiedStep.startLocation) + ingredientDescription + copiedStep.title.substring(copiedStep.startLocation) + addition
       copiedStep.endLocation += diff
       steps[i] = copiedStep
@@ -475,7 +473,17 @@ class BuilderScreen extends React.Component {
     console.log(currentStep.endLocation)
     console.log(`${selection.start} ${selection.end}`)
     // 3 cases - delete exact selection, delete plus whitespace prior, delete and replace with char
-    if (
+    // New case - delete last char
+    if (diff < 0 && (selection.start === currentStep.startLocation && selection.end === currentStep.startLocation)) {
+      if (diff === -1) {
+        // Only deleted last char - need to remove from text
+        text = text.substring(0, currentStep.startLocation) + text.substring(currentStep.endLocation - 1)
+      }
+      // Clear ingredients
+      ingredientsToSet = []
+      startToSet = -1
+      endToSet = -1
+    } else if (
       (
         diff === (currentStep.startLocation - currentStep.endLocation)
         && (selection.start === currentStep.startLocation && selection.end === currentStep.startLocation)

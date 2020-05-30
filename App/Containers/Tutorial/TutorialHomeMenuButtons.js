@@ -2,9 +2,12 @@ import React from 'react'
 import { View, StyleSheet, Text, TouchableWithoutFeedback, Dimensions } from 'react-native'
 import Colors from '../../Theme/Colors'
 import Fonts from '../../Theme/Fonts'
+import getTutorialStylesheet from './TutorialScreenStyle'
 
 export default function TutorialHomeMenuButtons(props) {
   const { selected, onItemClick, isDescription, darkMode } = props
+
+  const tutorialStyles = getTutorialStylesheet(darkMode)
 
   let renderOrder = [0, 1]
   if (!isDescription) {
@@ -21,7 +24,7 @@ export default function TutorialHomeMenuButtons(props) {
   selectedButtonStyle.left += selected * buttonWidth.width
 
   return (
-    <View style={menuStyle.outline}>
+    <View style={tutorialStyles.menuButtonsOutline}>
       {renderOrder.map((item) => {
         // style of button
         let titleStyle = {
@@ -58,16 +61,6 @@ const menuStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,
-  },
-  outline: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-    marginTop: 24,
-    width: '100%',
   },
   selectedButtonOutline: {
     backgroundColor: Colors.blue1,

@@ -42,7 +42,7 @@ export function getStepShortDescription(step) {
   return ''
 }
 
-export function getIngredientsList(step, drinkAmount, ingredientDict) {
+export function getIngredientsList(step, drinkAmount, ingredientDict, inStep) {
   let ingredientDescription = ''
   for (let i = 0; i < step.ingredients.length; i++) {
     if (i > 0) {
@@ -50,7 +50,8 @@ export function getIngredientsList(step, drinkAmount, ingredientDict) {
     }
     ingredientDescription += getIngredientShortDescription(
       ingredientDict[step.ingredients[i]],
-      drinkAmount
+      drinkAmount,
+      inStep
     )
   }
   return ingredientDescription
@@ -112,10 +113,11 @@ export const getStepDescriptionWithHighlights = (
   styles,
   drinkAmount,
   ingredientDict,
-  isActive
+  isActive,
+  inStep,
 ) => {
   // Get ingredient description
-  let ingredientDescription = getIngredientsList(step, drinkAmount, ingredientDict)
+  let ingredientDescription = getIngredientsList(step, drinkAmount, ingredientDict, inStep)
   // Add to step title
   let title = step.title
   if (step.startLocation > -1) {
@@ -127,7 +129,7 @@ export const getStepDescriptionWithHighlights = (
   const textSequences = getStepTextSequeunces({
     title: title,
     startLocation: step.startLocation,
-    endLocation: step.endLocation,
+    endLocation: step.startLocation + ingredientDescription.length,
   })
 
   return (

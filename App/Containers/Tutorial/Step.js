@@ -17,7 +17,7 @@ export default function Step(props) {
   return (
     <View style={stepStyle.outline}>
       <Text>
-        {getStepDescriptionWithHighlights(step, stepStyle, drinkAmount, ingredientDict, activeStep)}
+        {getStepDescriptionWithHighlights(step, stepStyle, drinkAmount, ingredientDict, activeStep, true)}
       </Text>
       <View style={[marginTopStyle, styles.divider]} />
     </View>

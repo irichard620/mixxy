@@ -21,6 +21,7 @@ export default function RecipeStep(props) {
   // Is it being edited?
   const [isEditing, setIsEditing] = useState(false)
   const [selection, setSelection] = useState({ start: 0, end: 0 })
+  const [lastStartLocation, setLastStartLocation] = useState(-1)
 
   const { width } = Dimensions.get('window')
   const outlineStyle = {
@@ -32,20 +33,40 @@ export default function RecipeStep(props) {
 
   const handleSelectionChange = (e) => {
     // Check if selection within our ingredients
+    // TODO: handle case where delete last char in item
+    console.log(`Step ${step.startLocation} ${step.endLocation}`)
+    console.log(`Step previous ${lastStartLocation}`)
+    console.log(`Previous selection ${selection.start} ${selection.end}`)
+    console.log(`New selection ${e.nativeEvent.selection.start} ${e.nativeEvent.selection.end}`)
     if (
-      e.nativeEvent.selection.start > step.startLocation &&
-      step.endLocation >= e.nativeEvent.selection.start
+      selection.start === step.endLocation &&
+      e.nativeEvent.selection.start === step.endLocation - 1
     ) {
-      setSelection({ start: step.startLocation, end: step.endLocation })
+      console.log("Set before start and delete")
+      setSelection({ start: step.startLocation, end: step.startLocation })
+      setLastStartLocation(step.startLocation)
       return
     }
-    if (
-      e.nativeEvent.selection.end > step.startLocation &&
-      step.endLocation >= e.nativeEvent.selection.end
-    ) {
-      setSelection({ start: step.startLocation, end: step.endLocation })
+    if (lastStartLocation !== -1 && step.startLocation === -1) {
+      console.log("Set to last start")
+      setSelection({ start: lastStartLocation, end: lastStartLocation })
+      setLastStartLocation(-1)
       return
     }
+    // if (
+    //   e.nativeEvent.selection.start > step.startLocation &&
+    //   step.endLocation > e.nativeEvent.selection.start
+    // ) {
+    //   setSelection({ start: step.startLocation, end: step.endLocation })
+    //   return
+    // }
+    // if (
+    //   e.nativeEvent.selection.end > step.startLocation &&
+    //   step.endLocation > e.nativeEvent.selection.end
+    // ) {
+    //   setSelection({ start: step.startLocation, end: step.endLocation })
+    //   return
+    // }
     setSelection(e.nativeEvent.selection)
   }
 

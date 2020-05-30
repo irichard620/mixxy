@@ -114,9 +114,15 @@ export function getIngredientAmount(ingredient, drinkAmount) {
   }
 }
 
-export function getIngredientShortDescription(ingredient, drinkAmount) {
+export function getIngredientShortDescription(ingredient, drinkAmount, inStep) {
   // Format is amount-unit-ingredient
   // Ex: 2oz Silver Tequila
-  const brandText = ingredient.brand !== '' ? ` (${ingredient.brand})` : ''
-  return `${getIngredientAmount(ingredient, drinkAmount)} ${ingredient.title}${brandText}`
+  if (
+    inStep &&
+    (ingredient.amountType === constants.AMOUNT_TYPE_GARNISH ||
+      ingredient.amountType === constants.AMOUNT_TYPE_RIM)
+  ) {
+    return ingredient.title
+  }
+  return `${getIngredientAmount(ingredient, drinkAmount)} ${ingredient.title}`
 }
