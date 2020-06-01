@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions, Alert, LayoutAnimation, Keyboard } from 'react-native'
+import { View, Dimensions, Alert, LayoutAnimation } from 'react-native'
 import { connect } from 'react-redux'
 import update from 'immutability-helper';
 import { NavigationActions, SafeAreaView } from 'react-navigation'
@@ -50,7 +50,6 @@ class BuilderScreen extends React.Component {
     const recipe = navigation.getParam('recipe', {});
     if (Object.keys(recipe).length !== 0) {
       // add ingredient descriptions back into step titles
-      const updatedSteps = this.addIngredientsToStepTitles([ ... recipe.steps ], recipe.ingredients)
       this.setState({
         step: 2,
         recipeId: recipe.recipeId,
@@ -60,7 +59,7 @@ class BuilderScreen extends React.Component {
         drinkType: recipe.recipeType,
         baseSpirit: recipe.baseSpirit,
         servingGlass: recipe.servingGlass,
-        steps: updatedSteps,
+        steps: recipe.steps,
         ingredients: recipe.ingredients,
       });
     }
@@ -152,7 +151,7 @@ class BuilderScreen extends React.Component {
     const { steps } = this.state
     for (let i = 0; i < steps.length; i++) {
       const currentStep = steps[i]
-      if (currentStep.title === '' && currentStep.startLocation === -1) {
+      if (currentStep.title === '') {
         Alert.alert(
           'Recipe Error',
           "You can't save a recipe with a blank step.",
@@ -179,20 +178,15 @@ class BuilderScreen extends React.Component {
         if (!valid) {
           return
         }
-        // Refresh ingredients
-        this.refreshStepIngredients()
-      } else {
-        this.setState({
-          step: step + 1
-        })
       }
+      this.setState({
+        step: step + 1
+      })
     } else {
       const valid = this.validateSteps()
       if (!valid) {
         return
       }
-      // Clear ingredient text out of steps before saving
-      const clearedSteps = this.clearIngredientsFromStepTitles(steps)
       // Save recipe here
       const newRecipe = recipeModel.Recipe({
         recipeId: recipeId,
@@ -202,7 +196,7 @@ class BuilderScreen extends React.Component {
         baseSpirit: baseSpirit,
         servingGlass: servingGlass,
         totalOunces: 0,
-        steps: clearedSteps,
+        steps: steps,
         ingredients: ingredients,
       })
       newRecipe.totalOunces = recipeModel.getTotalOuncesForRecipe(newRecipe)
@@ -260,103 +254,8 @@ class BuilderScreen extends React.Component {
         modalType: '',
         modalIdx: -1,
       });
-    } else if (modalType === constants.MODAL_SELECT_INGREDIENTS) {
-      // Track an ingredients list
-      const ingredientsList = []
-      const ingredientDict = ingredientModel.createIngredientDic(ingredients)
-
-      // Add ingredients to step with correct start and end indexes
-      let ingredientDescription = ''
-      for (let i = 0; i < ingredientOptions.length; i++) {
-        if (ingredientOptions[i].selected) {
-          // Get display of ingredient so we can get end index
-          if (ingredientsList.length) {
-            ingredientDescription += ', '
-          }
-          ingredientDescription += ingredientModel.getIngredientShortDescription(ingredientDict[ingredientOptions[i].ingredientId], 1, true)
-          ingredientsList.push(ingredientOptions[i].ingredientId)
-        }
-      }
-
-      // Sort ingredients by start
-      const oldTitle = steps[modalIdx].title
-      const addition = oldTitle.substring(cursorLocation).length ? '' : ' '
-      const newTitle = oldTitle.substring(0, cursorLocation) + ingredientDescription + oldTitle.substring(cursorLocation) + addition
-      this.setState({
-        steps: update(steps, {
-          [modalIdx]: {
-            title: {
-              $set: newTitle
-            },
-            ingredients: {
-              $set: ingredientsList
-            },
-            startLocation: {
-              $set: cursorLocation
-            },
-            endLocation: {
-              $set: cursorLocation + ingredientDescription.length,
-            },
-          }
-        }),
-        visibleModal: false,
-        modalType: '',
-        modalIdx: -1,
-      })
     }
   };
-
-  clearIngredientsFromStepTitles = (steps) => {
-    const copiedSteps = [ ...steps ]
-    // Go through each step
-    for (let i = 0; i < steps.length; i++) {
-      const copiedStep = { ...steps[i] }
-      // 1) Remove ingredient text
-      if (!(copiedStep.startLocation === -1 && copiedStep.endLocation === -1)) {
-        copiedStep.title =
-          copiedStep.title.substring(0, copiedStep.startLocation) + copiedStep.title.substring(copiedStep.endLocation, copiedStep.title.length)
-      }
-      copiedSteps[i] = copiedStep
-    }
-    return copiedSteps
-  }
-
-  addIngredientsToStepTitles = (steps, ingredients) => {
-    // Ingredient dict
-    const ingredientDict = ingredientModel.createIngredientDic(ingredients)
-    for (let i = 0; i < steps.length; i++) {
-      const copiedStep = {  ...steps[i] }
-      // Create updated ingredient description
-      let ingredientDescription = ''
-      for (let j = 0; j < copiedStep.ingredients.length; j++) {
-        // Get display of ingredient so we can get end index
-        if (j > 0) {
-          ingredientDescription += ', '
-        }
-        ingredientDescription += ingredientModel.getIngredientShortDescription(ingredientDict[copiedStep.ingredients[j]], 1, true)
-      }
-      // Update variables
-      const diff = ingredientDescription.length - (copiedStep.endLocation - copiedStep.startLocation)
-      const addition = !copiedStep.title.substring(copiedStep.startLocation).length && ingredientDescription.length ? ' ' : ''
-      copiedStep.title = copiedStep.title.substring(0, copiedStep.startLocation) + ingredientDescription + copiedStep.title.substring(copiedStep.startLocation) + addition
-      copiedStep.endLocation += diff
-      steps[i] = copiedStep
-    }
-    return steps
-  }
-
-  refreshStepIngredients = () => {
-    const { steps, ingredients } = this.state
-    // Clear ingredient data
-    let copiedSteps = this.clearIngredientsFromStepTitles(steps)
-
-    // Add back ingredient data
-    copiedSteps = this.addIngredientsToStepTitles(copiedSteps, ingredients)
-    this.setState({
-      steps: copiedSteps,
-      step: 2
-    })
-  }
 
   onModalPressItem = (item, idx) => {
     const { modalType } = this.state
@@ -461,69 +360,14 @@ class BuilderScreen extends React.Component {
     });
   }
 
-  onChangeStepText = (text, selection, idx) => {
+  onChangeStepText = (text, idx) => {
     const { steps } = this.state
-    const currentStep = steps[idx]
-    let ingredientsToSet = [ ...currentStep.ingredients ]
-    let startToSet = currentStep.startLocation
-    let endToSet = currentStep.endLocation
-    const diff = text.length - currentStep.title.length
-    console.log(diff)
-    console.log(currentStep.startLocation)
-    console.log(currentStep.endLocation)
-    console.log(`${selection.start} ${selection.end}`)
-    // 3 cases - delete exact selection, delete plus whitespace prior, delete and replace with char
-    // New case - delete last char
-    if (diff < 0 && (selection.start === currentStep.startLocation && selection.end === currentStep.startLocation)) {
-      if (diff === -1) {
-        // Only deleted last char - need to remove from text
-        text = text.substring(0, currentStep.startLocation) + text.substring(currentStep.endLocation - 1)
-      }
-      // Clear ingredients
-      ingredientsToSet = []
-      startToSet = -1
-      endToSet = -1
-    } else if (
-      (
-        diff === (currentStep.startLocation - currentStep.endLocation)
-        && (selection.start === currentStep.startLocation && selection.end === currentStep.startLocation)
-      )
-      ||
-      (
-        diff === (currentStep.startLocation - currentStep.endLocation - 1)
-        && (selection.start === currentStep.startLocation - 1 && selection.end === currentStep.startLocation - 1)
-      )
-      ||
-      (
-        diff === (currentStep.startLocation - currentStep.endLocation + 1)
-        && (selection.start === currentStep.startLocation && selection.end === currentStep.endLocation)
-      )
-    ) {
-      // Clear ingredients
-      ingredientsToSet = []
-      startToSet = -1
-      endToSet = -1
-    } else if (selection.start < currentStep.startLocation) {
-      // Check if need to push ingredient back{
-      const diff = text.length - currentStep.title.length
-      startToSet += diff
-      endToSet += diff
-    }
     this.setState({
       steps: update(steps, {
         [idx]: {
           title: {
             $set: text
           },
-          ingredients: {
-            $set: ingredientsToSet
-          },
-          startLocation: {
-            $set: startToSet
-          },
-          endLocation: {
-            $set: endToSet
-          }
         }
       }),
     });
@@ -542,63 +386,11 @@ class BuilderScreen extends React.Component {
     }
   }
 
-  onAddIngredientToStep = (idx, cursor, ingredientOptions) => {
-    if (ingredientOptions.length === 0) {
-      Alert.alert(
-        'No Ingredients',
-        'Your ingredients are all used in other steps. When calling an ingredient for the second time, you can just type it in normally.',
-        [
-          {
-            text: 'OK'
-          },
-        ],
-      );
-      return
-    }
-    Keyboard.dismiss()
-    this.setState({
-      visibleModal: true,
-      modalType: constants.MODAL_SELECT_INGREDIENTS,
-      modalIdx: idx,
-      cursorLocation: cursor,
-    })
-  }
-
   onMorePress = () => {
     this.setState({
       visibleModal: true,
       modalType: constants.MODAL_BUILDER_NAV,
     })
-  }
-
-  getIngredientOptions = () => {
-    const { steps, ingredients } = this.state
-
-    // Compare full list of ingredients against what's already in steps
-    // First, create full dictionary with all ingredients
-    const ingredientDict = ingredientModel.createIngredientDic(ingredients)
-
-    // Now, go through each step and remove used items
-    for (let i = 0; i < steps.length; i++) {
-      for (let j = 0; j < steps[i].ingredients.length; j++) {
-        let currentIngredientId = steps[i].ingredients[j]
-        if (currentIngredientId in ingredientDict) {
-          delete ingredientDict[currentIngredientId]
-        }
-      }
-    }
-
-    // Whatever is left is our options
-    const finalOptions = []
-    const keys = Object.keys(ingredientDict)
-    for (let i = 0; i < keys.length; i++) {
-      finalOptions.push({
-        ingredientId: keys[i],
-        title: ingredientModel.getIngredientShortDescription(ingredientDict[keys[i]]),
-        selected: false,
-      })
-    }
-    return finalOptions
   }
 
   render() {
@@ -636,9 +428,6 @@ class BuilderScreen extends React.Component {
     } else if ((step === 1 && !isEditMode) || (step === 2 && !isEditModeSteps)) {
       rightButtonTitle = 'Edit'
     }
-
-    // Ingredient options
-    const ingredientOptions = this.getIngredientOptions()
 
     return (
       <SafeAreaView style={styles.outerContainer}>
@@ -687,8 +476,6 @@ class BuilderScreen extends React.Component {
             isEditMode={isEditModeSteps}
             onDeletePress={this.onDeleteStepPress}
             onMorePress={this.onMorePress}
-            onAddIngredient={(idx, cursor) => this.onAddIngredientToStep(idx, cursor, ingredientOptions)}
-            ingredients={ingredients}
           />
         )}
         <View style={builderStyles.gradientContainer}>
@@ -724,7 +511,6 @@ class BuilderScreen extends React.Component {
           amount={amount}
           fractionalAmount={fractionalAmount}
           amountType={amountType}
-          ingredientOptions={ingredientOptions}
         />
       </SafeAreaView>
     )

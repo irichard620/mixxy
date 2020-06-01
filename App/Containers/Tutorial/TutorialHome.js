@@ -10,6 +10,7 @@ import TutorialHomeMenuButtons from './TutorialHomeMenuButtons'
 import * as constants from '../../Config/constants';
 import * as ingredientModel from '../../Storage/Ingredient';
 import ListItem from '../../Components/ListItem'
+import Step from './Step'
 
 class TutorialHome extends Component {
   constructor(props) {
@@ -43,32 +44,12 @@ class TutorialHome extends Component {
     });
   };
 
-  getIngredients = (recipe) => {
-    const { drinkAmount } = this.props
-    if (!recipe || !('ingredients' in recipe)) {
-      return [];
-    }
-    const options = [];
-    for (let i = 0; i < recipe.ingredients.length; i++) {
-      const ingredient = recipe.ingredients[i];
-      options.push({
-        title: ingredientModel.getIngredientAmount(ingredient, drinkAmount),
-        subtitle: ingredient.title,
-      })
-    }
-    return options;
-  }
-
   render() {
-    const { selected } = this.state;
-    const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity, recipeSaved } = this.props;
+    const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity } = this.props;
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
 
     const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
-    const isIngredients = (selected === 1 && isDescription) || (selected === 0 && !isDescription);
-
-    const options = this.getIngredients(recipe)
 
     let qtyNegativeSource = ''
     if (drinkAmount > 1) {
@@ -83,48 +64,55 @@ class TutorialHome extends Component {
       qtyPositiveSource = darkMode ? Images.quantityPlusInactiveDark : Images.quantityPlusInactiveLight
     }
 
-    // Total recipe amount
-    const totalRecipeOunces = Math.round(recipe.totalOunces * drinkAmount * 10) / 10
-
-    const dividerStyle = {
-      marginTop: -16.5,
-      marginBottom: 16,
-    }
-
     return (
       <ScrollView style={tutorialStyles.scrollView} stickyHeaderIndices={[5]}>
         <View style={tutorialStyles.iconView}>
           {this.getDrinkIcon(tutorialStyles.icon)}
         </View>
         <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
-        {recipeSaved && <View style={tutorialStyles.drinkAmountView}>
-          <TouchableWithoutFeedback onPress={reduceDrinkQuantity}>
-            <View style={tutorialStyles.drinkAmountCircle}>
-              <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
-            </View>
-          </TouchableWithoutFeedback>
-          <View style={tutorialStyles.drinkAmountCenterView}>
-            <Text style={tutorialStyles.drinkAmountText}>{`${drinkAmount} drink${drinkAmount > 1 ? 's' : ''}`}</Text>
-            {drinkAmount > 1 && <Text style={tutorialStyles.drinkAmountOuncesText}>{`${totalRecipeOunces} oz`}</Text>}
-          </View>
-          <TouchableWithoutFeedback onPress={increaseDrinkQuantity}>
-            <View style={tutorialStyles.drinkAmountCircle}>
-              <Image source={qtyPositiveSource} style={tutorialStyles.drinkAmountIcon} />
-            </View>
-          </TouchableWithoutFeedback>
-        </View>}
+        {isDescription && <Text style={tutorialStyles.descriptionText}>{recipe.recipeDescription}</Text>}
         <View style={styles.thickDivider} />
-        <View style={tutorialStyles.menuButtonSeparator} />
-        <TutorialHomeMenuButtons selected={selected} darkMode={darkMode} onItemClick={this.onItemClick} isDescription={isDescription} />
-        <View style={[styles.divider, dividerStyle]} />
-        {selected === 0 && isDescription && <Text style={tutorialStyles.descriptionText}>{recipe.recipeDescription}</Text>}
-        {isIngredients && options.map((option) => (
+        <View style={tutorialStyles.servingsContainer}>
+          <Text style={tutorialStyles.sectionHeader}>Servings</Text>
+          <View style={tutorialStyles.drinkAmountView}>
+            <TouchableWithoutFeedback onPress={reduceDrinkQuantity}>
+              <View style={tutorialStyles.drinkAmountCircle}>
+                <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
+              </View>
+            </TouchableWithoutFeedback>
+            <Text style={tutorialStyles.drinkAmountText}>{`${drinkAmount} drink${drinkAmount > 1 ? 's' : ''}`}</Text>
+            <TouchableWithoutFeedback onPress={increaseDrinkQuantity}>
+              <View style={tutorialStyles.drinkAmountCircle}>
+                <Image source={qtyPositiveSource} style={tutorialStyles.drinkAmountIcon} />
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+        <View style={styles.thickDivider} />
+        <View style={tutorialStyles.sectionHeaderContainer}>
+          <Text style={tutorialStyles.sectionHeader}>Ingredients</Text>
+        </View>
+        <View style={styles.divider} />
+        {Object.keys(recipe).length !== 0 && recipe.ingredients.map((ingredient) => (
           <ListItem
-            key={option.title + option.subtitle}
-            title={option.title}
-            subtitle={option.subtitle}
+            key={ingredient.ingredientId}
+            title={ingredientModel.getIngredientShortDescription(ingredient, drinkAmount, false)}
             darkMode={darkMode}
             disabled
+          />
+        ))}
+        <View style={styles.thickDivider} />
+        <View style={tutorialStyles.sectionHeaderContainer}>
+          <Text style={tutorialStyles.sectionHeader}>Steps</Text>
+        </View>
+        <View style={styles.divider} />
+        {Object.keys(recipe).length !== 0 && recipe.steps.map((step, idx) => (
+          <Step
+            key={`step${idx}`}
+            step={step}
+            isFirst={idx === 0}
+            isLast={idx === recipe.steps.length - 1}
+            darkMode={darkMode}
           />
         ))}
         <View style={tutorialStyles.bufferView} />

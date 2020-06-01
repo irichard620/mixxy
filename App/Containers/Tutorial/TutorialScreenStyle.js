@@ -16,10 +16,11 @@ export default function getTutorialStylesheet(useDarkMode) {
     },
     descriptionText: {
       ...Fonts.body2,
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
+      marginBottom: 24,
       paddingLeft: 16,
       paddingRight: 16,
-      textAlign: 'left',
+      textAlign: 'center',
     },
     drinkAmountCenterView: {
       flexDirection: 'column',
@@ -29,38 +30,31 @@ export default function getTutorialStylesheet(useDarkMode) {
     },
     drinkAmountCircle: {
       alignItems: 'center',
-      borderColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-      borderRadius: 24,
-      borderWidth: 0.5,
-      height: 48,
+      backgroundColor: useDarkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight,
+      borderRadius: 12,
+      height: 24,
       justifyContent: 'center',
-      width: 48,
+      marginTop: 13,
+      width: 24,
     },
     drinkAmountIcon: {
-      height: 16,
+      height: 12,
       resizeMode: 'contain',
     },
-    drinkAmountOuncesText: {
+    drinkAmountText: {
       ...Fonts.body1,
       alignSelf: 'center',
-      color: Colors.orange1,
-      textAlign: 'center',
-    },
-    drinkAmountText: {
-      ...Fonts.h3,
-      alignSelf: 'center',
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginLeft: 18,
+      marginRight: 18,
       textAlign: 'center',
-      width: 144,
     },
     drinkAmountView: {
       alignItems: 'flex-start',
       alignSelf: 'center',
       flexDirection: 'row',
-      height: 48,
+      height: 50,
       justifyContent: 'center',
-      marginBottom: 32,
-      width: 144 + 48 + 48,
     },
     gradientContainer: {
       backgroundColor: Colors.backgroundColorDarkTransparent,
@@ -75,12 +69,25 @@ export default function getTutorialStylesheet(useDarkMode) {
     iconView: {
       alignSelf: 'center',
       height: 184,
-      marginBottom: 4,
+      marginBottom: 12,
+    },
+    menuButtonSeparator: {
+      height: 24,
+    },
+    menuButtonsOutline: {
+      alignItems: 'center',
+      alignSelf: 'center',
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+      width: '100%',
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
     },
     recipeTitle: {
       ...Fonts.h1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      marginBottom: 32,
+      marginBottom: 16,
       marginLeft: 16,
       marginRight: 16,
       textAlign: 'center',
@@ -92,23 +99,54 @@ export default function getTutorialStylesheet(useDarkMode) {
     scrollViewContent: {
       alignItems: 'center',
     },
-    stepContainer: {
-      marginLeft: 16,
-      marginRight: 16,
-      width: '100%',
+    sectionHeader: {
+      ...Fonts.h3Semibold,
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      textAlign: 'left',
     },
-    menuButtonsOutline: {
+    sectionHeaderContainer: {
+      alignItems: 'flex-start',
+      height: 50,
+      justifyContent: 'center',
+      paddingLeft: 16,
+      paddingRight: 16,
+    },
+    servingsContainer: {
       alignItems: 'center',
-      alignSelf: 'center',
-      flex: 1,
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flexDirection: 'row',
+      height: 50,
       justifyContent: 'space-between',
-      marginBottom: 16,
-      width: '100%',
-      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight
+      paddingLeft: 16,
+      paddingRight: 16,
     },
-    menuButtonSeparator: {
-      height: 24,
+    stepCircle: {
+      backgroundColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      borderRadius: 6,
+      height: 12,
+      marginRight: 12,
+      marginTop: 16,
+      width: 12,
+    },
+    stepContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      paddingLeft: 16,
+      paddingRight: 16,
+      width: '100%',
+    },
+    stepLine: {
+      backgroundColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      position: 'absolute',
+      width: 1,
+      left: 22,
+    },
+    stepText: {
+      ...Fonts.body1,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginTop: 12,
+      marginBottom: 12,
     },
   })
 }

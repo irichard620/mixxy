@@ -162,41 +162,6 @@ class TutorialScreen extends React.Component {
     navigation.dispatch(NavigationActions.back());
   }
 
-  onFirstButtonClick = () => {
-    const { step } = this.state;
-    // Check step
-    if (step !== -1) {
-      if (step > 0) {
-        LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
-      }
-      this.setState({
-        step: step - 1
-      })
-    } else {
-      // Settings
-      this.setState({
-        visibleModal: true,
-        modalType: constants.MODAL_TYPE_BOTTOM,
-        deleteModal: false
-      });
-    }
-  }
-
-  onSecondButtonClick = () => {
-    const { step, recipe } = this.state;
-    // Check step
-    if (step !== recipe.steps.length - 1) {
-      if (step > -1) {
-        LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
-      }
-      this.setState({
-        step: step + 1
-      })
-    } else {
-      this.onBackScreenClick();
-    }
-  }
-
   onSaveClick = () => {
     // Call persist recipe
     const { recipe } = this.state
@@ -307,22 +272,7 @@ class TutorialScreen extends React.Component {
         recipeSaved = true
       }
     }
-
-    // Button style
-    let firstButtonTitle = 'Settings';
-    let secondButtonTitle = 'Start';
-    if (!('steps' in recipe)) {
-      firstButtonTitle = 'Loading...';
-      secondButtonTitle = 'Loading...';
-    } else if (step >= 0 && step < recipe.steps.length - 1) {
-      firstButtonTitle = 'Previous';
-      secondButtonTitle = 'Next Step';
-    } else if (step === recipe.steps.length - 1) {
-      firstButtonTitle = 'Previous';
-      secondButtonTitle = 'Finish';
-    }
     const { width } = Dimensions.get('window');
-    const buttonWidth = (width - 16 - 16 - 9) / 2;
     const fullButtonWidth = (width - 32)
 
     // Modal title
@@ -342,55 +292,32 @@ class TutorialScreen extends React.Component {
           favorited={recipe.favorited}
           onFavoriteClick={this.onFavoriteClick}
         />
-        {step === -1 && (
-          <TutorialHome
-            recipe={recipe}
-            darkMode={darkMode}
-            drinkAmount={drinkAmount}
-            reduceDrinkQuantity={this.reduceDrinkQuantity}
-            increaseDrinkQuantity={this.increaseDrinkQuantity}
-            recipeSaved={recipeSaved}
-          />
-        )}
-        {step !== -1 && (
-          <TutorialSteps recipe={recipe} step={step} darkMode={darkMode} drinkAmount={drinkAmount} />
-        )}
-        <View style={tutorialStyles.gradientContainer}>
+        <TutorialHome
+          recipe={recipe}
+          darkMode={darkMode}
+          drinkAmount={drinkAmount}
+          reduceDrinkQuantity={this.reduceDrinkQuantity}
+          increaseDrinkQuantity={this.increaseDrinkQuantity}
+          recipeSaved={recipeSaved}
+        />
+        {!recipeSaved && <View style={tutorialStyles.gradientContainer}>
           <LinearGradient
             colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
             style={{ flex: 1 }}
             start={{ x: 0, y: 1 }}
             end={{ x: 0, y: 0 }}
           />
-        </View>
-        <View style={tutorialStyles.buttonView}>
-          {recipeSaved && <ButtonLarge
-            onButtonClick={this.onFirstButtonClick}
-            title={firstButtonTitle}
-            margin={[0, 9, 0, 0]}
-            buttonWidth={buttonWidth}
-            textColor="#000000"
-            backgroundColor="#FFFFFF"
-            borderColor="#D3D3D3"
-            darkMode={darkMode}
-          />}
-          {recipeSaved && <ButtonLarge
-            onButtonClick={this.onSecondButtonClick}
-            title={secondButtonTitle}
-            margin={[0, 0, 0, 0]}
-            buttonWidth={buttonWidth}
-            darkMode={darkMode}
-            isPrimary
-          />}
-          {!recipeSaved && <ButtonLarge
+        </View>}
+        {!recipeSaved && <View style={tutorialStyles.buttonView}>
+          <ButtonLarge
             onButtonClick={this.onSaveClick}
             title={'Add to Library'}
             margin={[0, 0, 0, 0]}
             buttonWidth={fullButtonWidth}
             darkMode={darkMode}
             isPrimary
-          />}
-        </View>
+          />
+        </View>}
         <CustomModal
           visibleModal={visibleModal}
           onCloseClick={this.onCloseModalClick}

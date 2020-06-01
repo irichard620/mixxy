@@ -14,18 +14,16 @@ class BuilderModal extends Component {
       amount: '0',
       fractionalAmount: '',
       amountType: '',
-      ingredientOptions: [],
     };
   }
 
   componentDidUpdate(prevProps) {
-    const { amount, fractionalAmount, amountType, visibleModal, ingredientOptions } = this.props;
+    const { amount, fractionalAmount, amountType, visibleModal } = this.props;
     if (!prevProps.visibleModal && visibleModal) {
       this.setState({
         amount: amount,
         fractionalAmount: fractionalAmount,
         amountType: amountType,
-        ingredientOptions: ingredientOptions,
       });
     }
   }
@@ -139,7 +137,7 @@ class BuilderModal extends Component {
     const {
       visibleModal, modalType, drinkType, baseSpirit, servingGlass, darkMode,
     } = this.props;
-    const { selectedModalItem, amount, fractionalAmount, amountType, ingredientOptions } = this.state;
+    const { selectedModalItem, amount, fractionalAmount, amountType } = this.state;
 
     // Get content
     let options = [];
@@ -188,17 +186,6 @@ class BuilderModal extends Component {
             onPressItem={this.onModalPressItem}
             onModalSave={this.onModalSavePressed}
             hasSave={true}
-            darkMode={darkMode}
-          />
-        )}
-        {modalType === constants.MODAL_SELECT_INGREDIENTS && (
-          <ModalContentBottom
-            onPressItem={this.onModalPressItem}
-            title={'Add Ingredients'}
-            isMultiSelectModal
-            options={ingredientOptions}
-            hasSave={true}
-            onModalSave={this.onModalSavePressed}
             darkMode={darkMode}
           />
         )}

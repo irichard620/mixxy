@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, ScrollView, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
@@ -18,8 +18,6 @@ export default function BuilderSteps(props) {
     onDeletePress,
     onChangeText,
     onMorePress,
-    onAddIngredient,
-    ingredients,
   } = props
   const builderStyles = getBuilderStylesheet(darkMode)
   let leftMargin = -30
@@ -30,33 +28,33 @@ export default function BuilderSteps(props) {
     marginLeft: leftMargin,
   }
   return (
-    <KeyboardAwareScrollView extraScrollHeight={100} keyboardShouldPersistTaps={'handled'}>
-      <ScrollView style={builderStyles.scrollView} keyboardShouldPersistTaps={'handled'}>
-        <View style={builderStyles.headingContainer}>
-          <Text style={builderStyles.headingWithinContainer}>{recipeName}</Text>
-          <MoreButton onPress={onMorePress} />
+    <KeyboardAwareScrollView
+      extraScrollHeight={100}
+      enableAutomaticScroll={true}
+      style={builderStyles.scrollView}
+    >
+      <View style={builderStyles.headingContainer}>
+        <Text style={builderStyles.headingWithinContainer}>{recipeName}</Text>
+        <MoreButton onPress={onMorePress} />
+      </View>
+      <Text style={builderStyles.headingDescription}>
+        {
+          'Build out your recipe step by step. When you call an ingredient in a step for the first time, use "Add Ingredients" to open the list.'
+        }
+      </Text>
+      {steps.map((step, idx) => (
+        <View key={`step${idx}view`} style={[builderStyles.ingredientRow, leftMarginStyle]}>
+          <DeleteButton onPress={() => onDeletePress(idx)} />
+          <RecipeStep
+            key={`step${idx}`}
+            step={step}
+            stepIdx={idx + 1}
+            onChangeText={(text) => onChangeText(text, idx)}
+            darkMode={darkMode}
+          />
         </View>
-        <Text style={builderStyles.headingDescription}>
-          {
-            'Build out your recipe step by step. When you call an ingredient in a step for the first time, use "Add Ingredients" to open the list.'
-          }
-        </Text>
-        {steps.map((step, idx) => (
-          <View key={`step${idx}view`} style={[builderStyles.ingredientRow, leftMarginStyle]}>
-            <DeleteButton onPress={() => onDeletePress(idx)} />
-            <RecipeStep
-              key={`step${idx}`}
-              ingredients={ingredients}
-              step={step}
-              stepIdx={idx + 1}
-              onChangeText={(text, selection) => onChangeText(text, selection, idx)}
-              darkMode={darkMode}
-              onAddIngredient={(cursor) => onAddIngredient(idx, cursor)}
-            />
-          </View>
-        ))}
-        {!isEditMode && <AddButton onPress={onAddStepClick} />}
-      </ScrollView>
+      ))}
+      {!isEditMode && <AddButton onPress={onAddStepClick} />}
     </KeyboardAwareScrollView>
   )
 }
@@ -69,7 +67,5 @@ BuilderSteps.propTypes = {
   onDeletePress: PropTypes.func,
   onChangeText: PropTypes.func,
   onMorePress: PropTypes.func,
-  onAddIngredient: PropTypes.func,
   recipeName: PropTypes.string,
-  ingredients: PropTypes.array,
 }

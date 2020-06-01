@@ -96,15 +96,12 @@ function fetchSharedRecipe(params) {
       return null
     })
     .catch((error) => {
-      console.log(error.response)
       return null
     })
 }
 
 function createSharedRecipe(params) {
   // Snake case the whole payload
-  console.log("hi")
-  console.log(params.recipe)
   const recipe = snakeCaseKeys(params.recipe)
   for (let i = 0; i < recipe.steps.length; i++) {
     snakeCaseKeys(recipe.steps[i])
@@ -112,7 +109,6 @@ function createSharedRecipe(params) {
       snakeCaseKeys(recipe.steps[i].ingredients[j])
     }
   }
-  console.log(recipe)
 
   let url = `recipes/`
   return defaultApiClient(url)

@@ -9,7 +9,6 @@ import getStylesheet from '../../Theme/ApplicationStyles'
 import Colors from '../../Theme/Colors'
 import * as constants from '../../Config/constants'
 import getTutorialStylesheet from './TutorialScreenStyle'
-import * as ingredientModel from '../../Storage/Ingredient'
 
 class TutorialSteps extends Component {
   getIcon = (recipe, styles) => {
@@ -29,8 +28,8 @@ class TutorialSteps extends Component {
     return (<Image style={styles.icon} source={Images.glassShort} />)
   };
 
-  renderStep = (stepObj, idx, ingredientDict) => {
-    const { step, darkMode, drinkAmount } = this.props;
+  renderStep = (stepObj, idx) => {
+    const { step, darkMode } = this.props;
 
     return (
       <Step
@@ -38,24 +37,20 @@ class TutorialSteps extends Component {
         activeStep={(step === idx)}
         key={idx}
         darkMode={darkMode}
-        drinkAmount={drinkAmount}
-        ingredientDict={ingredientDict}
       />
     );
   };
 
   renderSteps = (styles) => {
     const { recipe, step } = this.props;
-    const { steps, ingredients } = recipe;
+    const { steps } = recipe;
 
     const stepsToUse = steps.slice(step);
-
-    const ingredientDict = ingredientModel.createIngredientDic(ingredients)
 
     return (
       <View style={styles.stepContainer}>
         {stepsToUse.map((stepObj, idx) => (
-          this.renderStep(stepObj, idx + step, ingredientDict)
+          this.renderStep(stepObj, idx + step)
         ))}
       </View>
     );
@@ -64,7 +59,6 @@ class TutorialSteps extends Component {
   render() {
     const { recipe, step, darkMode } = this.props;
     const { steps } = recipe;
-    console.log(recipe)
 
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
