@@ -47,6 +47,16 @@ function HomeLibraryTab(props) {
     </React.Fragment>
   )
 
+  const emptyTextToShow =
+    selected === 0
+      ? "You haven't added any recipes to your Favorites."
+      : "You haven't added any recipes to your library. Visit the Discover page to find some!"
+  const listEmpty = (
+    <View style={homeStyles.emptyContainer}>
+      <Text style={homeStyles.emptyText}>{emptyTextToShow}</Text>
+    </View>
+  )
+
   let options = []
   if (selected === 0) {
     options = recipes.filter((recipe) => recipe.favorited)
@@ -56,6 +66,7 @@ function HomeLibraryTab(props) {
 
   return (
     <FlatList
+      contentContainerStyle={{ flexGrow: 1 }}
       data={options}
       keyExtractor={(recipe) => recipe.recipeId}
       renderItem={({ item }) => (
@@ -73,6 +84,7 @@ function HomeLibraryTab(props) {
       )}
       style={{ width: '100%' }}
       ListHeaderComponent={listHeader}
+      ListEmptyComponent={listEmpty}
     />
   )
 }

@@ -10,6 +10,7 @@ import * as constants from '../../Config/constants';
 import * as ingredientModel from '../../Storage/Ingredient';
 import ListItem from '../../Components/ListItem'
 import Step from './Step'
+import Colors from '../../Theme/Colors'
 
 class TutorialHome extends Component {
   constructor(props) {
@@ -51,21 +52,27 @@ class TutorialHome extends Component {
     const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
 
     let qtyNegativeSource
+    let minusBackgroundColor
     if (drinkAmount > 1) {
       qtyNegativeSource = Images.quantityMinus
+      minusBackgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
     } else {
       qtyNegativeSource = darkMode ? Images.quantityMinusInactiveDark : Images.quantityMinusInactiveLight
+      minusBackgroundColor = darkMode ? Colors.darkFill3Dark : Colors.darkFill3Light
     }
     let qtyPositiveSource
+    let plusBackgroundColor
     if (drinkAmount < 10) {
       qtyPositiveSource = Images.quantityPlus
+      plusBackgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
     } else {
       qtyPositiveSource = darkMode ? Images.quantityPlusInactiveDark : Images.quantityPlusInactiveLight
+      plusBackgroundColor = darkMode ? Colors.darkFill3Dark : Colors.darkFill3Light
     }
 
-    let stickyHeaderIndices = [5, 5 + 3 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0)]
+    let stickyHeaderIndices = [5, 5 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0)]
     if (isDescription) {
-      stickyHeaderIndices = [6, 6 + 3 + (recipe.ingredients !==undefined ? recipe.ingredients.length : 0)]
+      stickyHeaderIndices = [6, 6 + 2 + (recipe.ingredients !==undefined ? recipe.ingredients.length : 0)]
     }
 
     return (
@@ -80,23 +87,25 @@ class TutorialHome extends Component {
           <Text style={tutorialStyles.sectionHeader}>Servings</Text>
           <View style={tutorialStyles.drinkAmountView}>
             <TouchableWithoutFeedback onPress={reduceDrinkQuantity}>
-              <View style={tutorialStyles.drinkAmountCircle}>
+              <View style={[tutorialStyles.drinkAmountCircle, { backgroundColor: minusBackgroundColor }]}>
                 <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
               </View>
             </TouchableWithoutFeedback>
             <Text style={tutorialStyles.drinkAmountText}>{`${drinkAmount} drink${drinkAmount > 1 ? 's' : ''}`}</Text>
             <TouchableWithoutFeedback onPress={increaseDrinkQuantity}>
-              <View style={tutorialStyles.drinkAmountCircle}>
+              <View style={[tutorialStyles.drinkAmountCircle, { backgroundColor: plusBackgroundColor }]}>
                 <Image source={qtyPositiveSource} style={tutorialStyles.drinkAmountIcon} />
               </View>
             </TouchableWithoutFeedback>
           </View>
         </View>
         <View style={styles.thickDivider} />
-        <View style={tutorialStyles.sectionHeaderContainer}>
-          <Text style={tutorialStyles.sectionHeader}>Ingredients</Text>
+        <View>
+          <View style={tutorialStyles.sectionHeaderContainer}>
+            <Text style={tutorialStyles.sectionHeader}>Ingredients</Text>
+          </View>
+          <View style={styles.divider} />
         </View>
-        <View style={styles.divider} />
         {Object.keys(recipe).length !== 0 && recipe.ingredients.map((ingredient) => (
           <ListItem
             key={ingredient.ingredientId}
@@ -106,10 +115,12 @@ class TutorialHome extends Component {
           />
         ))}
         <View style={styles.thickDivider} />
-        <View style={tutorialStyles.sectionHeaderContainer}>
-          <Text style={tutorialStyles.sectionHeader}>Steps</Text>
+        <View>
+          <View style={tutorialStyles.sectionHeaderContainer}>
+            <Text style={tutorialStyles.sectionHeader}>Steps</Text>
+          </View>
+          <View style={styles.divider} />
         </View>
-        <View style={styles.divider} />
         <View style={tutorialStyles.stepsContainer}>
           {Object.keys(recipe).length !== 0 && recipe.steps.map((step, idx) => (
             <Step

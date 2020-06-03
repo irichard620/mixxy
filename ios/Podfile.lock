@@ -300,6 +300,8 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - ReactNativeDarkMode (0.2.2):
     - React
+  - RNDeviceInfo (5.6.1):
+    - React
   - RNFastImage (8.1.5):
     - React
     - SDWebImage (~> 5.0)
@@ -362,6 +364,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeDarkMode (from `../node_modules/react-native-dark-mode`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBDynamicLinks (from `../node_modules/@react-native-firebase/dynamic-links`)"
@@ -446,6 +449,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeDarkMode:
     :path: "../node_modules/react-native-dark-mode"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
   RNFBApp:
@@ -509,6 +514,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   ReactNativeDarkMode: 0178ffca3b10f6a7c9f49d6f9810232b328fa949
+  RNDeviceInfo: b6e650fbd234732c759544218657d549b4339038
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
   RNFBDynamicLinks: f4da0bc5a4b071069b131d3c91ca35db568a9ba5

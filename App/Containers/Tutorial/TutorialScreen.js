@@ -87,7 +87,7 @@ class TutorialScreen extends React.Component {
         );
       } else {
         // Open share sheet
-        this.openShareSheet()
+        this.openShareSheet(this.props.shareLink)
       }
     } if (prevProps.fetchSharedRecipeIsLoading && !this.props.fetchSharedRecipeIsLoading) {
       if (this.props.sharedRecipe) {
@@ -106,16 +106,12 @@ class TutorialScreen extends React.Component {
     }
   }
 
-  getShareLink = () => {
-    const { recipe } = this.state;
-    return `https://mixxy.page.link/?link=https://mixxyapp.com/${recipe.recipeId}&ibi=com.IanRichard.Mixxy`
-  }
 
-  openShareSheet = () => {
+  openShareSheet = (shareLink) => {
     const { recipe } = this.state;
     const options = {
       message: `Check out this recipe for ${recipe.recipeName} on Mixxy!`,
-      url: this.getShareLink(),
+      url: shareLink,
       failOnCancel: false,
     }
     Share.open(options)

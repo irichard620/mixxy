@@ -30,7 +30,6 @@ export default function getTutorialStylesheet(useDarkMode) {
     },
     drinkAmountCircle: {
       alignItems: 'center',
-      backgroundColor: useDarkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight,
       borderRadius: 8,
       height: 24,
       justifyContent: 'center',

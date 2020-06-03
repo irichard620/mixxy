@@ -68,8 +68,9 @@ function getCardStylesheet(darkMode) {
       paddingRight: 12,
       paddingTop: 18,
       shadowColor: '#000000',
-      shadowOpacity: 0.14,
-      shadowRadius: 12,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.12,
+      shadowRadius: 8,
     },
     imageContainer: {
       alignItems: 'center',

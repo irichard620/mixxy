@@ -42,6 +42,16 @@ export default function getHomeStylesheet(useDarkMode) {
       top: 0,
       zIndex: 1,
     },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      margin: 10,
+    },
+    emptyText: {
+      ...Fonts.body1,
+      color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
+      textAlign: 'center',
+    },
     libraryAddButton: {
       alignItems: 'center',
       borderColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,

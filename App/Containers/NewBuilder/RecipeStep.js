@@ -59,8 +59,9 @@ function getTextboxStylesheet(darkMode) {
       backgroundColor: darkMode ? Colors.cardColorDark : Colors.cardColorLight,
       borderRadius: 15,
       shadowColor: '#000000',
-      shadowOpacity: 0.14,
-      shadowRadius: 12,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.12,
+      shadowRadius: 8,
     },
     textInput: {
       color: darkMode ? Colors.text1Dark : Colors.text1Light,

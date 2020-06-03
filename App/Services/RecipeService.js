@@ -1,4 +1,5 @@
 import storage from 'redux-persist/lib/storage'
+import DeviceInfo from 'react-native-device-info'
 import * as recipeModel from '../Storage/Recipe'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
@@ -100,9 +101,16 @@ function fetchSharedRecipe(params) {
     })
 }
 
-function createSharedRecipe(params) {
+async function createSharedRecipe(params) {
+  const deviceToken = await DeviceInfo.getDeviceToken().catch((e) => {
+    return null
+  })
+  if (!deviceToken) {
+    return null
+  }
+
   // Snake case the whole payload
-  const recipe = snakeCaseKeys(params.recipe)
+  let recipe = snakeCaseKeys(params.recipe)
   for (let i = 0; i < recipe.steps.length; i++) {
     snakeCaseKeys(recipe.steps[i])
     for (let j = 0; j < recipe.steps[i].ingredients; j++) {
@@ -111,6 +119,7 @@ function createSharedRecipe(params) {
   }
 
   let url = `recipes/`
+  recipe.device_token = deviceToken
   return defaultApiClient(url)
     .put(recipe.recipe_id, recipe)
     .then((response) => {

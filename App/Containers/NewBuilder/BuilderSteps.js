@@ -39,7 +39,7 @@ export default function BuilderSteps(props) {
       </View>
       <Text style={builderStyles.headingDescription}>
         {
-          'Build out your recipe step by step. When you call an ingredient in a step for the first time, use "Add Ingredients" to open the list.'
+          'Build out your recipe with clear step by step instructions on how to make your drink.'
         }
       </Text>
       {steps.map((step, idx) => (
