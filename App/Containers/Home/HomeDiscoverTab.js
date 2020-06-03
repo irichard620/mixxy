@@ -64,7 +64,7 @@ function HomeDiscoverTab(props) {
                 campaign: masterList,
               })
             }}
-            addRightPadding={idx / 2.0 === 0}
+            addRightPadding={idx % 2 === 0}
           />
         ))}
       </View>

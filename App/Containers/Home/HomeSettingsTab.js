@@ -29,7 +29,7 @@ function HomeSettingsTab(props) {
       ])
     } else if (option === constants.OPTION_CONTACT_US || option === constants.OPTION_JOIN_BETA) {
       // Pull up email
-      let emailLink = 'mailto:drippyapp@gmail.com'
+      let emailLink = 'mailto:emile@mixxyapp.com'
       if (option === constants.OPTION_JOIN_BETA) {
         emailLink = `${emailLink}?subject=Request to join Mixxy Beta`
       }
@@ -46,7 +46,7 @@ function HomeSettingsTab(props) {
         }
       })
     } else if (option === constants.OPTION_INSTAGRAM) {
-      const instaLink = 'https://www.instagram.com/drippyapp/'
+      const instaLink = 'https://www.instagram.com/drinkmixxy/'
       Linking.canOpenURL(instaLink).then((supported) => {
         if (supported) {
           Linking.openURL(instaLink)

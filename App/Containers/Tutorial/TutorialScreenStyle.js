@@ -5,7 +5,7 @@ import Colors from '../../Theme/Colors'
 export default function getTutorialStylesheet(useDarkMode) {
   return StyleSheet.create({
     bufferView: {
-      height: 24,
+      height: 32,
     },
     buttonView: {
       alignSelf: 'center',

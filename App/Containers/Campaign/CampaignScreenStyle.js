@@ -40,6 +40,9 @@ export default function getCampaignStylesheet(useDarkMode) {
     linearGradient: {
       flex: 1,
     },
+    recipesContainer: {
+      marginBottom: 24,
+    },
     scrollContainer: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flex: 1,

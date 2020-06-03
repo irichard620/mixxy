@@ -76,16 +76,19 @@ class CampaignScreen extends React.Component {
             <Text style={campaignStyles.description}>{longDescription}</Text>
             <View style={styles.divider} />
           </View>}
-          {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
-            <RecipeCard
-              recipeName={recipe.recipeName}
-              recipeType={recipe.recipeType}
-              servingGlass={recipe.servingGlass}
-              disabled={false}
-              onCardClick={() => this.onCardClick(idx)}
-              darkMode={darkMode}
-            />
-          ))}
+          <View style={campaignStyles.recipesContainer}>
+            {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
+              <RecipeCard
+                key={`recipe${idx}`}
+                recipeName={recipe.recipeName}
+                recipeType={recipe.recipeType}
+                servingGlass={recipe.servingGlass}
+                disabled={false}
+                onCardClick={() => this.onCardClick(idx)}
+                darkMode={darkMode}
+              />
+            ))}
+          </View>
         </ScrollView>
         <View style={campaignStyles.backContainer}>
           <ModalXButton onPress={this.onBackPress}/>
