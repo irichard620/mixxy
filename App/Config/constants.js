@@ -209,6 +209,8 @@ export const RECIPE_MENU_SHARE = 'Share recipe'
 export const RECIPE_MENU_DELETE = 'Delete'
 export const RECIPE_MENU_CANCEL = 'Cancel'
 export const RECIPE_MENU_VIEW = 'Open recipe'
+export const RECIPE_MENU_FAVORITE = 'Favorite recipe'
+export const RECIPE_MENU_UNFAVORITE = 'Unfavorite recipe'
 export const BUILDER_MENU_BASIC_DETAILS = 'Basic Details'
 export const BUILDER_MENU_INGREDIENTS = 'Ingredients'
 

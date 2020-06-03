@@ -31,15 +31,15 @@ export default function getTutorialStylesheet(useDarkMode) {
     drinkAmountCircle: {
       alignItems: 'center',
       backgroundColor: useDarkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight,
-      borderRadius: 12,
+      borderRadius: 8,
       height: 24,
       justifyContent: 'center',
       marginTop: 13,
       width: 24,
     },
     drinkAmountIcon: {
-      height: 12,
       resizeMode: 'contain',
+      width: 12,
     },
     drinkAmountText: {
       ...Fonts.body1,
@@ -103,10 +103,14 @@ export default function getTutorialStylesheet(useDarkMode) {
       ...Fonts.h3Semibold,
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      height: 24,
+      marginBottom: 13,
+      marginTop: 13,
       textAlign: 'left',
     },
     sectionHeaderContainer: {
       alignItems: 'flex-start',
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       height: 50,
       justifyContent: 'center',
       paddingLeft: 16,
@@ -132,21 +136,22 @@ export default function getTutorialStylesheet(useDarkMode) {
     stepContainer: {
       flexDirection: 'row',
       justifyContent: 'flex-start',
-      paddingLeft: 16,
-      paddingRight: 16,
-      width: '100%',
     },
     stepLine: {
       backgroundColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      left: 6,
       position: 'absolute',
       width: 1,
-      left: 22,
     },
     stepText: {
       ...Fonts.body1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginTop: 12,
       marginBottom: 12,
+    },
+    stepsContainer: {
+      marginLeft: 16,
+      marginRight: 32,
     },
   })
 }

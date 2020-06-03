@@ -23,9 +23,8 @@ export default function TopHeader(props) {
     darkMode,
     rightButtonTitle,
     onRightButtonPress,
-    showFavorited,
-    favorited,
-    onFavoriteClick,
+    showDots,
+    onDotsClick,
   } = props
 
   const styles = getStylesheet(darkMode)
@@ -56,10 +55,9 @@ export default function TopHeader(props) {
             onPress={onRightButtonPress}
           />
         )}
-        {showFavorited && (
-          <TouchableOpacity style={headerStyles.favoriteOutline} onPress={onFavoriteClick}>
-            {favorited && <Image style={headerStyles.favorite} source={Images.favoriteFull} />}
-            {!favorited && <Image style={headerStyles.favorite} source={Images.favoriteEmpty} />}
+        {showDots && (
+          <TouchableOpacity onPress={onDotsClick}>
+            <Image style={headerStyles.dots} source={darkMode ? Images.topHeaderDotsDark : Images.topHeaderDotsLight} />
           </TouchableOpacity>
         )}
       </View>
@@ -74,18 +72,9 @@ function getTopHeaderStylesheet(darkMode) {
       height: 20,
       width: 20,
     },
-    favorite: {
-      height: 15,
+    dots: {
+      height: 20,
       resizeMode: 'contain',
-    },
-    favoriteOutline: {
-      alignItems: 'center',
-      borderColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-      borderRadius: 18,
-      borderWidth: 0.5,
-      height: 36,
-      justifyContent: 'center',
-      width: 36,
     },
     header: {
       alignItems: 'center',

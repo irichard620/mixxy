@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Dimensions, Alert, LayoutAnimation } from 'react-native'
+import { View, Dimensions, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Share from 'react-native-share';
 import { NavigationActions, SafeAreaView, withNavigationFocus } from 'react-navigation'
@@ -11,7 +11,6 @@ import ButtonLarge from '../../Components/ButtonLarge'
 import NavigationService from '../../Services/NavigationService'
 import TutorialHome from './TutorialHome'
 import Colors from '../../Theme/Colors'
-import TutorialSteps from './TutorialSteps'
 import { PropTypes } from 'prop-types'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import CustomModal from '../../Components/CustomModal'
@@ -135,7 +134,7 @@ class TutorialScreen extends React.Component {
   };
 
   getModalOptions = () => {
-    const { deleteModal } = this.state;
+    const { deleteModal, recipe } = this.state;
 
     if (deleteModal) {
       return [
@@ -150,6 +149,8 @@ class TutorialScreen extends React.Component {
 
     return [{
       title: constants.RECIPE_MENU_EDIT,
+    }, {
+      title: recipe.favorited ? constants.RECIPE_MENU_UNFAVORITE : constants.RECIPE_MENU_FAVORITE,
     }, {
       title: constants.RECIPE_MENU_SHARE,
     }, {
@@ -177,7 +178,7 @@ class TutorialScreen extends React.Component {
   }
 
   onPressItem = (item) => {
-    const { deleteRecipe, fetchSharedRecipe, user } = this.props;
+    const { deleteRecipe, fetchSharedRecipe, user, favoriteRecipe, unfavoriteRecipe } = this.props;
     const { recipe, deleteModal } = this.state;
 
     if (item === constants.RECIPE_MENU_EDIT) {
@@ -219,18 +220,12 @@ class TutorialScreen extends React.Component {
     } else if (item === constants.RECIPE_MENU_CANCEL) {
       // Call clear
       this.onCloseModalClick();
+    } else if (item === constants.RECIPE_MENU_FAVORITE) {
+      favoriteRecipe(recipe.recipeId)
+    } else if (item === constants.RECIPE_MENU_UNFAVORITE) {
+      unfavoriteRecipe(recipe.recipeId)
     }
   };
-
-  onFavoriteClick = () => {
-    const { favoriteRecipe, unfavoriteRecipe } = this.props
-    const { recipe } = this.state
-    if (recipe.favorited) {
-      unfavoriteRecipe(recipe.recipeId)
-    } else {
-      favoriteRecipe(recipe.recipeId)
-    }
-  }
 
   reduceDrinkQuantity = () => {
     const { drinkAmount } = this.state
@@ -251,6 +246,15 @@ class TutorialScreen extends React.Component {
   onCreateShareLink = () => {
     const { recipe } = this.state;
     this.props.createSharedRecipe(recipe);
+  }
+
+  onDotsClick = () => {
+    this.setState({
+      visibleModal: true,
+      modalType: constants.MODAL_TYPE_BOTTOM,
+      isShareModal: false,
+      deleteModal: false,
+    })
   }
 
   render() {
@@ -280,17 +284,18 @@ class TutorialScreen extends React.Component {
     if (deleteModal) {
       modalTitle = 'Delete this recipe?';
     }
+    // Inset
+    let forceInset = recipeSaved ? { bottom: 'never' } : {}
 
     return (
-      <SafeAreaView style={styles.outerContainer}>
+      <SafeAreaView style={styles.outerContainer} forceInset={forceInset}>
         <TopHeader
           title={headerTitle}
           onClose={this.onBackScreenClick}
           showSeparator={false}
           darkMode={darkMode}
-          showFavorited={step === -1 && recipeSaved}
-          favorited={recipe.favorited}
-          onFavoriteClick={this.onFavoriteClick}
+          showDots={recipeSaved}
+          onDotsClick={this.onDotsClick}
         />
         <TutorialHome
           recipe={recipe}

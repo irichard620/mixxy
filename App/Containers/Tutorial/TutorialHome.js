@@ -6,7 +6,6 @@ import {
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
 import getStylesheet from '../../Theme/ApplicationStyles'
-import TutorialHomeMenuButtons from './TutorialHomeMenuButtons'
 import * as constants from '../../Config/constants';
 import * as ingredientModel from '../../Storage/Ingredient';
 import ListItem from '../../Components/ListItem'
@@ -64,8 +63,13 @@ class TutorialHome extends Component {
       qtyPositiveSource = darkMode ? Images.quantityPlusInactiveDark : Images.quantityPlusInactiveLight
     }
 
+    let stickyHeaderIndices = [5, 5 + 3 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0)]
+    if (isDescription) {
+      stickyHeaderIndices = [6, 6 + 3 + (recipe.ingredients !==undefined ? recipe.ingredients.length : 0)]
+    }
+
     return (
-      <ScrollView style={tutorialStyles.scrollView} stickyHeaderIndices={[5]}>
+      <ScrollView style={tutorialStyles.scrollView} stickyHeaderIndices={stickyHeaderIndices}>
         <View style={tutorialStyles.iconView}>
           {this.getDrinkIcon(tutorialStyles.icon)}
         </View>
@@ -106,15 +110,17 @@ class TutorialHome extends Component {
           <Text style={tutorialStyles.sectionHeader}>Steps</Text>
         </View>
         <View style={styles.divider} />
-        {Object.keys(recipe).length !== 0 && recipe.steps.map((step, idx) => (
-          <Step
-            key={`step${idx}`}
-            step={step}
-            isFirst={idx === 0}
-            isLast={idx === recipe.steps.length - 1}
-            darkMode={darkMode}
-          />
-        ))}
+        <View style={tutorialStyles.stepsContainer}>
+          {Object.keys(recipe).length !== 0 && recipe.steps.map((step, idx) => (
+            <Step
+              key={`step${idx}`}
+              step={step}
+              isFirst={idx === 0}
+              isLast={idx === recipe.steps.length - 1}
+              darkMode={darkMode}
+            />
+          ))}
+        </View>
         <View style={tutorialStyles.bufferView} />
       </ScrollView>
     );

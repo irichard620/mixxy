@@ -32,6 +32,10 @@ export default function ImageListItem(props) {
     imageToUse = darkMode ? Images.modalEditDark : Images.modalEditLight
   } else if (title === constants.BUILDER_MENU_INGREDIENTS) {
     imageToUse = darkMode ? Images.modalEditDark : Images.modalEditLight
+  } else if (title === constants.RECIPE_MENU_FAVORITE) {
+    imageToUse = darkMode ? Images.modalFavoriteDark : Images.modalFavoriteLight
+  } else if (title === constants.RECIPE_MENU_UNFAVORITE) {
+    imageToUse = darkMode ? Images.modalUnfavoriteDark : Images.modalUnfavoriteLight
   }
 
   return (
