@@ -146,8 +146,8 @@ export default function getTutorialStylesheet(useDarkMode) {
     stepText: {
       ...Fonts.body1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      marginTop: 12,
       marginBottom: 12,
+      marginTop: 12,
     },
     stepsContainer: {
       marginLeft: 16,

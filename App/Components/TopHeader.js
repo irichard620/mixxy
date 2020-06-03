@@ -34,7 +34,7 @@ export default function TopHeader(props) {
   const titleWidth = {
     width: width - 32 - 70 - 16,
   }
-  let imageToUse = ''
+  let imageToUse
   if (!useArrow) {
     imageToUse = darkMode ? Images.topHeaderXDark : Images.topHeaderXLight
   } else {
@@ -57,7 +57,10 @@ export default function TopHeader(props) {
         )}
         {showDots && (
           <TouchableOpacity onPress={onDotsClick}>
-            <Image style={headerStyles.dots} source={darkMode ? Images.topHeaderDotsDark : Images.topHeaderDotsLight} />
+            <Image
+              style={headerStyles.dots}
+              source={darkMode ? Images.topHeaderDotsDark : Images.topHeaderDotsLight}
+            />
           </TouchableOpacity>
         )}
       </View>

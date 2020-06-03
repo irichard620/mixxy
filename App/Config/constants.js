@@ -240,7 +240,7 @@ export const CustomLayoutEaseIn = {
   },
   update: {
     type: LayoutAnimation.Types.easeInEaseOut,
-    property: LayoutAnimation.Properties.opacity
+    property: LayoutAnimation.Properties.opacity,
   },
   delete: {
     type: LayoutAnimation.Types.easeInEaseOut,

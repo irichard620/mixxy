@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-  View, Image, Text, ScrollView, TouchableWithoutFeedback, FlatList,
+  View, Image, Text, ScrollView, TouchableWithoutFeedback,
 } from 'react-native'
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
@@ -50,13 +50,13 @@ class TutorialHome extends Component {
 
     const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
 
-    let qtyNegativeSource = ''
+    let qtyNegativeSource
     if (drinkAmount > 1) {
       qtyNegativeSource = Images.quantityMinus
     } else {
       qtyNegativeSource = darkMode ? Images.quantityMinusInactiveDark : Images.quantityMinusInactiveLight
     }
-    let qtyPositiveSource = ''
+    let qtyPositiveSource
     if (drinkAmount < 10) {
       qtyPositiveSource = Images.quantityPlus
     } else {
