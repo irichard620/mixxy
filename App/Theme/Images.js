@@ -4,9 +4,6 @@
 
 export default {
   logo: require('../Assets/Images/mixxy_logo.png'),
-  builderUp: require('../Assets/Images/buttons/Builder_Up.png'),
-  builderDown: require('../Assets/Images/buttons/Builder_Down.png'),
-  builderDelete: require('../Assets/Images/buttons/Builder_Delete.png'),
   navDiscoverLight: require('../Assets/Images/tabs/NavMenu_Discover_LIGHT.png'),
   navDiscoverDark: require('../Assets/Images/tabs/NavMenu_Discover_DARK.png'),
   navDiscoverSelected: require('../Assets/Images/tabs/NavMenu_Discover_ACTIVE.png'),

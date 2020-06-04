@@ -1,12 +1,13 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation'
+import React from 'react'
 
 import HomeScreen from '../Containers/Home/HomeScreen'
 import SplashScreen from '../Containers/SplashScreen/SplashScreen'
 import TutorialScreen from '../Containers/Tutorial/TutorialScreen'
 import BuilderScreen from '../Containers/NewBuilder/BuilderScreen'
-import IngredientsScreen from '../Containers/Ingredients/IngredientsScreen'
 import CampaignScreen from '../Containers/Campaign/CampaignScreen'
 import SponsorScreen from '../Containers/Sponsor/SponsorScreen'
+import { useDarkModeContext } from 'react-native-dark-mode'
 
 const StackNavigator = createStackNavigator(
   {
@@ -30,12 +31,6 @@ const StackNavigator = createStackNavigator(
     },
     BuilderScreen: {
       screen: BuilderScreen,
-      navigationOptions: {
-        gesturesEnabled: false,
-      },
-    },
-    IngredientsScreen: {
-      screen: IngredientsScreen,
       navigationOptions: {
         gesturesEnabled: false,
       },
@@ -73,7 +68,14 @@ StackNavigator.router.getStateForAction = (action, state) => {
       index,
     }
   }
-  return defaultGetStateForAction(action, state);
+  return defaultGetStateForAction(action, state)
 }
 
-export default createAppContainer(StackNavigator)
+const Container = createAppContainer(StackNavigator)
+
+const AppNavigator = (props, ref) => {
+  const mode = useDarkModeContext()
+  return <Container theme={mode} ref={ref} />
+}
+
+export default React.forwardRef(AppNavigator)
