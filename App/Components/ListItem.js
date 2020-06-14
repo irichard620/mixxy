@@ -65,6 +65,10 @@ function getListItemStylesheet(darkMode) {
       flex: 1,
       paddingLeft: 16,
     },
+    icon: {
+      height: 18,
+      resizeMode: 'contain',
+    },
     subtitleStyle: {
       ...Fonts.body1,
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
@@ -81,10 +85,6 @@ function getListItemStylesheet(darkMode) {
     titleStyle: {
       ...Fonts.body1,
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-    icon: {
-      height: 18,
-      resizeMode: 'contain',
     },
   })
 }

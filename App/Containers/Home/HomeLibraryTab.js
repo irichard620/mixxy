@@ -35,14 +35,16 @@ function HomeLibraryTab(props) {
 
   const listHeader = (
     <React.Fragment>
-      <Text style={homeStyles.topHeaderLibrary}>Library</Text>
-      <HomeLibraryMenuButtons
-        darkMode={darkMode}
-        onNewRecipeClick={onNewRecipeClick}
-        onSectionClick={(idx) => setSelected(idx)}
-        selected={selected}
-      />
-      <View style={styles.divider} />
+      <View style={homeStyles.libraryHeaderOutline}>
+        <Text style={homeStyles.topHeaderLibrary}>Library</Text>
+        <HomeLibraryMenuButtons
+          darkMode={darkMode}
+          onNewRecipeClick={onNewRecipeClick}
+          onSectionClick={(idx) => setSelected(idx)}
+          selected={selected}
+        />
+        <View style={styles.divider} />
+      </View>
       <View style={styles.buffer24} />
     </React.Fragment>
   )
@@ -85,6 +87,7 @@ function HomeLibraryTab(props) {
       style={{ width: '100%' }}
       ListHeaderComponent={listHeader}
       ListEmptyComponent={listEmpty}
+      stickyHeaderIndices={[0]}
     />
   )
 }

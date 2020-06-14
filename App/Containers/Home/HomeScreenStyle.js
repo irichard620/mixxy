@@ -66,6 +66,9 @@ export default function getHomeStylesheet(useDarkMode) {
       height: 14,
       width: 14,
     },
+    libraryHeaderOutline: {
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+    },
     libraryMenuItemOutline: {
       alignItems: 'center',
       borderRadius: 18,
@@ -83,12 +86,12 @@ export default function getHomeStylesheet(useDarkMode) {
       textAlign: 'center',
     },
     libraryMenuOutline: {
-      alignItems: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flexDirection: 'row',
       flexWrap: 'nowrap',
-      height: 36,
-      marginBottom: 18,
-      marginTop: 6,
+      height: 68,
+      marginTop: -10,
       paddingLeft: 16,
     },
     linearGradient: {

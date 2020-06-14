@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
 import Textbox from '../../Components/Textbox'
@@ -69,6 +69,7 @@ export default function BuilderBasicDetails(props) {
         onClick={onServingGlassClick}
         darkMode={darkMode}
       />
+      <View style={builderStyles.buffer} />
     </KeyboardAwareScrollView>
   )
 }

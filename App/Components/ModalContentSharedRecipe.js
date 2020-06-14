@@ -66,6 +66,10 @@ ModalContentSharedRecipe.propTypes = {
 
 function getModalStylesheet(darkMode) {
   return StyleSheet.create({
+    bottomContainer: {
+      marginTop: 12,
+      paddingBottom: 8,
+    },
     description: {
       alignSelf: 'flex-start',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
@@ -74,10 +78,6 @@ function getModalStylesheet(darkMode) {
       marginLeft: 16,
       marginRight: 16,
       marginTop: 16,
-    },
-    bottomContainer: {
-      marginTop: 12,
-      paddingBottom: 8,
     },
     itemsOutline: {
       height: 112,

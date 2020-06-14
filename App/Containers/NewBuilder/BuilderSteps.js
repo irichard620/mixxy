@@ -55,6 +55,7 @@ export default function BuilderSteps(props) {
         </View>
       ))}
       {!isEditMode && <AddButton onPress={onAddStepClick} />}
+      <View style={builderStyles.buffer} />
     </KeyboardAwareScrollView>
   )
 }

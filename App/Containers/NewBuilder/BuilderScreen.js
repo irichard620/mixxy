@@ -19,6 +19,7 @@ import * as ingredientModel from '../../Storage/Ingredient'
 import * as stepModel from '../../Storage/Step'
 import BuilderSteps from './BuilderSteps'
 import * as recipeModel from '../../Storage/Recipe'
+import BottomBar from '../../Components/BottomBar'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -430,7 +431,7 @@ class BuilderScreen extends React.Component {
     }
 
     return (
-      <SafeAreaView style={styles.outerContainer}>
+      <View style={styles.outerContainer}>
         <TopHeader
           useArrow={step !== 0}
           title={''}
@@ -478,25 +479,7 @@ class BuilderScreen extends React.Component {
             onMorePress={this.onMorePress}
           />
         )}
-        <View style={builderStyles.gradientContainer}>
-          <LinearGradient
-            colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
-            style={{ flex: 1 }}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0 }}
-          />
-        </View>
-        <View style={builderStyles.buttonView}>
-          <ButtonLarge
-            onButtonClick={this.onButtonClick}
-            title={buttonTitle}
-            margin={[0, 16, 0, 16]}
-            buttonWidth={buttonWidth}
-            isPrimary
-            disabled={buttonDisabled}
-            darkMode={darkMode}
-          />
-        </View>
+        <BottomBar buttonTitle={buttonTitle} disabled={buttonDisabled} darkMode={darkMode} onButtonClick={this.onButtonClick} />
         <BuilderModal
           visibleModal={visibleModal}
           modalType={modalType}
@@ -512,7 +495,7 @@ class BuilderScreen extends React.Component {
           fractionalAmount={fractionalAmount}
           amountType={amountType}
         />
-      </SafeAreaView>
+      </View>
     )
   }
 }

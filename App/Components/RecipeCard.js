@@ -67,10 +67,15 @@ function getCardStylesheet(darkMode) {
       paddingLeft: 12,
       paddingRight: 12,
       paddingTop: 18,
-      shadowColor: '#000000',
+      shadowColor: Colors.backgroundColorDark,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.12,
       shadowRadius: 8,
+    },
+    image: {
+      borderRadius: 10,
+      height: 48,
+      width: 48,
     },
     imageContainer: {
       alignItems: 'center',
@@ -80,11 +85,6 @@ function getCardStylesheet(darkMode) {
       justifyContent: 'center',
       marginRight: 14,
       width: 48,
-    },
-    image: {
-      height: 48,
-      width: 48,
-      borderRadius: 10,
     },
     recipeName: {
       ...Fonts.body1,

@@ -1,6 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import Colors from '../Theme/Colors'
+import { PropTypes } from 'prop-types'
 
 export default function PullDown(props) {
   const { darkMode } = props
@@ -12,4 +13,8 @@ export default function PullDown(props) {
     width: 40,
   }
   return <View style={pulldownStyle} />
+}
+
+PullDown.propTypes = {
+  darkMode: PropTypes.bool,
 }

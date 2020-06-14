@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import Colors from '../Theme/Colors'
 import Fonts from '../Theme/Fonts'
+import { PropTypes } from 'prop-types'
 
 export default function ButtonLarge(props) {
   const {
@@ -51,6 +52,17 @@ export default function ButtonLarge(props) {
       </View>
     </TouchableOpacity>
   )
+}
+
+ButtonLarge.propTypes = {
+  margin: PropTypes.array,
+  title: PropTypes.string,
+  onButtonClick: PropTypes.func,
+  darkMode: PropTypes.bool,
+  disabled: PropTypes.bool,
+  buttonWidth: PropTypes.number,
+  buttonHeight: PropTypes.number,
+  isPrimary: PropTypes.bool,
 }
 
 const baseButtonStyle = {

@@ -81,10 +81,10 @@ function getModalStylesheet(darkMode) {
       alignSelf: 'flex-start',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
       ...Fonts.body1,
+      marginBottom: 16,
       marginLeft: 16,
       marginRight: 16,
       marginTop: 16,
-      marginBottom: 16,
     },
     itemsOutline: {
       height: 112,

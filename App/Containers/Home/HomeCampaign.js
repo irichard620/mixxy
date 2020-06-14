@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback, View, Text, Dimensions } from 'react-native'
+import { TouchableWithoutFeedback, View, Text, Dimensions, Animated, Easing } from 'react-native'
 import React from 'react'
 import FastImage from 'react-native-fast-image'
 import getHomeStylesheet from './HomeScreenStyle'
@@ -15,9 +15,36 @@ export default function HomeCampaign(props) {
   }
 
   const homeStyles = getHomeStylesheet(darkMode)
+  let scaleValue = new Animated.Value(0)
+  const cardScale = scaleValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 0.95, 0.9],
+  })
+  let transformStyle = { ...homeStyles.campaignOutline, transform: [{ scale: cardScale }] }
+
   return (
-    <TouchableWithoutFeedback disabled={disabled} onPress={() => onCampaignClick(campaign)}>
-      <View style={homeStyles.campaignOutline}>
+    <TouchableWithoutFeedback
+      disabled={disabled}
+      onPress={() => onCampaignClick(campaign)}
+      onPressIn={() => {
+        scaleValue.setValue(0)
+        Animated.timing(scaleValue, {
+          toValue: 1,
+          duration: 250,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }).start()
+      }}
+      onPressOut={() => {
+        Animated.timing(scaleValue, {
+          toValue: 0,
+          duration: 100,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }).start()
+      }}
+    >
+      <Animated.View style={transformStyle}>
         {imageLink !== '' && (
           <FastImage
             style={[homeStyles.campaignImage, cardWidth]}
@@ -49,7 +76,7 @@ export default function HomeCampaign(props) {
             end={{ x: 0, y: 0 }}
           />
         </View>
-      </View>
+      </Animated.View>
     </TouchableWithoutFeedback>
   )
 }

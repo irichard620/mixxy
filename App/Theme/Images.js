@@ -53,6 +53,9 @@ export default {
   modalViewLight: require('../Assets/Images/modal/Modal_View_LIGHT.png'),
   modalTrash: require('../Assets/Images/modal/Modal_Trash.png'),
   modalNo: require('../Assets/Images/modal/Modal_No.png'),
+  topHeaderFavoriteLight: require('../Assets/Images/buttons/Favorite_LIGHT.png'),
+  topHeaderFavoriteDark: require('../Assets/Images/buttons/Favorite_DARK.png'),
+  topHeaderUnfavorite: require('../Assets/Images/buttons/Unfavorite.png'),
   modalFavoriteDark: require('../Assets/Images/modal/Modal_Favorite_DARK.png'),
   modalFavoriteLight: require('../Assets/Images/modal/Modal_Favorite_LIGHT.png'),
   modalUnfavoriteDark: require('../Assets/Images/modal/Modal_Unfavorite_DARK.png'),
@@ -61,6 +64,8 @@ export default {
   builderAddNew: require('../Assets/Images/new_builder/Builder_NewStep.png'),
   builderDeleteIngredient: require('../Assets/Images/new_builder/Builder_DeleteIngredient.png'),
   builderMoreDetails: require('../Assets/Images/new_builder/Builder_ThreeDots.png'),
+  builderUnitArrowDark: require('../Assets/Images/new_builder/Builder_UnitArrow_DARK.png'),
+  builderUnitArrowLight: require('../Assets/Images/new_builder/Builder_UnitArrow_LIGHT.png'),
   spotlightLocation: require('../Assets/Images/Spotlight_Location.png'),
   spotlightType: require('../Assets/Images/Spotlight_Type.png'),
 }

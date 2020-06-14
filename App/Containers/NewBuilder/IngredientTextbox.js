@@ -1,5 +1,5 @@
 import {
-  Dimensions,
+  Dimensions, Image,
   StyleSheet,
   Text,
   TextInput,
@@ -9,6 +9,7 @@ import {
 import React from 'react'
 import Colors from '../../Theme/Colors'
 import { PropTypes } from 'prop-types'
+import Images from '../../Theme/Images'
 
 export default function IngredientTextbox(props) {
   const { unitText, onUnitClick, ingredientText, onChangeText, darkMode } = props
@@ -20,15 +21,16 @@ export default function IngredientTextbox(props) {
     textColor = darkMode ? Colors.text2Dark : Colors.text2Light
     unitTextToShow = 'Unit'
   }
-  const textStyle = {
-    color: textColor,
-    fontSize: 16,
-    width: '100%',
-  }
 
   const { width } = Dimensions.get('window')
   const outlineStyle = {
     width: width - 32,
+  }
+
+  const textStyle = {
+    color: textColor,
+    fontSize: 16,
+    marginRight: 12,
   }
 
   return (
@@ -36,6 +38,10 @@ export default function IngredientTextbox(props) {
       <TouchableWithoutFeedback onPress={onUnitClick}>
         <View style={textStyles.unitContainer}>
           <Text style={textStyle}>{unitTextToShow}</Text>
+          <Image
+            style={textStyles.icon}
+            source={darkMode ? Images.builderUnitArrowDark : Images.builderUnitArrowLight}
+          />
         </View>
       </TouchableWithoutFeedback>
       <View style={textStyles.verticalDivider} />
@@ -62,6 +68,10 @@ IngredientTextbox.propTypes = {
 
 function getTextboxStylesheet(darkMode) {
   return StyleSheet.create({
+    icon: {
+      height: 12,
+      resizeMode: 'contain',
+    },
     textContainer: {
       backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       borderColor: darkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
@@ -78,9 +88,11 @@ function getTextboxStylesheet(darkMode) {
     },
     unitContainer: {
       marginRight: 12,
+      paddingBottom: 14,
       paddingLeft: 12,
       paddingTop: 14,
-      paddingBottom: 14,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     verticalDivider: {
       backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,

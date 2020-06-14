@@ -48,6 +48,7 @@ export default function BuilderIngredients(props) {
         </View>
       ))}
       {!isEditMode && <AddButton onPress={onAddIngredientClick} />}
+      <View style={builderStyles.buffer} />
     </KeyboardAwareScrollView>
   )
 }

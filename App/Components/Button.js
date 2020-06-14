@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Colors from '../Theme/Colors'
 import Fonts from '../Theme/Fonts'
+import { PropTypes } from 'prop-types'
 
 export default function Button(props) {
   const { onButtonClick, title, margin, disabled, darkMode } = props
@@ -12,7 +13,9 @@ export default function Button(props) {
     marginBottom: margin[2],
     marginLeft: margin[3],
   }
-  backgroundStyle.backgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
+  backgroundStyle.backgroundColor = darkMode
+    ? Colors.blue1TransparentDark
+    : Colors.blue1TransparentLight
   const titleStyle = {
     color: Colors.blue1,
   }
@@ -29,12 +32,20 @@ export default function Button(props) {
   )
 }
 
+Button.propTypes = {
+  margin: PropTypes.array,
+  title: PropTypes.string,
+  onButtonClick: PropTypes.func,
+  darkMode: PropTypes.bool,
+  disabled: PropTypes.bool,
+}
+
 const styles = StyleSheet.create({
   button: {
+    alignItems: 'center',
     borderRadius: 10,
     height: 40,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingLeft: 18,
     paddingRight: 18,
     shadowColor: Colors.backgroundColorDark,

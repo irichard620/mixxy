@@ -4,6 +4,9 @@ import Colors from '../../Theme/Colors'
 
 export default function getBuilderStylesheet(useDarkMode) {
   return StyleSheet.create({
+    buffer: {
+      height: 24,
+    },
     heading: {
       alignSelf: 'flex-start',
       marginBottom: 18,
@@ -45,7 +48,6 @@ export default function getBuilderStylesheet(useDarkMode) {
     },
     scrollView: {
       flex: 1,
-      marginBottom: 16,
     },
     sectionHeading: {
       alignSelf: 'flex-start',

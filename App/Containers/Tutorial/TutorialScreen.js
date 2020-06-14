@@ -17,6 +17,7 @@ import CustomModal from '../../Components/CustomModal'
 import * as constants from '../../Config/constants'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 import ModalContentCreateShare from '../../Components/ModalContentCreateShare'
+import BottomBar from '../../Components/BottomBar'
 
 
 class TutorialScreen extends React.Component {
@@ -130,7 +131,7 @@ class TutorialScreen extends React.Component {
   };
 
   getModalOptions = () => {
-    const { deleteModal, recipe } = this.state;
+    const { deleteModal } = this.state;
 
     if (deleteModal) {
       return [
@@ -145,8 +146,6 @@ class TutorialScreen extends React.Component {
 
     return [{
       title: constants.RECIPE_MENU_EDIT,
-    }, {
-      title: recipe.favorited ? constants.RECIPE_MENU_UNFAVORITE : constants.RECIPE_MENU_FAVORITE,
     }, {
       title: constants.RECIPE_MENU_SHARE,
     }, {
@@ -216,12 +215,18 @@ class TutorialScreen extends React.Component {
     } else if (item === constants.RECIPE_MENU_CANCEL) {
       // Call clear
       this.onCloseModalClick();
-    } else if (item === constants.RECIPE_MENU_FAVORITE) {
-      favoriteRecipe(recipe.recipeId)
-    } else if (item === constants.RECIPE_MENU_UNFAVORITE) {
-      unfavoriteRecipe(recipe.recipeId)
     }
   };
+
+  onFavoriteClick = () => {
+    const { favoriteRecipe, unfavoriteRecipe } = this.props
+    const { recipe } = this.state
+    if (recipe.favorited) {
+      unfavoriteRecipe(recipe.recipeId)
+    } else {
+      favoriteRecipe(recipe.recipeId)
+    }
+  }
 
   reduceDrinkQuantity = () => {
     const { drinkAmount } = this.state
@@ -280,18 +285,17 @@ class TutorialScreen extends React.Component {
     if (deleteModal) {
       modalTitle = 'Delete this recipe?';
     }
-    // Inset
-    let forceInset = recipeSaved ? { bottom: 'never' } : {}
-
     return (
-      <SafeAreaView style={styles.outerContainer} forceInset={forceInset}>
+      <View style={styles.outerContainer}>
         <TopHeader
           title={headerTitle}
           onClose={this.onBackScreenClick}
           showSeparator={false}
           darkMode={darkMode}
           showDots={recipeSaved}
+          isFavorited={recipe.favorited}
           onDotsClick={this.onDotsClick}
+          onFavoriteClick={this.onFavoriteClick}
         />
         <TutorialHome
           recipe={recipe}
@@ -301,24 +305,7 @@ class TutorialScreen extends React.Component {
           increaseDrinkQuantity={this.increaseDrinkQuantity}
           recipeSaved={recipeSaved}
         />
-        {!recipeSaved && <View style={tutorialStyles.gradientContainer}>
-          <LinearGradient
-            colors={darkMode ? [Colors.backgroundColorDark, Colors.backgroundColorDarkTransparent] : [Colors.backgroundColorLight, Colors.backgroundColorLightTransparent]}
-            style={{ flex: 1 }}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0 }}
-          />
-        </View>}
-        {!recipeSaved && <View style={tutorialStyles.buttonView}>
-          <ButtonLarge
-            onButtonClick={this.onSaveClick}
-            title={'Add to Library'}
-            margin={[0, 0, 0, 0]}
-            buttonWidth={fullButtonWidth}
-            darkMode={darkMode}
-            isPrimary
-          />
-        </View>}
+        {!recipeSaved && <BottomBar buttonTitle={'Add to Library'} onButtonClick={this.onSaveClick} darkMode={darkMode} />}
         <CustomModal
           visibleModal={visibleModal}
           onCloseClick={this.onCloseModalClick}
@@ -348,7 +335,7 @@ class TutorialScreen extends React.Component {
             />
           )}
         </CustomModal>
-      </SafeAreaView>
+      </View>
     )
   }
 }

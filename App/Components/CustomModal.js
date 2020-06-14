@@ -7,8 +7,8 @@ export default function CustomModal(props) {
   const { visibleModal, onCloseClick, type, children, darkMode } = props
 
   // Swipe and style
-  let swipeDirections = [];
-  let modalStyle = {};
+  let swipeDirections = []
+  let modalStyle
   if (type === constants.MODAL_TYPE_BOTTOM) {
     swipeDirections = ['down']
     modalStyle = {

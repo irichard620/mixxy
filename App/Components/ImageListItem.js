@@ -66,6 +66,11 @@ function getListItemStylesheet(darkMode) {
       height: 56,
       paddingLeft: 16,
     },
+    icon: {
+      height: 22,
+      marginRight: 16,
+      width: 22,
+    },
     textContainer: {
       flex: 1,
       flexDirection: 'row',
@@ -78,11 +83,6 @@ function getListItemStylesheet(darkMode) {
     titleStyle: {
       ...Fonts.modalImageTitle,
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-    icon: {
-      height: 22,
-      marginRight: 16,
-      width: 22,
     },
   })
 }

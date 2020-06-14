@@ -29,7 +29,7 @@ function HomeSettingsTab(props) {
       ])
     } else if (option === constants.OPTION_CONTACT_US || option === constants.OPTION_JOIN_BETA) {
       // Pull up email
-      let emailLink = 'mailto:emile@mixxyapp.com'
+      let emailLink = 'mailto:info@mixxyapp.com'
       if (option === constants.OPTION_JOIN_BETA) {
         emailLink = `${emailLink}?subject=Request to join Mixxy Beta`
       }

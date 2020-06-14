@@ -31,6 +31,25 @@ export default function getSponsorStylesheet(useDarkMode) {
     linearGradient: {
       flex: 1,
     },
+    logoImage: {
+      borderRadius: 84,
+      height: 168,
+      width: 168,
+    },
+    logoOutline: {
+      alignSelf: 'center',
+      borderRadius: 84,
+      height: 168,
+      marginBottom: 16,
+      marginTop: -104,
+      shadowColor: '#000000',
+      shadowOpacity: 0.14,
+      shadowRadius: 12,
+      width: 168,
+    },
+    recipesContainer: {
+      marginBottom: 24,
+    },
     scrollContainer: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flex: 1,
@@ -44,40 +63,15 @@ export default function getSponsorStylesheet(useDarkMode) {
       right: 0,
       zIndex: 1,
     },
-    title: {
-      ...Fonts.h1Semibold,
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      alignSelf: 'center',
-      marginBottom: 8,
-    },
-    topImage: {
-      height: 251,
-    },
-    logoOutline: {
-      width: 168,
-      height: 168,
-      borderRadius: 84,
-      alignSelf: 'center',
-      marginTop: -104,
-      marginBottom: 16,
-      shadowColor: '#000000',
-      shadowOpacity: 0.14,
-      shadowRadius: 12,
-    },
-    logoImage: {
-      width: 168,
-      height: 168,
-      borderRadius: 84,
-    },
-    topImageOutline: {
-      alignSelf: 'center',
-      backgroundColor: useDarkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
-      height: 251,
+    sponsorTypeIcon: {
+      height: 16,
+      marginRight: 6,
+      resizeMode: 'contain',
     },
     sponsorTypeOutline: {
+      alignItems: 'center',
       alignSelf: 'center',
       flexDirection: 'row',
-      alignItems: 'center',
       justifyContent: 'center',
       marginBottom: 24,
     },
@@ -85,10 +79,19 @@ export default function getSponsorStylesheet(useDarkMode) {
       ...Fonts.body1,
       color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
     },
-    sponsorTypeIcon: {
-      height: 16,
-      marginRight: 6,
-      resizeMode: 'contain',
+    title: {
+      ...Fonts.h1Semibold,
+      alignSelf: 'center',
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginBottom: 8,
+    },
+    topImage: {
+      height: 251,
+    },
+    topImageOutline: {
+      alignSelf: 'center',
+      backgroundColor: useDarkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
+      height: 251,
     },
   })
 }

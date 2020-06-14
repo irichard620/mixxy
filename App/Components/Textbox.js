@@ -1,6 +1,7 @@
 import { StyleSheet, TextInput, View } from 'react-native'
 import React from 'react'
 import Colors from '../Theme/Colors'
+import { PropTypes } from 'prop-types'
 
 export default function Textbox(props) {
   const { modalText, textPlaceholder, charLimit, onChangeText, darkMode } = props
@@ -18,6 +19,14 @@ export default function Textbox(props) {
       />
     </View>
   )
+}
+
+Textbox.propTypes = {
+  modalText: PropTypes.string,
+  textPlaceholder: PropTypes.string,
+  charLimit: PropTypes.number,
+  onChangeText: PropTypes.func,
+  darkMode: PropTypes.bool,
 }
 
 function getTextboxStylesheet(darkMode) {

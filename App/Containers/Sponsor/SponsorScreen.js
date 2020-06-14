@@ -109,17 +109,19 @@ class SponsorScreen extends React.Component {
             <Text style={sponsorStyles.description}>{about}</Text>
             <View style={styles.divider} />
           </View>}
-          {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
-            <RecipeCard
-              key={`recipe${idx}`}
-              recipeName={recipe.recipeName}
-              recipeType={recipe.recipeType}
-              servingGlass={recipe.servingGlass}
-              disabled={false}
-              onCardClick={() => this.onCardClick(idx)}
-              darkMode={darkMode}
-            />
-          ))}
+          <View style={sponsorStyles.recipesContainer}>
+            {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
+              <RecipeCard
+                key={`recipe${idx}`}
+                recipeName={recipe.recipeName}
+                recipeType={recipe.recipeType}
+                servingGlass={recipe.servingGlass}
+                disabled={false}
+                onCardClick={() => this.onCardClick(idx)}
+                darkMode={darkMode}
+              />
+            ))}
+          </View>
         </ScrollView>
         <View style={sponsorStyles.backContainer}>
           <ModalXButton onPress={this.onBackPress}/>

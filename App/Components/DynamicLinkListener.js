@@ -1,4 +1,4 @@
-import dynamicLinks from '@react-native-firebase/dynamic-links';
+import dynamicLinks from '@react-native-firebase/dynamic-links'
 import { useEffect } from 'react'
 
 /**
