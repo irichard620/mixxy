@@ -221,11 +221,12 @@ export const settingsSections = [SETTINGS_SECTION_GENERAL, SETTINGS_SECTION_CONT
 
 // Settings options
 export const OPTION_VOLUME_UNITS = 'Volume Units'
+export const OPTION_REPLAY_TUTORIAL = 'Replay Mixxy Intro'
 export const OPTION_CONTACT_US = 'Contact Us'
 export const OPTION_JOIN_BETA = 'Join Mixxy Beta'
 export const OPTION_INSTAGRAM = 'Follow us on Instagram'
 export const settingsOptions = {
-  [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS],
+  [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS, OPTION_REPLAY_TUTORIAL],
   [SETTINGS_SECTION_CONTACT]: [OPTION_CONTACT_US, OPTION_JOIN_BETA, OPTION_INSTAGRAM],
 }
 

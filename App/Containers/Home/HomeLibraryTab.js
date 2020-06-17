@@ -33,31 +33,7 @@ function HomeLibraryTab(props) {
     NavigationService.navigate('BuilderScreen', {})
   }
 
-  const listHeader = (
-    <React.Fragment>
-      <View style={homeStyles.libraryHeaderOutline}>
-        <Text style={homeStyles.topHeaderLibrary}>Library</Text>
-        <HomeLibraryMenuButtons
-          darkMode={darkMode}
-          onNewRecipeClick={onNewRecipeClick}
-          onSectionClick={(idx) => setSelected(idx)}
-          selected={selected}
-        />
-        <View style={styles.divider} />
-      </View>
-      <View style={styles.buffer24} />
-    </React.Fragment>
-  )
-
-  const emptyTextToShow =
-    selected === 0
-      ? "You haven't added any recipes to your Favorites."
-      : "You haven't added any recipes to your library. Visit the Discover page to find some!"
-  const listEmpty = (
-    <View style={homeStyles.emptyContainer}>
-      <Text style={homeStyles.emptyText}>{emptyTextToShow}</Text>
-    </View>
-  )
+  const listHeader = <Text style={homeStyles.topHeaderLibrary}>Library</Text>
 
   let options = []
   if (selected === 0) {
@@ -66,28 +42,63 @@ function HomeLibraryTab(props) {
     options = recipes
   }
 
+  const emptyTextToShow =
+    selected === 0
+      ? "You haven't added any recipes to your Favorites."
+      : "You haven't added any recipes to your library. Visit the Discover page to find some!"
+  const listEmpty =
+    options.length === 0 ? (
+      <View style={homeStyles.emptyContainer}>
+        <Text style={homeStyles.emptyText}>{emptyTextToShow}</Text>
+      </View>
+    ) : null
+
   return (
     <FlatList
       contentContainerStyle={{ flexGrow: 1 }}
-      data={options}
-      keyExtractor={(recipe) => recipe.recipeId}
-      renderItem={({ item }) => (
-        <RecipeCard
-          recipeName={item.recipeName}
-          recipeType={item.recipeType}
-          servingGlass={item.servingGlass}
-          onCardClick={(campaign) => {
-            NavigationService.navigate('TutorialScreen', {
-              recipe: item,
-            })
-          }}
-          darkMode={darkMode}
-        />
-      )}
+      data={[{ item: 'menu' }, { item: 'space' }, ...options]}
+      keyExtractor={(item, index) => {
+        if (index === 0) {
+          return 'menu-buttons'
+        } else if (index === 1) {
+          return 'buffer'
+        }
+        return item.recipeId
+      }}
+      renderItem={({ item, index }) => {
+        if (index === 0) {
+          return (
+            <View style={homeStyles.libraryHeaderOutline}>
+              <HomeLibraryMenuButtons
+                darkMode={darkMode}
+                onNewRecipeClick={onNewRecipeClick}
+                onSectionClick={(idx) => setSelected(idx)}
+                selected={selected}
+              />
+              <View style={styles.divider} />
+            </View>
+          )
+        } else if (index === 1) {
+          return <View style={styles.buffer24} />
+        }
+        return (
+          <RecipeCard
+            recipeName={item.recipeName}
+            recipeType={item.recipeType}
+            servingGlass={item.servingGlass}
+            onCardClick={(campaign) => {
+              NavigationService.navigate('TutorialScreen', {
+                recipe: item,
+              })
+            }}
+            darkMode={darkMode}
+          />
+        )
+      }}
       style={{ width: '100%' }}
       ListHeaderComponent={listHeader}
-      ListEmptyComponent={listEmpty}
-      stickyHeaderIndices={[0]}
+      ListFooterComponent={listEmpty}
+      stickyHeaderIndices={[1]}
     />
   )
 }

@@ -150,7 +150,6 @@ export default function getTutorialStylesheet(useDarkMode) {
     },
     stepsContainer: {
       marginLeft: 16,
-      marginRight: 32,
     },
   })
 }

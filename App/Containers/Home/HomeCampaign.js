@@ -18,7 +18,7 @@ export default function HomeCampaign(props) {
   let scaleValue = new Animated.Value(0)
   const cardScale = scaleValue.interpolate({
     inputRange: [0, 0.5, 1],
-    outputRange: [1, 0.95, 0.9],
+    outputRange: [1, 0.98, 0.96],
   })
   let transformStyle = { ...homeStyles.campaignOutline, transform: [{ scale: cardScale }] }
 

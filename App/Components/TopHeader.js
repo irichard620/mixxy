@@ -61,10 +61,7 @@ export default function TopHeader(props) {
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={onFavoriteClick}>
-              <Image
-                style={headerStyles.favorite}
-                source={favoriteImageToUse}
-              />
+              <Image style={headerStyles.favorite} source={favoriteImageToUse} />
             </TouchableOpacity>
           </View>
         )}
@@ -100,7 +97,7 @@ function getTopHeaderStylesheet(darkMode) {
       resizeMode: 'contain',
     },
     favorite: {
-      height: 20,
+      height: 22,
       resizeMode: 'contain',
     },
     header: {

@@ -11,7 +11,7 @@ import { PropTypes } from 'prop-types'
 import Fonts from '../../Theme/Fonts'
 
 export default function RecipeStep(props) {
-  const { step, stepIdx, darkMode, onChangeText, onContentSizeChange } = props
+  const { step, stepIdx, darkMode, onChangeText, onContentSizeChange, isEditMode } = props
   const textStyles = getTextboxStylesheet(darkMode)
 
   const { width } = Dimensions.get('window')
@@ -25,22 +25,37 @@ export default function RecipeStep(props) {
     color: darkMode ? Colors.text1Dark : Colors.text1Light,
   }
 
+  let editModeTextToDisplay = step.title
+  let editModeStyle = {
+    paddingTop: 5,
+    width: width - 64,
+  }
+  if (isEditMode && step.title === '') {
+    editModeTextToDisplay = 'Write out the step here...'
+    editModeStyle.color = darkMode ? Colors.text2Dark : Colors.text2Light
+  }
+
   return (
     <View style={[textStyles.textContainer, outlineStyle]}>
       <Text style={textStyles.title}>{`STEP ${stepIdx}`}</Text>
-      <TextInput
-        onChangeText={(text) => onChangeText(text)}
-        placeholder={'Write out the step here...'}
-        placeholderTextColor={darkMode ? Colors.text2Dark : Colors.text2Light}
-        style={[textStyles.textInput, inputStyle]}
-        maxLength={1000}
-        multiline={true}
-        onContentSizeChange={onContentSizeChange}
-      >
-        <Text style={textStyle} key={`step${stepIdx}`}>
-          {step.title}
-        </Text>
-      </TextInput>
+      {isEditMode && (
+        <Text style={[textStyles.textInput, editModeStyle]}>{editModeTextToDisplay}</Text>
+      )}
+      {!isEditMode && (
+        <TextInput
+          onChangeText={(text) => onChangeText(text)}
+          placeholder={'Write out the step here...'}
+          placeholderTextColor={darkMode ? Colors.text2Dark : Colors.text2Light}
+          style={[textStyles.textInput, inputStyle]}
+          maxLength={1000}
+          multiline={true}
+          onContentSizeChange={onContentSizeChange}
+        >
+          <Text style={textStyle} key={`step${stepIdx}`}>
+            {step.title}
+          </Text>
+        </TextInput>
+      )}
     </View>
   )
 }
@@ -51,6 +66,7 @@ RecipeStep.propTypes = {
   onChangeText: PropTypes.func,
   darkMode: PropTypes.bool,
   onContentSizeChange: PropTypes.func,
+  isEditMode: PropTypes.bool,
 }
 
 function getTextboxStylesheet(darkMode) {

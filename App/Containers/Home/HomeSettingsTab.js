@@ -9,6 +9,7 @@ import * as constants from '../../Config/constants'
 import Detail from '../../Components/Detail'
 import Images from '../../Theme/Images'
 import UserActions from '../../Stores/User/Actions'
+import NavigationService from '../../Services/NavigationService'
 
 function HomeSettingsTab(props) {
   const { user } = props
@@ -27,6 +28,8 @@ function HomeSettingsTab(props) {
           text: 'OK',
         },
       ])
+    } else if (option === constants.OPTION_REPLAY_TUTORIAL) {
+      NavigationService.navigate('IntroScreen', { fromSettings: true })
     } else if (option === constants.OPTION_CONTACT_US || option === constants.OPTION_JOIN_BETA) {
       // Pull up email
       let emailLink = 'mailto:info@mixxyapp.com'

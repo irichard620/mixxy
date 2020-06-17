@@ -8,6 +8,11 @@ function fetchUser() {
     .then((user) => {
       const userDetails = user ? JSON.parse(user) : {}
       // Add metric variable if needed
+      let viewedTutorial = true
+      if (!('viewedTutorial' in userDetails)) {
+        viewedTutorial = false
+        userDetails.viewedTutorial = true
+      }
       if ('name' in userDetails) {
         if (!('premium' in userDetails)) {
           userDetails.premium = false
@@ -18,6 +23,7 @@ function fetchUser() {
       }
       storage.setItem('user', JSON.stringify(userDetails))
       userDetails.premium = true
+      userDetails.viewedTutorial = viewedTutorial
       return userDetails
     })
     .catch((error) => error)

@@ -18,7 +18,7 @@ export default function HomeLibraryMenuButtons(props) {
           <Image source={Images.newRecipe} style={homeStyles.libraryAddIcon} />
         </View>
       </TouchableWithoutFeedback>
-      <View style={styles.verticalDivider} />
+      <View style={[styles.verticalDivider, { height: 36, marginTop: 16, marginBottom: 16 }]} />
       {menuItems.map((item, idx) => {
         // style of button
         let titleStyle = {

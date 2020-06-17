@@ -2,6 +2,7 @@ import { createAppContainer, createStackNavigator } from 'react-navigation'
 import React from 'react'
 
 import HomeScreen from '../Containers/Home/HomeScreen'
+import IntroScreen from '../Containers/Intro/IntroScreen'
 import SplashScreen from '../Containers/SplashScreen/SplashScreen'
 import TutorialScreen from '../Containers/Tutorial/TutorialScreen'
 import BuilderScreen from '../Containers/NewBuilder/BuilderScreen'
@@ -43,6 +44,12 @@ const StackNavigator = createStackNavigator(
     },
     SponsorScreen: {
       screen: SponsorScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    IntroScreen: {
+      screen: IntroScreen,
       navigationOptions: {
         gesturesEnabled: false,
       },

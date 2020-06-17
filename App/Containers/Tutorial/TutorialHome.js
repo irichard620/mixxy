@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-  View, Image, Text, ScrollView, TouchableWithoutFeedback,
+  View, Image, Text, ScrollView, TouchableWithoutFeedback, Dimensions,
 } from 'react-native'
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
@@ -121,7 +121,7 @@ class TutorialHome extends Component {
           </View>
           <View style={styles.divider} />
         </View>
-        <View style={tutorialStyles.stepsContainer}>
+        <View style={[tutorialStyles.stepsContainer]}>
           {Object.keys(recipe).length !== 0 && recipe.steps.map((step, idx) => (
             <Step
               key={`step${idx}`}

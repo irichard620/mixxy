@@ -477,6 +477,7 @@ class BuilderScreen extends React.Component {
             isEditMode={isEditModeSteps}
             onDeletePress={this.onDeleteStepPress}
             onMorePress={this.onMorePress}
+            onDragEnd={(data) => this.setState({ steps: data })}
           />
         )}
         <BottomBar buttonTitle={buttonTitle} disabled={buttonDisabled} darkMode={darkMode} onButtonClick={this.onButtonClick} />

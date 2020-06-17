@@ -1,20 +1,28 @@
-import { put } from 'redux-saga/effects'
-import UserActions from '../Stores/User/Actions'
+import { put, call } from 'redux-saga/effects'
 import SponsorActions from '../Stores/Sponsor/Actions'
 import CampaignActions from '../Stores/Campaign/Actions'
 import MasterListActions from '../Stores/MasterList/Actions'
 import RecipeActions from '../Stores/Recipe/Actions'
 import NavigationService from '../Services/NavigationService'
+import { userService as UserService } from '../Services/UserService'
 
 /**
  * The startup saga is the place to define behavior to execute when the application starts.
  */
 export function* startup() {
-  yield put(UserActions.fetchUser())
   yield put(SponsorActions.fetchSponsorCards())
   yield put(CampaignActions.fetchCampaigns())
   yield put(MasterListActions.fetchMasterLists())
   yield put(RecipeActions.fetchRecipes())
+
+  // Get user and decide whether to trigger tutorial
+  const user = yield call(UserService.fetchUser)
+  if (typeof user === 'object' && user !== null) {
+    if (!user.viewedTutorial) {
+      NavigationService.navigateAndReset('IntroScreen')
+      return
+    }
+  }
 
   // When those operations are finished we redirect to the main screen
   NavigationService.navigateAndReset('HomeScreen')

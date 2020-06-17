@@ -68,4 +68,5 @@ export default {
   builderUnitArrowLight: require('../Assets/Images/new_builder/Builder_UnitArrow_LIGHT.png'),
   spotlightLocation: require('../Assets/Images/Spotlight_Location.png'),
   spotlightType: require('../Assets/Images/Spotlight_Type.png'),
+  introArrow: require('../Assets/Images/buttons/Intro_Arrow.png'),
 }

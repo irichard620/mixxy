@@ -46,6 +46,11 @@ export default function getBuilderStylesheet(useDarkMode) {
       flexDirection: 'row',
       marginBottom: 12,
     },
+    keyboardSpacer: {
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
     scrollView: {
       flex: 1,
     },

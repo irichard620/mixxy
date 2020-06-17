@@ -277,9 +277,6 @@ class TutorialScreen extends React.Component {
         recipeSaved = true
       }
     }
-    const { width } = Dimensions.get('window');
-    const fullButtonWidth = (width - 32)
-
     // Modal title
     let modalTitle = 'Recipe Settings';
     if (deleteModal) {

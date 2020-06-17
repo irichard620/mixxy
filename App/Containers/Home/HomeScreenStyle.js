@@ -43,9 +43,11 @@ export default function getHomeStylesheet(useDarkMode) {
       zIndex: 1,
     },
     emptyContainer: {
-      flex: 1,
+      alignItems: 'center',
+      flexGrow: 1,
       justifyContent: 'center',
       margin: 10,
+      marginTop: '45%',
     },
     emptyText: {
       ...Fonts.body1,
@@ -236,10 +238,10 @@ export default function getHomeStylesheet(useDarkMode) {
       backgroundColor: useDarkMode
         ? Colors.backgroundColorDarkTransparent
         : Colors.backgroundColorLightTransparent,
-      height: 49,
+      height: 48,
     },
     tabIcon: {
-      height: 30,
+      height: 24,
       resizeMode: 'contain',
     },
     tabIndicator: {
