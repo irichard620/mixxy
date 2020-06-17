@@ -45,6 +45,7 @@ export default function getBuilderStylesheet(useDarkMode) {
       alignItems: 'center',
       flexDirection: 'row',
       marginBottom: 12,
+      marginLeft: 16,
     },
     keyboardSpacer: {
       bottom: 0,

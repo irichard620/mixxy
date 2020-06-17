@@ -3,15 +3,28 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View,
+  Image,
 } from 'react-native'
 import React from 'react'
 import Colors from '../../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import Fonts from '../../Theme/Fonts'
+import Images from '../../Theme/Images'
 
 export default function RecipeStep(props) {
-  const { step, stepIdx, darkMode, onChangeText, onContentSizeChange, isEditMode } = props
+  const {
+    step,
+    stepIdx,
+    darkMode,
+    onChangeText,
+    onContentSizeChange,
+    passRef,
+    isFocused,
+    onDeletePress,
+    onBlur,
+  } = props
   const textStyles = getTextboxStylesheet(darkMode)
 
   const { width } = Dimensions.get('window')
@@ -30,19 +43,29 @@ export default function RecipeStep(props) {
     paddingTop: 5,
     width: width - 64,
   }
-  if (isEditMode && step.title === '') {
+
+  if (!isFocused && step.title === '') {
     editModeTextToDisplay = 'Write out the step here...'
     editModeStyle.color = darkMode ? Colors.text2Dark : Colors.text2Light
   }
 
   return (
     <View style={[textStyles.textContainer, outlineStyle]}>
-      <Text style={textStyles.title}>{`STEP ${stepIdx}`}</Text>
-      {isEditMode && (
+      <View style={textStyles.stepHeader}>
+        <Text style={textStyles.title}>{`STEP ${stepIdx}`}</Text>
+        <TouchableWithoutFeedback hitSlop={{top: 8, bottom: 8, left: 8, right: 8}} onPress={onDeletePress}>
+          <View style={textStyles.deleteOutline}>
+            <Image source={Images.builderDeleteStep} style={textStyles.deleteIcon} />
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+      {!isFocused && (
         <Text style={[textStyles.textInput, editModeStyle]}>{editModeTextToDisplay}</Text>
       )}
-      {!isEditMode && (
+      {isFocused && (
         <TextInput
+          ref={passRef}
+          onBlur={onBlur}
           onChangeText={(text) => onChangeText(text)}
           placeholder={'Write out the step here...'}
           placeholderTextColor={darkMode ? Colors.text2Dark : Colors.text2Light}
@@ -66,7 +89,10 @@ RecipeStep.propTypes = {
   onChangeText: PropTypes.func,
   darkMode: PropTypes.bool,
   onContentSizeChange: PropTypes.func,
-  isEditMode: PropTypes.bool,
+  onBlur: PropTypes.func,
+  passRef: PropTypes.func,
+  onDeletePress: PropTypes.func,
+  isFocused: PropTypes.bool,
 }
 
 function getTextboxStylesheet(darkMode) {
@@ -88,9 +114,31 @@ function getTextboxStylesheet(darkMode) {
     title: {
       ...Fonts.uppercaseBold,
       color: darkMode ? Colors.text3Dark : Colors.text3Light,
+      marginTop: 16,
+    },
+    stepHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       marginBottom: 12,
       marginLeft: 16,
-      marginTop: 16,
+    },
+    deleteIcon: {
+      height: 8,
+      resizeMode: 'contain',
+    },
+    deleteOutline: {
+      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      borderRadius: 10,
+      height: 20,
+      width: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 12,
+      marginRight: 12,
+    },
+    touchable: {
+      padding: 8,
     },
   })
 }

@@ -1,4 +1,5 @@
 import { put, call } from 'redux-saga/effects'
+import UserActions from '../Stores/User/Actions'
 import SponsorActions from '../Stores/Sponsor/Actions'
 import CampaignActions from '../Stores/Campaign/Actions'
 import MasterListActions from '../Stores/MasterList/Actions'
@@ -18,6 +19,7 @@ export function* startup() {
   // Get user and decide whether to trigger tutorial
   const user = yield call(UserService.fetchUser)
   if (typeof user === 'object' && user !== null) {
+    yield put(UserActions.fetchUserSuccess(user))
     if (!user.viewedTutorial) {
       NavigationService.navigateAndReset('IntroScreen')
       return

@@ -1,16 +1,13 @@
 import React from 'react'
-import { View, Dimensions, Alert } from 'react-native'
+import { View, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Share from 'react-native-share';
-import { NavigationActions, SafeAreaView, withNavigationFocus } from 'react-navigation'
-import LinearGradient from 'react-native-linear-gradient';
+import { NavigationActions, withNavigationFocus } from 'react-navigation'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
 import getTutorialStylesheet from './TutorialScreenStyle'
-import ButtonLarge from '../../Components/ButtonLarge'
 import NavigationService from '../../Services/NavigationService'
 import TutorialHome from './TutorialHome'
-import Colors from '../../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import CustomModal from '../../Components/CustomModal'

@@ -162,6 +162,7 @@ export const BASE_SPIRIT_WINE = 'Wine'
 export const BASE_SPIRIT_NON_ALCOHOLIC = 'Non-Alcoholic'
 export const BASE_SPIRIT_VODKA = 'Vodka'
 export const BASE_SPIRIT_TEQUILA = 'Tequila'
+export const BASE_SPIRIT_MEZCAL = 'Mezcal'
 export const BASE_SPIRIT_WHISKEY = 'Whiskey'
 export const BASE_SPIRIT_GIN = 'Gin'
 export const BASE_SPIRIT_RUM = 'Rum'
@@ -170,6 +171,7 @@ export const BASE_SPIRIT_OTHER = 'Other'
 export const baseSpirits = [
   BASE_SPIRIT_VODKA,
   BASE_SPIRIT_TEQUILA,
+  BASE_SPIRIT_MEZCAL,
   BASE_SPIRIT_WHISKEY,
   BASE_SPIRIT_GIN,
   BASE_SPIRIT_RUM,

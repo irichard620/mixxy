@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity, View, Keyboard, Dimensions } from 'react-native'
+import {
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
 import AddButton from '../../Components/AddButton'
-import DeleteButton from '../../Components/DeleteButton'
 import RecipeStep from './RecipeStep'
 import MoreButton from '../../Components/MoreButton'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function BuilderSteps(props) {
   const {
@@ -14,23 +18,19 @@ export default function BuilderSteps(props) {
     recipeName,
     steps,
     onAddStepClick,
-    isEditMode,
     onDeletePress,
     onChangeText,
     onMorePress,
     onDragEnd,
   } = props
   const builderStyles = getBuilderStylesheet(darkMode)
-  let leftMargin = -30
-  if (isEditMode) {
-    leftMargin = 16
-  }
-  const leftMarginStyle = {
-    marginLeft: leftMargin,
-  }
 
-  const [keyboardHeight, setKeyboardHeight] = useState(0)
-  const [scrollY, setScrollY] = useState(0)
+  const inputs = {}
+  const initialFocusState = []
+  for (let i = 0; i < steps.length; i++) {
+    initialFocusState.push(false)
+  }
+  const [isFocused, setIsFocused] = useState(initialFocusState)
 
   const listHeader = (
     <View>
@@ -40,97 +40,108 @@ export default function BuilderSteps(props) {
       </View>
       <Text style={builderStyles.headingDescription}>
         {
-          'Build out your recipe with clear step by step instructions. To change the position of a step, tap Edit, then drag to reorder.'
+          'Build out your recipe with clear step by step instructions. To change the position of a step, hold and drag to reorder.'
         }
       </Text>
     </View>
   )
 
-  const onKeyboardWillShow = (e) => {
-    const screenHeight = Dimensions.get('window').height
-    setKeyboardHeight(screenHeight - e.endCoordinates.screenY)
-  }
-
-  const onKeyboardWillHide = () => {
-    setKeyboardHeight(0)
-  }
-
   const listFooter = (
     <View>
-      {!isEditMode && <AddButton onPress={onAddStepClick} />}
-      <View style={builderStyles.buffer} />
+      <AddButton onPress={onAddStepClick} />
+      <View style={{ height: 24 }} />
     </View>
   )
 
   useEffect(() => {
-    Keyboard.addListener('keyboardWillShow', onKeyboardWillShow)
-    Keyboard.addListener('keyboardWillHide', onKeyboardWillHide)
-
-    return () => {
-      Keyboard.removeListener('keyboardWillShow', onKeyboardWillShow)
-      Keyboard.removeListener('keyboardWillHide', onKeyboardWillHide)
+    for (let i = 0; i < isFocused.length; i++) {
+      if (isFocused[i]) {
+        inputs[i] && inputs[i].focus()
+      }
     }
-  }, [])
+  }, [isFocused])
 
-  return (
-    <View style={builderStyles.scrollView}>
-      <DraggableFlatList
-        contentContainerStyle={{ flexGrow: 1 }}
-        style={{ width: '100%' }}
-        data={steps}
-        onScroll={(e) => {
-          setScrollY(e.nativeEvent.contentOffset.y)
-        }}
-        onScrollEndDrag={(e) => {
-          setScrollY(e.nativeEvent.contentOffset.y)
-        }}
-        renderItem={({ item, index, drag, isActive }) => (
-          <TouchableOpacity
-            style={[builderStyles.ingredientRow, leftMarginStyle]}
-            onLongPress={drag}
-          >
-            <DeleteButton onPress={() => onDeletePress(index)} />
+  const onFocus = (index) => {
+    const newIsFocused = [...isFocused]
+    newIsFocused[index] = true
+    setIsFocused(newIsFocused)
+  }
+
+  const onBlur = (index) => {
+    const newIsFocused = [...isFocused]
+    newIsFocused[index] = false
+    setIsFocused(newIsFocused)
+  }
+
+  let isAnyInputFocused = false
+  for (let i = 0; i < isFocused.length; i++) {
+    if (isFocused[i]) {
+      isAnyInputFocused = true
+    }
+  }
+  if (!isAnyInputFocused) {
+    return (
+      <View style={builderStyles.scrollView}>
+        <DraggableFlatList
+          contentContainerStyle={{ flexGrow: 1 }}
+          style={{ width: '100%' }}
+          data={steps}
+          renderItem={({ item, index, drag, isActive }) => (
+            <TouchableOpacity
+              style={builderStyles.ingredientRow}
+              onLongPress={drag}
+              onPress={() => onFocus(index)}
+              onStartShouldSetResponderCapture={(e) => true}
+            >
+              <RecipeStep
+                key={`step${index}input`}
+                step={item}
+                stepIdx={index + 1}
+                onChangeText={(text) => onChangeText(text, index)}
+                darkMode={darkMode}
+                passRef={(ref) => {
+                  inputs[index] = ref
+                }}
+                onDeletePress={() => onDeletePress(index)}
+              />
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item, index) => `step${item.title}${index}`}
+          ListHeaderComponent={listHeader}
+          ListFooterComponent={listFooter}
+          onDragEnd={({ data }) => onDragEnd(data)}
+        />
+      </View>
+    )
+  } else {
+    return (
+      <KeyboardAwareScrollView
+        extraScrollHeight={100}
+        enableAutomaticScroll={true}
+        style={builderStyles.scrollView}
+      >
+        {listHeader}
+        {steps.map((step, idx) => (
+          <View key={`step${idx}view`} style={builderStyles.ingredientRow}>
             <RecipeStep
-              key={`step${index}`}
-              step={item}
-              stepIdx={index + 1}
-              onChangeText={(text) => onChangeText(text, index)}
+              onBlur={() => onBlur(idx)}
+              key={`step${idx}`}
+              step={step}
+              stepIdx={idx + 1}
+              onChangeText={(text) => onChangeText(text, idx)}
               darkMode={darkMode}
-              isEditMode={isEditMode}
+              isFocused={isFocused[idx]}
+              passRef={(ref) => {
+                inputs[idx] = ref
+              }}
+              onDeletePress={() => onDeletePress(idx)}
             />
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item, index) => `step${item.title}${index}`}
-        ListHeaderComponent={listHeader}
-        ListFooterComponent={listFooter}
-        onDragEnd={({ data }) => onDragEnd(data)}
-      />
-    </View>
-  )
-  // } else {
-  //   return (
-  //     <KeyboardAwareScrollView
-  //       extraScrollHeight={100}
-  //       enableAutomaticScroll={true}
-  //       style={builderStyles.scrollView}
-  //     >
-  //       {listHeader}
-  //       {steps.map((step, idx) => (
-  //         <View key={`step${idx}view`} style={[builderStyles.ingredientRow, leftMarginStyle]}>
-  //           <DeleteButton onPress={() => onDeletePress(idx)} />
-  //           <RecipeStep
-  //             key={`step${idx}`}
-  //             step={step}
-  //             stepIdx={idx + 1}
-  //             onChangeText={(text) => onChangeText(text, idx)}
-  //             darkMode={darkMode}
-  //           />
-  //         </View>
-  //       ))}
-  //       {listFooter}
-  //     </KeyboardAwareScrollView>
-  //   )
-  // }
+          </View>
+        ))}
+        {listFooter}
+      </KeyboardAwareScrollView>
+    )
+  }
 }
 
 BuilderSteps.propTypes = {

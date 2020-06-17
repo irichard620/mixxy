@@ -66,6 +66,7 @@ export default {
   builderMoreDetails: require('../Assets/Images/new_builder/Builder_ThreeDots.png'),
   builderUnitArrowDark: require('../Assets/Images/new_builder/Builder_UnitArrow_DARK.png'),
   builderUnitArrowLight: require('../Assets/Images/new_builder/Builder_UnitArrow_LIGHT.png'),
+  builderDeleteStep: require('../Assets/Images/new_builder/Builder_DeleteStep.png'),
   spotlightLocation: require('../Assets/Images/Spotlight_Location.png'),
   spotlightType: require('../Assets/Images/Spotlight_Type.png'),
   introArrow: require('../Assets/Images/buttons/Intro_Arrow.png'),

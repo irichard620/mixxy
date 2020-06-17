@@ -41,7 +41,6 @@ class BuilderScreen extends React.Component {
       modalType: '',
       modalIdx: -1,
       isEditMode: false,
-      isEditModeSteps: false,
       cursorLocation: -1,
     };
   }
@@ -90,16 +89,12 @@ class BuilderScreen extends React.Component {
   }
 
   onRightButtonPress = () => {
-    const { step, isEditMode, isEditModeSteps } = this.state
-    LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
+    const { step, isEditMode } = this.state
     if (step === 1) {
       // Show delete buttons for ingredients
+      LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
       this.setState({
         isEditMode: !isEditMode
-      })
-    } else if (step === 2) {
-      this.setState({
-        isEditModeSteps: !isEditModeSteps
       })
     }
   }
@@ -112,7 +107,6 @@ class BuilderScreen extends React.Component {
       this.setState({
         step: step - 1,
         isEditMode: false,
-        isEditModeSteps: false,
       })
     }
   }
@@ -267,7 +261,6 @@ class BuilderScreen extends React.Component {
         visibleModal: false,
         modalType: '',
         isEditMode: false,
-        isEditModeSteps: false,
       })
     }
   }
@@ -376,15 +369,25 @@ class BuilderScreen extends React.Component {
 
   onDeleteStepPress = (idx) => {
     const { steps } = this.state
-    // make a separate copy of the array
-    const array = [...steps];
-    // Find index
-    if (idx !== -1) {
-      array.splice(idx, 1);
-      this.setState({
-        steps: array,
-      });
-    }
+    Alert.alert('Delete step', `Would you like to delete step ${idx + 1}?`, [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: () => {
+          // make a separate copy of the array
+          const array = [...steps];
+          // Find index
+          if (idx !== -1) {
+            array.splice(idx, 1);
+            this.setState({
+              steps: array,
+            });
+          }
+        },
+      },
+    ])
   }
 
   onMorePress = () => {
@@ -396,7 +399,7 @@ class BuilderScreen extends React.Component {
 
   render() {
     const { darkMode } = this.props;
-    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx, isEditMode, isEditModeSteps } = this.state;
+    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx, isEditMode } = this.state;
 
     const styles = getStylesheet(darkMode)
     const builderStyles = getBuilderStylesheet(darkMode)
@@ -424,9 +427,9 @@ class BuilderScreen extends React.Component {
     }
 
     let rightButtonTitle = ''
-    if ((step === 1 && isEditMode) || (step === 2 && isEditModeSteps)) {
+    if ((step === 1 && isEditMode)) {
       rightButtonTitle = 'Done'
-    } else if ((step === 1 && !isEditMode) || (step === 2 && !isEditModeSteps)) {
+    } else if ((step === 1 && !isEditMode)) {
       rightButtonTitle = 'Edit'
     }
 
@@ -474,7 +477,6 @@ class BuilderScreen extends React.Component {
             steps={steps}
             recipeName={recipeName}
             onChangeText={this.onChangeStepText}
-            isEditMode={isEditModeSteps}
             onDeletePress={this.onDeleteStepPress}
             onMorePress={this.onMorePress}
             onDragEnd={(data) => this.setState({ steps: data })}

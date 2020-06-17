@@ -1,8 +1,8 @@
 import React from 'react'
-import { Dimensions, Image, Alert } from 'react-native'
+import { Dimensions, Image, Alert, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
-import { SafeAreaView, withNavigationFocus } from 'react-navigation'
+import { withNavigationFocus } from 'react-navigation'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import RNIap, {
   purchaseErrorListener,

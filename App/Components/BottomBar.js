@@ -1,7 +1,6 @@
-import { SafeAreaView } from 'react-navigation'
 import ButtonLarge from './ButtonLarge'
 import React from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View, SafeAreaView } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
