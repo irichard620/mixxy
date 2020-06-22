@@ -9,6 +9,14 @@ const { Types, Creators } = createActions({
   fetchSponsorCardsSuccess: ['sponsorCards'],
   // An error occurred
   fetchSponsorCardsFailure: ['errorMessage'],
+  // Fetch details
+  fetchSponsorCardDetails: ['sponsorCardId'],
+  // The operation has started and is loading
+  fetchSponsorCardDetailsLoading: null,
+  // card information was successfully fetched
+  fetchSponsorCardDetailsSuccess: ['sponsorCardDetails'],
+  // Error
+  fetchSponsorCardDetailsFailure: ['errorMessage'],
 })
 
 export const SponsorTypes = Types

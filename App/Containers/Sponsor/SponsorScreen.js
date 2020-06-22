@@ -9,15 +9,51 @@ import LinearGradient from 'react-native-linear-gradient'
 import ModalXButton from '../../Components/ModalXButton'
 import { NavigationActions } from 'react-navigation'
 import RecipeActions from '../../Stores/Recipe/Actions'
+import SponsorActions from '../../Stores/Sponsor/Actions'
 import RecipeCard from '../../Components/RecipeCard'
 import Images from '../../Theme/Images'
 import Button from '../../Components/Button'
 
 class SponsorScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sponsor: {},
+    };
+  }
+
   componentDidMount() {
     const { navigation } = this.props
     const sponsor = navigation.getParam('sponsor', {})
-    this.props.fetchRemoteRecipes(sponsor.cardId)
+    if (Object.keys(sponsor).length) {
+      // Already have sponsor passed
+      this.props.fetchRemoteRecipes(sponsor.cardId)
+      this.setState({ sponsor: sponsor })
+    } else {
+      const sponsorCardId = navigation.getParam('sponsorCardId', 'none')
+      this.props.fetchSponsorCardDetails(sponsorCardId)
+      this.props.fetchRemoteRecipes(sponsorCardId)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { sponsorCardDetailsIsLoading, sponsorCardDetailsErrorMessage, sponsorCardDetails } = this.props;
+    if (!prevProps.sponsorCardDetailsIsLoading && sponsorCardDetailsIsLoading) {
+      if (sponsorCardDetailsErrorMessage) {
+        // Show error and nav back on ack
+        Alert.alert('Error', sponsorCardDetailsErrorMessage, [
+          {
+            text: 'Ok',
+            onPress: () => {
+              this.onBackPress()
+            },
+          },
+        ])
+      } else {
+        // Set sponsor state to details
+        this.setState({ sponsor: sponsorCardDetails })
+      }
+    }
   }
 
   onBackPress = () => {
@@ -47,11 +83,11 @@ class SponsorScreen extends React.Component {
   }
 
   render() {
-    const { darkMode, navigation, remoteRecipes } = this.props
+    const { darkMode, remoteRecipes } = this.props
+    const { sponsor } = this.state
     const styles = getStylesheet(darkMode)
     const sponsorStyles = getSponsorStylesheet(darkMode)
 
-    const sponsor = navigation.getParam('sponsor', {})
     const { sponsorName, sponsorType, hqLocation, about, logoLink, cardImageLink, website } = sponsor
 
     const { width } = Dimensions.get('window')
@@ -135,10 +171,14 @@ const mapStateToProps = (state) => ({
   remoteRecipes: state.recipes.remoteRecipes,
   fetchRemoteRecipesIsLoading: state.recipes.fetchRemoteRecipesIsLoading,
   fetchRemoteRecipesErrorMessage: state.recipes.fetchRemoteRecipesErrorMessage,
+  sponsorCardDetails: state.sponsors.sponsorCardDetails,
+  sponsorCardDetailsIsLoading: state.sponsors.sponsorCardDetailsIsLoading,
+  sponsorCardDetailsErrorMessage: state.sponsors.sponsorCardDetailsErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   fetchRemoteRecipes: (sponsorCardId) => dispatch(RecipeActions.fetchRemoteRecipes(sponsorCardId, null, null)),
+  fetchSponsorCardDetails: (sponsorCardId) => dispatch(SponsorActions.fetchSponsorCardDetails(sponsorCardId))
 })
 
 export default connect(

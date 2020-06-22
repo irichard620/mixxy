@@ -15,3 +15,19 @@ export function* fetchSponsorCards() {
     )
   }
 }
+
+export function* fetchSponsorCardDetails(params) {
+  yield put(SponsorActions.fetchSponsorCardDetailsLoading())
+
+  // Fetch sponsor cards from an API
+  const sponsorCardDetails = yield call(sponsorService.fetchSponsorCardDetails, params)
+  if (sponsorCardDetails) {
+    yield put(SponsorActions.fetchSponsorCardDetailsSuccess(sponsorCardDetails))
+  } else {
+    yield put(
+      SponsorActions.fetchSponsorCardDetailsFailure(
+        'There was an error while fetching sponsor info.'
+      )
+    )
+  }
+}

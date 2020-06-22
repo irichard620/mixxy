@@ -126,12 +126,24 @@ class HomeScreen extends React.Component {
   }
 
   handleDynamicLink = (link) => {
-    if (link) {
+    if (!link) {
+      return
+    }
+    const linkPortions = link.url.split('/')
+    if (linkPortions.length === 4) {
+      // Recipe id
       NavigationService.goBackToRoute('HomeScreen')
-      const pathname = link.url.split('/')[3]
-      this.props.fetchSharedRecipe(pathname)
+      const recipeId = linkPortions[3]
+      this.props.fetchSharedRecipe(recipeId)
       this.setState({
         visibleModal: true
+      })
+    } else if (linkPortions.length === 5) {
+      // Sponsor
+      NavigationService.goBackToRoute('HomeScreen')
+      const sponsorCardId = linkPortions[4]
+      NavigationService.navigate('SponsorScreen', {
+        sponsorCardId: sponsorCardId
       })
     }
   }

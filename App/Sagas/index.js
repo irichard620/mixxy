@@ -19,7 +19,7 @@ import {
   fetchSharedRecipe,
   createSharedRecipe,
 } from './RecipeSaga'
-import { fetchSponsorCards } from './SponsorSaga'
+import { fetchSponsorCards, fetchSponsorCardDetails } from './SponsorSaga'
 import { fetchCampaigns } from './CampaignSaga'
 import { fetchMasterLists } from './MasterListSaga'
 
@@ -59,5 +59,7 @@ export default function* root() {
     takeLatest(RecipeTypes.FETCH_SHARED_RECIPE, fetchSharedRecipe),
     // Create shared recipe
     takeLatest(RecipeTypes.CREATE_SHARED_RECIPE, createSharedRecipe),
+    // Fetch sponsor details
+    takeLatest(SponsorTypes.FETCH_SPONSOR_CARD_DETAILS, fetchSponsorCardDetails),
   ])
 }
