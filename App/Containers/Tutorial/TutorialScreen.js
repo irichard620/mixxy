@@ -15,6 +15,8 @@ import * as constants from '../../Config/constants'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 import ModalContentCreateShare from '../../Components/ModalContentCreateShare'
 import BottomBar from '../../Components/BottomBar'
+import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
+import UserActions from '../../Stores/User/Actions'
 
 
 class TutorialScreen extends React.Component {
@@ -27,7 +29,6 @@ class TutorialScreen extends React.Component {
       drinkAmount: 1,
       visibleModal: false,
       modalType: '',
-      isShareModal: false,
       isSharedPreviously: false,
       deleteModal: false,
     };
@@ -43,15 +44,22 @@ class TutorialScreen extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
       if (this.props.persistRecipeErrorMessage && this.props.isFocused) {
-        Alert.alert(
-          'Error saving recipe',
-          `${this.props.persistRecipeErrorMessage}`,
-          [
-            {
-              text: 'OK'
-            },
-          ],
-        );
+        if (this.props.persistRecipeErrorMessage === constants.MIXXY_PRO_LIBRARY_FULL) {
+          this.setState({
+            visibleModal: true,
+            modalType: constants.MODAL_PAYWALL,
+          })
+        } else {
+          Alert.alert(
+            'Error saving recipe',
+            `${this.props.persistRecipeErrorMessage}`,
+            [
+              {
+                text: 'OK'
+              },
+            ],
+          );
+        }
       } else {
         if (this.props.recipeIsExternal) {
           // Say recipe saved and close screen
@@ -91,17 +99,52 @@ class TutorialScreen extends React.Component {
       if (this.props.sharedRecipe) {
         this.setState({
           visibleModal: true,
-          isShareModal: true,
+          modalType: constants.MODAL_SHARED_RECIPE,
           isSharedPreviously: true,
         })
       } else {
         this.setState({
           visibleModal: true,
-          isShareModal: true,
+          modalType: constants.MODAL_SHARED_RECIPE,
           isSharedPreviously: false,
         })
       }
     }
+  }
+
+  onPurchaseMixxyClicked = () => {
+    const { requestPurchaseIAP } = this.props
+    Alert.alert(
+      'Buy Mixxy Pro',
+      'Would you like to purchase the pro version of Mixxy? This will give you ' +
+      'the ability to create and edit recipes, and will unlock unlimited recipe storage.',
+      [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Buy',
+          onPress: () => {
+            requestPurchaseIAP()
+          },
+        },
+      ]
+    )
+  }
+
+  onRestorePurchaseClicked = () => {
+    const { restoreIAP } = this.props
+    Alert.alert('Restore Mixxy Pro', 'Would you like to restore the pro version of Mixxy?', [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Restore',
+        onPress: () => {
+          restoreIAP()
+        },
+      },
+    ])
   }
 
 
@@ -158,32 +201,28 @@ class TutorialScreen extends React.Component {
   onSaveClick = () => {
     // Call persist recipe
     const { recipe } = this.state
-    this.props.persistRecipe(recipe, true)
+    const { user } = this.props
+    this.props.persistRecipe(recipe, true, user.premium)
   }
 
   onCloseModalClick = () => {
     // Close and clear modal
     this.setState({
       visibleModal: false,
-      isShareModal: false,
+      modalType: '',
     })
   }
 
   onPressItem = (item) => {
-    const { deleteRecipe, fetchSharedRecipe, user, favoriteRecipe, unfavoriteRecipe } = this.props;
+    const { deleteRecipe, fetchSharedRecipe, user } = this.props;
     const { recipe, deleteModal } = this.state;
 
     if (item === constants.RECIPE_MENU_EDIT) {
       if (!user.premium) {
-        Alert.alert(
-          'Mixxy Pro Feature',
-          'The ability to edit recipes is a Mixxy Pro feature.',
-          [
-            {
-              text: 'OK',
-            },
-          ]
-        )
+        this.setState({
+          visibleModal: true,
+          modalType: constants.MODAL_PAYWALL,
+        })
         return
       }
       // Go to edit page
@@ -249,8 +288,7 @@ class TutorialScreen extends React.Component {
   onDotsClick = () => {
     this.setState({
       visibleModal: true,
-      modalType: constants.MODAL_TYPE_BOTTOM,
-      isShareModal: false,
+      modalType: constants.MODAL_RECIPE_MENU,
       deleteModal: false,
     })
   }
@@ -303,10 +341,10 @@ class TutorialScreen extends React.Component {
         <CustomModal
           visibleModal={visibleModal}
           onCloseClick={this.onCloseModalClick}
-          type={modalType}
+          type={constants.MODAL_TYPE_BOTTOM}
           darkMode={darkMode}
         >
-          {!isShareModal
+          {modalType === constants.MODAL_RECIPE_MENU
           && (
             <ModalContentBottom
               onPressItem={this.onPressItem}
@@ -317,7 +355,7 @@ class TutorialScreen extends React.Component {
               darkMode={darkMode}
             />
           )}
-          {isShareModal
+          {modalType === constants.MODAL_SHARED_RECIPE
           && (
             <ModalContentCreateShare
               sharedRecipe={recipe}
@@ -326,6 +364,14 @@ class TutorialScreen extends React.Component {
               createSharedRecipeIsLoading={createSharedRecipeIsLoading}
               darkMode={darkMode}
               isNew={!isSharedPreviously}
+            />
+          )}
+          {modalType === constants.MODAL_PAYWALL
+          && (
+            <ModalContentMixxyPro
+              darkMode={darkMode}
+              onMixxyProClick={this.onPurchaseMixxyClicked}
+              onRestoreClick={this.onRestorePurchaseClicked}
             />
           )}
         </CustomModal>
@@ -353,12 +399,14 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  persistRecipe: (recipeToSave, isExternal) => dispatch(RecipeActions.persistRecipe(recipeToSave, isExternal)),
+  persistRecipe: (recipeToSave, isExternal, isPremium) => dispatch(RecipeActions.persistRecipe(recipeToSave, isExternal, isPremium)),
   deleteRecipe: (recipeId) => dispatch(RecipeActions.deleteRecipe(recipeId)),
   favoriteRecipe: (recipeId) => dispatch(RecipeActions.favoriteRecipe(recipeId)),
   unfavoriteRecipe: (recipeId) => dispatch(RecipeActions.unfavoriteRecipe(recipeId)),
   createSharedRecipe: (recipe) => dispatch(RecipeActions.createSharedRecipe(recipe)),
   fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
+  requestPurchaseIAP: () => dispatch(UserActions.requestPurchaseIAP()),
+  restoreIAP: () => dispatch(UserActions.restoreIAP()),
 })
 
 export default withNavigationFocus(connect(

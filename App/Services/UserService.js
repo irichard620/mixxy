@@ -22,7 +22,6 @@ function fetchUser() {
         userDetails.premium = false
       }
       storage.setItem('user', JSON.stringify(userDetails))
-      userDetails.premium = true
       userDetails.viewedTutorial = viewedTutorial
       return userDetails
     })

@@ -22,7 +22,7 @@ const { Types, Creators } = createActions({
   // Successfully restored
   restoreIAPSuccess: ['userDetails'],
   // Failed to restore
-  restoreIAPFailure: ['userDetails', 'errorMessage'],
+  restoreIAPFailure: ['errorMessage'],
   // Purchase IAP
   requestPurchaseIAP: null,
   // Loading

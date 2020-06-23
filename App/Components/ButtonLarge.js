@@ -13,6 +13,9 @@ export default function ButtonLarge(props) {
     buttonWidth,
     buttonHeight,
     isPrimary,
+    colorOverride,
+    textColorOverride,
+    hideBorder,
     darkMode,
   } = props
 
@@ -38,17 +41,27 @@ export default function ButtonLarge(props) {
   if (buttonHeight) {
     customStyle.height = buttonHeight
   }
+  if (colorOverride) {
+    customStyle.backgroundColor = colorOverride
+  }
+  if (hideBorder) {
+    customStyle.borderWidth = 0
+  }
 
   // Text style
   let textStyle = buttonStyles.primaryText
   if (!isPrimary) {
     textStyle = buttonStyles.secondaryText
   }
+  let customTextStyle = {}
+  if (textColorOverride) {
+    customTextStyle.color = textColorOverride
+  }
 
   return (
     <TouchableOpacity style={[baseStyle, customStyle]} onPress={onButtonClick} disabled={disabled}>
       <View>
-        <Text style={textStyle}>{title}</Text>
+        <Text style={[textStyle, customTextStyle]}>{title}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -57,9 +70,12 @@ export default function ButtonLarge(props) {
 ButtonLarge.propTypes = {
   margin: PropTypes.array,
   title: PropTypes.string,
+  colorOverride: PropTypes.string,
+  textColorOverride: PropTypes.string,
   onButtonClick: PropTypes.func,
   darkMode: PropTypes.bool,
   disabled: PropTypes.bool,
+  hideBorder: PropTypes.bool,
   buttonWidth: PropTypes.number,
   buttonHeight: PropTypes.number,
   isPrimary: PropTypes.bool,

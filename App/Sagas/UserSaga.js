@@ -26,7 +26,7 @@ export function* restoreIAP() {
   if (!results[1]) {
     yield put(UserActions.restoreIAPSuccess(results[0]))
   } else {
-    yield put(UserActions.restoreIAPFailure(results[0], results[1]))
+    yield put(UserActions.restoreIAPFailure(results[1]))
   }
 }
 

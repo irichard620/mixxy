@@ -57,7 +57,7 @@ export const restoreIAPSuccess = (state, { userDetails }) => ({
   restoreIAPErrorMessage: null,
 })
 
-export const restoreIAPFailure = (state, { userDetails, errorMessage }) => {
+export const restoreIAPFailure = (state, { errorMessage }) => {
   return {
     ...state,
     restoreIAPIsLoading: false,

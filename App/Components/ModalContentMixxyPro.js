@@ -8,7 +8,7 @@ import Images from '../Theme/Images'
 import ButtonLarge from './ButtonLarge'
 
 export default function ModalContentMixxyPro(props) {
-  const { darkMode, onMixxyProClick } = props
+  const { darkMode, onMixxyProClick, onRestoreClick } = props
 
   const modalStyles = getModalStylesheet(darkMode)
 
@@ -21,10 +21,19 @@ export default function ModalContentMixxyPro(props) {
         }
       </Text>
       <ButtonLarge
-        title={'Get Mixxy Pro'}
-        margin={[0, 16, 0, 16]}
+        title={'Get Mixxy Pro ($4.99)'}
+        margin={[0, 16, 2, 16]}
         isPrimary={true}
         onButtonClick={onMixxyProClick}
+        colorOverride={Colors.mixxyProYellow}
+      />
+      <ButtonLarge
+        title={'Restore Previous Purchase'}
+        margin={[0, 16, 2, 16]}
+        isPrimary={false}
+        onButtonClick={onRestoreClick}
+        textColorOverride={darkMode ? Colors.text2Dark : Colors.text2Light}
+        hideBorder={true}
       />
     </ModalBottomOutline>
   )
@@ -33,6 +42,7 @@ export default function ModalContentMixxyPro(props) {
 ModalContentMixxyPro.propTypes = {
   darkMode: PropTypes.bool,
   onMixxyProClick: PropTypes.func,
+  onRestoreClick: PropTypes.func,
 }
 
 function getModalStylesheet(darkMode) {
@@ -41,7 +51,7 @@ function getModalStylesheet(darkMode) {
       alignSelf: 'flex-start',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
       ...Fonts.body1,
-      marginBottom: 16,
+      marginBottom: 24,
       marginLeft: 16,
       marginRight: 16,
     },
@@ -50,6 +60,7 @@ function getModalStylesheet(darkMode) {
       marginBottom: 24,
       marginTop: 24,
       resizeMode: 'contain',
+      alignSelf: 'center',
     },
   })
 }

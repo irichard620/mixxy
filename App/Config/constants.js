@@ -126,13 +126,6 @@ export const CLASSIFICATION_ALCOHOLIC = 'Alcoholic'
 export const CLASSIFICATION_NON_ALCOHOLIC = 'Non-alcoholic'
 export const CLASSIFICATION_CULINARY = 'Culinary'
 export const CLASSIFICATION_ICE = 'Ice'
-// export const classificationToAmountTypes = {
-//   [CLASSIFICATION_ALCOHOLIC]: ['', ...amountTypesLiquid],
-//   [CLASSIFICATION_NON_ALCOHOLIC]: ['', ...amountTypesLiquid],
-//   [CLASSIFICATION_CULINARY]: ['', ...amountTypesNonLiquid],
-//   [CLASSIFICATION_ICE]: ['', AMOUNT_TYPE_PIECE],
-//   '': ['', ...allAmountTypes],
-// }
 
 // Drink types
 export const DRINK_TYPE_COCKTAIL = 'Cocktail'
@@ -204,6 +197,13 @@ export const MODAL_ADD_STEP = 'Add Step'
 export const MODAL_INGREDIENT_UNIT = 'Set Ingredient Unit'
 export const MODAL_BUILDER_NAV = 'Edit Recipe Info'
 export const MODAL_SELECT_INGREDIENTS = 'Select Ingredients'
+export const MODAL_SHARED_RECIPE = 'Shared Recipe'
+export const MODAL_PAYWALL = 'Paywall'
+export const MODAL_RECIPE_MENU = 'Recipe Settings'
+
+// Errors
+export const MIXXY_PRO_LIBRARY_FULL =
+  'For unlimited recipe storage, become a Mixxy Pro user from the Settings menu.'
 
 // recipe menu options
 export const RECIPE_MENU_EDIT = 'Edit recipe'

@@ -8,11 +8,10 @@ import { connect } from 'react-redux'
 import * as constants from '../../Config/constants'
 import Detail from '../../Components/Detail'
 import Images from '../../Theme/Images'
-import UserActions from '../../Stores/User/Actions'
 import NavigationService from '../../Services/NavigationService'
 
 function HomeSettingsTab(props) {
-  const { user } = props
+  const { user, onMixxyProClick, onRestoreClick } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
@@ -65,41 +64,6 @@ function HomeSettingsTab(props) {
     }
   }
 
-  const onPurchaseMixxyClicked = () => {
-    const { requestPurchaseIAP } = props
-    Alert.alert(
-      'Buy Mixxy Pro',
-      'Would you like to purchase the pro version of Mixxy? This will give you ' +
-        'the ability to create and edit recipes, and will unlock unlimited recipe storage.',
-      [
-        {
-          text: 'Cancel',
-        },
-        {
-          text: 'Buy',
-          onPress: () => {
-            requestPurchaseIAP()
-          },
-        },
-      ]
-    )
-  }
-
-  const onRestorePurchaseClicked = () => {
-    const { restoreIAP } = props
-    Alert.alert('Restore Mixxy Pro', 'Would you like to restore the pro version of Mixxy?', [
-      {
-        text: 'Cancel',
-      },
-      {
-        text: 'Restore',
-        onPress: () => {
-          restoreIAP()
-        },
-      },
-    ])
-  }
-
   const renderOption = (option) => {
     return (
       <Detail
@@ -140,7 +104,7 @@ function HomeSettingsTab(props) {
         {!user.premium && (
           <TouchableOpacity
             style={homeStyles.settingsProButtonOutline}
-            onPress={onPurchaseMixxyClicked}
+            onPress={onMixxyProClick}
           >
             <Text style={homeStyles.settingsProButton1Text}>{'Get Mixxy Pro'}</Text>
           </TouchableOpacity>
@@ -149,7 +113,7 @@ function HomeSettingsTab(props) {
         {!user.premium && (
           <TouchableOpacity
             style={homeStyles.settingsProButtonOutline}
-            onPress={onRestorePurchaseClicked}
+            onPress={onRestoreClick}
           >
             <Text style={homeStyles.settingsProButton2Text}>{'Restore Purchase'}</Text>
           </TouchableOpacity>
@@ -164,17 +128,14 @@ function HomeSettingsTab(props) {
 
 HomeSettingsTab.propTypes = {
   user: PropTypes.object,
-  requestPurchaseIAP: PropTypes.func,
-  restoreIAP: PropTypes.func,
+  onMixxyProClick: PropTypes.func,
+  onRestoreClick: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
   user: state.user.user,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  requestPurchaseIAP: () => dispatch(UserActions.requestPurchaseIAP()),
-  restoreIAP: () => dispatch(UserActions.restoreIAP()),
-})
+const mapDispatchToProps = (dispatch) => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeSettingsTab)

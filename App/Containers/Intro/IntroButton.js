@@ -9,7 +9,7 @@ export default function IntroButton(props) {
   let scaleValue = new Animated.Value(0)
   const cardScale = scaleValue.interpolate({
     inputRange: [0, 0.5, 1],
-    outputRange: [1, 0.98, 0.96],
+    outputRange: [1, 0.925, 0.85],
   })
   let buttonWidthStyle = {
     width: 56,

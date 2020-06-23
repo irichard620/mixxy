@@ -6,10 +6,12 @@ import camelcaseKeys from 'camelcase-keys'
 import snakeCaseKeys from 'snakecase-keys'
 import uuidv4 from 'uuid/v4'
 import { Recipe } from '../Storage/Recipe'
+import * as constants from '../Config/constants'
 
 function persistRecipe(params) {
   const recipeToSave = params.recipeToSave
   const isExternal = params.isExternal
+  const isPremium = params.isPremium
   return storage
     .getItem('recipes')
     .then((recipes) => {
@@ -31,6 +33,8 @@ function persistRecipe(params) {
       if (duplicateName) {
         // Handle duplicate name error
         return [[], 'A recipe with this name already exists', false]
+      } else if (!found && !isPremium && r.length >= 5) {
+        return [[], constants.MIXXY_PRO_LIBRARY_FULL, false]
       } else {
         if (!found) {
           // Assign new ID if external

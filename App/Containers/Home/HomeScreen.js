@@ -3,7 +3,7 @@ import { Dimensions, Image, Alert, SafeAreaView } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { withNavigationFocus } from 'react-navigation'
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
+import { TabView, TabBar } from 'react-native-tab-view'
 import RNIap, {
   purchaseErrorListener,
   purchaseUpdatedListener
@@ -22,6 +22,7 @@ import DynamicLinkListener from '../../Components/DynamicLinkListener'
 import CustomModal from '../../Components/CustomModal'
 import ModalContentSharedRecipe from '../../Components/ModalContentSharedRecipe'
 import * as constants from '../../Config/constants'
+import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
 
 
 const initialLayout = { width: Dimensions.get('window').width };
@@ -30,11 +31,6 @@ const routes = [
   { key: 'library', title: 'Library' },
   { key: 'settings', title: 'Settings' }
 ]
-const renderScene = SceneMap({
-  discover: HomeDiscoverTab,
-  library: HomeLibraryTab,
-  settings: HomeSettingsTab,
-});
 
 class HomeScreen extends React.Component {
   purchaseUpdatePro = null;
@@ -46,7 +42,7 @@ class HomeScreen extends React.Component {
     this.state = {
       index: 0,
       visibleModal: false,
-      modalType: constants.MODAL_TYPE_BOTTOM,
+      modalType: '',
     };
   }
 
@@ -125,6 +121,41 @@ class HomeScreen extends React.Component {
     }
   }
 
+  onPurchaseMixxyClicked = () => {
+    const { requestPurchaseIAP } = this.props
+    Alert.alert(
+      'Buy Mixxy Pro',
+      'Would you like to purchase the pro version of Mixxy? This will give you ' +
+      'the ability to create and edit recipes, and will unlock unlimited recipe storage.',
+      [
+        {
+          text: 'Cancel',
+        },
+        {
+          text: 'Buy',
+          onPress: () => {
+            requestPurchaseIAP()
+          },
+        },
+      ]
+    )
+  }
+
+  onRestorePurchaseClicked = () => {
+    const { restoreIAP } = this.props
+    Alert.alert('Restore Mixxy Pro', 'Would you like to restore the pro version of Mixxy?', [
+      {
+        text: 'Cancel',
+      },
+      {
+        text: 'Restore',
+        onPress: () => {
+          restoreIAP()
+        },
+      },
+    ])
+  }
+
   handleDynamicLink = (link) => {
     if (!link) {
       return
@@ -136,7 +167,8 @@ class HomeScreen extends React.Component {
       const recipeId = linkPortions[3]
       this.props.fetchSharedRecipe(recipeId)
       this.setState({
-        visibleModal: true
+        visibleModal: true,
+        modalType: constants.MODAL_SHARED_RECIPE
       })
     } else if (linkPortions.length === 5) {
       // Sponsor
@@ -159,13 +191,22 @@ class HomeScreen extends React.Component {
     })
   }
 
-  onBuilderClick = () => {
+  onNewRecipeClick = () => {
+    const { user } = this.props
+    if (!user.premium) {
+      this.setState({
+        visibleModal: true,
+        modalType: constants.MODAL_PAYWALL,
+      })
+      return
+    }
     NavigationService.navigate('BuilderScreen', {})
   }
 
   onCloseModalClick = () => {
     this.setState({
-      visibleModal: false
+      visibleModal: false,
+      modalType: '',
     })
   }
 
@@ -216,6 +257,17 @@ class HomeScreen extends React.Component {
     }
   }
 
+  renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'discover':
+        return <HomeDiscoverTab />;
+      case 'library':
+        return <HomeLibraryTab onNewRecipeClick={this.onNewRecipeClick} />;
+      default:
+        return <HomeSettingsTab onMixxyProClick={this.onPurchaseMixxyClicked} onRestoreClick={this.onRestorePurchaseClicked} />;
+    }
+  }
+
   render() {
     const { darkMode, fetchSharedRecipeIsLoading, sharedRecipe } = this.props;
     const { index, visibleModal, modalType } = this.state;
@@ -227,7 +279,7 @@ class HomeScreen extends React.Component {
         <TabView
           swipeEnabled={false}
           navigationState={{ index, routes }}
-          renderScene={renderScene}
+          renderScene={this.renderScene}
           onIndexChange={(idx) => this.setState({ index: idx })}
           initialLayout={initialLayout}
           tabBarPosition={'bottom'}
@@ -247,16 +299,25 @@ class HomeScreen extends React.Component {
         <CustomModal
           visibleModal={visibleModal}
           onCloseClick={this.onCloseModalClick}
-          type={modalType}
+          type={constants.MODAL_TYPE_BOTTOM}
           darkMode={darkMode}
         >
-          <ModalContentSharedRecipe
-            onViewClick={this.onSharedRecipeClick}
-            onCancelClick={this.onCloseModalClick}
-            fetchSharedRecipeIsLoading={fetchSharedRecipeIsLoading}
-            sharedRecipe={sharedRecipe}
-            darkMode={darkMode}
-          />
+          {modalType === constants.MODAL_SHARED_RECIPE ? (
+            <ModalContentSharedRecipe
+              onViewClick={this.onSharedRecipeClick}
+              onCancelClick={this.onCloseModalClick}
+              fetchSharedRecipeIsLoading={fetchSharedRecipeIsLoading}
+              sharedRecipe={sharedRecipe}
+              darkMode={darkMode}
+            />
+          ) : (
+            <ModalContentMixxyPro
+              darkMode={darkMode}
+              onMixxyProClick={this.onPurchaseMixxyClicked}
+              onRestoreClick={this.onRestorePurchaseClicked}
+            />
+          )}
+
         </CustomModal>
         <DynamicLinkListener handleDynamicLink={this.handleDynamicLink} />
       </SafeAreaView>
@@ -282,6 +343,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   upgradeMixxyPro: (purchase) => dispatch(UserActions.upgradeIAP(purchase)),
+  requestPurchaseIAP: () => dispatch(UserActions.requestPurchaseIAP()),
+  restoreIAP: () => dispatch(UserActions.restoreIAP()),
   fetchRecipes: () => dispatch(RecipeActions.fetchRecipes()),
   fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
 })

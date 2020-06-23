@@ -2,7 +2,7 @@ import { createActions } from 'reduxsauce'
 
 const { Types, Creators } = createActions({
   // Save recipe
-  persistRecipe: ['recipeToSave', 'isExternal'],
+  persistRecipe: ['recipeToSave', 'isExternal', 'isPremium'],
   // The operation has started and is loading
   persistRecipeLoading: null,
   // recipe saved

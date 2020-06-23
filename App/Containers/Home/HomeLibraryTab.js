@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { FlatList, Text, View, Alert } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import { useDarkMode } from 'react-native-dark-mode'
@@ -10,28 +10,12 @@ import NavigationService from '../../Services/NavigationService'
 import HomeLibraryMenuButtons from './HomeLibraryMenuButtons'
 
 function HomeLibraryTab(props) {
-  const { recipes, user } = props
+  const { recipes, onNewRecipeClick } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
 
   const [selected, setSelected] = useState(0)
-
-  const onNewRecipeClick = () => {
-    if (!user.premium) {
-      Alert.alert(
-        'Mixxy Pro Feature',
-        'The ability to create custom recipes is a Mixxy Pro feature.',
-        [
-          {
-            text: 'OK',
-          },
-        ]
-      )
-      return
-    }
-    NavigationService.navigate('BuilderScreen', {})
-  }
 
   const listHeader = <Text style={homeStyles.topHeaderLibrary}>Library</Text>
 
@@ -105,7 +89,7 @@ function HomeLibraryTab(props) {
 
 HomeLibraryTab.propTypes = {
   recipes: PropTypes.array,
-  user: PropTypes.object,
+  onNewRecipeClick: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
