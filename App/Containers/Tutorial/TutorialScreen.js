@@ -42,7 +42,10 @@ class TutorialScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
+    if (!prevProps.user.premium && this.props.user.premium) {
+      this.onCloseModalClick()
+      return
+    } if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
       if (this.props.persistRecipeErrorMessage && this.props.isFocused) {
         if (this.props.persistRecipeErrorMessage === constants.MIXXY_PRO_LIBRARY_FULL) {
           this.setState({

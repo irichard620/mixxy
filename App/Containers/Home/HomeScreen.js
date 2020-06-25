@@ -83,6 +83,13 @@ class HomeScreen extends React.Component {
       } else if (Platform.OS === 'android') {
         RNIap.acknowledgePurchaseAndroid(nextUser.purchase.purchaseToken);
       }
+      if (!prevProps.user.user.premium && nextUser.user.premium) {
+        this.setState({
+          visibleModal: false,
+          modalType: '',
+        })
+      }
+      return
     } if (nextUser && prevProps.restoreIAPIsLoading && !this.props.restoreIAPIsLoading) {
       // Update user
       if (!nextUser.user.premium) {

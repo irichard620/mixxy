@@ -7,7 +7,7 @@ import Images from '../Theme/Images'
 import * as constants from '../Config/constants'
 
 export default function ImageListItem(props) {
-  const { title, onClick, darkMode, disabled } = props
+  const { title, onClick, darkMode, disabled, disabledText } = props
 
   const listItemStyles = getListItemStylesheet(darkMode)
 
@@ -15,6 +15,8 @@ export default function ImageListItem(props) {
   const titleColorStyle = {}
   if (title === constants.RECIPE_MENU_DELETE) {
     titleColorStyle.color = Colors.red1
+  } else if (disabled) {
+    titleColorStyle.color = darkMode ? Colors.text2Dark : Colors.text2Light
   }
 
   let imageToUse = null
@@ -38,6 +40,11 @@ export default function ImageListItem(props) {
     imageToUse = darkMode ? Images.modalUnfavoriteDark : Images.modalUnfavoriteLight
   }
 
+  let titleToShow = title
+  if (disabled && disabledText) {
+    titleToShow = disabledText
+  }
+
   return (
     <TouchableOpacity
       style={listItemStyles.container}
@@ -46,7 +53,7 @@ export default function ImageListItem(props) {
     >
       <View style={listItemStyles.textContainer}>
         {imageToUse && <Image source={imageToUse} style={listItemStyles.icon} />}
-        <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{title}</Text>
+        <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{titleToShow}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -57,6 +64,7 @@ ImageListItem.propTypes = {
   onClick: PropTypes.func,
   title: PropTypes.string,
   disabled: PropTypes.bool,
+  disabledText: PropTypes.string,
 }
 
 function getListItemStylesheet(darkMode) {

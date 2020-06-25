@@ -54,12 +54,12 @@ export default function ModalContentCreateShare(props) {
           title={constants.RECIPE_MENU_SHARE}
           onClick={onShareRecipe}
           disabled={createSharedRecipeIsLoading}
+          disabledText={'Creating share link...'}
         />
         <ImageListItem
           darkMode={darkMode}
           title={constants.RECIPE_MENU_CANCEL}
           onClick={onCancelClick}
-          disabled={createSharedRecipeIsLoading}
         />
       </View>
     </ModalBottomOutline>

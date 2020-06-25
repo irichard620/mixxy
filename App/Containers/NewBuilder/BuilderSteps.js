@@ -31,6 +31,7 @@ export default function BuilderSteps(props) {
     initialFocusState.push(false)
   }
   const [isFocused, setIsFocused] = useState(initialFocusState)
+  const [scrollOffsetTable, setScrollOffsetTable] = useState(0)
 
   const listHeader = (
     <View>
@@ -86,7 +87,11 @@ export default function BuilderSteps(props) {
           contentContainerStyle={{ flexGrow: 1 }}
           style={{ width: '100%' }}
           data={steps}
-          renderItem={({ item, index, drag, isActive }) => (
+          contentOffset={{ x: 0, y: scrollOffsetTable }}
+          onScrollEndDrag={(event) => {
+            setScrollOffsetTable(event.nativeEvent.contentOffset.y)
+          }}
+          renderItem={({ item, index, drag }) => (
             <TouchableOpacity
               style={builderStyles.ingredientRow}
               onLongPress={drag}
@@ -119,6 +124,10 @@ export default function BuilderSteps(props) {
         extraScrollHeight={100}
         enableAutomaticScroll={true}
         style={builderStyles.scrollView}
+        contentOffset={{ x: 0, y: scrollOffsetTable }}
+        onScrollEndDrag={(event) => {
+          setScrollOffsetTable(event.nativeEvent.contentOffset.y)
+        }}
       >
         {listHeader}
         {steps.map((step, idx) => (
