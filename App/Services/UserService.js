@@ -42,12 +42,12 @@ export async function requestPurchaseIAP() {
   }
 }
 
-export function upgradeIAP(purchase) {
+export function upgradeIAP(params) {
   return storage.getItem('user').then((user) => {
     const userDetails = user ? JSON.parse(user) : {}
     userDetails.premium = true
     storage.setItem('user', JSON.stringify(userDetails))
-    return [userDetails, purchase]
+    return [userDetails, params.purchase]
   })
 }
 

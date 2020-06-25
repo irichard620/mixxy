@@ -14,9 +14,9 @@ export function* fetchUser() {
   }
 }
 
-export function* upgradeIAP() {
+export function* upgradeIAP(params) {
   yield put(UserActions.upgradeIAPLoading())
-  const results = yield call(userService.upgradeIAP)
+  const results = yield call(userService.upgradeIAP, params)
   yield put(UserActions.upgradeIAPSuccess(results[0], results[1]))
 }
 

@@ -26,6 +26,7 @@ export default function ModalContentMixxyPro(props) {
         isPrimary={true}
         onButtonClick={onMixxyProClick}
         colorOverride={Colors.mixxyProYellow}
+        darkMode={darkMode}
       />
       <ButtonLarge
         title={'Restore Previous Purchase'}
@@ -34,6 +35,7 @@ export default function ModalContentMixxyPro(props) {
         onButtonClick={onRestoreClick}
         textColorOverride={darkMode ? Colors.text2Dark : Colors.text2Light}
         hideBorder={true}
+        darkMode={darkMode}
       />
     </ModalBottomOutline>
   )

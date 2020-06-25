@@ -85,7 +85,7 @@ class HomeScreen extends React.Component {
       }
     } if (nextUser && prevProps.restoreIAPIsLoading && !this.props.restoreIAPIsLoading) {
       // Update user
-      if (!nextUser.premium) {
+      if (!nextUser.user.premium) {
         Alert.alert(
           'Problem restoring Mixxy Pro',
           'There was an issue restoring your Mixxy Pro. '
@@ -193,7 +193,7 @@ class HomeScreen extends React.Component {
 
   onNewRecipeClick = () => {
     const { user } = this.props
-    if (!user.premium) {
+    if (!user.user.premium) {
       this.setState({
         visibleModal: true,
         modalType: constants.MODAL_PAYWALL,
@@ -337,7 +337,7 @@ const mapStateToProps = (state) => ({
   sharedRecipe: state.recipes.sharedRecipe,
   upgradeIAPIsLoading: state.user.upgradeIAPIsLoading,
   restoreIAPIsLoading: state.user.restoreIAPIsLoading,
-  user: state.user.user,
+  user: state.user,
   restoreIAPErrorMessage: state.user.restoreIAPErrorMessage,
 })
 
