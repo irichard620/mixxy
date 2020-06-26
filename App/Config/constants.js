@@ -30,6 +30,10 @@ export const SERVING_GLASS_FLUTE = 'Flute Glass'
 export const SERVING_GLASS_MARGARITA = 'Margarita Glass'
 export const SERVING_GLASS_SHOT = 'Shot Glass'
 export const SERVING_GLASS_PITCHER = 'Pitcher'
+export const SERVING_GLASS_PINT = 'Pint glass'
+export const SERVING_GLASS_WINE = 'Wine glass'
+export const SERVING_GLASS_COUPE = 'Coupe glass'
+export const SERVING_GLASS_COPPER_MUG = 'Copper mug'
 export const servingGlasses = [
   SERVING_GLASS_COCKTAIL,
   SERVING_GLASS_TALL,
@@ -38,22 +42,42 @@ export const servingGlasses = [
   SERVING_GLASS_MARGARITA,
   SERVING_GLASS_SHOT,
   SERVING_GLASS_PITCHER,
+  SERVING_GLASS_PINT,
+  SERVING_GLASS_WINE,
+  SERVING_GLASS_COUPE,
+  SERVING_GLASS_COPPER_MUG,
 ]
-export const servingGlassDescriptions = {
-  [SERVING_GLASS_COCKTAIL]:
-    'Also known as the Martini glass, it’s an iconic piece of glassware perfect for aromas and balancing garnishes.',
-  [SERVING_GLASS_TALL]:
-    'A tall, narrow glass like a Collins or Highball (the slightly shorter variant). Great for fizzy, mixer-heavy drinks.',
-  [SERVING_GLASS_SHORT]:
-    'Also known as a rocks or lowball glass, this short glass is for classic cocktails or liquor served neat or on ice.',
-  [SERVING_GLASS_FLUTE]:
-    'The skinny flute glass is ideal for sparkling wine and carbonated drinks like mimosas and spritzers.',
-  [SERVING_GLASS_MARGARITA]:
-    'The margarita glass is a stepped variant of the cocktail glass with more room for ingredients and a wide rim for salt.',
-  [SERVING_GLASS_SHOT]:
-    'The essential shot glass isn’t just for straight liquor. Build miniature cocktail “shooters” perfect for parties.',
-  [SERVING_GLASS_PITCHER]:
-    'A pitcher is a great way to make batch drinks fit for a crowd without worrying about preparing individual drinks.',
+export const SERVING_GLASS_DISPLAY_COCKTAIL = 'Martini glass'
+export const SERVING_GLASS_DISPLAY_TALL = 'Highball glass'
+export const SERVING_GLASS_DISPLAY_SHORT = 'Rocks glass'
+export const SERVING_GLASS_DISPLAY_FLUTE = 'Flute glass'
+export const SERVING_GLASS_DISPLAY_MARGARITA = 'Margarita glass'
+export const SERVING_GLASS_DISPLAY_SHOT = 'Shot glass'
+export const servingGlassDisplay = {
+  [SERVING_GLASS_COCKTAIL]: SERVING_GLASS_DISPLAY_COCKTAIL,
+  [SERVING_GLASS_TALL]: SERVING_GLASS_DISPLAY_TALL,
+  [SERVING_GLASS_SHORT]: SERVING_GLASS_DISPLAY_SHORT,
+  [SERVING_GLASS_FLUTE]: SERVING_GLASS_DISPLAY_FLUTE,
+  [SERVING_GLASS_MARGARITA]: SERVING_GLASS_DISPLAY_MARGARITA,
+  [SERVING_GLASS_SHOT]: SERVING_GLASS_DISPLAY_SHOT,
+  [SERVING_GLASS_PITCHER]: SERVING_GLASS_PITCHER,
+  [SERVING_GLASS_PINT]: SERVING_GLASS_PINT,
+  [SERVING_GLASS_WINE]: SERVING_GLASS_WINE,
+  [SERVING_GLASS_COUPE]: SERVING_GLASS_COUPE,
+  [SERVING_GLASS_COPPER_MUG]: SERVING_GLASS_COPPER_MUG,
+}
+export const servingGlassRaw = {
+  [SERVING_GLASS_DISPLAY_COCKTAIL]: SERVING_GLASS_COCKTAIL,
+  [SERVING_GLASS_DISPLAY_TALL]: SERVING_GLASS_TALL,
+  [SERVING_GLASS_DISPLAY_SHORT]: SERVING_GLASS_SHORT,
+  [SERVING_GLASS_DISPLAY_FLUTE]: SERVING_GLASS_FLUTE,
+  [SERVING_GLASS_DISPLAY_MARGARITA]: SERVING_GLASS_MARGARITA,
+  [SERVING_GLASS_DISPLAY_SHOT]: SERVING_GLASS_SHOT,
+  [SERVING_GLASS_PITCHER]: SERVING_GLASS_PITCHER,
+  [SERVING_GLASS_PINT]: SERVING_GLASS_PINT,
+  [SERVING_GLASS_WINE]: SERVING_GLASS_WINE,
+  [SERVING_GLASS_COUPE]: SERVING_GLASS_COUPE,
+  [SERVING_GLASS_COPPER_MUG]: SERVING_GLASS_COPPER_MUG,
 }
 
 // Ingredient Vessels

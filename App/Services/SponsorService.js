@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Config } from '../Config'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
-import { Recipe } from '../Storage/Recipe'
+import analytics from '@react-native-firebase/analytics'
 
 const sponsorCardApiClient = axios.create({
   baseURL: `${Config.API_URL}/mixxy/sponsor-cards`,
@@ -18,7 +18,13 @@ function fetchSponsorCards() {
     .get()
     .then((response) => {
       if (in200s(response.status)) {
-        return camelcaseKeys(response.data)
+        const sponsorCards = camelcaseKeys(response.data)
+        for (let i = 0; i < sponsorCards.length; i++) {
+          analytics().logEvent('sponsor_impression', {
+            sponsor_id: sponsorCards[i].cardId,
+          })
+        }
+        return sponsorCards
       }
 
       return null

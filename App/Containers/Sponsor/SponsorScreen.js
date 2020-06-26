@@ -13,6 +13,7 @@ import SponsorActions from '../../Stores/Sponsor/Actions'
 import RecipeCard from '../../Components/RecipeCard'
 import Images from '../../Theme/Images'
 import Button from '../../Components/Button'
+import analytics from '@react-native-firebase/analytics'
 
 class SponsorScreen extends React.Component {
   constructor(props) {
@@ -29,10 +30,16 @@ class SponsorScreen extends React.Component {
       // Already have sponsor passed
       this.props.fetchRemoteRecipes(sponsor.cardId)
       this.setState({ sponsor: sponsor })
+      analytics().logEvent('sponsor_page_view', {
+        sponsor_id: sponsor.cardId,
+      })
     } else {
       const sponsorCardId = navigation.getParam('sponsorCardId', 'none')
       this.props.fetchSponsorCardDetails(sponsorCardId)
       this.props.fetchRemoteRecipes(sponsorCardId)
+      analytics().logEvent('sponsor_page_view', {
+        sponsor_id: sponsorCardId,
+      })
     }
   }
 

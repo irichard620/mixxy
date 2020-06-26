@@ -34,6 +34,14 @@ class TutorialHome extends Component {
       return (<Image style={iconStyle} source={Images.glassTall} />)
     } if (recipe.servingGlass === constants.SERVING_GLASS_COCKTAIL) {
       return (<Image style={iconStyle} source={Images.glassMartini} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_PINT) {
+      return (<Image style={iconStyle} source={Images.glassPint} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_WINE) {
+      return (<Image style={iconStyle} source={Images.glassWine} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_COUPE) {
+      return (<Image style={iconStyle} source={Images.glassCoupe} />)
+    } if (recipe.servingGlass === constants.SERVING_GLASS_COPPER_MUG) {
+      return (<Image style={iconStyle} source={Images.glassCopperMug} />)
     }
     return (<Image style={iconStyle} source={Images.glassShort} />)
   }

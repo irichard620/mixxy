@@ -8,17 +8,13 @@ import HomeSponsorCard from './HomeSponsorCard'
 import { PropTypes } from 'prop-types'
 import HomeCampaign from './HomeCampaign'
 import NavigationService from '../../Services/NavigationService'
-import HomeMasterList from './HomeMasterList'
-import Helpers from '../../Theme/Helpers'
+import ListItem from '../../Components/ListItem'
 
 function HomeDiscoverTab(props) {
   const { sponsorCards, campaigns, masterLists } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
-  const marginTopStyle = {
-    marginTop: 6,
-  }
   return (
     <ScrollView style={homeStyles.scrollContainer}>
       <Text style={homeStyles.topHeader}>Discover</Text>
@@ -50,24 +46,23 @@ function HomeDiscoverTab(props) {
           }}
         />
       ))}
-      <View style={[styles.divider, marginTopStyle]} />
+      <View style={styles.divider} />
       <Text style={homeStyles.sectionHeader}>Browse More</Text>
-      <View style={Helpers.rowStartWrap}>
-        {masterLists.map((masterList, idx) => (
-          <HomeMasterList
-            key={masterList.masterListId}
-            masterList={masterList}
-            disabled={false}
-            darkMode={darkMode}
-            onMasterListClick={(masterList) => {
-              NavigationService.navigate('CampaignScreen', {
-                campaign: masterList,
-              })
-            }}
-            addRightPadding={idx % 2 === 0}
-          />
-        ))}
-      </View>
+      {masterLists.map((masterList) => (
+        <ListItem
+          key={masterList.masterListId}
+          title={masterList.name}
+          onClick={() => {
+            NavigationService.navigate('CampaignScreen', {
+              campaign: masterList,
+            })
+          }}
+          darkMode={darkMode}
+          showArrow
+          enlarged
+        />
+      ))}
+      <View style={{ height: 18 }} />
     </ScrollView>
   )
 }

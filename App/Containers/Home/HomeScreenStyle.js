@@ -27,7 +27,7 @@ export default function getHomeStylesheet(useDarkMode) {
       backgroundColor: useDarkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
       borderRadius: 10,
       height: 440,
-      marginBottom: 18,
+      marginBottom: 24,
     },
     campaignTitle: {
       ...Fonts.h3Semibold,

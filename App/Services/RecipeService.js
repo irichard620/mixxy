@@ -1,5 +1,6 @@
 import storage from 'redux-persist/lib/storage'
 import DeviceInfo from 'react-native-device-info'
+import analytics from '@react-native-firebase/analytics';
 import * as recipeModel from '../Storage/Recipe'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
@@ -40,6 +41,15 @@ function persistRecipe(params) {
           // Assign new ID if external
           if (isExternal) {
             recipeToSave.recipeId = uuidv4()
+            if (recipeToSave.sponsorCardId && recipeToSave.sponsorCardId !== '') {
+              analytics().logEvent('sponsor_recipe_save', {
+                sponsor_id: recipeToSave.sponsorCardId,
+                recipe_name: recipeToSave.recipeName,
+              })
+            }
+          } else {
+            // Log create recipe event
+            analytics().logEvent('builder_new_recipe', {})
           }
           r.push(recipeToSave)
         }

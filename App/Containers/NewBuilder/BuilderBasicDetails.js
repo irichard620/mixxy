@@ -64,7 +64,7 @@ export default function BuilderBasicDetails(props) {
       )}
       <Text style={builderStyles.sectionHeading}>{'What glass do you serve this in?'}</Text>
       <ClickableTextbox
-        modalText={servingGlass}
+        modalText={servingGlass ? constants.servingGlassDisplay[servingGlass] : ''}
         textPlaceholder={'Serving Glass'}
         onClick={onServingGlassClick}
         darkMode={darkMode}

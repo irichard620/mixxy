@@ -199,9 +199,9 @@ class BuilderScreen extends React.Component {
     }
   }
 
-  onModalSave = (item, modalIdx, amount, fractionalAmount, amountType, ingredientOptions) => {
+  onModalSave = (item, modalIdx, amount, fractionalAmount, amountType) => {
     const {
-      modalType, drinkType, ingredients, steps, cursorLocation
+      modalType, drinkType, ingredients
     } = this.state;
 
     if (modalType === constants.BUILDER_DRINK_TYPE_DETAIL) {
@@ -225,7 +225,7 @@ class BuilderScreen extends React.Component {
     } else if (modalType === constants.BUILDER_SERVING_GLASS_DETAIL) {
       // Update glass
       this.setState({
-        servingGlass: item,
+        servingGlass: constants.servingGlassRaw[item],
         visibleModal: false,
         modalType: ''
       });

@@ -24,6 +24,14 @@ export default function RecipeCard(props) {
       return Images.iconTall
     } else if (servingGlass === constants.SERVING_GLASS_COCKTAIL) {
       return Images.iconMartini
+    } else if (servingGlass === constants.SERVING_GLASS_PINT) {
+      return Images.iconPint
+    } else if (servingGlass === constants.SERVING_GLASS_WINE) {
+      return Images.iconWine
+    } else if (servingGlass === constants.SERVING_GLASS_COUPE) {
+      return Images.iconCoupe
+    } else if (servingGlass === constants.SERVING_GLASS_COPPER_MUG) {
+      return Images.iconCopperMug
     }
     return Images.iconShort
   }

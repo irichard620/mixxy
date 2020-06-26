@@ -10,6 +10,7 @@ import ModalXButton from '../../Components/ModalXButton'
 import { NavigationActions } from 'react-navigation'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import RecipeCard from '../../Components/RecipeCard'
+import analytics from '@react-native-firebase/analytics'
 
 class CampaignScreen extends React.Component {
   componentDidMount() {
@@ -17,8 +18,14 @@ class CampaignScreen extends React.Component {
     const campaign = navigation.getParam('campaign', {})
     if ('masterListId' in campaign) {
       this.props.fetchRemoteRecipes(null, campaign.masterListId)
+      analytics().logEvent('master_list_page_view', {
+        master_list_id: campaign.masterListId,
+      })
     } else {
       this.props.fetchRemoteRecipes(campaign.campaignId, null)
+      analytics().logEvent('campaign_page_view', {
+        campaign_id: campaign.campaignId,
+      })
     }
   }
 

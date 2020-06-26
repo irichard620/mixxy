@@ -7,23 +7,30 @@ import { PropTypes } from 'prop-types'
 import Images from '../Theme/Images'
 
 export default function ListItem(props) {
-  const { title, subtitle, onClick, darkMode, selected, showArrow, disabled } = props
+  const { title, subtitle, onClick, darkMode, selected, showArrow, disabled, enlarged } = props
 
   const styles = getStylesheet(darkMode)
   const listItemStyles = getListItemStylesheet(darkMode)
 
   // Conditional styles
   const backgroundColorStyle = {}
-  const titleColorStyle = {
+  const titleExtraStyle = {
     color: darkMode ? Colors.text1Dark : Colors.text1Light,
+  }
+  const textContainerExtraStyle = {}
+  if (enlarged) {
+    backgroundColorStyle.paddingLeft = 0
+    titleExtraStyle.fontSize = 20
+    textContainerExtraStyle.height = 56
+    textContainerExtraStyle.paddingRight = 0
   }
   if (selected) {
     backgroundColorStyle.backgroundColor = darkMode
       ? Colors.blue1TransparentDark
       : Colors.blue1TransparentLight
-    titleColorStyle.color = Colors.blue1
+    titleExtraStyle.color = Colors.blue1
   } else if (title === 'Add Custom Ingredient') {
-    titleColorStyle.color = Colors.blue1
+    titleExtraStyle.color = Colors.blue1
   }
 
   let arrowIcon = Images.arrowLight
@@ -37,8 +44,8 @@ export default function ListItem(props) {
       onPress={() => onClick(title)}
       disabled={disabled}
     >
-      <View style={listItemStyles.textContainer}>
-        <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{title}</Text>
+      <View style={[listItemStyles.textContainer, textContainerExtraStyle]}>
+        <Text style={[listItemStyles.titleStyle, titleExtraStyle]}>{title}</Text>
         {subtitle && subtitle !== '' && (
           <Text style={listItemStyles.subtitleStyle}>{subtitle}</Text>
         )}
@@ -57,6 +64,7 @@ ListItem.propTypes = {
   subtitle: PropTypes.string,
   showArrow: PropTypes.bool,
   disabled: PropTypes.bool,
+  enlarged: PropTypes.bool,
 }
 
 function getListItemStylesheet(darkMode) {

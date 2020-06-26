@@ -47,7 +47,7 @@ class BuilderModal extends Component {
   servingGlassOptions = (existingServingGlass) => {
     const arrToUse = [];
     constants.servingGlasses.forEach((servingGlass) => {
-      arrToUse.push({ title: servingGlass, selected: (existingServingGlass === servingGlass) });
+      arrToUse.push({ title: constants.servingGlassDisplay[servingGlass], selected: (existingServingGlass === servingGlass) });
     });
     return arrToUse;
   };
@@ -160,7 +160,7 @@ class BuilderModal extends Component {
       titleToDisplay = 'Serving Glass Options';
       let existingItem = servingGlass;
       if (selectedModalItem !== '') {
-        existingItem = selectedModalItem;
+        existingItem = constants.servingGlassRaw[selectedModalItem];
       }
       options = this.servingGlassOptions(existingItem);
     } else if (modalType === constants.MODAL_BUILDER_NAV) {

@@ -5,7 +5,6 @@ import Share from 'react-native-share';
 import { NavigationActions, withNavigationFocus } from 'react-navigation'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
-import getTutorialStylesheet from './TutorialScreenStyle'
 import NavigationService from '../../Services/NavigationService'
 import TutorialHome from './TutorialHome'
 import { PropTypes } from 'prop-types'
@@ -17,6 +16,7 @@ import ModalContentCreateShare from '../../Components/ModalContentCreateShare'
 import BottomBar from '../../Components/BottomBar'
 import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
 import UserActions from '../../Stores/User/Actions'
+import analytics from '@react-native-firebase/analytics'
 
 
 class TutorialScreen extends React.Component {
@@ -42,6 +42,7 @@ class TutorialScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { isSharedPreviously } = this.state;
     if (!prevProps.user.premium && this.props.user.premium) {
       this.onCloseModalClick()
       return
@@ -96,6 +97,9 @@ class TutorialScreen extends React.Component {
         );
       } else {
         // Open share sheet
+        if (!isSharedPreviously) {
+          analytics().logEvent('share_link_created', {})
+        }
         this.openShareSheet(this.props.shareLink)
       }
     } if (prevProps.fetchSharedRecipeIsLoading && !this.props.fetchSharedRecipeIsLoading) {
@@ -298,10 +302,9 @@ class TutorialScreen extends React.Component {
 
   render() {
     const { darkMode, recipes, createSharedRecipeIsLoading } = this.props;
-    const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal, isShareModal, isSharedPreviously } = this.state;
+    const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal, isSharedPreviously } = this.state;
 
     const styles = getStylesheet(darkMode)
-    const tutorialStyles = getTutorialStylesheet(darkMode)
 
     let headerTitle = '';
     if (step >= 0 && 'recipeName' in recipe) {

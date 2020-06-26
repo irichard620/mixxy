@@ -40,7 +40,7 @@ export default function getSponsorStylesheet(useDarkMode) {
       alignSelf: 'center',
       borderRadius: 84,
       height: 168,
-      marginBottom: 16,
+      marginBottom: 18,
       marginTop: -104,
       shadowColor: '#000000',
       shadowOpacity: 0.14,
