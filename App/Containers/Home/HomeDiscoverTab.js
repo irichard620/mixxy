@@ -62,7 +62,7 @@ function HomeDiscoverTab(props) {
           enlarged
         />
       ))}
-      <View style={{ height: 18 }} />
+      <View style={{ height: 24 }} />
     </ScrollView>
   )
 }
