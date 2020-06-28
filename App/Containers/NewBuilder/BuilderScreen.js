@@ -509,7 +509,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave)),
+  persistRecipe: (recipeToSave) => dispatch(RecipeActions.persistRecipe(recipeToSave, false, true)),
 })
 
 export default connect(
