@@ -31,6 +31,12 @@ const { Types, Creators } = createActions({
   requestPurchaseIAPSuccess: null,
   // Failed to purchase
   requestPurchaseIAPFailure: ['errorMessage'],
+  // Update volume units
+  updateVolumeUnits: ['useMetric'],
+  // Loading
+  updateVolumeUnitsLoading: null,
+  // Update success
+  updateVolumeUnitsSuccess: ['userDetails'],
 })
 
 export const UserTypes = Types

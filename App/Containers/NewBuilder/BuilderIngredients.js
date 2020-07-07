@@ -39,7 +39,7 @@ export default function BuilderIngredients(props) {
           <DeleteButton onPress={() => onDeletePress(idx)} />
           <IngredientTextbox
             key={`ingredient${idx}`}
-            unitText={ingredientModel.getIngredientAmount(ingredient, 1)}
+            unitText={ingredientModel.getIngredientAmount(ingredient, 1, false, false)}
             onUnitClick={() => onUnitClick(idx)}
             ingredientText={ingredient.title}
             onChangeText={(text) => onChangeText(text, idx)}

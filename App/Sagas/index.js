@@ -6,7 +6,7 @@ import { RecipeTypes } from '../Stores/Recipe/Actions'
 import { SponsorTypes } from '../Stores/Sponsor/Actions'
 import { CampaignTypes } from '../Stores/Campaign/Actions'
 import { MasterListTypes } from '../Stores/MasterList/Actions'
-import { fetchUser, requestPurchaseIAP, restoreIAP, upgradeIAP } from './UserSaga'
+import { fetchUser, requestPurchaseIAP, restoreIAP, upgradeIAP, updateVolumeUnits } from './UserSaga'
 import { startup } from './StartupSaga'
 import { fetchIngredients } from './IngredientSaga'
 import {
@@ -61,5 +61,7 @@ export default function* root() {
     takeLatest(RecipeTypes.CREATE_SHARED_RECIPE, createSharedRecipe),
     // Fetch sponsor details
     takeLatest(SponsorTypes.FETCH_SPONSOR_CARD_DETAILS, fetchSponsorCardDetails),
+    // Update volume units
+    takeLatest(UserTypes.UPDATE_VOLUME_UNITS, updateVolumeUnits),
   ])
 }

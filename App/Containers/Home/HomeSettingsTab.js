@@ -11,7 +11,7 @@ import Images from '../../Theme/Images'
 import NavigationService from '../../Services/NavigationService'
 
 function HomeSettingsTab(props) {
-  const { user, onMixxyProClick, onRestoreClick } = props
+  const { user, onMixxyProClick, onRestoreClick, onVolumeUnitsClick } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
@@ -22,11 +22,7 @@ function HomeSettingsTab(props) {
 
   const onSettingsOptionClick = (option) => {
     if (option === constants.OPTION_VOLUME_UNITS) {
-      Alert.alert('Feature Coming Soon', 'The ability to change volume units is coming soon.', [
-        {
-          text: 'OK',
-        },
-      ])
+      onVolumeUnitsClick()
     } else if (option === constants.OPTION_REPLAY_TUTORIAL) {
       NavigationService.navigate('IntroScreen', { fromSettings: true })
     } else if (option === constants.OPTION_CONTACT_US || option === constants.OPTION_JOIN_BETA) {
@@ -121,7 +117,7 @@ function HomeSettingsTab(props) {
       </View>
       <View style={[styles.divider, extraPadding]} />
       {constants.settingsSections.map((section, idx) => renderSection(section, idx))}
-      <Text style={homeStyles.settingsVersionText}>Mixxy V1.0.0</Text>
+      <Text style={homeStyles.settingsVersionText}>Mixxy V1.0.1</Text>
     </ScrollView>
   )
 }
@@ -130,6 +126,7 @@ HomeSettingsTab.propTypes = {
   user: PropTypes.object,
   onMixxyProClick: PropTypes.func,
   onRestoreClick: PropTypes.func,
+  onVolumeUnitsClick: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({

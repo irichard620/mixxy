@@ -27,7 +27,7 @@ const StackNavigator = createStackNavigator(
     TutorialScreen: {
       screen: TutorialScreen,
       navigationOptions: {
-        gesturesEnabled: false,
+        gesturesEnabled: true,
       },
     },
     BuilderScreen: {
@@ -39,13 +39,13 @@ const StackNavigator = createStackNavigator(
     CampaignScreen: {
       screen: CampaignScreen,
       navigationOptions: {
-        gesturesEnabled: false,
+        gesturesEnabled: true,
       },
     },
     SponsorScreen: {
       screen: SponsorScreen,
       navigationOptions: {
-        gesturesEnabled: false,
+        gesturesEnabled: true,
       },
     },
     IntroScreen: {

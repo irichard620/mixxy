@@ -19,6 +19,7 @@ export default function TopHeader(props) {
     onDotsClick,
     onFavoriteClick,
     isFavorited,
+    onShareClick,
   } = props
 
   const styles = getStylesheet(darkMode)
@@ -60,6 +61,12 @@ export default function TopHeader(props) {
                 source={darkMode ? Images.topHeaderDotsDark : Images.topHeaderDotsLight}
               />
             </TouchableOpacity>
+            <TouchableOpacity onPress={onShareClick}>
+              <Image
+                style={headerStyles.share}
+                source={darkMode ? Images.topHeaderShareDark : Images.topHeaderShareLight}
+              />
+            </TouchableOpacity>
             <TouchableOpacity onPress={onFavoriteClick}>
               <Image style={headerStyles.favorite} source={favoriteImageToUse} />
             </TouchableOpacity>
@@ -83,6 +90,7 @@ TopHeader.propTypes = {
   onDotsClick: PropTypes.func,
   onFavoriteClick: PropTypes.func,
   isFavorited: PropTypes.bool,
+  onShareClick: PropTypes.func,
 }
 
 function getTopHeaderStylesheet(darkMode) {
@@ -98,6 +106,11 @@ function getTopHeaderStylesheet(darkMode) {
     },
     favorite: {
       height: 22,
+      resizeMode: 'contain',
+    },
+    share: {
+      height: 20,
+      marginRight: 20,
       resizeMode: 'contain',
     },
     header: {

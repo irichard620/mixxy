@@ -83,6 +83,17 @@ export const requestPurchaseIAPFailure = (state, { errorMessage }) => ({
   requestPurchaseIAPErrorMessage: errorMessage,
 })
 
+export const updateVolumeUnitsLoading = (state) => ({
+  ...state,
+  updateVolumeUnitsLoading: true,
+})
+
+export const updateVolumeUnitsSuccess = (state, { userDetails }) => ({
+  ...state,
+  user: userDetails,
+  updateVolumeUnitsLoading: false,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [UserTypes.FETCH_USER_LOADING]: fetchUserLoading,
   [UserTypes.FETCH_USER_SUCCESS]: fetchUserSuccess,
@@ -95,4 +106,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [UserTypes.REQUEST_PURCHASE_IAP_LOADING]: requestPurchaseIAPLoading,
   [UserTypes.REQUEST_PURCHASE_IAP_SUCCESS]: requestPurchaseIAPSuccess,
   [UserTypes.REQUEST_PURCHASE_IAP_FAILURE]: requestPurchaseIAPFailure,
+  [UserTypes.UPDATE_VOLUME_UNITS_LOADING]: updateVolumeUnitsLoading,
+  [UserTypes.UPDATE_VOLUME_UNITS_SUCCESS]: updateVolumeUnitsSuccess,
 })

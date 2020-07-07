@@ -22,8 +22,6 @@ export default function ImageListItem(props) {
   let imageToUse = null
   if (title === constants.RECIPE_MENU_EDIT) {
     imageToUse = darkMode ? Images.modalEditDark : Images.modalEditLight
-  } else if (title === constants.RECIPE_MENU_SHARE) {
-    imageToUse = darkMode ? Images.modalShareDark : Images.modalShareLight
   } else if (title === constants.RECIPE_MENU_DELETE) {
     imageToUse = Images.modalTrash
   } else if (title === constants.RECIPE_MENU_CANCEL) {

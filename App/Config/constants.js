@@ -122,6 +122,8 @@ export const fractionAmounts = [
 
 // Amount types
 export const AMOUNT_TYPE_OZ = 'Ounce'
+export const AMOUNT_TYPE_ML = 'Milliliter'
+export const AMOUNT_TYPE_CL = 'Centilitre'
 export const AMOUNT_TYPE_TSP = 'Teaspoon'
 export const AMOUNT_TYPE_TBSP = 'Tablespoon'
 export const AMOUNT_TYPE_CUP = 'Cup'
@@ -134,6 +136,8 @@ export const AMOUNT_TYPE_RIM = 'Rim'
 export const allAmountTypes = [
   '',
   AMOUNT_TYPE_OZ,
+  AMOUNT_TYPE_ML,
+  AMOUNT_TYPE_CL,
   AMOUNT_TYPE_TSP,
   AMOUNT_TYPE_TBSP,
   AMOUNT_TYPE_CUP,
@@ -224,10 +228,15 @@ export const MODAL_SELECT_INGREDIENTS = 'Select Ingredients'
 export const MODAL_SHARED_RECIPE = 'Shared Recipe'
 export const MODAL_PAYWALL = 'Paywall'
 export const MODAL_RECIPE_MENU = 'Recipe Settings'
+export const MODAL_VOLUME_UNITS = 'Volume Units'
 
 // Errors
 export const MIXXY_PRO_LIBRARY_FULL =
   'For unlimited recipe storage, become a Mixxy Pro user from the Settings menu.'
+
+// Volume unit options
+export const VOLUME_UNIT_IMPERIAL = 'Imperial (oz)'
+export const VOLUME_UNIT_METRIC = 'Metric (ml/cl)'
 
 // recipe menu options
 export const RECIPE_MENU_EDIT = 'Edit recipe'

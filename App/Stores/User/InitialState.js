@@ -12,4 +12,5 @@ export const INITIAL_STATE = {
   requestPurchaseIAPIsLoading: false,
   requestPurchaseIAPErrorMessage: null,
   purchase: {},
+  updateVolumeUnitsLoading: false,
 }

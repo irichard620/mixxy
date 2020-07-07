@@ -34,6 +34,8 @@ export function createIngredientDic(ingredients) {
 
 const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_OZ]: ' oz',
+  [constants.AMOUNT_TYPE_ML]: ' ml',
+  [constants.AMOUNT_TYPE_CL]: ' cl',
   [constants.AMOUNT_TYPE_TSP]: ' tsp',
   [constants.AMOUNT_TYPE_TBSP]: ' Tbs',
   [constants.AMOUNT_TYPE_CUP]: ' cup',
@@ -45,6 +47,8 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
 
 const AMOUNT_TYPE_ABBREVIATIONS_PLURAL = {
   [constants.AMOUNT_TYPE_OZ]: ' oz',
+  [constants.AMOUNT_TYPE_ML]: ' ml',
+  [constants.AMOUNT_TYPE_CL]: ' cl',
   [constants.AMOUNT_TYPE_TSP]: ' tsp',
   [constants.AMOUNT_TYPE_TBSP]: ' Tbs',
   [constants.AMOUNT_TYPE_CUP]: ' cups',
@@ -56,6 +60,8 @@ const AMOUNT_TYPE_ABBREVIATIONS_PLURAL = {
 
 const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
   [constants.AMOUNT_TYPE_OZ]: 1,
+  [constants.AMOUNT_TYPE_ML]: 0.034,
+  [constants.AMOUNT_TYPE_CL]: 0.34,
   [constants.AMOUNT_TYPE_TSP]: 0.167,
   [constants.AMOUNT_TYPE_TBSP]: 0.5,
   [constants.AMOUNT_TYPE_CUP]: 8,
@@ -83,7 +89,7 @@ export function getOunceAmountFromIngredient(ingredient) {
   return totalOunces
 }
 
-export function getIngredientAmount(ingredient, drinkAmount) {
+export function getIngredientAmount(ingredient, drinkAmount, doUnitConversion, useMetric) {
   if (
     ingredient.amountType === constants.AMOUNT_TYPE_GARNISH ||
     ingredient.amountType === constants.AMOUNT_TYPE_RIM
@@ -93,28 +99,42 @@ export function getIngredientAmount(ingredient, drinkAmount) {
   if (ingredient.amount === '0' && ingredient.fractionalAmount === '') {
     return ''
   }
-  let isPlural = false
   let wholeNumberAmount = parseInt(ingredient.amount)
-  if (wholeNumberAmount > 1) isPlural = true
   let baseFraction = new Fraction(wholeNumberAmount, 1)
   if (ingredient.fractionalAmount !== '') {
     const splits = ingredient.fractionalAmount.split('/')
     if (splits.length === 2) {
       baseFraction = baseFraction.add(new Fraction(parseInt(splits[0]), parseInt(splits[1])))
-      if (wholeNumberAmount === 1) isPlural = true
     }
   }
   if (drinkAmount) {
     baseFraction = baseFraction.multiply(new Fraction(drinkAmount, 1))
   }
+  let amountTypeToUse = ingredient.amountType
+  if (doUnitConversion) {
+    if (ingredient.amountType === constants.AMOUNT_TYPE_OZ && useMetric) {
+      // Translate oz to cl
+      amountTypeToUse = constants.AMOUNT_TYPE_CL
+      baseFraction = baseFraction.multiply(new Fraction(2957, 1000))
+    } else if (ingredient.amountType === constants.AMOUNT_TYPE_CL && !useMetric) {
+      // Translate cl to oz
+      amountTypeToUse = constants.AMOUNT_TYPE_OZ
+      baseFraction = baseFraction.multiply(new Fraction(338, 1000))
+    } else if (ingredient.amountType === constants.AMOUNT_TYPE_ML && !useMetric) {
+      // Translate ml to oz
+      amountTypeToUse = constants.AMOUNT_TYPE_OZ
+      baseFraction = baseFraction.multiply(new Fraction(338, 10000))
+    }
+  }
+  const isPlural = baseFraction.numerator > baseFraction.denominator
   if (isPlural) {
-    return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS_PLURAL[ingredient.amountType]}`
+    return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS_PLURAL[amountTypeToUse]}`
   } else {
-    return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS[ingredient.amountType]}`
+    return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS[amountTypeToUse]}`
   }
 }
 
-export function getIngredientShortDescription(ingredient, drinkAmount, inStep) {
+export function getIngredientShortDescription(ingredient, drinkAmount, inStep, useMetric) {
   // Format is amount-unit-ingredient
   // Ex: 2oz Silver Tequila
   if (
@@ -124,5 +144,5 @@ export function getIngredientShortDescription(ingredient, drinkAmount, inStep) {
   ) {
     return ingredient.title
   }
-  return `${getIngredientAmount(ingredient, drinkAmount)} ${ingredient.title}`
+  return `${getIngredientAmount(ingredient, drinkAmount, true, useMetric)} ${ingredient.title}`
 }

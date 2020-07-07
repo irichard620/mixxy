@@ -194,8 +194,6 @@ class TutorialScreen extends React.Component {
     return [{
       title: constants.RECIPE_MENU_EDIT,
     }, {
-      title: constants.RECIPE_MENU_SHARE,
-    }, {
       title: constants.RECIPE_MENU_DELETE,
     }]
   }
@@ -221,7 +219,7 @@ class TutorialScreen extends React.Component {
   }
 
   onPressItem = (item) => {
-    const { deleteRecipe, fetchSharedRecipe, user } = this.props;
+    const { deleteRecipe, user } = this.props;
     const { recipe, deleteModal } = this.state;
 
     if (item === constants.RECIPE_MENU_EDIT) {
@@ -239,9 +237,6 @@ class TutorialScreen extends React.Component {
       NavigationService.navigate('BuilderScreen', {
         recipe: recipe
       })
-    } else if (item === constants.RECIPE_MENU_SHARE) {
-      // First, check if already shared
-      fetchSharedRecipe(recipe.recipeId)
     } else if (item === constants.RECIPE_MENU_DELETE) {
       // Call delete recipe
       if (!deleteModal) {
@@ -300,8 +295,15 @@ class TutorialScreen extends React.Component {
     })
   }
 
+  onShareClick = () => {
+    const { fetchSharedRecipe } = this.props;
+    const { recipe } = this.state;
+    // First, check if already shared
+    fetchSharedRecipe(recipe.recipeId)
+  }
+
   render() {
-    const { darkMode, recipes, createSharedRecipeIsLoading } = this.props;
+    const { darkMode, recipes, createSharedRecipeIsLoading, user } = this.props;
     const { step, recipe, drinkAmount, visibleModal, modalType, deleteModal, isSharedPreviously } = this.state;
 
     const styles = getStylesheet(darkMode)
@@ -334,6 +336,7 @@ class TutorialScreen extends React.Component {
           isFavorited={recipe.favorited}
           onDotsClick={this.onDotsClick}
           onFavoriteClick={this.onFavoriteClick}
+          onShareClick={this.onShareClick}
         />
         <TutorialHome
           recipe={recipe}
@@ -342,6 +345,7 @@ class TutorialScreen extends React.Component {
           reduceDrinkQuantity={this.reduceDrinkQuantity}
           increaseDrinkQuantity={this.increaseDrinkQuantity}
           recipeSaved={recipeSaved}
+          useMetric={user.useMetric}
         />
         {!recipeSaved && <BottomBar buttonTitle={'Add to Library'} onButtonClick={this.onSaveClick} darkMode={darkMode} />}
         <CustomModal

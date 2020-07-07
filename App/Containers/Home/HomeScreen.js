@@ -23,6 +23,7 @@ import CustomModal from '../../Components/CustomModal'
 import ModalContentSharedRecipe from '../../Components/ModalContentSharedRecipe'
 import * as constants from '../../Config/constants'
 import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
+import ModalContentBottom from '../../Components/ModalContentBottom'
 
 
 const initialLayout = { width: Dimensions.get('window').width };
@@ -43,6 +44,7 @@ class HomeScreen extends React.Component {
       index: 0,
       visibleModal: false,
       modalType: '',
+      selectedVolumeUnit: false,
     };
   }
 
@@ -114,6 +116,8 @@ class HomeScreen extends React.Component {
           },
         ],
       );
+    } if (nextUser && prevProps.updateVolumeUnitsLoading && !this.props.updateVolumeUnitsLoading) {
+      this.onCloseModalClick()
     }
   }
 
@@ -214,6 +218,7 @@ class HomeScreen extends React.Component {
     this.setState({
       visibleModal: false,
       modalType: '',
+      selectedVolumeUnit: '',
     })
   }
 
@@ -271,8 +276,53 @@ class HomeScreen extends React.Component {
       case 'library':
         return <HomeLibraryTab onNewRecipeClick={this.onNewRecipeClick} />;
       default:
-        return <HomeSettingsTab onMixxyProClick={this.onPurchaseMixxyClicked} onRestoreClick={this.onRestorePurchaseClicked} />;
+        return <HomeSettingsTab onMixxyProClick={this.onPurchaseMixxyClicked} onRestoreClick={this.onRestorePurchaseClicked} onVolumeUnitsClick={this.onVolumeUnitMenuClick} />;
     }
+  }
+
+  onVolumeUnitMenuClick = () => {
+    this.setState({
+      visibleModal: true,
+      modalType: constants.MODAL_VOLUME_UNITS,
+      selectedVolumeUnit: '',
+    })
+  }
+
+  getVolumeUnitOptions = () => {
+    const { selectedVolumeUnit } = this.state
+    const { user } = this.props
+    let useMetric
+    if (selectedVolumeUnit !== '') {
+      useMetric = selectedVolumeUnit === constants.VOLUME_UNIT_METRIC
+    } else {
+      useMetric = user.user.useMetric
+    }
+    return [
+      {
+        title: constants.VOLUME_UNIT_IMPERIAL,
+        selected: !useMetric
+      },
+      {
+        title: constants.VOLUME_UNIT_METRIC,
+        selected: useMetric
+      }
+    ]
+  }
+
+  onVolumeUnitPress = (item) => {
+    this.setState({
+      selectedVolumeUnit: item
+    });
+  };
+
+  onVolumeUnitSavePressed = () => {
+    const { updateVolumeUnits } = this.props
+    const { selectedVolumeUnit } = this.state
+    if (selectedVolumeUnit === '') {
+      return
+    }
+    const useMetric = selectedVolumeUnit === constants.VOLUME_UNIT_METRIC
+    updateVolumeUnits(useMetric)
   }
 
   render() {
@@ -309,7 +359,7 @@ class HomeScreen extends React.Component {
           type={constants.MODAL_TYPE_BOTTOM}
           darkMode={darkMode}
         >
-          {modalType === constants.MODAL_SHARED_RECIPE ? (
+          {modalType === constants.MODAL_SHARED_RECIPE && (
             <ModalContentSharedRecipe
               onViewClick={this.onSharedRecipeClick}
               onCancelClick={this.onCloseModalClick}
@@ -317,14 +367,25 @@ class HomeScreen extends React.Component {
               sharedRecipe={sharedRecipe}
               darkMode={darkMode}
             />
-          ) : (
+          )}
+          {modalType === constants.MODAL_PAYWALL && (
             <ModalContentMixxyPro
               darkMode={darkMode}
               onMixxyProClick={this.onPurchaseMixxyClicked}
               onRestoreClick={this.onRestorePurchaseClicked}
             />
           )}
-
+          {modalType === constants.MODAL_VOLUME_UNITS && (
+            <ModalContentBottom
+              isListModal={true}
+              options={this.getVolumeUnitOptions()}
+              title={constants.MODAL_VOLUME_UNITS}
+              onPressItem={this.onVolumeUnitPress}
+              onModalSave={this.onVolumeUnitSavePressed}
+              hasSave={true}
+              darkMode={darkMode}
+            />
+          )}
         </CustomModal>
         <DynamicLinkListener handleDynamicLink={this.handleDynamicLink} />
       </SafeAreaView>
@@ -346,6 +407,7 @@ const mapStateToProps = (state) => ({
   restoreIAPIsLoading: state.user.restoreIAPIsLoading,
   user: state.user,
   restoreIAPErrorMessage: state.user.restoreIAPErrorMessage,
+  updateVolumeUnitsLoading: state.user.updateVolumeUnitsLoading,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -354,6 +416,7 @@ const mapDispatchToProps = (dispatch) => ({
   restoreIAP: () => dispatch(UserActions.restoreIAP()),
   fetchRecipes: () => dispatch(RecipeActions.fetchRecipes()),
   fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
+  updateVolumeUnits: (useMetric) => dispatch(UserActions.updateVolumeUnits(useMetric)),
 })
 
 export default withNavigationFocus(connect(

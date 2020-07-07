@@ -55,8 +55,6 @@ export default {
   iconCopperMug: require('../Assets/Images/glasses/Icon_CopperMug.png'),
   modalEditDark: require('../Assets/Images/modal/Modal_Edit_DARK.png'),
   modalEditLight: require('../Assets/Images/modal/Modal_Edit_LIGHT.png'),
-  modalShareDark: require('../Assets/Images/modal/Modal_Share_DARK.png'),
-  modalShareLight: require('../Assets/Images/modal/Modal_Share_LIGHT.png'),
   modalViewDark: require('../Assets/Images/modal/Modal_View_DARK.png'),
   modalViewLight: require('../Assets/Images/modal/Modal_View_LIGHT.png'),
   modalTrash: require('../Assets/Images/modal/Modal_Trash.png'),
@@ -78,4 +76,6 @@ export default {
   spotlightLocation: require('../Assets/Images/Spotlight_Location.png'),
   spotlightType: require('../Assets/Images/Spotlight_Type.png'),
   introArrow: require('../Assets/Images/buttons/Intro_Arrow.png'),
+  topHeaderShareDark: require('../Assets/Images/buttons/Share_DARK.png'),
+  topHeaderShareLight: require('../Assets/Images/buttons/Share_LIGHT.png'),
 }

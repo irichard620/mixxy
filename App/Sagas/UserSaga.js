@@ -14,6 +14,12 @@ export function* fetchUser() {
   }
 }
 
+export function* updateVolumeUnits(params) {
+  yield put(UserActions.updateVolumeUnitsLoading())
+  const userDetails = yield call(userService.updateVolumeUnits, params)
+  yield put(UserActions.updateVolumeUnitsSuccess(userDetails))
+}
+
 export function* upgradeIAP(params) {
   yield put(UserActions.upgradeIAPLoading())
   const results = yield call(userService.upgradeIAP, params)

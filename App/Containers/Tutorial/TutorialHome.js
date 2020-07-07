@@ -53,7 +53,7 @@ class TutorialHome extends Component {
   };
 
   render() {
-    const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity } = this.props;
+    const { recipe, darkMode, drinkAmount, reduceDrinkQuantity, increaseDrinkQuantity, useMetric } = this.props;
     const styles = getStylesheet(darkMode)
     const tutorialStyles = getTutorialStylesheet(darkMode)
 
@@ -117,7 +117,7 @@ class TutorialHome extends Component {
         {Object.keys(recipe).length !== 0 && recipe.ingredients.map((ingredient) => (
           <ListItem
             key={ingredient.ingredientId}
-            title={ingredientModel.getIngredientShortDescription(ingredient, drinkAmount, false)}
+            title={ingredientModel.getIngredientShortDescription(ingredient, drinkAmount, false, useMetric)}
             darkMode={darkMode}
             disabled
           />
