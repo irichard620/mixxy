@@ -123,7 +123,7 @@ export const fractionAmounts = [
 // Amount types
 export const AMOUNT_TYPE_OZ = 'Ounce'
 export const AMOUNT_TYPE_ML = 'Milliliter'
-export const AMOUNT_TYPE_CL = 'Centilitre'
+export const AMOUNT_TYPE_CL = 'Centiliter'
 export const AMOUNT_TYPE_TSP = 'Teaspoon'
 export const AMOUNT_TYPE_TBSP = 'Tablespoon'
 export const AMOUNT_TYPE_CUP = 'Cup'
