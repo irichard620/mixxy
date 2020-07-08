@@ -164,7 +164,7 @@ class BuilderScreen extends React.Component {
 
   onButtonClick = () => {
     const { persistRecipe } = this.props
-    const { step, recipeId, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients } = this.state;
+    const { step, recipeId, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, favorited } = this.state;
     // Check step
     if (step !== 2) {
       if (step === 1) {
@@ -193,6 +193,7 @@ class BuilderScreen extends React.Component {
         totalOunces: 0,
         steps: steps,
         ingredients: ingredients,
+        favorited: favorited,
       })
       newRecipe.totalOunces = recipeModel.getTotalOuncesForRecipe(newRecipe)
       persistRecipe(newRecipe)

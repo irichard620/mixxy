@@ -100,31 +100,51 @@ export function getIngredientAmount(ingredient, drinkAmount, doUnitConversion, u
     return ''
   }
   let wholeNumberAmount = parseInt(ingredient.amount)
+  let rawDecimal = wholeNumberAmount
   let baseFraction = new Fraction(wholeNumberAmount, 1)
   if (ingredient.fractionalAmount !== '') {
     const splits = ingredient.fractionalAmount.split('/')
     if (splits.length === 2) {
       baseFraction = baseFraction.add(new Fraction(parseInt(splits[0]), parseInt(splits[1])))
+      rawDecimal += parseInt(splits[0]) / parseInt(splits[1])
     }
   }
-  if (drinkAmount) {
-    baseFraction = baseFraction.multiply(new Fraction(drinkAmount, 1))
-  }
+  let multiplier = null
   let amountTypeToUse = ingredient.amountType
   if (doUnitConversion) {
     if (ingredient.amountType === constants.AMOUNT_TYPE_OZ && useMetric) {
       // Translate oz to cl
       amountTypeToUse = constants.AMOUNT_TYPE_CL
-      baseFraction = baseFraction.multiply(new Fraction(2957, 1000))
+      multiplier = 2.957
     } else if (ingredient.amountType === constants.AMOUNT_TYPE_CL && !useMetric) {
       // Translate cl to oz
       amountTypeToUse = constants.AMOUNT_TYPE_OZ
-      baseFraction = baseFraction.multiply(new Fraction(338, 1000))
+      multiplier = 0.338
     } else if (ingredient.amountType === constants.AMOUNT_TYPE_ML && !useMetric) {
       // Translate ml to oz
       amountTypeToUse = constants.AMOUNT_TYPE_OZ
-      baseFraction = baseFraction.multiply(new Fraction(338, 10000))
+      multiplier = 0.0338
     }
+  }
+  if (multiplier !== null) {
+    // Multiply raw decimal by multiplier
+    const rawConvertedDecimal = rawDecimal * multiplier
+    // Round to nearest eighth
+    const convertedDecimalToEighth = Math.round(rawConvertedDecimal * 8) / 8
+    const splitConvertedDecimalToEighth = [
+      convertedDecimalToEighth > 0
+        ? Math.floor(convertedDecimalToEighth)
+        : Math.ceil(convertedDecimalToEighth),
+      convertedDecimalToEighth % 1,
+    ]
+    baseFraction = new Fraction(splitConvertedDecimalToEighth[0], 1)
+    const decimalFraction = getFractionFromRoundedDecimal(splitConvertedDecimalToEighth[1])
+    if (decimalFraction) {
+      baseFraction = baseFraction.add(decimalFraction)
+    }
+  }
+  if (drinkAmount) {
+    baseFraction = baseFraction.multiply(new Fraction(drinkAmount, 1))
   }
   const isPlural = baseFraction.numerator > baseFraction.denominator
   if (isPlural) {
@@ -132,6 +152,28 @@ export function getIngredientAmount(ingredient, drinkAmount, doUnitConversion, u
   } else {
     return `${baseFraction.toString()}${AMOUNT_TYPE_ABBREVIATIONS[amountTypeToUse]}`
   }
+}
+
+function getFractionFromRoundedDecimal(roundedDecimal) {
+  switch (roundedDecimal) {
+    case 0:
+      return null
+    case 0.125:
+      return new Fraction(1, 8)
+    case 0.25:
+      return new Fraction(1, 4)
+    case 0.375:
+      return new Fraction(3, 8)
+    case 0.5:
+      return new Fraction(1, 2)
+    case 0.625:
+      return new Fraction(5, 8)
+    case 0.75:
+      return new Fraction(3, 4)
+    case 0.875:
+      return new Fraction(7, 8)
+  }
+  return null
 }
 
 export function getIngredientShortDescription(ingredient, drinkAmount, inStep, useMetric) {

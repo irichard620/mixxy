@@ -59,6 +59,8 @@ export default {
   modalViewLight: require('../Assets/Images/modal/Modal_View_LIGHT.png'),
   modalTrash: require('../Assets/Images/modal/Modal_Trash.png'),
   modalNo: require('../Assets/Images/modal/Modal_No.png'),
+  modalShareDark: require('../Assets/Images/modal/Modal_Share_DARK.png'),
+  modalShareLight: require('../Assets/Images/modal/Modal_Share_LIGHT.png'),
   topHeaderFavoriteLight: require('../Assets/Images/buttons/Favorite_LIGHT.png'),
   topHeaderFavoriteDark: require('../Assets/Images/buttons/Favorite_DARK.png'),
   topHeaderUnfavorite: require('../Assets/Images/buttons/Unfavorite.png'),
