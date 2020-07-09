@@ -125,11 +125,11 @@ class BuilderScreen extends React.Component {
     for (let i = 0; i < ingredients.length; i++) {
       const currentIngredient = ingredients[i]
       if (
-        currentIngredient.amountType === '' || currentIngredient.title === ''
+        currentIngredient.title === ''
       ) {
         Alert.alert(
           'Ingredients Error',
-          'One or more of your ingredients is missing a name or unit.',
+          'One or more of your ingredients is missing a name.',
           [
             {
               text: 'OK'

@@ -43,6 +43,7 @@ const AMOUNT_TYPE_ABBREVIATIONS = {
   [constants.AMOUNT_TYPE_DROP]: ' drop',
   [constants.AMOUNT_TYPE_PIECE]: ' pc',
   [constants.AMOUNT_TYPE_PINCH]: ' pinch',
+  '': '',
 }
 
 const AMOUNT_TYPE_ABBREVIATIONS_PLURAL = {
@@ -56,6 +57,7 @@ const AMOUNT_TYPE_ABBREVIATIONS_PLURAL = {
   [constants.AMOUNT_TYPE_DROP]: ' drops',
   [constants.AMOUNT_TYPE_PIECE]: ' pcs',
   [constants.AMOUNT_TYPE_PINCH]: ' pinches',
+  '': '',
 }
 
 const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
@@ -71,6 +73,7 @@ const AMOUNT_TYPE_OUNCE_MULTIPLIER = {
   [constants.AMOUNT_TYPE_PINCH]: 0,
   [constants.AMOUNT_TYPE_GARNISH]: 0,
   [constants.AMOUNT_TYPE_RIM]: 0,
+  '': 0,
 }
 
 export function getOunceAmountFromIngredient(ingredient) {

@@ -88,13 +88,6 @@ class BuilderModal extends Component {
           },
         ])
         return
-      } else if (amountType === '') {
-        Alert.alert('No amount type', 'Must add amount type for ingredient.', [
-          {
-            text: 'OK',
-          },
-        ])
-        return
       }
     } else if (modalType !== constants.MODAL_SELECT_INGREDIENTS) {
       if (selectedModalItem === '') {
