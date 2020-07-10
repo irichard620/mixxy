@@ -84,7 +84,8 @@ function fetchRemoteRecipes(params) {
   } else if (params.masterListId) {
     url += `?master_list_id=${params.masterListId}`
   }
-  return defaultApiClient(url)
+  const appVersion = DeviceInfo.getVersion()
+  return defaultApiClient(`${url}&version=${appVersion}`)
     .get()
     .then((response) => {
       if (in200s(response.status)) {
@@ -100,7 +101,8 @@ function fetchRemoteRecipes(params) {
 }
 
 function fetchSharedRecipe(params) {
-  let url = `recipes/${params.recipeId}`
+  const appVersion = DeviceInfo.getVersion()
+  let url = `recipes/${params.recipeId}?version=${appVersion}`
   return defaultApiClient(url)
     .get()
     .then((response) => {
