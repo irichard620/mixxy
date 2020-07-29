@@ -166,6 +166,20 @@ export const drinkTypes = [
   DRINK_TYPE_BEER_COCKTAILS,
   DRINK_TYPE_NON_ALCOHOLIC,
 ]
+export const DRINK_TYPE_DISPLAY_WINE_COCKTAILS = 'Wine Cocktail'
+export const DRINK_TYPE_DISPLAY_BEER_COCKTAILS = 'Beer Cocktail'
+export const drinkTypeDisplay = {
+  [DRINK_TYPE_COCKTAIL]: DRINK_TYPE_COCKTAIL,
+  [DRINK_TYPE_WINE_COCKTAILS]: DRINK_TYPE_DISPLAY_WINE_COCKTAILS,
+  [DRINK_TYPE_BEER_COCKTAILS]: DRINK_TYPE_DISPLAY_BEER_COCKTAILS,
+  [DRINK_TYPE_NON_ALCOHOLIC]: DRINK_TYPE_NON_ALCOHOLIC,
+}
+export const drinkTypeRaw = {
+  [DRINK_TYPE_COCKTAIL]: DRINK_TYPE_COCKTAIL,
+  [DRINK_TYPE_DISPLAY_WINE_COCKTAILS]: DRINK_TYPE_WINE_COCKTAILS,
+  [DRINK_TYPE_DISPLAY_BEER_COCKTAILS]: DRINK_TYPE_BEER_COCKTAILS,
+  [DRINK_TYPE_NON_ALCOHOLIC]: DRINK_TYPE_NON_ALCOHOLIC,
+}
 export const drinkTypeDescriptions = {
   [DRINK_TYPE_COCKTAIL]:
     'An alcoholic mixed drink with a spirit or multiple spirits and any number of other ingredients such as fruit juices or syrups.',

@@ -31,7 +31,7 @@ class BuilderModal extends Component {
   drinkTypeOptions = (existingDrinkType) => {
     const arrToUse = [];
     constants.drinkTypes.forEach((drinkType) => {
-      arrToUse.push({ title: drinkType, selected: (existingDrinkType === drinkType) });
+      arrToUse.push({ title: constants.drinkTypeDisplay[drinkType], selected: (existingDrinkType === drinkType) });
     });
     return arrToUse;
   };
@@ -139,7 +139,7 @@ class BuilderModal extends Component {
       titleToDisplay = 'Drink Type Options';
       let existingItem = drinkType;
       if (selectedModalItem !== '') {
-        existingItem = selectedModalItem;
+        existingItem = constants.drinkTypeRaw[selectedModalItem];
       }
       options = this.drinkTypeOptions(existingItem);
     } else if (modalType === constants.BUILDER_BASE_SPIRIT_DETAIL) {

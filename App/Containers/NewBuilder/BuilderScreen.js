@@ -211,7 +211,7 @@ class BuilderScreen extends React.Component {
         return;
       }
       this.setState({
-        drinkType: item,
+        drinkType: constants.drinkTypeRaw[item],
         baseSpirit: '',
         visibleModal: false,
         modalType: ''

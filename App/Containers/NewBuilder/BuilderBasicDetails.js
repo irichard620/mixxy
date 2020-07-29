@@ -46,7 +46,7 @@ export default function BuilderBasicDetails(props) {
       />
       <Text style={builderStyles.sectionHeading}>{'What type of drink is it?'}</Text>
       <ClickableTextbox
-        modalText={drinkType}
+        modalText={drinkType ? constants.drinkTypeDisplay[drinkType] : ''}
         textPlaceholder={'Drink Type'}
         onClick={onDrinkTypeClick}
         darkMode={darkMode}

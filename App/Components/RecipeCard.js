@@ -45,7 +45,9 @@ export default function RecipeCard(props) {
           </View>
           <View style={Helpers.fillColLeft}>
             <Text style={cardStyles.recipeName}>{recipeName}</Text>
-            <Text style={cardStyles.recipeType}>{recipeType}</Text>
+            <Text style={cardStyles.recipeType}>
+              {recipeType ? constants.drinkTypeDisplay[recipeType] : ''}
+            </Text>
           </View>
         </View>
       </View>

@@ -95,8 +95,7 @@ class SponsorScreen extends React.Component {
     const styles = getStylesheet(darkMode)
     const sponsorStyles = getSponsorStylesheet(darkMode)
 
-    const { sponsorName, sponsorType, hqLocation, about, logoLink, cardImageLink, website } = sponsor
-
+    const { sponsorName, sponsorType, hqLocation, about, logoLink, cardImageLink, website, websiteLabel } = sponsor
     const { width } = Dimensions.get('window')
     const cardWidth = {
       width: width,
@@ -147,7 +146,7 @@ class SponsorScreen extends React.Component {
               <Image source={Images.spotlightType} style={sponsorStyles.sponsorTypeIcon} />
               <Text style={sponsorStyles.sponsorTypeText}>{sponsorType}</Text>
             </View>
-            {website !== '' && <Button darkMode={darkMode} title={'Visit Website'} onButtonClick={() => this.onVisitWebsiteClicked(website)} margin={[0, 0, 24, 0]} />}
+            {website !== '' && <Button darkMode={darkMode} title={websiteLabel ? websiteLabel : 'Visit Website'} onButtonClick={() => this.onVisitWebsiteClicked(website)} margin={[0, 0, 24, 0]} />}
             <View style={styles.divider} />
             <Text style={sponsorStyles.description}>{about}</Text>
             <View style={styles.divider} />
