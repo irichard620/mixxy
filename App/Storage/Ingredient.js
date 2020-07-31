@@ -113,12 +113,14 @@ export function getIngredientAmount(ingredient, drinkAmount, doUnitConversion, u
     }
   }
   let multiplier = null
+  let convertToMetric = false
   let amountTypeToUse = ingredient.amountType
   if (doUnitConversion) {
     if (ingredient.amountType === constants.AMOUNT_TYPE_OZ && useMetric) {
       // Translate oz to cl
-      amountTypeToUse = constants.AMOUNT_TYPE_CL
-      multiplier = 2.957
+      amountTypeToUse = constants.AMOUNT_TYPE_ML
+      multiplier = 29.57
+      convertToMetric = true
     } else if (ingredient.amountType === constants.AMOUNT_TYPE_CL && !useMetric) {
       // Translate cl to oz
       amountTypeToUse = constants.AMOUNT_TYPE_OZ
@@ -129,7 +131,7 @@ export function getIngredientAmount(ingredient, drinkAmount, doUnitConversion, u
       multiplier = 0.0338
     }
   }
-  if (multiplier !== null) {
+  if (multiplier !== null && !convertToMetric) {
     // Multiply raw decimal by multiplier
     const rawConvertedDecimal = rawDecimal * multiplier
     // Round to nearest eighth
@@ -145,6 +147,13 @@ export function getIngredientAmount(ingredient, drinkAmount, doUnitConversion, u
     if (decimalFraction) {
       baseFraction = baseFraction.add(decimalFraction)
     }
+  }
+  if (multiplier !== null && convertToMetric) {
+    // Multiply raw decimal by multiplier
+    const rawConvertedDecimal = rawDecimal * multiplier
+    // Round to nearest multiple of 5
+    const convertedDecimalToEighth = Math.round(rawConvertedDecimal / 5) * 5
+    baseFraction = new Fraction(convertedDecimalToEighth, 1)
   }
   if (drinkAmount) {
     baseFraction = baseFraction.multiply(new Fraction(drinkAmount, 1))

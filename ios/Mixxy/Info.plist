@@ -32,9 +32,23 @@
 				<string>com.IanRichard.Mixxy</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Mixxy</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb768236947256539</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>768236947256539</string>
+	<key>FacebookDisplayName</key>
+	<string>Mixxy</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

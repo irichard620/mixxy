@@ -29,6 +29,11 @@ export default function IngredientUnitModal(props) {
     height: isGarnishOrRim ? 0 : 200,
   }
 
+  let numberLength = 99
+  if (amountType === constants.AMOUNT_TYPE_ML) {
+    numberLength = 999
+  }
+
   return (
     <ModalBottomOutline title={'Select Units'} darkMode={darkMode}>
       <View style={modalStyles.pickerOutline}>
@@ -38,7 +43,7 @@ export default function IngredientUnitModal(props) {
           style={pickerStyle}
           itemStyle={pickerItemStyleNums}
         >
-          {[...Array(99).keys()].map((item) => {
+          {[...Array(numberLength).keys()].map((item) => {
             item = item.toString()
             return <Picker.Item key={item} label={item} value={item} color={itemColor} />
           })}
