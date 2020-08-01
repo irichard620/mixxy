@@ -45,7 +45,7 @@ class SponsorScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { sponsorCardDetailsIsLoading, sponsorCardDetailsErrorMessage, sponsorCardDetails } = this.props;
-    if (!prevProps.sponsorCardDetailsIsLoading && sponsorCardDetailsIsLoading) {
+    if (prevProps.sponsorCardDetailsIsLoading && !sponsorCardDetailsIsLoading) {
       if (sponsorCardDetailsErrorMessage) {
         // Show error and nav back on ack
         Alert.alert('Error', sponsorCardDetailsErrorMessage, [

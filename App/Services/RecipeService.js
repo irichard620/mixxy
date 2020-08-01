@@ -76,16 +76,16 @@ function fetchRecipes() {
 }
 
 function fetchRemoteRecipes(params) {
-  let url = 'recipes'
+  let url = 'recipes?'
   if (params.sponsorCardId) {
-    url += `?sponsor_card_id=${params.sponsorCardId}`
+    url += `sponsor_card_id=${params.sponsorCardId}&`
   } else if (params.campaignId) {
-    url += `?campaign_id=${params.campaignId}`
+    url += `campaign_id=${params.campaignId}&`
   } else if (params.masterListId) {
-    url += `?master_list_id=${params.masterListId}`
+    url += `master_list_id=${params.masterListId}&`
   }
   const appVersion = DeviceInfo.getVersion()
-  return defaultApiClient(`${url}&version=${appVersion}`)
+  return defaultApiClient(`${url}version=${appVersion}`)
     .get()
     .then((response) => {
       if (in200s(response.status)) {

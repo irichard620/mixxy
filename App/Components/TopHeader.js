@@ -46,12 +46,15 @@ export default function TopHeader(props) {
           <Image style={headerStyles.close} source={imageToUse} />
         </TouchableOpacity>
         <Text style={headerStyles.title}>{title}</Text>
-        {rightButtonTitle !== undefined && rightButtonTitle !== '' && (
+        {!!rightButtonTitle && rightButtonTitle !== '' && (
           <Button
             styles={headerStyles.rightButton}
             title={rightButtonTitle}
             onPress={onRightButtonPress}
           />
+        )}
+        {!!title && title !== '' && !rightButtonTitle && (
+          <View style={headerStyles.rightPlaceholder} />
         )}
         {showDots && (
           <View style={headerStyles.rightDotsView}>
@@ -99,6 +102,10 @@ function getTopHeaderStylesheet(darkMode) {
       height: 20,
       width: 20,
     },
+    rightPlaceholder: {
+      height: 0,
+      width: 20,
+    },
     dots: {
       height: 20,
       marginRight: 20,
@@ -134,11 +141,10 @@ function getTopHeaderStylesheet(darkMode) {
       width: 20,
     },
     title: {
-      ...Fonts.navHeader,
+      ...Fonts.h3Semibold,
       alignSelf: 'center',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
       justifyContent: 'center',
-      marginLeft: 15,
       textAlign: 'center',
     },
     touchable: {
