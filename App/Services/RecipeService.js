@@ -1,6 +1,6 @@
 import storage from 'redux-persist/lib/storage'
 import DeviceInfo from 'react-native-device-info'
-import analytics from '@react-native-firebase/analytics';
+import analytics from '@react-native-firebase/analytics'
 import * as recipeModel from '../Storage/Recipe'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'

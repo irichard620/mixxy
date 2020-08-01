@@ -9,13 +9,13 @@ import RecipeCard from '../../Components/RecipeCard'
 import getAllRecipesStylesheet from './AllRecipesStyle'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
-import { NavigationActions } from "react-navigation"
+import { NavigationActions } from 'react-navigation'
 
 class AllRecipesScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: []
+      data: [],
     }
   }
 
@@ -25,7 +25,11 @@ class AllRecipesScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { remoteRecipes, fetchRemoteRecipesIsLoading, fetchRemoteRecipesErrorMessage } = this.props;
+    const {
+      remoteRecipes,
+      fetchRemoteRecipesIsLoading,
+      fetchRemoteRecipesErrorMessage,
+    } = this.props
     if (prevProps.fetchRemoteRecipesIsLoading && !fetchRemoteRecipesIsLoading) {
       if (fetchRemoteRecipesErrorMessage) {
         // Show error and nav back on ack
@@ -45,8 +49,8 @@ class AllRecipesScreen extends React.Component {
   }
 
   onBackScreenClick = () => {
-    const { navigation } = this.props;
-    navigation.dispatch(NavigationActions.back());
+    const { navigation } = this.props
+    navigation.dispatch(NavigationActions.back())
   }
 
   renderHeader = () => {
@@ -59,26 +63,26 @@ class AllRecipesScreen extends React.Component {
           placeholder="Search"
           lightTheme
           round
-          onChangeText={text => this.searchFilterFunction(text)}
+          onChangeText={(text) => this.searchFilterFunction(text)}
           autoCorrect={false}
           searchBarStyle={'minimal'}
         />
         <View style={styles.divider} />
         <View style={allRecipesStyles.bufferView} />
       </View>
-    );
-  };
+    )
+  }
 
-  searchFilterFunction = text => {
+  searchFilterFunction = (text) => {
     const { remoteRecipes } = this.props
-    const newData = remoteRecipes.filter(item => {
+    const newData = remoteRecipes.filter((item) => {
       const itemData = `${item.recipeName.toUpperCase()}`
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
+      const textData = text.toUpperCase()
+      return itemData.indexOf(textData) > -1
+    })
 
-    this.setState({ data: newData });
-  };
+    this.setState({ data: newData })
+  }
 
   render() {
     const { darkMode } = this.props

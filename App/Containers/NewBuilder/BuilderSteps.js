@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'

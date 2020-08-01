@@ -37,7 +37,7 @@ class CampaignScreen extends React.Component {
   onCardClick = (idx) => {
     const { remoteRecipes } = this.props
     NavigationService.navigate('TutorialScreen', {
-      recipe: remoteRecipes[idx]
+      recipe: remoteRecipes[idx],
     })
   }
 
@@ -79,26 +79,29 @@ class CampaignScreen extends React.Component {
             </View>
           </View>
           <View style={campaignStyles.bufferView} />
-          {longDescription !== '' && <View style={campaignStyles.contentContainer}>
-            <Text style={campaignStyles.description}>{longDescription}</Text>
-            <View style={styles.divider} />
-          </View>}
+          {longDescription !== '' && (
+            <View style={campaignStyles.contentContainer}>
+              <Text style={campaignStyles.description}>{longDescription}</Text>
+              <View style={styles.divider} />
+            </View>
+          )}
           <View style={campaignStyles.recipesContainer}>
-            {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
-              <RecipeCard
-                key={`recipe${idx}`}
-                recipeName={recipe.recipeName}
-                recipeType={recipe.recipeType}
-                servingGlass={recipe.servingGlass}
-                disabled={false}
-                onCardClick={() => this.onCardClick(idx)}
-                darkMode={darkMode}
-              />
-            ))}
+            {remoteRecipes.length > 0 &&
+              remoteRecipes.map((recipe, idx) => (
+                <RecipeCard
+                  key={`recipe${idx}`}
+                  recipeName={recipe.recipeName}
+                  recipeType={recipe.recipeType}
+                  servingGlass={recipe.servingGlass}
+                  disabled={false}
+                  onCardClick={() => this.onCardClick(idx)}
+                  darkMode={darkMode}
+                />
+              ))}
           </View>
         </ScrollView>
         <View style={campaignStyles.backContainer}>
-          <ModalXButton onPress={this.onBackPress}/>
+          <ModalXButton onPress={this.onBackPress} />
         </View>
       </View>
     )
@@ -112,7 +115,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchRemoteRecipes: (campaignId, masterListId) => dispatch(RecipeActions.fetchRemoteRecipes(null, campaignId, masterListId)),
+  fetchRemoteRecipes: (campaignId, masterListId) =>
+    dispatch(RecipeActions.fetchRemoteRecipes(null, campaignId, masterListId)),
 })
 
 export default connect(

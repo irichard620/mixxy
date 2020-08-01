@@ -1,5 +1,6 @@
 import {
-  Dimensions, Image,
+  Dimensions,
+  Image,
   StyleSheet,
   Text,
   TextInput,

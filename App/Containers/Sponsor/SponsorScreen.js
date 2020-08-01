@@ -17,10 +17,10 @@ import analytics from '@react-native-firebase/analytics'
 
 class SponsorScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       sponsor: {},
-    };
+    }
   }
 
   componentDidMount() {
@@ -44,7 +44,11 @@ class SponsorScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { sponsorCardDetailsIsLoading, sponsorCardDetailsErrorMessage, sponsorCardDetails } = this.props;
+    const {
+      sponsorCardDetailsIsLoading,
+      sponsorCardDetailsErrorMessage,
+      sponsorCardDetails,
+    } = this.props
     if (prevProps.sponsorCardDetailsIsLoading && !sponsorCardDetailsIsLoading) {
       if (sponsorCardDetailsErrorMessage) {
         // Show error and nav back on ack
@@ -71,12 +75,12 @@ class SponsorScreen extends React.Component {
   onCardClick = (idx) => {
     const { remoteRecipes } = this.props
     NavigationService.navigate('TutorialScreen', {
-      recipe: remoteRecipes[idx]
+      recipe: remoteRecipes[idx],
     })
   }
 
   onVisitWebsiteClicked = (website) => {
-    Linking.canOpenURL(website).then(supported => {
+    Linking.canOpenURL(website).then((supported) => {
       if (supported) {
         Linking.openURL(website)
       } else {
@@ -95,7 +99,16 @@ class SponsorScreen extends React.Component {
     const styles = getStylesheet(darkMode)
     const sponsorStyles = getSponsorStylesheet(darkMode)
 
-    const { sponsorName, sponsorType, hqLocation, about, logoLink, cardImageLink, website, websiteLabel } = sponsor
+    const {
+      sponsorName,
+      sponsorType,
+      hqLocation,
+      about,
+      logoLink,
+      cardImageLink,
+      website,
+      websiteLabel,
+    } = sponsor
     const { width } = Dimensions.get('window')
     const cardWidth = {
       width: width,
@@ -138,35 +151,45 @@ class SponsorScreen extends React.Component {
               resizeMode={FastImage.resizeMode.cover}
             />
           </View>
-          {about !== '' && <View style={sponsorStyles.contentContainer}>
-            <Text style={sponsorStyles.title}>{sponsorName}</Text>
-            <View style={sponsorStyles.sponsorTypeOutline}>
-              <Image source={Images.spotlightLocation} style={sponsorStyles.sponsorTypeIcon} />
-              <Text style={[sponsorStyles.sponsorTypeText, extraPadding]}>{hqLocation}</Text>
-              <Image source={Images.spotlightType} style={sponsorStyles.sponsorTypeIcon} />
-              <Text style={sponsorStyles.sponsorTypeText}>{sponsorType}</Text>
+          {about !== '' && (
+            <View style={sponsorStyles.contentContainer}>
+              <Text style={sponsorStyles.title}>{sponsorName}</Text>
+              <View style={sponsorStyles.sponsorTypeOutline}>
+                <Image source={Images.spotlightLocation} style={sponsorStyles.sponsorTypeIcon} />
+                <Text style={[sponsorStyles.sponsorTypeText, extraPadding]}>{hqLocation}</Text>
+                <Image source={Images.spotlightType} style={sponsorStyles.sponsorTypeIcon} />
+                <Text style={sponsorStyles.sponsorTypeText}>{sponsorType}</Text>
+              </View>
+              {website !== '' && (
+                <Button
+                  darkMode={darkMode}
+                  title={websiteLabel ? websiteLabel : 'Visit Website'}
+                  onButtonClick={() => this.onVisitWebsiteClicked(website)}
+                  margin={[0, 0, 24, 0]}
+                />
+              )}
+              <View style={styles.divider} />
+              <Text style={sponsorStyles.description}>{about}</Text>
+              <View style={styles.divider} />
             </View>
-            {website !== '' && <Button darkMode={darkMode} title={websiteLabel ? websiteLabel : 'Visit Website'} onButtonClick={() => this.onVisitWebsiteClicked(website)} margin={[0, 0, 24, 0]} />}
-            <View style={styles.divider} />
-            <Text style={sponsorStyles.description}>{about}</Text>
-            <View style={styles.divider} />
-          </View>}
+          )}
           <View style={sponsorStyles.recipesContainer}>
-            {remoteRecipes.length > 0 && remoteRecipes.map((recipe, idx) => (
-              <RecipeCard
-                key={`recipe${idx}`}
-                recipeName={recipe.recipeName}
-                recipeType={recipe.recipeType}
-                servingGlass={recipe.servingGlass}
-                disabled={false}
-                onCardClick={() => this.onCardClick(idx)}
-                darkMode={darkMode}
-              />
-            ))}
+            {remoteRecipes.length > 0 &&
+              remoteRecipes.map((recipe, idx) => (
+                <RecipeCard
+                  key={`recipe${idx}`}
+                  recipeName={recipe.recipeName}
+                  recipeType={recipe.recipeType}
+                  servingGlass={recipe.servingGlass}
+                  disabled={false}
+                  onCardClick={() => this.onCardClick(idx)}
+                  darkMode={darkMode}
+                />
+              ))}
           </View>
         </ScrollView>
         <View style={sponsorStyles.backContainer}>
-          <ModalXButton onPress={this.onBackPress}/>
+          <ModalXButton onPress={this.onBackPress} />
         </View>
       </View>
     )
@@ -183,8 +206,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchRemoteRecipes: (sponsorCardId) => dispatch(RecipeActions.fetchRemoteRecipes(sponsorCardId, null, null)),
-  fetchSponsorCardDetails: (sponsorCardId) => dispatch(SponsorActions.fetchSponsorCardDetails(sponsorCardId))
+  fetchRemoteRecipes: (sponsorCardId) =>
+    dispatch(RecipeActions.fetchRemoteRecipes(sponsorCardId, null, null)),
+  fetchSponsorCardDetails: (sponsorCardId) =>
+    dispatch(SponsorActions.fetchSponsorCardDetails(sponsorCardId)),
 })
 
 export default connect(

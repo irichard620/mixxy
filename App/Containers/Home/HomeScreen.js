@@ -4,10 +4,7 @@ import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { withNavigationFocus } from 'react-navigation'
 import { TabView, TabBar } from 'react-native-tab-view'
-import RNIap, {
-  purchaseErrorListener,
-  purchaseUpdatedListener
-} from 'react-native-iap';
+import RNIap, { purchaseErrorListener, purchaseUpdatedListener } from 'react-native-iap'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
@@ -25,39 +22,38 @@ import * as constants from '../../Config/constants'
 import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 
-
-const initialLayout = { width: Dimensions.get('window').width };
+const initialLayout = { width: Dimensions.get('window').width }
 const routes = [
   { key: 'discover', title: 'Discover' },
   { key: 'library', title: 'Library' },
-  { key: 'settings', title: 'Settings' }
+  { key: 'settings', title: 'Settings' },
 ]
 
 class HomeScreen extends React.Component {
-  purchaseUpdatePro = null;
+  purchaseUpdatePro = null
 
-  purchaseErrorPro = null;
+  purchaseErrorPro = null
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       index: 0,
       visibleModal: false,
       modalType: '',
       selectedVolumeUnit: false,
-    };
+    }
   }
 
   componentDidMount() {
     const { upgradeMixxyPro } = this.props
     // Purchase success handler
     this.purchaseUpdatePro = purchaseUpdatedListener((purchase) => {
-      const receipt = purchase.transactionReceipt;
+      const receipt = purchase.transactionReceipt
       if (receipt) {
         // Update in our system - wait for callback
-        upgradeMixxyPro(purchase);
+        upgradeMixxyPro(purchase)
       }
-    });
+    })
 
     // Purchase error handler
     this.purchaseErrorPro = purchaseErrorListener(() => {
@@ -69,9 +65,9 @@ class HomeScreen extends React.Component {
           {
             text: 'OK',
           },
-        ],
-      );
-    });
+        ]
+      )
+    })
 
     this.props.fetchRecipes()
   }
@@ -81,9 +77,9 @@ class HomeScreen extends React.Component {
     if (prevProps.upgradeIAPIsLoading && !this.props.upgradeIAPIsLoading && nextUser) {
       // Finish transaction
       if (Platform.OS === 'ios') {
-        RNIap.finishTransactionIOS(nextUser.purchase.transactionId);
+        RNIap.finishTransactionIOS(nextUser.purchase.transactionId)
       } else if (Platform.OS === 'android') {
-        RNIap.acknowledgePurchaseAndroid(nextUser.purchase.purchaseToken);
+        RNIap.acknowledgePurchaseAndroid(nextUser.purchase.purchaseToken)
       }
       if (!prevProps.user.user.premium && nextUser.user.premium) {
         this.setState({
@@ -92,43 +88,41 @@ class HomeScreen extends React.Component {
         })
       }
       return
-    } if (nextUser && prevProps.restoreIAPIsLoading && !this.props.restoreIAPIsLoading) {
+    }
+    if (nextUser && prevProps.restoreIAPIsLoading && !this.props.restoreIAPIsLoading) {
       // Update user
       if (!nextUser.user.premium) {
         Alert.alert(
           'Problem restoring Mixxy Pro',
-          'There was an issue restoring your Mixxy Pro. '
-          + 'It might be an issue with your connection, or no past purchase was found.',
+          'There was an issue restoring your Mixxy Pro. ' +
+            'It might be an issue with your connection, or no past purchase was found.',
           [
             {
               text: 'OK',
             },
-          ],
-        );
+          ]
+        )
         return
       }
-      Alert.alert(
-        'Mixxy Pro Restored',
-        'Thanks for your continued support as a Mixxy Pro user!',
-        [
-          {
-            text: 'OK',
-          },
-        ],
-      );
-    } if (nextUser && prevProps.updateVolumeUnitsLoading && !this.props.updateVolumeUnitsLoading) {
+      Alert.alert('Mixxy Pro Restored', 'Thanks for your continued support as a Mixxy Pro user!', [
+        {
+          text: 'OK',
+        },
+      ])
+    }
+    if (nextUser && prevProps.updateVolumeUnitsLoading && !this.props.updateVolumeUnitsLoading) {
       this.onCloseModalClick()
     }
   }
 
   componentWillUnmount() {
     if (this.purchaseUpdatePro) {
-      this.purchaseUpdatePro.remove();
-      this.purchaseUpdatePro = null;
+      this.purchaseUpdatePro.remove()
+      this.purchaseUpdatePro = null
     }
     if (this.purchaseErrorPro) {
-      this.purchaseErrorPro.remove();
-      this.purchaseErrorPro = null;
+      this.purchaseErrorPro.remove()
+      this.purchaseErrorPro = null
     }
   }
 
@@ -137,7 +131,7 @@ class HomeScreen extends React.Component {
     Alert.alert(
       'Buy Mixxy Pro',
       'Would you like to purchase the pro version of Mixxy? This will give you ' +
-      'the ability to create and edit recipes, and will unlock unlimited recipe storage.',
+        'the ability to create and edit recipes, and will unlock unlimited recipe storage.',
       [
         {
           text: 'Cancel',
@@ -179,26 +173,26 @@ class HomeScreen extends React.Component {
       this.props.fetchSharedRecipe(recipeId)
       this.setState({
         visibleModal: true,
-        modalType: constants.MODAL_SHARED_RECIPE
+        modalType: constants.MODAL_SHARED_RECIPE,
       })
     } else if (linkPortions.length === 5) {
       // Sponsor
       NavigationService.goBackToRoute('HomeScreen')
       const sponsorCardId = linkPortions[4]
       NavigationService.navigate('SponsorScreen', {
-        sponsorCardId: sponsorCardId
+        sponsorCardId: sponsorCardId,
       })
     }
   }
 
   onCardClick = (idx, isFavorite) => {
-    const { favoriteRecipes, allRecipes } = this.state;
+    const { favoriteRecipes, allRecipes } = this.state
     let recipesToUse = favoriteRecipes
     if (!isFavorite) {
       recipesToUse = allRecipes
     }
     NavigationService.navigate('TutorialScreen', {
-      recipe: recipesToUse[idx]
+      recipe: recipesToUse[idx],
     })
   }
 
@@ -225,7 +219,7 @@ class HomeScreen extends React.Component {
   onSharedRecipeClick = () => {
     this.onCloseModalClick()
     NavigationService.navigate('TutorialScreen', {
-      recipe: this.props.sharedRecipe
+      recipe: this.props.sharedRecipe,
     })
   }
 
@@ -240,7 +234,7 @@ class HomeScreen extends React.Component {
         onCardClick={() => this.onCardClick(idx, isFavorite)}
         darkMode={this.props.darkMode}
       />
-    );
+    )
   }
 
   getTabBarIcon = (props) => {
@@ -272,11 +266,17 @@ class HomeScreen extends React.Component {
   renderScene = ({ route }) => {
     switch (route.key) {
       case 'discover':
-        return <HomeDiscoverTab />;
+        return <HomeDiscoverTab />
       case 'library':
-        return <HomeLibraryTab onNewRecipeClick={this.onNewRecipeClick} />;
+        return <HomeLibraryTab onNewRecipeClick={this.onNewRecipeClick} />
       default:
-        return <HomeSettingsTab onMixxyProClick={this.onPurchaseMixxyClicked} onRestoreClick={this.onRestorePurchaseClicked} onVolumeUnitsClick={this.onVolumeUnitMenuClick} />;
+        return (
+          <HomeSettingsTab
+            onMixxyProClick={this.onPurchaseMixxyClicked}
+            onRestoreClick={this.onRestorePurchaseClicked}
+            onVolumeUnitsClick={this.onVolumeUnitMenuClick}
+          />
+        )
     }
   }
 
@@ -300,20 +300,20 @@ class HomeScreen extends React.Component {
     return [
       {
         title: constants.VOLUME_UNIT_IMPERIAL,
-        selected: !useMetric
+        selected: !useMetric,
       },
       {
         title: constants.VOLUME_UNIT_METRIC,
-        selected: useMetric
-      }
+        selected: useMetric,
+      },
     ]
   }
 
   onVolumeUnitPress = (item) => {
     this.setState({
-      selectedVolumeUnit: item
-    });
-  };
+      selectedVolumeUnit: item,
+    })
+  }
 
   onVolumeUnitSavePressed = () => {
     const { updateVolumeUnits } = this.props
@@ -326,8 +326,8 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { darkMode, fetchSharedRecipeIsLoading, sharedRecipe } = this.props;
-    const { index, visibleModal, modalType } = this.state;
+    const { darkMode, fetchSharedRecipeIsLoading, sharedRecipe } = this.props
+    const { index, visibleModal, modalType } = this.state
     const styles = getStylesheet(darkMode)
     const homeStyles = getHomeStylesheet(darkMode)
 
@@ -340,18 +340,16 @@ class HomeScreen extends React.Component {
           onIndexChange={(idx) => this.setState({ index: idx })}
           initialLayout={initialLayout}
           tabBarPosition={'bottom'}
-          renderTabBar={props =>
+          renderTabBar={(props) => (
             <TabBar
               {...props}
-              indicatorStyle={{backgroundColor: 'red'}}
-              renderIcon={
-                props => this.getTabBarIcon(props)
-              }
+              indicatorStyle={{ backgroundColor: 'red' }}
+              renderIcon={(props) => this.getTabBarIcon(props)}
               labelStyle={homeStyles.tabLabel}
               indicatorContainerStyle={homeStyles.tabIndicator}
               style={homeStyles.tabBackground}
             />
-          }
+          )}
         />
         <CustomModal
           visibleModal={visibleModal}
@@ -419,7 +417,6 @@ const mapDispatchToProps = (dispatch) => ({
   updateVolumeUnits: (useMetric) => dispatch(UserActions.updateVolumeUnits(useMetric)),
 })
 
-export default withNavigationFocus(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NavigationService.screenWithDarkMode(HomeScreen)))
+export default withNavigationFocus(
+  connect(mapStateToProps, mapDispatchToProps)(NavigationService.screenWithDarkMode(HomeScreen))
+)

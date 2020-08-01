@@ -53,7 +53,10 @@ export default function RecipeStep(props) {
     <View style={[textStyles.textContainer, outlineStyle]}>
       <View style={textStyles.stepHeader}>
         <Text style={textStyles.title}>{`STEP ${stepIdx}`}</Text>
-        <TouchableWithoutFeedback hitSlop={{top: 8, bottom: 8, left: 8, right: 8}} onPress={onDeletePress}>
+        <TouchableWithoutFeedback
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          onPress={onDeletePress}
+        >
           <View style={textStyles.deleteOutline}>
             <Image source={Images.builderDeleteStep} style={textStyles.deleteIcon} />
           </View>

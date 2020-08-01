@@ -70,7 +70,7 @@ const StackNavigator = createStackNavigator(
   }
 )
 
-const defaultGetStateForAction = StackNavigator.router.getStateForAction;
+const defaultGetStateForAction = StackNavigator.router.getStateForAction
 StackNavigator.router.getStateForAction = (action, state) => {
   if (state && action.type === 'GoToRoute') {
     let index = state.routes.findIndex((item) => {

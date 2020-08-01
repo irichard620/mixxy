@@ -98,19 +98,13 @@ function HomeSettingsTab(props) {
         <Text style={homeStyles.settingsProText}>{proText}</Text>
         {!user.premium && <View style={styles.divider} />}
         {!user.premium && (
-          <TouchableOpacity
-            style={homeStyles.settingsProButtonOutline}
-            onPress={onMixxyProClick}
-          >
+          <TouchableOpacity style={homeStyles.settingsProButtonOutline} onPress={onMixxyProClick}>
             <Text style={homeStyles.settingsProButton1Text}>{'Get Mixxy Pro'}</Text>
           </TouchableOpacity>
         )}
         {!user.premium && <View style={styles.divider} />}
         {!user.premium && (
-          <TouchableOpacity
-            style={homeStyles.settingsProButtonOutline}
-            onPress={onRestoreClick}
-          >
+          <TouchableOpacity style={homeStyles.settingsProButtonOutline} onPress={onRestoreClick}>
             <Text style={homeStyles.settingsProButton2Text}>{'Restore Purchase'}</Text>
           </TouchableOpacity>
         )}

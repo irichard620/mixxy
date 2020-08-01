@@ -1,56 +1,62 @@
 import React, { Component } from 'react'
 import CustomModal from '../../Components/CustomModal'
 import ModalContentBottom from '../../Components/ModalContentBottom'
-import * as constants from '../../Config/constants';
+import * as constants from '../../Config/constants'
 import IngredientUnitModal from './IngredientUnitModal'
 import { Alert } from 'react-native'
 import update from 'immutability-helper'
 
 class BuilderModal extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       selectedModalItem: '',
       amount: '0',
       fractionalAmount: '',
       amountType: '',
-    };
+    }
   }
 
   componentDidUpdate(prevProps) {
-    const { amount, fractionalAmount, amountType, visibleModal } = this.props;
+    const { amount, fractionalAmount, amountType, visibleModal } = this.props
     if (!prevProps.visibleModal && visibleModal) {
       this.setState({
         amount: amount,
         fractionalAmount: fractionalAmount,
         amountType: amountType,
-      });
+      })
     }
   }
 
   drinkTypeOptions = (existingDrinkType) => {
-    const arrToUse = [];
+    const arrToUse = []
     constants.drinkTypes.forEach((drinkType) => {
-      arrToUse.push({ title: constants.drinkTypeDisplay[drinkType], selected: (existingDrinkType === drinkType) });
-    });
-    return arrToUse;
-  };
+      arrToUse.push({
+        title: constants.drinkTypeDisplay[drinkType],
+        selected: existingDrinkType === drinkType,
+      })
+    })
+    return arrToUse
+  }
 
   baseSpiritOptions = (existingBaseSpirit) => {
-    const arrToUse = [];
+    const arrToUse = []
     constants.baseSpirits.forEach((baseSpirit) => {
-      arrToUse.push({ title: baseSpirit, selected: (existingBaseSpirit === baseSpirit) });
-    });
-    return arrToUse;
-  };
+      arrToUse.push({ title: baseSpirit, selected: existingBaseSpirit === baseSpirit })
+    })
+    return arrToUse
+  }
 
   servingGlassOptions = (existingServingGlass) => {
-    const arrToUse = [];
+    const arrToUse = []
     constants.servingGlasses.forEach((servingGlass) => {
-      arrToUse.push({ title: constants.servingGlassDisplay[servingGlass], selected: (existingServingGlass === servingGlass) });
-    });
-    return arrToUse;
-  };
+      arrToUse.push({
+        title: constants.servingGlassDisplay[servingGlass],
+        selected: existingServingGlass === servingGlass,
+      })
+    })
+    return arrToUse
+  }
 
   onModalPressItem = (item, idx) => {
     const { onPressItem, modalType } = this.props
@@ -61,27 +67,33 @@ class BuilderModal extends Component {
         ingredientOptions: update(ingredientOptions, {
           [idx]: {
             selected: {
-              $set: !ingredientOptions[idx].selected
+              $set: !ingredientOptions[idx].selected,
             },
-          }
+          },
         }),
-      });
+      })
     } else if (modalType === constants.MODAL_BUILDER_NAV) {
       onPressItem(item)
     } else {
       this.setState({
-        selectedModalItem: item
-      });
+        selectedModalItem: item,
+      })
     }
-  };
+  }
 
   onModalSavePressed = () => {
-    const { onModalSave, modalType, modalIdx } = this.props;
-    const { selectedModalItem, amount, fractionalAmount, amountType, ingredientOptions } = this.state;
+    const { onModalSave, modalType, modalIdx } = this.props
+    const {
+      selectedModalItem,
+      amount,
+      fractionalAmount,
+      amountType,
+      ingredientOptions,
+    } = this.state
     if (modalType === constants.MODAL_INGREDIENT_UNIT) {
       const isGarnishOrRim =
         amountType === constants.AMOUNT_TYPE_GARNISH || amountType === constants.AMOUNT_TYPE_RIM
-      if ((fractionalAmount === '' && amount === '0') && !isGarnishOrRim) {
+      if (fractionalAmount === '' && amount === '0' && !isGarnishOrRim) {
         Alert.alert('No amount added', 'Must add non-zero amount for ingredient.', [
           {
             text: 'OK',
@@ -99,22 +111,29 @@ class BuilderModal extends Component {
         return
       }
     }
-    onModalSave(selectedModalItem, modalIdx, amount, fractionalAmount, amountType, ingredientOptions);
+    onModalSave(
+      selectedModalItem,
+      modalIdx,
+      amount,
+      fractionalAmount,
+      amountType,
+      ingredientOptions
+    )
     this.setState({
       selectedModalItem: '',
       amount: '0',
       fractionalAmount: '',
       amountType: '',
-    });
-  };
+    })
+  }
 
   onModalCloseClick = () => {
-    const { onCloseClick } = this.props;
-    onCloseClick();
+    const { onCloseClick } = this.props
+    onCloseClick()
     this.setState({
-      selectedModalItem: ''
-    });
-  };
+      selectedModalItem: '',
+    })
+  }
 
   onPickerUpdate = (item, type) => {
     if (type === 0) {
@@ -127,41 +146,42 @@ class BuilderModal extends Component {
   }
 
   render() {
-    const {
-      visibleModal, modalType, drinkType, baseSpirit, servingGlass, darkMode,
-    } = this.props;
-    const { selectedModalItem, amount, fractionalAmount, amountType } = this.state;
+    const { visibleModal, modalType, drinkType, baseSpirit, servingGlass, darkMode } = this.props
+    const { selectedModalItem, amount, fractionalAmount, amountType } = this.state
 
     // Get content
-    let options = [];
-    let titleToDisplay = '';
+    let options = []
+    let titleToDisplay = ''
     if (modalType === constants.BUILDER_DRINK_TYPE_DETAIL) {
-      titleToDisplay = 'Drink Type Options';
-      let existingItem = drinkType;
+      titleToDisplay = 'Drink Type Options'
+      let existingItem = drinkType
       if (selectedModalItem !== '') {
-        existingItem = constants.drinkTypeRaw[selectedModalItem];
+        existingItem = constants.drinkTypeRaw[selectedModalItem]
       }
-      options = this.drinkTypeOptions(existingItem);
+      options = this.drinkTypeOptions(existingItem)
     } else if (modalType === constants.BUILDER_BASE_SPIRIT_DETAIL) {
-      titleToDisplay = 'Base Spirit Options';
-      let existingItem = baseSpirit;
+      titleToDisplay = 'Base Spirit Options'
+      let existingItem = baseSpirit
       if (selectedModalItem !== '') {
-        existingItem = selectedModalItem;
+        existingItem = selectedModalItem
       }
-      options = this.baseSpiritOptions(existingItem);
+      options = this.baseSpiritOptions(existingItem)
     } else if (modalType === constants.BUILDER_SERVING_GLASS_DETAIL) {
-      titleToDisplay = 'Serving Glass Options';
-      let existingItem = servingGlass;
+      titleToDisplay = 'Serving Glass Options'
+      let existingItem = servingGlass
       if (selectedModalItem !== '') {
-        existingItem = constants.servingGlassRaw[selectedModalItem];
+        existingItem = constants.servingGlassRaw[selectedModalItem]
       }
-      options = this.servingGlassOptions(existingItem);
+      options = this.servingGlassOptions(existingItem)
     } else if (modalType === constants.MODAL_BUILDER_NAV) {
-      options = [{
-        title: constants.BUILDER_MENU_BASIC_DETAILS,
-      }, {
-        title: constants.BUILDER_MENU_INGREDIENTS,
-      }]
+      options = [
+        {
+          title: constants.BUILDER_MENU_BASIC_DETAILS,
+        },
+        {
+          title: constants.BUILDER_MENU_INGREDIENTS,
+        },
+      ]
     }
 
     return (
@@ -171,7 +191,9 @@ class BuilderModal extends Component {
         type={constants.MODAL_TYPE_BOTTOM}
         darkMode={darkMode}
       >
-        {(modalType === constants.BUILDER_DRINK_TYPE_DETAIL || modalType === constants.BUILDER_BASE_SPIRIT_DETAIL || modalType === constants.BUILDER_SERVING_GLASS_DETAIL) && (
+        {(modalType === constants.BUILDER_DRINK_TYPE_DETAIL ||
+          modalType === constants.BUILDER_BASE_SPIRIT_DETAIL ||
+          modalType === constants.BUILDER_SERVING_GLASS_DETAIL) && (
           <ModalContentBottom
             isListModal={true}
             options={options}
@@ -203,8 +225,8 @@ class BuilderModal extends Component {
           />
         )}
       </CustomModal>
-    );
+    )
   }
 }
 
-export default BuilderModal;
+export default BuilderModal
