@@ -412,7 +412,7 @@ class TutorialScreen extends React.Component {
 }
 
 TutorialScreen.propTypes = {
-  darkMode: PropTypes.darkMode,
+  darkMode: PropTypes.bool,
   isFocused: PropTypes.bool,
   navigation: PropTypes.object,
   recipes: PropTypes.array,

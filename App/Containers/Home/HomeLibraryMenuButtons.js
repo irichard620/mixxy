@@ -55,5 +55,5 @@ HomeLibraryMenuButtons.propTypes = {
   darkMode: PropTypes.bool,
   onNewRecipeClick: PropTypes.func,
   onSectionClick: PropTypes.func,
-  selected: PropTypes.bool,
+  selected: PropTypes.number,
 }

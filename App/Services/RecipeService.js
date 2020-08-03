@@ -9,59 +9,58 @@ import uuidv4 from 'uuid/v4'
 import { Recipe } from '../Storage/Recipe'
 import * as constants from '../Config/constants'
 
-function persistRecipe(params) {
+async function persistRecipe(params) {
   const recipeToSave = params.recipeToSave
   const isExternal = params.isExternal
   const isPremium = params.isPremium
-  return storage
-    .getItem('recipes')
-    .then((recipes) => {
-      const r = recipes ? JSON.parse(recipes) : []
-
-      let found = false
-      let duplicateName = false
-      for (let i = 0; i < r.length; i += 1) {
-        if (r[i].recipeId === recipeToSave.recipeId) {
-          r[i] = recipeToSave
-          found = true
-          break
-        } else if (r[i].recipeName === recipeToSave.recipeName) {
-          duplicateName = true
-          break
-        }
+  try {
+    const recipes = await storage.getItem('recipes')
+    const r = recipes ? JSON.parse(recipes) : []
+    let found = false
+    let duplicateName = false
+    for (let i = 0; i < r.length; i += 1) {
+      if (r[i].recipeId === recipeToSave.recipeId) {
+        r[i] = recipeToSave
+        found = true
+        break
+      } else if (r[i].recipeName === recipeToSave.recipeName) {
+        duplicateName = true
+        break
       }
-
-      if (duplicateName) {
-        // Handle duplicate name error
-        return [[], 'A recipe with this name already exists', false]
-      } else if (!found && !isPremium && r.length >= 5) {
-        return [[], constants.MIXXY_PRO_LIBRARY_FULL, false]
-      } else {
-        if (!found) {
-          // Assign new ID if external
-          if (isExternal) {
-            recipeToSave.recipeId = uuidv4()
-            if (recipeToSave.sponsorCardId && recipeToSave.sponsorCardId !== '') {
-              analytics().logEvent('sponsor_recipe_save', {
-                sponsor_id: recipeToSave.sponsorCardId,
-                recipe_name: recipeToSave.recipeName,
-              })
-            }
-          } else {
-            // Log create recipe event
-            analytics().logEvent('builder_new_recipe', {})
+    }
+    if (duplicateName) {
+      // Handle duplicate name error
+      return [[], 'A recipe with this name already exists', false]
+    } else if (!found && !isPremium && r.length >= 5) {
+      return [[], constants.MIXXY_PRO_LIBRARY_FULL, false]
+    } else {
+      if (!found) {
+        // Assign new ID if external
+        if (isExternal) {
+          recipeToSave.recipeId = uuidv4()
+          if (recipeToSave.sponsorCardId && recipeToSave.sponsorCardId !== '') {
+            analytics().logEvent('sponsor_recipe_save', {
+              sponsor_id: recipeToSave.sponsorCardId,
+              recipe_name: recipeToSave.recipeName,
+            })
           }
-          r.push(recipeToSave)
+        } else {
+          // Log create recipe event
+          analytics().logEvent('builder_new_recipe', {})
         }
-        storage.setItem('recipes', JSON.stringify(r))
-        return [r, '', isExternal]
+        r.push(recipeToSave)
       }
-    })
-    .catch(() => [[], 'Unexpected error', false])
+      storage.setItem('recipes', JSON.stringify(r))
+      return [r, '', isExternal]
+    }
+  } catch (e) {
+    return [[], 'Unexpected error', false]
+  }
 }
 
-function fetchRecipes() {
-  return storage.getItem('recipes').then((recipes) => {
+async function fetchRecipes() {
+  try {
+    const recipes = await storage.getItem('recipes')
     const result = []
     const r = recipes ? JSON.parse(recipes) : []
     for (let i = 0; i < r.length; i += 1) {
@@ -72,10 +71,12 @@ function fetchRecipes() {
       }
     }
     return result
-  })
+  } catch (e) {
+    return []
+  }
 }
 
-function fetchRemoteRecipes(params) {
+async function fetchRemoteRecipes(params) {
   let url = 'recipes?'
   if (params.sponsorCardId) {
     url += `sponsor_card_id=${params.sponsorCardId}&`
@@ -85,33 +86,36 @@ function fetchRemoteRecipes(params) {
     url += `master_list_id=${params.masterListId}&`
   }
   const appVersion = DeviceInfo.getVersion()
-  return defaultApiClient(`${url}version=${appVersion}`)
-    .get()
-    .then((response) => {
-      if (in200s(response.status)) {
-        const recipes = []
-        for (let i = 0; i < response.data.length; i++) {
-          recipes.push(Recipe(camelcaseKeys(response.data[i])))
-        }
-        return recipes
+  try {
+    const response = await defaultApiClient(`${url}version=${appVersion}`).get()
+    if (in200s(response.status)) {
+      const recipes = []
+      for (let i = 0; i < response.data.length; i++) {
+        recipes.push(Recipe(camelcaseKeys(response.data[i])))
       }
+      return recipes
+    }
 
-      return null
-    })
+    return null
+  } catch (e) {
+    return null
+  }
 }
 
-function fetchSharedRecipe(params) {
+async function fetchSharedRecipe(params) {
   const appVersion = DeviceInfo.getVersion()
-  let url = `recipes/${params.recipeId}?version=${appVersion}`
-  return defaultApiClient(url)
-    .get()
-    .then((response) => {
-      if (in200s(response.status)) {
-        return Recipe(camelcaseKeys(response.data))
-      }
+  try {
+    let url = `recipes/${params.recipeId}?version=${appVersion}`
+    const response = await defaultApiClient(url).get()
+    console.log(response)
+    if (in200s(response.status)) {
+      return Recipe(camelcaseKeys(response.data))
+    }
 
-      return null
-    })
+    return null
+  } catch (e) {
+    return null
+  }
 }
 
 async function createSharedRecipe(params) {
@@ -147,50 +151,47 @@ async function createSharedRecipe(params) {
     })
 }
 
-function deleteRecipe(params) {
+async function deleteRecipe(params) {
   const recipeId = params.recipeId
-  return storage.getItem('recipes').then((recipes) => {
-    const r = recipes ? JSON.parse(recipes) : []
-    for (let i = 0; i < r.length; i += 1) {
-      const recipe = r[i]
-      if (recipe.recipeId === recipeId) {
-        r.splice(i, 1)
-        break
-      }
+  const recipes = await storage.getItem('recipes')
+  const r = recipes ? JSON.parse(recipes) : []
+  for (let i = 0; i < r.length; i += 1) {
+    const recipe = r[i]
+    if (recipe.recipeId === recipeId) {
+      r.splice(i, 1)
+      break
     }
-    storage.setItem('recipes', JSON.stringify(r))
-    return r
-  })
+  }
+  storage.setItem('recipes', JSON.stringify(r))
+  return r
 }
 
-function favoriteRecipe(params) {
+async function favoriteRecipe(params) {
   const recipeId = params.recipeId
-  return storage.getItem('recipes').then((recipes) => {
-    const r = recipes ? JSON.parse(recipes) : []
-    for (let i = 0; i < r.length; i += 1) {
-      if (r[i].recipeId === recipeId) {
-        r[i].favorited = true
-        break
-      }
+  const recipes = await storage.getItem('recipes')
+  const r = recipes ? JSON.parse(recipes) : []
+  for (let i = 0; i < r.length; i += 1) {
+    if (r[i].recipeId === recipeId) {
+      r[i].favorited = true
+      break
     }
-    storage.setItem('recipes', JSON.stringify(r))
-    return r
-  })
+  }
+  storage.setItem('recipes', JSON.stringify(r))
+  return r
 }
 
-function unfavoriteRecipe(params) {
+async function unfavoriteRecipe(params) {
   const recipeId = params.recipeId
-  return storage.getItem('recipes').then((recipes) => {
-    const r = recipes ? JSON.parse(recipes) : []
-    for (let i = 0; i < r.length; i += 1) {
-      if (r[i].recipeId === recipeId) {
-        r[i].favorited = false
-        break
-      }
+  const recipes = await storage.getItem('recipes')
+  const r = recipes ? JSON.parse(recipes) : []
+  for (let i = 0; i < r.length; i += 1) {
+    if (r[i].recipeId === recipeId) {
+      r[i].favorited = false
+      break
     }
-    storage.setItem('recipes', JSON.stringify(r))
-    return r
-  })
+  }
+  storage.setItem('recipes', JSON.stringify(r))
+  return r
 }
 
 export const recipeService = {
