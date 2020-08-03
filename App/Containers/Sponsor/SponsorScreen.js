@@ -14,6 +14,7 @@ import RecipeCard from '../../Components/RecipeCard'
 import Images from '../../Theme/Images'
 import Button from '../../Components/Button'
 import analytics from '@react-native-firebase/analytics'
+import { PropTypes } from 'prop-types'
 
 class SponsorScreen extends React.Component {
   constructor(props) {
@@ -24,19 +25,19 @@ class SponsorScreen extends React.Component {
   }
 
   componentDidMount() {
-    const { navigation } = this.props
+    const { navigation, fetchSponsorCardDetails, fetchRemoteRecipes } = this.props
     const sponsor = navigation.getParam('sponsor', {})
     if (Object.keys(sponsor).length) {
       // Already have sponsor passed
-      this.props.fetchRemoteRecipes(sponsor.cardId)
+      fetchRemoteRecipes(sponsor.cardId)
       this.setState({ sponsor: sponsor })
       analytics().logEvent('sponsor_page_view', {
         sponsor_id: sponsor.cardId,
       })
     } else {
       const sponsorCardId = navigation.getParam('sponsorCardId', 'none')
-      this.props.fetchSponsorCardDetails(sponsorCardId)
-      this.props.fetchRemoteRecipes(sponsorCardId)
+      fetchSponsorCardDetails(sponsorCardId)
+      fetchRemoteRecipes(sponsorCardId)
       analytics().logEvent('sponsor_page_view', {
         sponsor_id: sponsorCardId,
       })
@@ -143,7 +144,7 @@ class SponsorScreen extends React.Component {
           <View style={sponsorStyles.bufferView} />
           <View style={sponsorStyles.logoOutline}>
             <FastImage
-              style={[sponsorStyles.logoImage]}
+              style={sponsorStyles.logoImage}
               source={{
                 uri: logoLink,
                 priority: FastImage.priority.normal,
@@ -163,7 +164,7 @@ class SponsorScreen extends React.Component {
               {website !== '' && (
                 <Button
                   darkMode={darkMode}
-                  title={websiteLabel ? websiteLabel : 'Visit Website'}
+                  title={websiteLabel || 'Visit Website'}
                   onButtonClick={() => this.onVisitWebsiteClicked(website)}
                   margin={[0, 0, 24, 0]}
                 />
@@ -196,10 +197,19 @@ class SponsorScreen extends React.Component {
   }
 }
 
+SponsorScreen.propTypes = {
+  darkMode: PropTypes.bool,
+  navigation: PropTypes.object,
+  remoteRecipes: PropTypes.array,
+  sponsorCardDetails: PropTypes.object,
+  sponsorCardDetailsIsLoading: PropTypes.bool,
+  sponsorCardDetailsErrorMessage: PropTypes.string,
+  fetchRemoteRecipes: PropTypes.func,
+  fetchSponsorCardDetails: PropTypes.func,
+}
+
 const mapStateToProps = (state) => ({
   remoteRecipes: state.recipes.remoteRecipes,
-  fetchRemoteRecipesIsLoading: state.recipes.fetchRemoteRecipesIsLoading,
-  fetchRemoteRecipesErrorMessage: state.recipes.fetchRemoteRecipesErrorMessage,
   sponsorCardDetails: state.sponsors.sponsorCardDetails,
   sponsorCardDetailsIsLoading: state.sponsors.sponsorCardDetailsIsLoading,
   sponsorCardDetailsErrorMessage: state.sponsors.sponsorCardDetailsErrorMessage,

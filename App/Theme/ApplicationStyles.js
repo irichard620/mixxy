@@ -27,8 +27,10 @@ export default function getStylesheet(darkMode) {
     },
     verticalDivider: {
       backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-      height: '100%',
+      height: 36,
+      marginBottom: 16,
       marginRight: 16,
+      marginTop: 16,
       width: 0.5,
     },
   })

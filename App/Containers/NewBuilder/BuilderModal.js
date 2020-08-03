@@ -5,6 +5,7 @@ import * as constants from '../../Config/constants'
 import IngredientUnitModal from './IngredientUnitModal'
 import { Alert } from 'react-native'
 import update from 'immutability-helper'
+import { PropTypes } from 'prop-types'
 
 class BuilderModal extends Component {
   constructor(props) {
@@ -227,6 +228,22 @@ class BuilderModal extends Component {
       </CustomModal>
     )
   }
+}
+
+BuilderModal.propTypes = {
+  darkMode: PropTypes.bool,
+  visibleModal: PropTypes.bool,
+  modalType: PropTypes.string,
+  drinkType: PropTypes.string,
+  baseSpirit: PropTypes.string,
+  servingGlass: PropTypes.string,
+  amount: PropTypes.string,
+  fractionalAmount: PropTypes.string,
+  amountType: PropTypes.string,
+  onCloseClick: PropTypes.func,
+  onModalSave: PropTypes.func,
+  onPressItem: PropTypes.func,
+  modalIdx: PropTypes.number,
 }
 
 export default BuilderModal

@@ -43,4 +43,6 @@ export default {
   darkFill2Dark: '#FFFFFF20',
   darkFill3Light: '#00000010',
   darkFill3Dark: '#FFFFFF10',
+  // Transparent
+  transparent: 'transparent',
 }

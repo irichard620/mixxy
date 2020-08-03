@@ -18,7 +18,7 @@ export default function getCampaignStylesheet(useDarkMode) {
       width: '100%',
     },
     campaignBottomGradientContainer: {
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.transparent,
       bottom: 0,
       height: 144,
       left: 0,
@@ -50,7 +50,7 @@ export default function getCampaignStylesheet(useDarkMode) {
     title: {
       ...Fonts.h1Semibold,
       bottom: 36,
-      color: 'white',
+      color: Colors.white,
       left: 16,
       position: 'absolute',
       zIndex: 2,

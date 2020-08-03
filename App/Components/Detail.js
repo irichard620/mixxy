@@ -5,11 +5,13 @@ import { PropTypes } from 'prop-types'
 import Colors from '../Theme/Colors'
 import Images from '../Theme/Images'
 import Fonts from '../Theme/Fonts'
+import Helpers from '../Theme/Helpers'
 import getStylesheet from '../Theme/ApplicationStyles'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function Detail(props) {
   const { onDetailClick, disabled, title, value, showArrow, showSeparator, darkMode } = props
-  const detailStyles = getDetailStylesheet(darkMode)
+  const componentStyles = getComponentStylesheet(darkMode)
   const styles = getStylesheet(darkMode)
   let descriptionValue = value
   if (
@@ -31,9 +33,9 @@ export default function Detail(props) {
 
   return (
     <TouchableOpacity onPress={() => onDetailClick(title)} disabled={disabled}>
-      <View style={detailStyles.outline}>
-        <Text style={detailStyles.title}>{title}</Text>
-        <View style={detailStyles.rightView}>
+      <View style={componentStyles.detailOutline}>
+        <Text style={componentStyles.detailTitle}>{title}</Text>
+        <View style={Helpers.rowStart}>
           {descriptionValue !== '' && (
             <Text style={detailStyles.description}>{descriptionValue}</Text>
           )}
@@ -55,34 +57,14 @@ Detail.propTypes = {
   showSeparator: PropTypes.bool,
 }
 
-function getDetailStylesheet(darkMode) {
-  return StyleSheet.create({
-    description: {
-      color: Colors.blue1,
-      ...Fonts.body2,
-      marginRight: 12,
-    },
-    icon: {
-      height: 18,
-      resizeMode: 'contain',
-    },
-    outline: {
-      alignItems: 'center',
-      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      height: 48,
-      justifyContent: 'space-between',
-      paddingLeft: 16,
-      paddingRight: 16,
-    },
-    rightView: {
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-    },
-    title: {
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      ...Fonts.body2,
-    },
-  })
-}
+const detailStyles = StyleSheet.create({
+  description: {
+    color: Colors.blue1,
+    ...Fonts.body2,
+    marginRight: 12,
+  },
+  icon: {
+    height: 18,
+    resizeMode: 'contain',
+  },
+})

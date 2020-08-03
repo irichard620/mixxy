@@ -103,7 +103,7 @@ function HomeDiscoverTab(props) {
         showArrow
         enlarged
       />
-      <View style={{ height: 24 }} />
+      <View style={homeStyles.bufferView} />
     </ScrollView>
   )
 }

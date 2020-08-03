@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, Text, ScrollView, TouchableWithoutFeedback, Dimensions } from 'react-native'
+import { View, Image, Text, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
 import getStylesheet from '../../Theme/ApplicationStyles'
@@ -8,6 +8,7 @@ import * as ingredientModel from '../../Storage/Ingredient'
 import ListItem from '../../Components/ListItem'
 import Step from './Step'
 import Colors from '../../Theme/Colors'
+import { PropTypes } from 'prop-types'
 
 class TutorialHome extends Component {
   constructor(props) {
@@ -167,7 +168,7 @@ class TutorialHome extends Component {
           </View>
           <View style={styles.divider} />
         </View>
-        <View style={[tutorialStyles.stepsContainer]}>
+        <View style={tutorialStyles.stepsContainer}>
           {Object.keys(recipe).length !== 0 &&
             recipe.steps.map((step, idx) => (
               <Step
@@ -183,6 +184,15 @@ class TutorialHome extends Component {
       </ScrollView>
     )
   }
+}
+
+TutorialHome.propTypes = {
+  darkMode: PropTypes.bool,
+  recipe: PropTypes.object,
+  drinkAmount: PropTypes.number,
+  reduceDrinkQuantity: PropTypes.func,
+  increaseDrinkQuantity: PropTypes.func,
+  useMetric: PropTypes.bool,
 }
 
 export default TutorialHome

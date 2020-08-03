@@ -42,26 +42,39 @@ class TutorialScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { isSharedPreviously } = this.state
-    if (!prevProps.user.premium && this.props.user.premium) {
+    const {
+      user,
+      persistRecipeIsLoading,
+      isFocused,
+      persistRecipeErrorMessage,
+      recipeIsExternal,
+      deleteRecipeIsLoading,
+      createSharedRecipeIsLoading,
+      createSharedRecipeErrorMessage,
+      shareLink,
+      fetchSharedRecipeIsLoading,
+      sharedRecipe,
+    } = this.props
+    if (!prevProps.user.premium && user.premium) {
       this.onCloseModalClick()
       return
     }
-    if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
-      if (this.props.persistRecipeErrorMessage && this.props.isFocused) {
-        if (this.props.persistRecipeErrorMessage === constants.MIXXY_PRO_LIBRARY_FULL) {
+    if (prevProps.persistRecipeIsLoading && !persistRecipeIsLoading) {
+      if (persistRecipeErrorMessage && isFocused) {
+        if (persistRecipeErrorMessage === constants.MIXXY_PRO_LIBRARY_FULL) {
           this.setState({
             visibleModal: true,
             modalType: constants.MODAL_PAYWALL,
           })
         } else {
-          Alert.alert('Error saving recipe', `${this.props.persistRecipeErrorMessage}`, [
+          Alert.alert('Error saving recipe', `${persistRecipeErrorMessage}`, [
             {
               text: 'OK',
             },
           ])
         }
       } else {
-        if (this.props.recipeIsExternal) {
+        if (recipeIsExternal) {
           // Say recipe saved and close screen
           this.onBackScreenClick()
           Alert.alert('Added to Library', `Recipe successfully added to library.`, [
@@ -75,30 +88,26 @@ class TutorialScreen extends React.Component {
         }
       }
     }
-    if (prevProps.deleteRecipeIsLoading && !this.props.deleteRecipeIsLoading) {
+    if (prevProps.deleteRecipeIsLoading && !deleteRecipeIsLoading) {
       this.onBackScreenClick()
     }
-    if (prevProps.createSharedRecipeIsLoading && !this.props.createSharedRecipeIsLoading) {
-      if (this.props.createSharedRecipeErrorMessage && this.props.isFocused) {
-        Alert.alert(
-          'Error creating shared recipe',
-          `${this.props.createSharedRecipeErrorMessage}`,
-          [
-            {
-              text: 'OK',
-            },
-          ]
-        )
+    if (prevProps.createSharedRecipeIsLoading && !createSharedRecipeIsLoading) {
+      if (createSharedRecipeErrorMessage && isFocused) {
+        Alert.alert('Error creating shared recipe', `${createSharedRecipeErrorMessage}`, [
+          {
+            text: 'OK',
+          },
+        ])
       } else {
         // Open share sheet
         if (!isSharedPreviously) {
           analytics().logEvent('share_link_created', {})
         }
-        this.openShareSheet(this.props.shareLink)
+        this.openShareSheet(shareLink)
       }
     }
-    if (prevProps.fetchSharedRecipeIsLoading && !this.props.fetchSharedRecipeIsLoading) {
-      if (this.props.sharedRecipe) {
+    if (prevProps.fetchSharedRecipeIsLoading && !fetchSharedRecipeIsLoading) {
+      if (sharedRecipe) {
         this.setState({
           visibleModal: true,
           modalType: constants.MODAL_SHARED_RECIPE,
@@ -207,8 +216,8 @@ class TutorialScreen extends React.Component {
   onSaveClick = () => {
     // Call persist recipe
     const { recipe } = this.state
-    const { user } = this.props
-    this.props.persistRecipe(recipe, true, user.premium)
+    const { user, persistRecipe } = this.props
+    persistRecipe(recipe, true, user.premium)
   }
 
   onCloseModalClick = () => {
@@ -403,7 +412,28 @@ class TutorialScreen extends React.Component {
 }
 
 TutorialScreen.propTypes = {
+  darkMode: PropTypes.darkMode,
+  isFocused: PropTypes.bool,
+  navigation: PropTypes.object,
   recipes: PropTypes.array,
+  user: PropTypes.object,
+  persistRecipeIsLoading: PropTypes.bool,
+  persistRecipeErrorMessage: PropTypes.string,
+  recipeIsExternal: PropTypes.bool,
+  deleteRecipeIsLoading: PropTypes.bool,
+  shareLink: PropTypes.string,
+  createSharedRecipeIsLoading: PropTypes.bool,
+  createSharedRecipeErrorMessage: PropTypes.string,
+  sharedRecipe: PropTypes.object,
+  fetchSharedRecipeIsLoading: PropTypes.bool,
+  persistRecipe: PropTypes.func,
+  deleteRecipe: PropTypes.func,
+  favoriteRecipe: PropTypes.func,
+  unfavoriteRecipe: PropTypes.func,
+  createSharedRecipe: PropTypes.func,
+  fetchSharedRecipe: PropTypes.func,
+  requestPurchaseIAP: PropTypes.func,
+  restoreIAP: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({

@@ -112,9 +112,6 @@ function fetchSharedRecipe(params) {
 
       return null
     })
-    .catch((error) => {
-      return null
-    })
 }
 
 async function createSharedRecipe(params) {

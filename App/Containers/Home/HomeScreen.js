@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions, Image, Alert, SafeAreaView } from 'react-native'
+import { Dimensions, Image, Alert, SafeAreaView, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { withNavigationFocus } from 'react-navigation'
@@ -343,7 +343,7 @@ class HomeScreen extends React.Component {
           renderTabBar={(props) => (
             <TabBar
               {...props}
-              indicatorStyle={{ backgroundColor: 'red' }}
+              indicatorStyle={homeStyles.tabIndicatorColor}
               renderIcon={(props) => this.getTabBarIcon(props)}
               labelStyle={homeStyles.tabLabel}
               indicatorContainerStyle={homeStyles.tabIndicator}
@@ -392,8 +392,21 @@ class HomeScreen extends React.Component {
 }
 
 HomeScreen.propTypes = {
+  darkMode: PropTypes.bool,
   recipes: PropTypes.array,
   fetchRecipesIsLoading: PropTypes.bool,
+  fetchSharedRecipeIsLoading: PropTypes.bool,
+  sharedRecipe: PropTypes.object,
+  upgradeIAPIsLoading: PropTypes.bool,
+  restoreIAPIsLoading: PropTypes.bool,
+  user: PropTypes.object,
+  updateVolumeUnitsLoading: PropTypes.bool,
+  upgradeMixxyPro: PropTypes.func,
+  requestPurchaseIAP: PropTypes.func,
+  restoreIAP: PropTypes.func,
+  fetchRecipes: PropTypes.func,
+  fetchSharedRecipe: PropTypes.func,
+  updateVolumeUnits: PropTypes.func,
 }
 
 const mapStateToProps = (state) => ({
@@ -404,7 +417,6 @@ const mapStateToProps = (state) => ({
   upgradeIAPIsLoading: state.user.upgradeIAPIsLoading,
   restoreIAPIsLoading: state.user.restoreIAPIsLoading,
   user: state.user,
-  restoreIAPErrorMessage: state.user.restoreIAPErrorMessage,
   updateVolumeUnitsLoading: state.user.updateVolumeUnitsLoading,
 })
 

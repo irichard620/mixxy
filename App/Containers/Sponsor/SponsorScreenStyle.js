@@ -42,7 +42,7 @@ export default function getSponsorStylesheet(useDarkMode) {
       height: 168,
       marginBottom: 18,
       marginTop: -104,
-      shadowColor: '#000000',
+      shadowColor: Colors.backgroundColorDark,
       shadowOpacity: 0.14,
       shadowRadius: 12,
       width: 168,
@@ -55,7 +55,7 @@ export default function getSponsorStylesheet(useDarkMode) {
       flex: 1,
     },
     sponsorBottomGradientContainer: {
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.transparent,
       bottom: 0,
       height: 144,
       left: 0,

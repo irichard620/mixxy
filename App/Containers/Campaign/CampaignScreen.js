@@ -11,6 +11,7 @@ import { NavigationActions } from 'react-navigation'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import RecipeCard from '../../Components/RecipeCard'
 import analytics from '@react-native-firebase/analytics'
+import { PropTypes } from 'prop-types'
 
 class CampaignScreen extends React.Component {
   componentDidMount() {
@@ -106,6 +107,15 @@ class CampaignScreen extends React.Component {
       </View>
     )
   }
+}
+
+CampaignScreen.propTypes = {
+  darkMode: PropTypes.bool,
+  remoteRecipes: PropTypes.array,
+  fetchRemoteRecipes: PropTypes.func,
+  fetchRemoteRecipesIsLoading: PropTypes.bool,
+  fetchRemoteRecipesErrorMessage: PropTypes.string,
+  navigation: PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({

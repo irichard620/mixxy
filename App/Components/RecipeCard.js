@@ -1,15 +1,14 @@
 import React from 'react'
 import { View, Image, TouchableWithoutFeedback, Text, StyleSheet } from 'react-native'
 import { PropTypes } from 'prop-types'
-import Fonts from '../Theme/Fonts'
-import Colors from '../Theme/Colors'
 import Helpers from '../Theme/Helpers'
 import Images from '../Theme/Images'
 import * as constants from '../Config/constants'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function RecipeCard(props) {
   const { recipeName, recipeType, disabled, onCardClick, darkMode, servingGlass } = props
-  const cardStyles = getCardStylesheet(darkMode)
+  const componentStyles = getComponentStylesheet(darkMode)
 
   const getDrinkIcon = () => {
     if (servingGlass === constants.SERVING_GLASS_PITCHER) {
@@ -38,14 +37,14 @@ export default function RecipeCard(props) {
 
   return (
     <TouchableWithoutFeedback onPress={onCardClick} disabled={disabled}>
-      <View style={cardStyles.cardOutline}>
+      <View style={componentStyles.recipeCardOutline}>
         <View style={Helpers.rowStart}>
-          <View style={cardStyles.imageContainer}>
-            <Image style={cardStyles.image} source={getDrinkIcon()} />
+          <View style={componentStyles.recipeCardImageContainer}>
+            <Image style={recipeCardStyles.image} source={getDrinkIcon()} />
           </View>
           <View style={Helpers.fillColLeft}>
-            <Text style={cardStyles.recipeName}>{recipeName}</Text>
-            <Text style={cardStyles.recipeType}>
+            <Text style={componentStyles.recipeCardName}>{recipeName}</Text>
+            <Text style={componentStyles.recipeCardType}>
               {recipeType ? constants.drinkTypeDisplay[recipeType] : ''}
             </Text>
           </View>
@@ -65,47 +64,10 @@ RecipeCard.propTypes = {
   servingGlass: PropTypes.string,
 }
 
-function getCardStylesheet(darkMode) {
-  return StyleSheet.create({
-    cardOutline: {
-      backgroundColor: darkMode ? Colors.cardColorDark : Colors.cardColorLight,
-      borderRadius: 10,
-      marginBottom: 12,
-      marginLeft: 16,
-      marginRight: 16,
-      paddingBottom: 18,
-      paddingLeft: 12,
-      paddingRight: 12,
-      paddingTop: 18,
-      shadowColor: Colors.backgroundColorDark,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.12,
-      shadowRadius: 8,
-    },
-    image: {
-      borderRadius: 10,
-      height: 48,
-      width: 48,
-    },
-    imageContainer: {
-      alignItems: 'center',
-      backgroundColor: darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight,
-      borderRadius: 10,
-      height: 48,
-      justifyContent: 'center',
-      marginRight: 14,
-      width: 48,
-    },
-    recipeName: {
-      ...Fonts.body1,
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      marginBottom: 2,
-      textAlign: 'left',
-    },
-    recipeType: {
-      ...Fonts.body3,
-      color: darkMode ? Colors.text2Dark : Colors.text2Light,
-      textAlign: 'left',
-    },
-  })
-}
+const recipeCardStyles = StyleSheet.create({
+  image: {
+    borderRadius: 10,
+    height: 48,
+    width: 48,
+  },
+})

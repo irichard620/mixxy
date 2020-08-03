@@ -8,6 +8,7 @@ import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
 import HomeLibraryMenuButtons from './HomeLibraryMenuButtons'
+import Helpers from '../../Theme/Helpers'
 
 function HomeLibraryTab(props) {
   const { recipes, onNewRecipeClick } = props
@@ -39,7 +40,7 @@ function HomeLibraryTab(props) {
 
   return (
     <FlatList
-      contentContainerStyle={{ flexGrow: 1 }}
+      contentContainerStyle={Helpers.flexGrowStyle}
       data={[{ item: 'menu' }, { item: 'space' }, ...options]}
       keyExtractor={(item, index) => {
         if (index === 0) {
@@ -79,7 +80,7 @@ function HomeLibraryTab(props) {
           />
         )
       }}
-      style={{ width: '100%' }}
+      style={Helpers.fullWidth}
       ListHeaderComponent={listHeader}
       ListFooterComponent={listEmpty}
       stickyHeaderIndices={[1]}

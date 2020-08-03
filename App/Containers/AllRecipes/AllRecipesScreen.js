@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types'
 import SearchBar from 'react-native-search-bar'
-import { Alert, FlatList, ScrollView, View } from 'react-native'
+import { Alert, FlatList, View } from 'react-native'
 import React from 'react'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import { connect } from 'react-redux'
@@ -123,6 +123,11 @@ class AllRecipesScreen extends React.Component {
 
 AllRecipesScreen.propTypes = {
   darkMode: PropTypes.bool,
+  remoteRecipes: PropTypes.array,
+  fetchRemoteRecipes: PropTypes.func,
+  fetchRemoteRecipesIsLoading: PropTypes.bool,
+  fetchRemoteRecipesErrorMessage: PropTypes.string,
+  navigation: PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({

@@ -101,6 +101,9 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row-reverse',
   },
+  flexGrowStyle: {
+    flexGrow: 1,
+  },
   fullSize: {
     height: '100%',
     width: '100%',

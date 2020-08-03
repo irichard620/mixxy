@@ -1,15 +1,11 @@
 import React from 'react'
-import { View, Dimensions, Alert, LayoutAnimation } from 'react-native'
+import { View, Alert, LayoutAnimation } from 'react-native'
 import { connect } from 'react-redux'
 import update from 'immutability-helper'
-import { NavigationActions, SafeAreaView } from 'react-navigation'
-import LinearGradient from 'react-native-linear-gradient'
+import { NavigationActions } from 'react-navigation'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
-import getBuilderStylesheet from './BuilderStyles'
-import ButtonLarge from '../../Components/ButtonLarge'
 import NavigationService from '../../Services/NavigationService'
-import Colors from '../../Theme/Colors'
 import * as constants from '../../Config/constants'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import BuilderBasicDetails from './BuilderBasicDetails'
@@ -20,6 +16,7 @@ import * as stepModel from '../../Storage/Step'
 import BuilderSteps from './BuilderSteps'
 import * as recipeModel from '../../Storage/Recipe'
 import BottomBar from '../../Components/BottomBar'
+import { PropTypes } from 'prop-types'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
@@ -405,15 +402,12 @@ class BuilderScreen extends React.Component {
     } = this.state
 
     const styles = getStylesheet(darkMode)
-    const builderStyles = getBuilderStylesheet(darkMode)
 
     // Button style
     let buttonTitle = 'Continue'
     if (step === 2) {
       buttonTitle = 'Save Recipe'
     }
-    const { width } = Dimensions.get('window')
-    const buttonWidth = width - 16 - 16
     const buttonDisabled =
       (step === 0 &&
         (recipeName === '' ||
@@ -512,6 +506,14 @@ class BuilderScreen extends React.Component {
       </View>
     )
   }
+}
+
+BuilderScreen.propTypes = {
+  darkMode: PropTypes.bool,
+  navigation: PropTypes.object,
+  persistRecipe: PropTypes.func,
+  persistRecipeIsLoading: PropTypes.bool,
+  persistRecipeErrorMessage: PropTypes.string,
 }
 
 const mapStateToProps = (state) => ({

@@ -1,15 +1,15 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import Images from '../Theme/Images'
 import * as constants from '../Config/constants'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function ImageListItem(props) {
   const { title, onClick, darkMode, disabled, disabledText } = props
 
-  const listItemStyles = getListItemStylesheet(darkMode)
+  const componentStyles = getComponentStylesheet(darkMode)
 
   // Conditional styles
   const titleColorStyle = {}
@@ -47,13 +47,15 @@ export default function ImageListItem(props) {
 
   return (
     <TouchableOpacity
-      style={listItemStyles.container}
+      style={imageListItemStyles.container}
       onPress={() => onClick(title)}
       disabled={disabled}
     >
-      <View style={listItemStyles.textContainer}>
-        {imageToUse && <Image source={imageToUse} style={listItemStyles.icon} />}
-        <Text style={[listItemStyles.titleStyle, titleColorStyle]}>{titleToShow}</Text>
+      <View style={imageListItemStyles.textContainer}>
+        {imageToUse && <Image source={imageToUse} style={imageListItemStyles.icon} />}
+        <Text style={[componentStyles.imageListItemTitleStyle, titleColorStyle]}>
+          {titleToShow}
+        </Text>
       </View>
     </TouchableOpacity>
   )
@@ -67,30 +69,24 @@ ImageListItem.propTypes = {
   disabledText: PropTypes.string,
 }
 
-function getListItemStylesheet(darkMode) {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      height: 56,
-      paddingLeft: 16,
-    },
-    icon: {
-      height: 22,
-      marginRight: 16,
-      width: 22,
-    },
-    textContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      paddingRight: 16,
-      height: '100%',
-    },
-    titleStyle: {
-      ...Fonts.modalImageTitle,
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-  })
-}
+const imageListItemStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    height: 56,
+    paddingLeft: 16,
+  },
+  icon: {
+    height: 22,
+    marginRight: 16,
+    width: 22,
+  },
+  textContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingRight: 16,
+    height: '100%',
+  },
+})
