@@ -4,8 +4,11 @@ import { StyleSheet } from 'react-native'
 
 export default function getHomeStylesheet(useDarkMode) {
   return StyleSheet.create({
+    bufferView: {
+      height: 24,
+    },
     campaignBottomGradientContainer: {
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.transparent,
       bottom: 0,
       height: 144,
       left: 0,
@@ -34,7 +37,7 @@ export default function getHomeStylesheet(useDarkMode) {
       color: Colors.white,
     },
     campaignTopGradientContainer: {
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.transparent,
       height: 56,
       left: 0,
       position: 'absolute',
@@ -101,7 +104,7 @@ export default function getHomeStylesheet(useDarkMode) {
       flex: 1,
     },
     masterListBottomGradientContainer: {
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.transparent,
       bottom: 0,
       height: 48,
       left: 0,
@@ -202,7 +205,7 @@ export default function getHomeStylesheet(useDarkMode) {
       textAlign: 'center',
     },
     sponsorBottomGradientContainer: {
-      backgroundColor: 'transparent',
+      backgroundColor: Colors.transparent,
       bottom: 0,
       height: 88,
       left: 0,
@@ -248,13 +251,16 @@ export default function getHomeStylesheet(useDarkMode) {
       display: 'none',
       height: 0,
     },
+    tabIndicatorColor: {
+      backgroundColor: Colors.red1,
+    },
     tabLabel: {
       display: 'none',
       height: 0,
     },
     tagContainer: {
       alignItems: 'center',
-      backgroundColor: '#00000080',
+      backgroundColor: Colors.stepTextLight,
       borderRadius: 6,
       justifyContent: 'center',
       marginRight: 8,
@@ -264,7 +270,7 @@ export default function getHomeStylesheet(useDarkMode) {
       paddingTop: 4,
     },
     tagText: {
-      color: 'white',
+      color: Colors.white,
       ...Fonts.uppercaseBold,
     },
     tagsContainer: {

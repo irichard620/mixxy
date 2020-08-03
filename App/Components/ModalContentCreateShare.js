@@ -1,13 +1,12 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
-import Fonts from '../Theme/Fonts'
-import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import ModalBottomOutline from './ModalBottomOutline'
 import RecipeCard from './RecipeCard'
 import ImageListItem from './ImageListItem'
 import * as constants from '../Config/constants'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function ModalContentCreateShare(props) {
   const {
@@ -20,7 +19,7 @@ export default function ModalContentCreateShare(props) {
   } = props
 
   const styles = getStylesheet(darkMode)
-  const modalStyles = getModalStylesheet(darkMode)
+  const componentStyles = getComponentStylesheet(darkMode)
 
   let textToUse =
     'You’ve already shared this recipe. Do you want to overwrite the existing link with this recipe?'
@@ -47,8 +46,8 @@ export default function ModalContentCreateShare(props) {
         disabled
       />
       <View style={[styles.divider, marginTopStyle]} />
-      <Text style={modalStyles.description}>{textToUse}</Text>
-      <View style={modalStyles.itemsOutline}>
+      <Text style={componentStyles.modalShareDescription}>{textToUse}</Text>
+      <View style={modalShareStyle.itemsOutline}>
         <ImageListItem
           darkMode={darkMode}
           title={constants.RECIPE_MENU_SHARE}
@@ -75,19 +74,8 @@ ModalContentCreateShare.propTypes = {
   sharedRecipe: PropTypes.object,
 }
 
-function getModalStylesheet(darkMode) {
-  return StyleSheet.create({
-    description: {
-      alignSelf: 'flex-start',
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      ...Fonts.body1,
-      marginBottom: 16,
-      marginLeft: 16,
-      marginRight: 16,
-      marginTop: 16,
-    },
-    itemsOutline: {
-      height: 112,
-    },
-  })
-}
+const modalShareStyle = StyleSheet.create({
+  itemsOutline: {
+    height: 112,
+  },
+})

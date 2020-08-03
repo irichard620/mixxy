@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import getBuilderStylesheet from './BuilderStyles'
 import { PropTypes } from 'prop-types'
@@ -11,6 +7,7 @@ import AddButton from '../../Components/AddButton'
 import RecipeStep from './RecipeStep'
 import MoreButton from '../../Components/MoreButton'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Helpers from '../../Theme/Helpers'
 
 export default function BuilderSteps(props) {
   const {
@@ -50,7 +47,7 @@ export default function BuilderSteps(props) {
   const listFooter = (
     <View>
       <AddButton onPress={onAddStepClick} />
-      <View style={{ height: 24 }} />
+      <View style={builderStyles.buffer} />
     </View>
   )
 
@@ -84,8 +81,8 @@ export default function BuilderSteps(props) {
     return (
       <View style={builderStyles.scrollView}>
         <DraggableFlatList
-          contentContainerStyle={{ flexGrow: 1 }}
-          style={{ width: '100%' }}
+          contentContainerStyle={Helpers.flexGrowStyle}
+          style={Helpers.fullWidth}
           data={steps}
           contentOffset={{ x: 0, y: scrollOffsetTable }}
           onScrollEndDrag={(event) => {

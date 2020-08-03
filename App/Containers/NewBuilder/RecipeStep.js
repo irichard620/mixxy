@@ -1,17 +1,9 @@
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
-  View,
-  Image,
-} from 'react-native'
+import { Dimensions, Text, TextInput, TouchableWithoutFeedback, View, Image } from 'react-native'
 import React from 'react'
 import Colors from '../../Theme/Colors'
 import { PropTypes } from 'prop-types'
-import Fonts from '../../Theme/Fonts'
 import Images from '../../Theme/Images'
+import getBuilderStylesheet from './BuilderStyles'
 
 export default function RecipeStep(props) {
   const {
@@ -25,7 +17,7 @@ export default function RecipeStep(props) {
     onDeletePress,
     onBlur,
   } = props
-  const textStyles = getTextboxStylesheet(darkMode)
+  const builderStyles = getBuilderStylesheet(darkMode)
 
   const { width } = Dimensions.get('window')
   const outlineStyle = {
@@ -50,17 +42,22 @@ export default function RecipeStep(props) {
   }
 
   return (
-    <View style={[textStyles.textContainer, outlineStyle]}>
-      <View style={textStyles.stepHeader}>
-        <Text style={textStyles.title}>{`STEP ${stepIdx}`}</Text>
-        <TouchableWithoutFeedback hitSlop={{top: 8, bottom: 8, left: 8, right: 8}} onPress={onDeletePress}>
-          <View style={textStyles.deleteOutline}>
-            <Image source={Images.builderDeleteStep} style={textStyles.deleteIcon} />
+    <View style={[builderStyles.recipeStepTextContainer, outlineStyle]}>
+      <View style={builderStyles.recipeStepHeader}>
+        <Text style={builderStyles.recipeStepTitle}>{`STEP ${stepIdx}`}</Text>
+        <TouchableWithoutFeedback
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          onPress={onDeletePress}
+        >
+          <View style={builderStyles.recipeStepDeleteOutline}>
+            <Image source={Images.builderDeleteStep} style={builderStyles.recipeStepDeleteIcon} />
           </View>
         </TouchableWithoutFeedback>
       </View>
       {!isFocused && (
-        <Text style={[textStyles.textInput, editModeStyle]}>{editModeTextToDisplay}</Text>
+        <Text style={[builderStyles.recipeStepTextInput, editModeStyle]}>
+          {editModeTextToDisplay}
+        </Text>
       )}
       {isFocused && (
         <TextInput
@@ -69,7 +66,7 @@ export default function RecipeStep(props) {
           onChangeText={(text) => onChangeText(text)}
           placeholder={'Write out the step here...'}
           placeholderTextColor={darkMode ? Colors.text2Dark : Colors.text2Light}
-          style={[textStyles.textInput, inputStyle]}
+          style={[builderStyles.recipeStepTextInput, inputStyle]}
           maxLength={1000}
           multiline={true}
           onContentSizeChange={onContentSizeChange}
@@ -93,52 +90,4 @@ RecipeStep.propTypes = {
   passRef: PropTypes.func,
   onDeletePress: PropTypes.func,
   isFocused: PropTypes.bool,
-}
-
-function getTextboxStylesheet(darkMode) {
-  return StyleSheet.create({
-    textContainer: {
-      backgroundColor: darkMode ? Colors.cardColorDark : Colors.cardColorLight,
-      borderRadius: 15,
-      shadowColor: '#000000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.12,
-      shadowRadius: 8,
-    },
-    textInput: {
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      fontSize: 17,
-      marginBottom: 16,
-      marginLeft: 16,
-    },
-    title: {
-      ...Fonts.uppercaseBold,
-      color: darkMode ? Colors.text3Dark : Colors.text3Light,
-      marginTop: 16,
-    },
-    stepHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 12,
-      marginLeft: 16,
-    },
-    deleteIcon: {
-      height: 8,
-      resizeMode: 'contain',
-    },
-    deleteOutline: {
-      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-      borderRadius: 10,
-      height: 20,
-      width: 20,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: 12,
-      marginRight: 12,
-    },
-    touchable: {
-      padding: 8,
-    },
-  })
 }

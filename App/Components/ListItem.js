@@ -1,16 +1,16 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
-import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import Images from '../Theme/Images'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function ListItem(props) {
   const { title, subtitle, onClick, darkMode, selected, showArrow, disabled, enlarged } = props
 
   const styles = getStylesheet(darkMode)
-  const listItemStyles = getListItemStylesheet(darkMode)
+  const componentStyles = getComponentStylesheet(darkMode)
 
   // Conditional styles
   const backgroundColorStyle = {}
@@ -45,9 +45,9 @@ export default function ListItem(props) {
       disabled={disabled}
     >
       <View style={[listItemStyles.textContainer, textContainerExtraStyle]}>
-        <Text style={[listItemStyles.titleStyle, titleExtraStyle]}>{title}</Text>
+        <Text style={[componentStyles.listItemTitleStyle, titleExtraStyle]}>{title}</Text>
         {subtitle && subtitle !== '' && (
-          <Text style={listItemStyles.subtitleStyle}>{subtitle}</Text>
+          <Text style={componentStyles.listItemSubtitleStyle}>{subtitle}</Text>
         )}
         {showArrow && <Image style={listItemStyles.icon} source={arrowIcon} />}
       </View>
@@ -67,32 +67,22 @@ ListItem.propTypes = {
   enlarged: PropTypes.bool,
 }
 
-function getListItemStylesheet(darkMode) {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingLeft: 16,
-    },
-    icon: {
-      height: 18,
-      resizeMode: 'contain',
-    },
-    subtitleStyle: {
-      ...Fonts.body1,
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-    textContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingRight: 16,
-      height: 48,
-    },
-    titleStyle: {
-      ...Fonts.body1,
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-  })
-}
+const listItemStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingLeft: 16,
+  },
+  icon: {
+    height: 18,
+    resizeMode: 'contain',
+  },
+  textContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: 16,
+    height: 48,
+  },
+})

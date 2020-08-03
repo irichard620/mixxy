@@ -2,46 +2,46 @@ import storage from 'redux-persist/lib/storage'
 import * as RNIap from 'react-native-iap'
 import { Config } from '../Config'
 
-function fetchUser() {
-  return storage
-    .getItem('user')
-    .then((user) => {
-      const userDetails = user ? JSON.parse(user) : {}
-      // Add metric variable if needed
-      let viewedTutorial = true
-      if (!('viewedTutorial' in userDetails)) {
-        viewedTutorial = false
-        userDetails.viewedTutorial = true
-      }
-      if ('name' in userDetails) {
-        if (!('premium' in userDetails)) {
-          userDetails.premium = false
-        }
-        if (!('useMetric' in userDetails)) {
-          userDetails.useMetric = false
-        }
-      } else {
-        userDetails.name = 'Mixxy User'
+async function fetchUser() {
+  try {
+    const user = await storage.getItem('user')
+    const userDetails = user ? JSON.parse(user) : {}
+    // Add metric variable if needed
+    let viewedTutorial = true
+    if (!('viewedTutorial' in userDetails)) {
+      viewedTutorial = false
+      userDetails.viewedTutorial = true
+    }
+    if ('name' in userDetails) {
+      if (!('premium' in userDetails)) {
         userDetails.premium = false
+      }
+      if (!('useMetric' in userDetails)) {
         userDetails.useMetric = false
       }
-      storage.setItem('user', JSON.stringify(userDetails))
-      userDetails.viewedTutorial = viewedTutorial
-      return userDetails
-    })
-    .catch((error) => error)
-}
-
-function updateVolumeUnits(params) {
-  return storage.getItem('user').then((user) => {
-    const userDetails = user ? JSON.parse(user) : {}
-    userDetails.useMetric = params.useMetric
+    } else {
+      userDetails.name = 'Mixxy User'
+      userDetails.premium = false
+      userDetails.useMetric = false
+    }
     storage.setItem('user', JSON.stringify(userDetails))
+    userDetails.viewedTutorial = viewedTutorial
+    userDetails.premium = true
     return userDetails
-  })
+  } catch (e) {
+    return e
+  }
 }
 
-export async function requestPurchaseIAP() {
+async function updateVolumeUnits(params) {
+  const user = await storage.getItem('user')
+  const userDetails = user ? JSON.parse(user) : {}
+  userDetails.useMetric = params.useMetric
+  storage.setItem('user', JSON.stringify(userDetails))
+  return userDetails
+}
+
+async function requestPurchaseIAP() {
   try {
     const canMakePayments = await RNIap.initConnection()
     if (!canMakePayments) {
@@ -55,13 +55,12 @@ export async function requestPurchaseIAP() {
   }
 }
 
-export function upgradeIAP(params) {
-  return storage.getItem('user').then((user) => {
-    const userDetails = user ? JSON.parse(user) : {}
-    userDetails.premium = true
-    storage.setItem('user', JSON.stringify(userDetails))
-    return [userDetails, params.purchase]
-  })
+async function upgradeIAP(params) {
+  const user = await storage.getItem('user')
+  const userDetails = user ? JSON.parse(user) : {}
+  userDetails.premium = true
+  storage.setItem('user', JSON.stringify(userDetails))
+  return [userDetails, params.purchase]
 }
 
 async function restoreIAP() {

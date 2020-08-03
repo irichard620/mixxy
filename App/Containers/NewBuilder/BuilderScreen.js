@@ -1,15 +1,11 @@
 import React from 'react'
-import { View, Dimensions, Alert, LayoutAnimation } from 'react-native'
+import { View, Alert, LayoutAnimation } from 'react-native'
 import { connect } from 'react-redux'
-import update from 'immutability-helper';
-import { NavigationActions, SafeAreaView } from 'react-navigation'
-import LinearGradient from 'react-native-linear-gradient';
+import update from 'immutability-helper'
+import { NavigationActions } from 'react-navigation'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import TopHeader from '../../Components/TopHeader'
-import getBuilderStylesheet from './BuilderStyles'
-import ButtonLarge from '../../Components/ButtonLarge'
 import NavigationService from '../../Services/NavigationService'
-import Colors from '../../Theme/Colors'
 import * as constants from '../../Config/constants'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import BuilderBasicDetails from './BuilderBasicDetails'
@@ -20,10 +16,11 @@ import * as stepModel from '../../Storage/Step'
 import BuilderSteps from './BuilderSteps'
 import * as recipeModel from '../../Storage/Recipe'
 import BottomBar from '../../Components/BottomBar'
+import { PropTypes } from 'prop-types'
 
 class BuilderScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       step: 0, // 0=basic details, 1=ingredients, 2=steps
       // Recipe stuff
@@ -42,12 +39,12 @@ class BuilderScreen extends React.Component {
       modalIdx: -1,
       isEditMode: false,
       cursorLocation: -1,
-    };
+    }
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
-    const recipe = navigation.getParam('recipe', {});
+    const { navigation } = this.props
+    const recipe = navigation.getParam('recipe', {})
     if (Object.keys(recipe).length !== 0) {
       // add ingredient descriptions back into step titles
       this.setState({
@@ -61,22 +58,18 @@ class BuilderScreen extends React.Component {
         servingGlass: recipe.servingGlass,
         steps: recipe.steps,
         ingredients: recipe.ingredients,
-      });
+      })
     }
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.persistRecipeIsLoading && !this.props.persistRecipeIsLoading) {
       if (this.props.persistRecipeErrorMessage) {
-        Alert.alert(
-          'Error saving recipe',
-          `${this.props.persistRecipeErrorMessage}`,
-          [
-            {
-              text: 'OK'
-            },
-          ],
-        );
+        Alert.alert('Error saving recipe', `${this.props.persistRecipeErrorMessage}`, [
+          {
+            text: 'OK',
+          },
+        ])
       } else {
         this.dismissNavScreen()
       }
@@ -84,17 +77,17 @@ class BuilderScreen extends React.Component {
   }
 
   dismissNavScreen = () => {
-    const { navigation } = this.props;
-    navigation.dispatch(NavigationActions.back());
+    const { navigation } = this.props
+    navigation.dispatch(NavigationActions.back())
   }
 
   onRightButtonPress = () => {
     const { step, isEditMode } = this.state
     if (step === 1) {
       // Show delete buttons for ingredients
-      LayoutAnimation.configureNext(constants.CustomLayoutEaseIn);
+      LayoutAnimation.configureNext(constants.CustomLayoutEaseIn)
       this.setState({
-        isEditMode: !isEditMode
+        isEditMode: !isEditMode,
       })
     }
   }
@@ -117,25 +110,19 @@ class BuilderScreen extends React.Component {
       visibleModal: false,
       modalType: '',
       modalIdx: -1,
-    });
-  };
+    })
+  }
 
   validateIngredients = () => {
     const { ingredients } = this.state
     for (let i = 0; i < ingredients.length; i++) {
       const currentIngredient = ingredients[i]
-      if (
-        currentIngredient.title === ''
-      ) {
-        Alert.alert(
-          'Ingredients Error',
-          'One or more of your ingredients is missing a name.',
-          [
-            {
-              text: 'OK'
-            },
-          ],
-        );
+      if (currentIngredient.title === '') {
+        Alert.alert('Ingredients Error', 'One or more of your ingredients is missing a name.', [
+          {
+            text: 'OK',
+          },
+        ])
         return false
       }
     }
@@ -147,15 +134,11 @@ class BuilderScreen extends React.Component {
     for (let i = 0; i < steps.length; i++) {
       const currentStep = steps[i]
       if (currentStep.title === '') {
-        Alert.alert(
-          'Recipe Error',
-          "You can't save a recipe with a blank step.",
-          [
-            {
-              text: 'OK'
-            },
-          ],
-        );
+        Alert.alert('Recipe Error', "You can't save a recipe with a blank step.", [
+          {
+            text: 'OK',
+          },
+        ])
         return false
       }
     }
@@ -164,7 +147,18 @@ class BuilderScreen extends React.Component {
 
   onButtonClick = () => {
     const { persistRecipe } = this.props
-    const { step, recipeId, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, favorited } = this.state;
+    const {
+      step,
+      recipeId,
+      recipeName,
+      recipeDescription,
+      drinkType,
+      baseSpirit,
+      servingGlass,
+      steps,
+      ingredients,
+      favorited,
+    } = this.state
     // Check step
     if (step !== 2) {
       if (step === 1) {
@@ -175,7 +169,7 @@ class BuilderScreen extends React.Component {
         }
       }
       this.setState({
-        step: step + 1
+        step: step + 1,
       })
     } else {
       const valid = this.validateSteps()
@@ -201,57 +195,55 @@ class BuilderScreen extends React.Component {
   }
 
   onModalSave = (item, modalIdx, amount, fractionalAmount, amountType) => {
-    const {
-      modalType, drinkType, ingredients
-    } = this.state;
+    const { modalType, drinkType, ingredients } = this.state
 
     if (modalType === constants.BUILDER_DRINK_TYPE_DETAIL) {
       // If same type, return
       if (drinkType === item) {
-        return;
+        return
       }
       this.setState({
         drinkType: constants.drinkTypeRaw[item],
         baseSpirit: '',
         visibleModal: false,
-        modalType: ''
-      });
+        modalType: '',
+      })
     } else if (modalType === constants.BUILDER_BASE_SPIRIT_DETAIL) {
       // Update spirit
       this.setState({
         baseSpirit: item,
         visibleModal: false,
-        modalType: ''
-      });
+        modalType: '',
+      })
     } else if (modalType === constants.BUILDER_SERVING_GLASS_DETAIL) {
       // Update glass
       this.setState({
         servingGlass: constants.servingGlassRaw[item],
         visibleModal: false,
-        modalType: ''
-      });
+        modalType: '',
+      })
     } else if (modalType === constants.MODAL_INGREDIENT_UNIT) {
       // Update units for ingredient
       this.setState({
         ingredients: update(ingredients, {
           [modalIdx]: {
             amount: {
-              $set: amount
+              $set: amount,
             },
             fractionalAmount: {
-              $set: fractionalAmount
+              $set: fractionalAmount,
             },
             amountType: {
-              $set: amountType
-            }
-          }
+              $set: amountType,
+            },
+          },
         }),
         visibleModal: false,
         modalType: '',
         modalIdx: -1,
-      });
+      })
     }
-  };
+  }
 
   onModalPressItem = (item, idx) => {
     const { modalType } = this.state
@@ -268,53 +260,50 @@ class BuilderScreen extends React.Component {
 
   onRecipeNameUpdate = (text) => {
     this.setState({
-      recipeName: text
+      recipeName: text,
     })
   }
 
   onRecipeDescriptionUpdate = (text) => {
     this.setState({
-      recipeDescription: text
+      recipeDescription: text,
     })
   }
 
   onDrinkTypeClick = () => {
     this.setState({
       visibleModal: true,
-      modalType: constants.BUILDER_DRINK_TYPE_DETAIL
+      modalType: constants.BUILDER_DRINK_TYPE_DETAIL,
     })
   }
 
   onServingGlassClick = () => {
     this.setState({
       visibleModal: true,
-      modalType: constants.BUILDER_SERVING_GLASS_DETAIL
+      modalType: constants.BUILDER_SERVING_GLASS_DETAIL,
     })
   }
 
   onBaseSpiritClick = () => {
     this.setState({
       visibleModal: true,
-      modalType: constants.BUILDER_BASE_SPIRIT_DETAIL
+      modalType: constants.BUILDER_BASE_SPIRIT_DETAIL,
     })
   }
 
   onAddIngredientClick = () => {
     const { ingredients } = this.state
-    const newIngredient = ingredientModel.Ingredient({});
+    const newIngredient = ingredientModel.Ingredient({})
     this.setState({
-      ingredients: [
-        ...ingredients,
-        newIngredient
-      ],
-    });
+      ingredients: [...ingredients, newIngredient],
+    })
   }
 
   onIngredientUnitClick = (idx) => {
     this.setState({
       visibleModal: true,
       modalIdx: idx,
-      modalType: constants.MODAL_INGREDIENT_UNIT
+      modalType: constants.MODAL_INGREDIENT_UNIT,
     })
   }
 
@@ -324,35 +313,32 @@ class BuilderScreen extends React.Component {
       ingredients: update(ingredients, {
         [idx]: {
           title: {
-            $set: text
+            $set: text,
           },
-        }
+        },
       }),
-    });
+    })
   }
 
   onDeleteIngredientPress = (idx) => {
     const { ingredients } = this.state
     // make a separate copy of the array
-    const array = [...ingredients];
+    const array = [...ingredients]
     // Find index
     if (idx !== -1) {
-      array.splice(idx, 1);
+      array.splice(idx, 1)
       this.setState({
         ingredients: array,
-      });
+      })
     }
   }
 
   onAddStepClick = () => {
     const { steps } = this.state
-    const newStep = stepModel.Step({});
+    const newStep = stepModel.Step({})
     this.setState({
-      steps: [
-        ...steps,
-        newStep
-      ],
-    });
+      steps: [...steps, newStep],
+    })
   }
 
   onChangeStepText = (text, idx) => {
@@ -361,11 +347,11 @@ class BuilderScreen extends React.Component {
       steps: update(steps, {
         [idx]: {
           title: {
-            $set: text
+            $set: text,
           },
-        }
+        },
       }),
-    });
+    })
   }
 
   onDeleteStepPress = (idx) => {
@@ -378,13 +364,13 @@ class BuilderScreen extends React.Component {
         text: 'Delete',
         onPress: () => {
           // make a separate copy of the array
-          const array = [...steps];
+          const array = [...steps]
           // Find index
           if (idx !== -1) {
-            array.splice(idx, 1);
+            array.splice(idx, 1)
             this.setState({
               steps: array,
-            });
+            })
           }
         },
       },
@@ -399,24 +385,37 @@ class BuilderScreen extends React.Component {
   }
 
   render() {
-    const { darkMode } = this.props;
-    const { step, recipeName, recipeDescription, drinkType, baseSpirit, servingGlass, steps, ingredients, visibleModal, modalType, modalIdx, isEditMode } = this.state;
+    const { darkMode } = this.props
+    const {
+      step,
+      recipeName,
+      recipeDescription,
+      drinkType,
+      baseSpirit,
+      servingGlass,
+      steps,
+      ingredients,
+      visibleModal,
+      modalType,
+      modalIdx,
+      isEditMode,
+    } = this.state
 
     const styles = getStylesheet(darkMode)
-    const builderStyles = getBuilderStylesheet(darkMode)
 
     // Button style
-    let buttonTitle = 'Continue';
+    let buttonTitle = 'Continue'
     if (step === 2) {
-      buttonTitle = 'Save Recipe';
+      buttonTitle = 'Save Recipe'
     }
-    const { width } = Dimensions.get('window');
-    const buttonWidth = (width - 16 - 16);
-    const buttonDisabled = (
-      (step === 0 && (recipeName === '' || drinkType === '' || (drinkType === constants.DRINK_TYPE_COCKTAIL && baseSpirit === '') || servingGlass === ''))
-      || (step === 1 && ingredients.length === 0)
-      || (step === 2 && steps.length === 0)
-    )
+    const buttonDisabled =
+      (step === 0 &&
+        (recipeName === '' ||
+          drinkType === '' ||
+          (drinkType === constants.DRINK_TYPE_COCKTAIL && baseSpirit === '') ||
+          servingGlass === '')) ||
+      (step === 1 && ingredients.length === 0) ||
+      (step === 2 && steps.length === 0)
 
     let amount = ''
     let fractionalAmount = ''
@@ -428,9 +427,9 @@ class BuilderScreen extends React.Component {
     }
 
     let rightButtonTitle = ''
-    if ((step === 1 && isEditMode)) {
+    if (step === 1 && isEditMode) {
       rightButtonTitle = 'Done'
-    } else if ((step === 1 && !isEditMode)) {
+    } else if (step === 1 && !isEditMode) {
       rightButtonTitle = 'Edit'
     }
 
@@ -483,7 +482,12 @@ class BuilderScreen extends React.Component {
             onDragEnd={(data) => this.setState({ steps: data })}
           />
         )}
-        <BottomBar buttonTitle={buttonTitle} disabled={buttonDisabled} darkMode={darkMode} onButtonClick={this.onButtonClick} />
+        <BottomBar
+          buttonTitle={buttonTitle}
+          disabled={buttonDisabled}
+          darkMode={darkMode}
+          onButtonClick={this.onButtonClick}
+        />
         <BuilderModal
           visibleModal={visibleModal}
           modalType={modalType}
@@ -502,6 +506,14 @@ class BuilderScreen extends React.Component {
       </View>
     )
   }
+}
+
+BuilderScreen.propTypes = {
+  darkMode: PropTypes.bool,
+  navigation: PropTypes.object,
+  persistRecipe: PropTypes.func,
+  persistRecipeIsLoading: PropTypes.bool,
+  persistRecipeErrorMessage: PropTypes.string,
 }
 
 const mapStateToProps = (state) => ({

@@ -93,7 +93,17 @@ function HomeDiscoverTab(props) {
           enlarged
         />
       ))}
-      <View style={{ height: 24 }} />
+      <ListItem
+        key={'allRecipes'}
+        title={'See all recipes...'}
+        onClick={() => {
+          NavigationService.navigate('AllRecipesScreen')
+        }}
+        darkMode={darkMode}
+        showArrow
+        enlarged
+      />
+      <View style={homeStyles.bufferView} />
     </ScrollView>
   )
 }

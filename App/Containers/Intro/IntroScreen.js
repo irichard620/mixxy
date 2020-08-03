@@ -14,7 +14,7 @@ export default function IntroScreen(props) {
   const [step, setStep] = useState(0)
   const iconViewWidth = {
     width: step === 0 ? 80 : 240,
-    justifyContent: step === 0 ? 'center' : 'space-between'
+    justifyContent: step === 0 ? 'center' : 'space-between',
   }
   let titleToDisplay = 'Welcome to Mixxy'
   if (step === 1) {

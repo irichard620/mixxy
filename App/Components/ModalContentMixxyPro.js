@@ -1,21 +1,21 @@
 import React from 'react'
 import { Image, Text, StyleSheet } from 'react-native'
-import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import ModalBottomOutline from './ModalBottomOutline'
 import Images from '../Theme/Images'
 import ButtonLarge from './ButtonLarge'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function ModalContentMixxyPro(props) {
   const { darkMode, onMixxyProClick, onRestoreClick } = props
 
-  const modalStyles = getModalStylesheet(darkMode)
+  const componentStyles = getComponentStylesheet(darkMode)
 
   return (
     <ModalBottomOutline title={'Mixxy Pro Feature'} darkMode={darkMode}>
-      <Image source={Images.proModalBadge} style={modalStyles.image} />
-      <Text style={modalStyles.description}>
+      <Image source={Images.proModalBadge} style={modalProStyles.image} />
+      <Text style={componentStyles.modalProDescription}>
         {
           'Mixxy Pro unlocks recipe creation, editing and an unlimited library. Any future Pro features are included too, all in a one-time purchase.'
         }
@@ -47,22 +47,12 @@ ModalContentMixxyPro.propTypes = {
   onRestoreClick: PropTypes.func,
 }
 
-function getModalStylesheet(darkMode) {
-  return StyleSheet.create({
-    description: {
-      alignSelf: 'flex-start',
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      ...Fonts.body1,
-      marginBottom: 24,
-      marginLeft: 16,
-      marginRight: 16,
-    },
-    image: {
-      height: 144,
-      marginBottom: 24,
-      marginTop: 24,
-      resizeMode: 'contain',
-      alignSelf: 'center',
-    },
-  })
-}
+const modalProStyles = StyleSheet.create({
+  image: {
+    alignSelf: 'center',
+    height: 144,
+    marginBottom: 24,
+    marginTop: 24,
+    resizeMode: 'contain',
+  },
+})

@@ -4,6 +4,7 @@ import React from 'react'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import Colors from '../../Theme/Colors'
 import Images from '../../Theme/Images'
+import { PropTypes } from 'prop-types'
 
 export default function HomeLibraryMenuButtons(props) {
   const { darkMode, onNewRecipeClick, onSectionClick, selected } = props
@@ -18,7 +19,7 @@ export default function HomeLibraryMenuButtons(props) {
           <Image source={Images.newRecipe} style={homeStyles.libraryAddIcon} />
         </View>
       </TouchableWithoutFeedback>
-      <View style={[styles.verticalDivider, { height: 36, marginTop: 16, marginBottom: 16 }]} />
+      <View style={styles.verticalDivider} />
       {menuItems.map((item, idx) => {
         // style of button
         let titleStyle = {
@@ -48,4 +49,11 @@ export default function HomeLibraryMenuButtons(props) {
       })}
     </View>
   )
+}
+
+HomeLibraryMenuButtons.propTypes = {
+  darkMode: PropTypes.bool,
+  onNewRecipeClick: PropTypes.func,
+  onSectionClick: PropTypes.func,
+  selected: PropTypes.number,
 }

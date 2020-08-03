@@ -13,42 +13,37 @@ const sponsorCardApiClient = axios.create({
   timeout: 3000,
 })
 
-function fetchSponsorCards() {
-  return sponsorCardApiClient
-    .get()
-    .then((response) => {
-      if (in200s(response.status)) {
-        const sponsorCards = camelcaseKeys(response.data)
-        for (let i = 0; i < sponsorCards.length; i++) {
-          analytics().logEvent('sponsor_impression', {
-            sponsor_id: sponsorCards[i].cardId,
-          })
-        }
-        return sponsorCards
+async function fetchSponsorCards() {
+  try {
+    const response = await sponsorCardApiClient.get()
+    if (in200s(response.status)) {
+      const sponsorCards = camelcaseKeys(response.data)
+      for (let i = 0; i < sponsorCards.length; i++) {
+        analytics().logEvent('sponsor_impression', {
+          sponsor_id: sponsorCards[i].cardId,
+        })
       }
+      return sponsorCards
+    }
 
-      return null
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+    return null
+  } catch (e) {
+    return null
+  }
 }
 
-function fetchSponsorCardDetails(params) {
+async function fetchSponsorCardDetails(params) {
   let url = `sponsor-cards/${params.sponsorCardId}`
-  return defaultApiClient(url)
-    .get()
-    .then((response) => {
-      if (in200s(response.status)) {
-        return camelcaseKeys(response.data)
-      }
+  try {
+    const response = await defaultApiClient(url).get()
+    if (in200s(response.status)) {
+      return camelcaseKeys(response.data)
+    }
 
-      return null
-    })
-    .catch((error) => {
-      console.log(error)
-      return null
-    })
+    return null
+  } catch (e) {
+    return null
+  }
 }
 
 export const sponsorService = {

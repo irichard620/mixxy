@@ -50,5 +50,5 @@ HomeMasterList.propTypes = {
   disabled: PropTypes.bool,
   onMasterListClick: PropTypes.func,
   darkMode: PropTypes.bool,
-  addRightPadding: PropTypes.bool
+  addRightPadding: PropTypes.bool,
 }

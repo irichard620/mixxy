@@ -3,10 +3,11 @@ import React from 'react'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import Images from '../Theme/Images'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function ClickableTextbox(props) {
   const { modalText, textPlaceholder, onClick, darkMode } = props
-  const textStyles = getTextboxStylesheet(darkMode)
+  const componentStyles = getComponentStylesheet(darkMode)
 
   let textColor = darkMode ? Colors.text1Dark : Colors.text1Light
   let textToShow = modalText
@@ -22,10 +23,10 @@ export default function ClickableTextbox(props) {
   }
   return (
     <TouchableWithoutFeedback onPress={onClick}>
-      <View style={textStyles.textContainer}>
+      <View style={componentStyles.clickableTextboxTextContainer}>
         <Text style={textStyle}>{textToShow}</Text>
         <Image
-          style={textStyles.icon}
+          style={clickableTextboxStyles.icon}
           source={darkMode ? Images.builderUnitArrowDark : Images.builderUnitArrowLight}
         />
       </View>
@@ -40,24 +41,9 @@ ClickableTextbox.propTypes = {
   darkMode: PropTypes.bool,
 }
 
-function getTextboxStylesheet(darkMode) {
-  return StyleSheet.create({
-    icon: {
-      height: 12,
-      resizeMode: 'contain',
-    },
-    textContainer: {
-      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      borderColor: darkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
-      borderRadius: 10,
-      borderWidth: 0.5,
-      marginBottom: 24,
-      marginLeft: 16,
-      marginRight: 16,
-      padding: 14,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-  })
-}
+const clickableTextboxStyles = StyleSheet.create({
+  icon: {
+    height: 12,
+    resizeMode: 'contain',
+  },
+})

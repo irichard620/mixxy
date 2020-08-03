@@ -1,8 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions, ScrollView } from 'react-native'
 import ButtonLarge from './ButtonLarge'
-import Fonts from '../Theme/Fonts'
-import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import ListItem from './ListItem'
 import Textbox from './Textbox'
@@ -26,8 +24,6 @@ export default function ModalContentBottom(props) {
     hasSave,
     darkMode,
   } = props
-
-  const modalStyles = getModalStylesheet(darkMode)
 
   // Elems with atleast one text
   const isTextInput = !isListModal && !isImageListModal && !isMultiSelectModal
@@ -129,36 +125,9 @@ ModalContentBottom.propTypes = {
   isMultiSelectModal: PropTypes.bool,
 }
 
-function getModalStylesheet(darkMode) {
-  return StyleSheet.create({
-    content: {
-      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      paddingBottom: 32,
-      paddingTop: 8,
-    },
-    saveContainer: {
-      alignItems: 'center',
-      marginBottom: 8,
-    },
-    textInput: {
-      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-      borderRadius: 10,
-      fontSize: 16,
-      marginBottom: 24,
-      marginLeft: 16,
-      marginRight: 16,
-      marginTop: 16,
-      padding: 16,
-    },
-    title: {
-      alignSelf: 'flex-start',
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-      ...Fonts.cardSelectionTitle,
-      marginBottom: 8,
-      marginLeft: 16,
-      marginTop: 36,
-    },
-  })
-}
+const modalStyles = StyleSheet.create({
+  saveContainer: {
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+})

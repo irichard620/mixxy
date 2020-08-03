@@ -9,8 +9,6 @@ import * as constants from '../../Config/constants'
 export default function IngredientUnitModal(props) {
   const { amount, fractionalAmount, amountType, onModalSave, onPickerUpdate, darkMode } = props
 
-  const modalStyles = getModalStylesheet(darkMode)
-
   const itemColor = darkMode ? Colors.text1Dark : Colors.text1Light
   const isGarnishOrRim =
     amountType === constants.AMOUNT_TYPE_GARNISH || amountType === constants.AMOUNT_TYPE_RIM
@@ -36,7 +34,7 @@ export default function IngredientUnitModal(props) {
 
   return (
     <ModalBottomOutline title={'Select Units'} darkMode={darkMode}>
-      <View style={modalStyles.pickerOutline}>
+      <View style={ingredientUnitModalStyles.pickerOutline}>
         <Picker
           selectedValue={amount}
           onValueChange={(itemValue) => onPickerUpdate(itemValue, 0)}
@@ -69,7 +67,7 @@ export default function IngredientUnitModal(props) {
           ))}
         </Picker>
       </View>
-      <View style={modalStyles.saveContainer}>
+      <View style={ingredientUnitModalStyles.saveContainer}>
         <ButtonLarge
           onButtonClick={onModalSave}
           title="Save"
@@ -91,16 +89,14 @@ IngredientUnitModal.propTypes = {
   onPickerUpdate: PropTypes.func,
 }
 
-function getModalStylesheet(darkMode) {
-  return StyleSheet.create({
-    saveContainer: {
-      alignItems: 'center',
-      marginBottom: 8,
-    },
-    pickerOutline: {
-      flexDirection: 'row',
-      height: 200,
-      marginBottom: 20,
-    },
-  })
-}
+const ingredientUnitModalStyles = StyleSheet.create({
+  pickerOutline: {
+    flexDirection: 'row',
+    height: 200,
+    marginBottom: 20,
+  },
+  saveContainer: {
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+})

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import Colors from '../Theme/Colors'
 import Fonts from '../Theme/Fonts'
 import { PropTypes } from 'prop-types'
+import getComponentStylesheet from './ComponentStyle'
 
 export default function ButtonLarge(props) {
   const {
@@ -20,12 +21,12 @@ export default function ButtonLarge(props) {
   } = props
 
   // Base button style
-  const buttonStyles = getButtonLargeStylesheet(darkMode)
-  let baseStyle = buttonStyles.primaryButton
+  const componentStyles = getComponentStylesheet(darkMode)
+  let baseStyle = componentStyles.primaryButtonLarge
   if (!isPrimary) {
-    baseStyle = buttonStyles.secondaryButton
+    baseStyle = componentStyles.secondaryButtonLarge
   } else if (disabled) {
-    baseStyle = buttonStyles.disabledButton
+    baseStyle = componentStyles.disabledButtonLarge
   }
 
   // Custom button styles
@@ -49,9 +50,9 @@ export default function ButtonLarge(props) {
   }
 
   // Text style
-  let textStyle = buttonStyles.primaryText
+  let textStyle = buttonLargeStyles.primaryText
   if (!isPrimary) {
-    textStyle = buttonStyles.secondaryText
+    textStyle = componentStyles.secondaryTextButtonLarge
   }
   let customTextStyle = {}
   if (textColorOverride) {
@@ -81,38 +82,9 @@ ButtonLarge.propTypes = {
   isPrimary: PropTypes.bool,
 }
 
-const baseButtonStyle = {
-  height: 48,
-  paddingLeft: 20,
-  paddingRight: 20,
-  borderRadius: 10,
-  alignItems: 'center',
-  justifyContent: 'center',
-}
-
-function getButtonLargeStylesheet(darkMode) {
-  return StyleSheet.create({
-    disabledButton: {
-      ...baseButtonStyle,
-      backgroundColor: darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
-    },
-    primaryButton: {
-      ...baseButtonStyle,
-      backgroundColor: Colors.blue1,
-    },
-    primaryText: {
-      ...Fonts.buttonText,
-      color: Colors.white,
-    },
-    secondaryButton: {
-      ...baseButtonStyle,
-      backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      borderColor: darkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
-      borderWidth: 0.5,
-    },
-    secondaryText: {
-      ...Fonts.buttonText,
-      color: darkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-  })
-}
+const buttonLargeStyles = StyleSheet.create({
+  primaryText: {
+    ...Fonts.buttonText,
+    color: Colors.white,
+  },
+})
