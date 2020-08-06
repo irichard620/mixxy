@@ -185,17 +185,6 @@ class HomeScreen extends React.Component {
     }
   }
 
-  onCardClick = (idx, isFavorite) => {
-    const { favoriteRecipes, allRecipes } = this.state
-    let recipesToUse = favoriteRecipes
-    if (!isFavorite) {
-      recipesToUse = allRecipes
-    }
-    NavigationService.navigate('TutorialScreen', {
-      recipe: recipesToUse[idx],
-    })
-  }
-
   onNewRecipeClick = () => {
     const { user } = this.props
     if (!user.user.premium) {

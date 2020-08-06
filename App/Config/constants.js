@@ -282,6 +282,10 @@ export const settingsOptions = {
 // Add custom ingredient
 export const ADD_CUSTOM_INGREDIENT = 'Add Custom Ingredient'
 
+// Filters on library
+export const FAVORITES_FILTER = 'Favorites'
+export const ALL_RECIPES_FILTER = 'All Recipes'
+
 export const CustomLayoutEaseIn = {
   duration: 200,
   create: {
