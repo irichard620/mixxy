@@ -994,6 +994,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-6.4.0.tgz#cab27538e1f83562b4dfb20d72fa6094801f53ce"
   integrity sha512-DGRKDL9kl7c08YHKszuFICjpj8f1lXIEztYAY8/mM4tALS2Zr0bT9nvCWycXXcYUWhjahA8OL/UBrIkKxgSDKw==
 
+"@react-native-firebase/messaging@6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-6.4.0.tgz#712a7d2ea406f7f3d63fe2618f70f4f584b6d047"
+  integrity sha512-Ko+jAF7jgNZnGu697RE+o4RUB1Rqsqfk6+p+K2xuGFlorWLHFYrpqWuKyMZ13jieMp+NGg2C19PWzUJ0ozcdNg==
+
 "@react-navigation/core@~3.5.1":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.5.2.tgz#3a3d147b8419e5839e0f2ad4dea086bd2d307fe3"
