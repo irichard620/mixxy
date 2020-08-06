@@ -9,6 +9,7 @@ import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
 import HomeLibraryMenuButtons from './HomeLibraryMenuButtons'
 import Helpers from '../../Theme/Helpers'
+import { FAVORITES_FILTER, ALL_RECIPES_FILTER } from '../../Config/constants'
 
 function HomeLibraryTab(props) {
   const { recipes, onNewRecipeClick } = props
@@ -16,15 +17,44 @@ function HomeLibraryTab(props) {
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
 
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(FAVORITES_FILTER)
 
   const listHeader = <Text style={homeStyles.topHeaderLibrary}>Library</Text>
 
-  let options = []
-  if (selected === 0) {
-    options = recipes.filter((recipe) => recipe.favorited)
-  } else {
+  // Generate filter options
+  const filterDict = {}
+  let recipe
+  for (recipe of recipes) {
+    // Base spirit
+    if (recipe.baseSpirit in filterDict) {
+      filterDict[recipe.baseSpirit].push(recipe)
+    } else {
+      filterDict[recipe.baseSpirit] = [recipe]
+    }
+
+    // Favorited
+    if (recipe.favorited) {
+      if (FAVORITES_FILTER in filterDict) {
+        filterDict[FAVORITES_FILTER].push(recipe)
+      } else {
+        filterDict[FAVORITES_FILTER] = [recipe]
+      }
+    }
+  }
+  let options
+  if (selected === ALL_RECIPES_FILTER) {
     options = recipes
+  } else {
+    options = filterDict[selected]
+  }
+
+  // What menu items are visible
+  const filterOptions = [FAVORITES_FILTER, ALL_RECIPES_FILTER]
+  let key
+  for (key in filterDict) {
+    if (key !== FAVORITES_FILTER) {
+      filterOptions.push(key)
+    }
   }
 
   const emptyTextToShow =
@@ -57,8 +87,9 @@ function HomeLibraryTab(props) {
               <HomeLibraryMenuButtons
                 darkMode={darkMode}
                 onNewRecipeClick={onNewRecipeClick}
-                onSectionClick={(idx) => setSelected(idx)}
+                onSectionClick={(option) => setSelected(option)}
                 selected={selected}
+                options={filterOptions}
               />
               <View style={styles.divider} />
             </View>
@@ -71,7 +102,7 @@ function HomeLibraryTab(props) {
             recipeName={item.recipeName}
             recipeType={item.recipeType}
             servingGlass={item.servingGlass}
-            onCardClick={(campaign) => {
+            onCardClick={() => {
               NavigationService.navigate('TutorialScreen', {
                 recipe: item,
               })
@@ -99,6 +130,6 @@ const mapStateToProps = (state) => ({
   user: state.user.user,
 })
 
-const mapDispatchToProps = (dispatch) => ({})
+const mapDispatchToProps = () => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeLibraryTab)
