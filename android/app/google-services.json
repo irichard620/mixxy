@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "205781924664",
+    "firebase_url": "https://mixxy-90fce.firebaseio.com",
+    "project_id": "mixxy-90fce",
+    "storage_bucket": "mixxy-90fce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205781924664:android:198e5700cd0ad4b7395fcd",
+        "android_client_info": {
+          "package_name": "com.ianrichard.mixxy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205781924664-lvmaub685leraqq1q47ilv0cfkg7obqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOqjXfm2cjU9EeHgNw0F_itKlGkQ5s_Uc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205781924664-lvmaub685leraqq1q47ilv0cfkg7obqs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "205781924664-ips0bqif6gecektsg8n4eedbrhlvcmvh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.IanRichard.Mixxy",
+                "app_store_id": "1503445869"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

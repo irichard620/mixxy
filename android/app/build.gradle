@@ -1,5 +1,7 @@
 apply plugin: "com.android.application"
 
+apply plugin: "com.google.gms.google-services"
+
 import com.android.build.OutputFile
 
 /**
@@ -127,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mixxy"
+        applicationId "com.ianrichard.mixxy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
