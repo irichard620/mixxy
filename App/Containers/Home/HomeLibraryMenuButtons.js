@@ -13,13 +13,18 @@ export default function HomeLibraryMenuButtons(props) {
 
   return (
     <View style={homeStyles.libraryMenuOutline}>
-      <TouchableWithoutFeedback onPress={onNewRecipeClick}>
-        <View style={homeStyles.libraryAddButton}>
-          <Image source={Images.newRecipe} style={homeStyles.libraryAddIcon} />
-        </View>
-      </TouchableWithoutFeedback>
-      <View style={styles.verticalDivider} />
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={homeStyles.libraryMenuScrollOutline}
+        automaticallyAdjustContentInsets={false}
+      >
+        <TouchableWithoutFeedback onPress={onNewRecipeClick}>
+          <View style={homeStyles.libraryAddButton}>
+            <Image source={Images.newRecipe} style={homeStyles.libraryAddIcon} />
+          </View>
+        </TouchableWithoutFeedback>
+        <View style={styles.verticalDivider} />
         {options.map((item) => {
           // style of button
           let titleStyle = {
