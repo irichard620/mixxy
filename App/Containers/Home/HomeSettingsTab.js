@@ -1,6 +1,7 @@
 import { Alert, ScrollView, Text, View, Linking, Image, TouchableOpacity } from 'react-native'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import React from 'react'
+import Rate from 'react-native-rate'
 import { PropTypes } from 'prop-types'
 import getHomeStylesheet from './HomeScreenStyle'
 import { useDarkMode } from 'react-native-dark-mode'
@@ -25,6 +26,17 @@ function HomeSettingsTab(props) {
       onVolumeUnitsClick()
     } else if (option === constants.OPTION_REPLAY_TUTORIAL) {
       NavigationService.navigate('IntroScreen', { fromSettings: true })
+    } else if (option === constants.OPTION_RATE_APP) {
+      Rate.rate(
+        {
+          AppleAppID: '1503445869',
+        },
+        (success) => {
+          if (success) {
+            // this.setState({rated:true})
+          }
+        }
+      )
     } else if (option === constants.OPTION_CONTACT_US || option === constants.OPTION_JOIN_BETA) {
       // Pull up email
       let emailLink = 'mailto:info@mixxyapp.com'

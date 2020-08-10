@@ -353,6 +353,8 @@ PODS:
     - React
   - RNIap (4.4.6):
     - React
+  - RNRate (1.2.4):
+    - React
   - RNReanimated (1.7.0):
     - React
   - RNScreens (2.2.0):
@@ -407,6 +409,7 @@ DEPENDENCIES:
   - "RNFBDynamicLinks (from `../node_modules/@react-native-firebase/dynamic-links`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNIap (from `../node_modules/react-native-iap`)
+  - RNRate (from `../node_modules/react-native-rate`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSearchBar (from `../node_modules/react-native-search-bar`)
@@ -505,6 +508,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNIap:
     :path: "../node_modules/react-native-iap"
+  RNRate:
+    :path: "../node_modules/react-native-rate"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -569,6 +574,7 @@ SPEC CHECKSUMS:
   RNFBDynamicLinks: f4da0bc5a4b071069b131d3c91ca35db568a9ba5
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNIap: af43ee3c682aac8d3bb40f58bb42af5d7046cc1c
+  RNRate: 15b861025a7821730761fce7f44561ce7e0b2de0
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
   RNSearchBar: 9860431356b7d12a8449d2fddb2b5f3c78d1e99f
@@ -577,6 +583,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: c397e84333b55d4097077a128cdbecc04adeec0d
+PODFILE CHECKSUM: dd0137242c61c1e57b91dea70c75165a4b431b94
 
 COCOAPODS: 1.9.1
