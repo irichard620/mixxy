@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types'
 import { withNavigationFocus } from 'react-navigation'
 import { TabView, TabBar } from 'react-native-tab-view'
 import RNIap, { purchaseErrorListener, purchaseUpdatedListener } from 'react-native-iap'
+import messaging from '@react-native-firebase/messaging'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
@@ -69,6 +70,8 @@ class HomeScreen extends React.Component {
       )
     })
 
+    this.configureNotifications()
+
     this.props.fetchRecipes()
   }
 
@@ -123,6 +126,25 @@ class HomeScreen extends React.Component {
     if (this.purchaseErrorPro) {
       this.purchaseErrorPro.remove()
       this.purchaseErrorPro = null
+    }
+  }
+
+  configureNotifications = async () => {
+    // Check if we've asked for permissions yets
+    try {
+      const authStatus = await messaging().hasPermission()
+      if (authStatus === messaging.AuthorizationStatus.NOT_DETERMINED) {
+        // Register
+        await messaging().registerDeviceForRemoteMessages()
+
+        // Subscribe to general topic
+        await messaging().subscribeToTopic('general')
+
+        // Request permission
+        await messaging().requestPermission()
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 

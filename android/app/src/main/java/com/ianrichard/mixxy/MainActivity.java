@@ -1,4 +1,4 @@
-package com.mixxy;
+package com.ianrichard.mixxy;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

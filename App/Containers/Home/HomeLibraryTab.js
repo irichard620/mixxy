@@ -23,6 +23,7 @@ function HomeLibraryTab(props) {
 
   // Generate filter options
   const filterDict = {}
+  filterDict[FAVORITES_FILTER] = []
   let recipe
   for (recipe of recipes) {
     // Base spirit
@@ -34,11 +35,7 @@ function HomeLibraryTab(props) {
 
     // Favorited
     if (recipe.favorited) {
-      if (FAVORITES_FILTER in filterDict) {
-        filterDict[FAVORITES_FILTER].push(recipe)
-      } else {
-        filterDict[FAVORITES_FILTER] = [recipe]
-      }
+      filterDict[FAVORITES_FILTER].push(recipe)
     }
   }
   let options
@@ -58,7 +55,7 @@ function HomeLibraryTab(props) {
   }
 
   const emptyTextToShow =
-    selected === 0
+    selected === FAVORITES_FILTER
       ? "You haven't added any recipes to your Favorites."
       : "You haven't added any recipes to your library. Visit the Discover page to find some!"
   const listEmpty =

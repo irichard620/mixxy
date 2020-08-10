@@ -1,4 +1,4 @@
-package com.mixxy;
+package com.ianrichard.mixxy;
 
 import android.app.Application;
 import android.content.Context;
@@ -42,6 +42,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    // FacebookSdk.sdkInitialize(getApplicationContext());
+    // AppEventsLogger.activateApp(this);
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
   }
