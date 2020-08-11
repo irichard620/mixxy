@@ -163,7 +163,7 @@ export default function getComponentStylesheet(darkMode) {
       width: '100%',
     },
     topHeaderTitle: {
-      ...Fonts.h3Semibold,
+      ...Fonts.navHeader,
       alignSelf: 'center',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
       justifyContent: 'center',

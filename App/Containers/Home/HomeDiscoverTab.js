@@ -95,7 +95,7 @@ function HomeDiscoverTab(props) {
       ))}
       <ListItem
         key={'allRecipes'}
-        title={'See all recipes...'}
+        title={'All Recipes'}
         onClick={() => {
           NavigationService.navigate('AllRecipesScreen')
         }}
