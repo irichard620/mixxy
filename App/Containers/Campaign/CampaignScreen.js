@@ -57,7 +57,7 @@ class CampaignScreen extends React.Component {
     return (
       <View style={styles.outerContainer}>
         <ScrollView style={campaignStyles.scrollContainer}>
-          <StatusBar hidden={true} />
+          <StatusBar backgroundColor={'transparent'} translucent />
           <View style={campaignStyles.topImageOutline}>
             {imageLink !== '' && (
               <FastImage

@@ -17,10 +17,10 @@ export default function getTutorialStylesheet(useDarkMode) {
     descriptionText: {
       ...Fonts.body2,
       color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
-      marginBottom: 24,
+      marginTop: 16,
       paddingLeft: 16,
       paddingRight: 16,
-      textAlign: 'center',
+      textAlign: 'left',
     },
     drinkAmountCenterView: {
       flexDirection: 'column',
@@ -33,7 +33,7 @@ export default function getTutorialStylesheet(useDarkMode) {
       borderRadius: 8,
       height: 24,
       justifyContent: 'center',
-      marginTop: 13,
+      marginTop: 14,
       width: 24,
     },
     drinkAmountIcon: {
@@ -52,8 +52,9 @@ export default function getTutorialStylesheet(useDarkMode) {
       alignItems: 'flex-start',
       alignSelf: 'center',
       flexDirection: 'row',
-      height: 50,
-      justifyContent: 'center',
+      height: 52,
+      justifyContent: 'space-between',
+      width: 164,
     },
     gradientContainer: {
       backgroundColor: Colors.backgroundColorDarkTransparent,
@@ -83,10 +84,22 @@ export default function getTutorialStylesheet(useDarkMode) {
       width: '100%',
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
     },
+    readMoreOutline: {
+      alignSelf: 'flex-end',
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      marginRight: 16,
+      marginTop: -21,
+    },
+    readMoreText: {
+      ...Fonts.body2,
+      color: Colors.blue1,
+      paddingLeft: 10,
+      paddingRight: 10,
+      textAlign: 'center',
+    },
     recipeTitle: {
       ...Fonts.h1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      marginBottom: 16,
       marginLeft: 16,
       marginRight: 16,
       textAlign: 'center',
@@ -118,11 +131,7 @@ export default function getTutorialStylesheet(useDarkMode) {
     servingsContainer: {
       alignItems: 'center',
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
-      flexDirection: 'row',
-      height: 50,
-      justifyContent: 'space-between',
-      paddingLeft: 16,
-      paddingRight: 16,
+      height: 52,
     },
     stepCircle: {
       backgroundColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,

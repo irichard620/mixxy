@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { View, Image, Text, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import Images from '../../Theme/Images'
 import getTutorialStylesheet from './TutorialScreenStyle'
@@ -10,16 +10,61 @@ import Step from './Step'
 import Colors from '../../Theme/Colors'
 import { PropTypes } from 'prop-types'
 
-class TutorialHome extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selected: 0,
-    }
+const NUM_OF_LINES = 3
+
+export default function TutorialHome(props) {
+  const {
+    recipe,
+    darkMode,
+    drinkAmount,
+    reduceDrinkQuantity,
+    increaseDrinkQuantity,
+    useMetric,
+  } = props
+
+  const [clickedReadMore, setClickedReadMore] = React.useState(false)
+  const [showAllText, setShowAllText] = React.useState(true)
+
+  const styles = getStylesheet(darkMode)
+  const tutorialStyles = getTutorialStylesheet(darkMode)
+
+  const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
+
+  let qtyNegativeSource
+  let minusBackgroundColor
+  if (drinkAmount > 1) {
+    qtyNegativeSource = Images.quantityMinus
+    minusBackgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
+  } else {
+    qtyNegativeSource = darkMode
+      ? Images.quantityMinusInactiveDark
+      : Images.quantityMinusInactiveLight
+    minusBackgroundColor = darkMode ? Colors.darkFill3Dark : Colors.darkFill3Light
+  }
+  let qtyPositiveSource
+  let plusBackgroundColor
+  if (drinkAmount < 10) {
+    qtyPositiveSource = Images.quantityPlus
+    plusBackgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
+  } else {
+    qtyPositiveSource = darkMode
+      ? Images.quantityPlusInactiveDark
+      : Images.quantityPlusInactiveLight
+    plusBackgroundColor = darkMode ? Colors.darkFill3Dark : Colors.darkFill3Light
   }
 
-  getDrinkIcon = (iconStyle) => {
-    const { recipe } = this.props
+  let stickyHeaderIndices = [
+    5,
+    5 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
+  ]
+  if (isDescription) {
+    stickyHeaderIndices = [
+      6,
+      6 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
+    ]
+  }
+
+  const getDrinkIcon = (iconStyle) => {
     if (recipe.servingGlass === constants.SERVING_GLASS_PITCHER) {
       return <Image style={iconStyle} source={Images.glassPitcher} />
     }
@@ -53,137 +98,106 @@ class TutorialHome extends Component {
     return <Image style={iconStyle} source={Images.glassShort} />
   }
 
-  onItemClick = (index) => {
-    this.setState({
-      selected: index,
-    })
+  const onTextLayout = React.useCallback(
+    (e) => {
+      if (e.nativeEvent.lines.length > NUM_OF_LINES && !clickedReadMore) {
+        setShowAllText(false)
+      }
+    },
+    [clickedReadMore]
+  )
+
+  const onReadMorePress = () => {
+    setClickedReadMore(true)
+    setShowAllText(true)
   }
 
-  render() {
-    const {
-      recipe,
-      darkMode,
-      drinkAmount,
-      reduceDrinkQuantity,
-      increaseDrinkQuantity,
-      useMetric,
-    } = this.props
-    const styles = getStylesheet(darkMode)
-    const tutorialStyles = getTutorialStylesheet(darkMode)
-
-    const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
-
-    let qtyNegativeSource
-    let minusBackgroundColor
-    if (drinkAmount > 1) {
-      qtyNegativeSource = Images.quantityMinus
-      minusBackgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
-    } else {
-      qtyNegativeSource = darkMode
-        ? Images.quantityMinusInactiveDark
-        : Images.quantityMinusInactiveLight
-      minusBackgroundColor = darkMode ? Colors.darkFill3Dark : Colors.darkFill3Light
-    }
-    let qtyPositiveSource
-    let plusBackgroundColor
-    if (drinkAmount < 10) {
-      qtyPositiveSource = Images.quantityPlus
-      plusBackgroundColor = darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight
-    } else {
-      qtyPositiveSource = darkMode
-        ? Images.quantityPlusInactiveDark
-        : Images.quantityPlusInactiveLight
-      plusBackgroundColor = darkMode ? Colors.darkFill3Dark : Colors.darkFill3Light
-    }
-
-    let stickyHeaderIndices = [
-      5,
-      5 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
-    ]
-    if (isDescription) {
-      stickyHeaderIndices = [
-        6,
-        6 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
-      ]
-    }
-
-    return (
-      <ScrollView style={tutorialStyles.scrollView} stickyHeaderIndices={stickyHeaderIndices}>
-        <View style={tutorialStyles.iconView}>{this.getDrinkIcon(tutorialStyles.icon)}</View>
-        <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
-        {isDescription && (
-          <Text style={tutorialStyles.descriptionText}>{recipe.recipeDescription}</Text>
-        )}
-        <View style={styles.thickDivider} />
-        <View style={tutorialStyles.servingsContainer}>
-          <Text style={tutorialStyles.sectionHeader}>Servings</Text>
-          <View style={tutorialStyles.drinkAmountView}>
-            <TouchableWithoutFeedback onPress={reduceDrinkQuantity}>
-              <View
-                style={[
-                  tutorialStyles.drinkAmountCircle,
-                  { backgroundColor: minusBackgroundColor },
-                ]}
-              >
-                <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
-              </View>
-            </TouchableWithoutFeedback>
-            <Text style={tutorialStyles.drinkAmountText}>{`${drinkAmount} drink${
-              drinkAmount > 1 ? 's' : ''
-            }`}</Text>
-            <TouchableWithoutFeedback onPress={increaseDrinkQuantity}>
-              <View
-                style={[tutorialStyles.drinkAmountCircle, { backgroundColor: plusBackgroundColor }]}
-              >
-                <Image source={qtyPositiveSource} style={tutorialStyles.drinkAmountIcon} />
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+  return (
+    <ScrollView style={tutorialStyles.scrollView} stickyHeaderIndices={stickyHeaderIndices}>
+      <View style={tutorialStyles.iconView}>{getDrinkIcon(tutorialStyles.icon)}</View>
+      <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
+      {isDescription && (
+        <Text
+          style={tutorialStyles.descriptionText}
+          numberOfLines={showAllText ? null : NUM_OF_LINES}
+          onTextLayout={onTextLayout}
+        >
+          {recipe.recipeDescription}
+        </Text>
+      )}
+      {!showAllText && (
+        <View style={tutorialStyles.readMoreOutline}>
+          <TouchableWithoutFeedback onPress={onReadMorePress}>
+            <Text style={tutorialStyles.readMoreText}>Read more</Text>
+          </TouchableWithoutFeedback>
         </View>
-        <View style={styles.thickDivider} />
-        <View>
-          <View style={tutorialStyles.sectionHeaderContainer}>
-            <Text style={tutorialStyles.sectionHeader}>Ingredients</Text>
-          </View>
-          <View style={styles.divider} />
+      )}
+      <View style={tutorialStyles.menuButtonSeparator} />
+      <View style={styles.divider} />
+      <View style={tutorialStyles.servingsContainer}>
+        <View style={tutorialStyles.drinkAmountView}>
+          <TouchableWithoutFeedback onPress={reduceDrinkQuantity}>
+            <View
+              style={[tutorialStyles.drinkAmountCircle, { backgroundColor: minusBackgroundColor }]}
+            >
+              <Image source={qtyNegativeSource} style={tutorialStyles.drinkAmountIcon} />
+            </View>
+          </TouchableWithoutFeedback>
+          <Text style={tutorialStyles.drinkAmountText}>{`${drinkAmount} drink${
+            drinkAmount > 1 ? 's' : ''
+          }`}</Text>
+          <TouchableWithoutFeedback onPress={increaseDrinkQuantity}>
+            <View
+              style={[tutorialStyles.drinkAmountCircle, { backgroundColor: plusBackgroundColor }]}
+            >
+              <Image source={qtyPositiveSource} style={tutorialStyles.drinkAmountIcon} />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
+      </View>
+      <View style={styles.thickDivider} />
+      <View>
+        <View style={tutorialStyles.sectionHeaderContainer}>
+          <Text style={tutorialStyles.sectionHeader}>Ingredients</Text>
+        </View>
+        <View style={styles.divider} />
+      </View>
+      {Object.keys(recipe).length !== 0 &&
+        recipe.ingredients.map((ingredient) => (
+          <ListItem
+            key={ingredient.ingredientId}
+            title={ingredientModel.getIngredientShortDescription(
+              ingredient,
+              drinkAmount,
+              false,
+              useMetric
+            )}
+            darkMode={darkMode}
+            disabled
+          />
+        ))}
+      <View style={styles.thickDivider} />
+      <View>
+        <View style={tutorialStyles.sectionHeaderContainer}>
+          <Text style={tutorialStyles.sectionHeader}>Steps</Text>
+        </View>
+        <View style={styles.divider} />
+      </View>
+      <View style={tutorialStyles.stepsContainer}>
         {Object.keys(recipe).length !== 0 &&
-          recipe.ingredients.map((ingredient) => (
-            <ListItem
-              key={ingredient.ingredientId}
-              title={ingredientModel.getIngredientShortDescription(
-                ingredient,
-                drinkAmount,
-                false,
-                useMetric
-              )}
+          recipe.steps.map((step, idx) => (
+            <Step
+              key={`step${idx}`}
+              step={step}
+              isFirst={idx === 0}
+              isLast={idx === recipe.steps.length - 1}
               darkMode={darkMode}
-              disabled
             />
           ))}
-        <View style={styles.thickDivider} />
-        <View>
-          <View style={tutorialStyles.sectionHeaderContainer}>
-            <Text style={tutorialStyles.sectionHeader}>Steps</Text>
-          </View>
-          <View style={styles.divider} />
-        </View>
-        <View style={tutorialStyles.stepsContainer}>
-          {Object.keys(recipe).length !== 0 &&
-            recipe.steps.map((step, idx) => (
-              <Step
-                key={`step${idx}`}
-                step={step}
-                isFirst={idx === 0}
-                isLast={idx === recipe.steps.length - 1}
-                darkMode={darkMode}
-              />
-            ))}
-        </View>
-        <View style={tutorialStyles.bufferView} />
-      </ScrollView>
-    )
-  }
+      </View>
+      <View style={tutorialStyles.bufferView} />
+    </ScrollView>
+  )
 }
 
 TutorialHome.propTypes = {
@@ -194,5 +208,3 @@ TutorialHome.propTypes = {
   increaseDrinkQuantity: PropTypes.func,
   useMetric: PropTypes.bool,
 }
-
-export default TutorialHome
