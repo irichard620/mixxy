@@ -1,12 +1,25 @@
 import React from 'react'
-import { View, Alert } from 'react-native'
+import {
+  View,
+  Alert,
+  Animated,
+  Text,
+  TouchableWithoutFeedback,
+  Image,
+  Dimensions,
+  StatusBar,
+} from 'react-native'
 import { connect } from 'react-redux'
 import Share from 'react-native-share'
 import { NavigationActions, withNavigationFocus } from 'react-navigation'
+import FastImage from 'react-native-fast-image'
+import analytics from '@react-native-firebase/analytics'
 import getStylesheet from '../../Theme/ApplicationStyles'
-import TopHeader from '../../Components/TopHeader'
+import Images from '../../Theme/Images'
+import Colors from '../../Theme/Colors'
+import getTutorialStylesheet from './TutorialScreenStyle'
+import TutorialHeader from './TutorialHeader'
 import NavigationService from '../../Services/NavigationService'
-import TutorialHome from './TutorialHome'
 import { PropTypes } from 'prop-types'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import CustomModal from '../../Components/CustomModal'
@@ -15,14 +28,18 @@ import ModalContentBottom from '../../Components/ModalContentBottom'
 import ModalContentCreateShare from '../../Components/ModalContentCreateShare'
 import BottomBar from '../../Components/BottomBar'
 import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
+import ListItem from '../../Components/ListItem'
+import Step from './Step'
+import TutorialDrinkQuantity from './TutorialDrinkQuantity'
 import UserActions from '../../Stores/User/Actions'
-import analytics from '@react-native-firebase/analytics'
+import * as ingredientModel from '../../Storage/Ingredient'
+
+const NUM_OF_LINES = 3
 
 class TutorialScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      step: -1,
       recipe: {},
       premium: false,
       drinkAmount: 1,
@@ -30,6 +47,10 @@ class TutorialScreen extends React.Component {
       modalType: '',
       isSharedPreviously: false,
       deleteModal: false,
+      clickedReadMore: false,
+      showAllText: true,
+      scrollY: new Animated.Value(0),
+      recipeImageHeight: 0,
     }
   }
 
@@ -37,7 +58,14 @@ class TutorialScreen extends React.Component {
     const { navigation } = this.props
     const recipe = navigation.getParam('recipe', {})
     const premium = navigation.getParam('premium', false)
-    this.setState({ recipe, premium })
+
+    // Recipe image state
+    const { width } = Dimensions.get('window')
+    this.setState({
+      recipe,
+      premium,
+      recipeImageHeight: recipe.imageLink && recipe.imageLink !== '' ? width * (3 / 4) : 0,
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -312,24 +340,106 @@ class TutorialScreen extends React.Component {
     fetchSharedRecipe(recipe.recipeId)
   }
 
+  _getHeaderBackgroundColor = () => {
+    const { darkMode } = this.props
+    const { scrollY, recipeImageHeight } = this.state
+
+    if (recipeImageHeight === 0) {
+      return darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight
+    }
+
+    const outputFinal = darkMode ? 'rgba(0,0,0,1.0)' : 'rgba(255,255,255,1.0)'
+    return scrollY.interpolate({
+      inputRange: [0, recipeImageHeight],
+      outputRange: ['rgba(0,0,0,0.0)', outputFinal],
+      extrapolate: 'clamp',
+      useNativeDriver: true,
+    })
+  }
+
+  _getHeaderDividerBackgroundColor = () => {
+    const { darkMode } = this.props
+    const { scrollY, recipeImageHeight } = this.state
+
+    if (recipeImageHeight === 0) {
+      return darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light
+    }
+
+    const outputFinal = darkMode ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)'
+    return scrollY.interpolate({
+      inputRange: [0, recipeImageHeight],
+      outputRange: ['rgba(0,0,0,0.0)', outputFinal],
+      extrapolate: 'clamp',
+      useNativeDriver: true,
+    })
+  }
+
+  onReadMorePress = () => {
+    this.setState({
+      clickedReadMore: true,
+      showAllText: true,
+    })
+  }
+
+  onTextLayout = (e) => {
+    const { clickedReadMore } = this.state
+    if (e.nativeEvent.lines.length > NUM_OF_LINES && !clickedReadMore) {
+      this.setState({
+        showAllText: false,
+      })
+    }
+  }
+
+  getDrinkIcon = (iconStyle) => {
+    const { recipe } = this.state
+    if (recipe.servingGlass === constants.SERVING_GLASS_PITCHER) {
+      return <Image style={iconStyle} source={Images.glassPitcher} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_SHOT) {
+      return <Image style={iconStyle} source={Images.glassShot} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_MARGARITA) {
+      return <Image style={iconStyle} source={Images.glassMarg} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_FLUTE) {
+      return <Image style={iconStyle} source={Images.glassFlute} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_TALL) {
+      return <Image style={iconStyle} source={Images.glassTall} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_COCKTAIL) {
+      return <Image style={iconStyle} source={Images.glassMartini} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_PINT) {
+      return <Image style={iconStyle} source={Images.glassPint} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_WINE) {
+      return <Image style={iconStyle} source={Images.glassWine} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_COUPE) {
+      return <Image style={iconStyle} source={Images.glassCoupe} />
+    }
+    if (recipe.servingGlass === constants.SERVING_GLASS_COPPER_MUG) {
+      return <Image style={iconStyle} source={Images.glassCopperMug} />
+    }
+    return <Image style={iconStyle} source={Images.glassShort} />
+  }
+
   render() {
     const { darkMode, recipes, createSharedRecipeIsLoading, user } = this.props
     const {
-      step,
       recipe,
       drinkAmount,
       visibleModal,
       modalType,
       deleteModal,
       isSharedPreviously,
+      showAllText,
+      recipeImageHeight,
     } = this.state
 
     const styles = getStylesheet(darkMode)
-
-    let headerTitle = ''
-    if (step >= 0 && 'recipeName' in recipe) {
-      headerTitle = recipe.recipeName
-    }
+    const tutorialStyles = getTutorialStylesheet(darkMode)
 
     // Is it in our library?
     let recipeSaved = false
@@ -343,28 +453,138 @@ class TutorialScreen extends React.Component {
     if (deleteModal) {
       modalTitle = 'Delete this recipe?'
     }
+
+    const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
+
+    let stickyHeaderIndices = [
+      7,
+      7 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
+    ]
+    if (isDescription) {
+      stickyHeaderIndices = [
+        8,
+        8 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
+      ]
+    }
+
+    const recipeImageExists = !!(recipe.imageLink && recipe.imageLink !== '')
+    const recipeImageStyle = {
+      height: recipeImageHeight,
+      marginBottom: 24,
+    }
+    const scrollViewStyle = {
+      zIndex: -1,
+      position: recipeImageExists ? 'absolute' : 'relative',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+    }
+
     return (
       <View style={styles.outerContainer}>
-        <TopHeader
-          title={headerTitle}
+        <StatusBar backgroundColor={'transparent'} translucent />
+        <TutorialHeader
           onClose={this.onBackScreenClick}
-          showSeparator={false}
           darkMode={darkMode}
-          showDots={recipeSaved}
           isFavorited={recipe.favorited}
           onDotsClick={this.onDotsClick}
           onFavoriteClick={this.onFavoriteClick}
           onShareClick={this.onShareClick}
+          backgroundColor={this._getHeaderBackgroundColor()}
+          dividerBackgroundColor={this._getHeaderDividerBackgroundColor()}
         />
-        <TutorialHome
-          recipe={recipe}
-          darkMode={darkMode}
-          drinkAmount={drinkAmount}
-          reduceDrinkQuantity={this.reduceDrinkQuantity}
-          increaseDrinkQuantity={this.increaseDrinkQuantity}
-          recipeSaved={recipeSaved}
-          useMetric={user.useMetric}
-        />
+        <Animated.ScrollView
+          style={[tutorialStyles.scrollView, scrollViewStyle]}
+          stickyHeaderIndices={stickyHeaderIndices}
+          overScrollMode={'never'}
+          scrollEventThrottle={16}
+          onScroll={Animated.event([
+            {
+              nativeEvent: { contentOffset: { y: this.state.scrollY } },
+            },
+          ])}
+        >
+          {recipeImageExists && (
+            <FastImage
+              style={recipeImageStyle}
+              source={{
+                uri: recipe.imageLink,
+                priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+          )}
+          {!recipeImageExists && (
+            <View style={tutorialStyles.iconView}>{this.getDrinkIcon(tutorialStyles.icon)}</View>
+          )}
+          <Text style={tutorialStyles.recipeTitle}>{recipe.recipeName}</Text>
+          {isDescription && (
+            <Text
+              style={tutorialStyles.descriptionText}
+              numberOfLines={showAllText ? null : NUM_OF_LINES}
+              onTextLayout={this.onTextLayout}
+            >
+              {recipe.recipeDescription}
+            </Text>
+          )}
+          {!showAllText && (
+            <View style={tutorialStyles.readMoreOutline}>
+              <TouchableWithoutFeedback onPress={this.onReadMorePress}>
+                <Text style={tutorialStyles.readMoreText}>Read more</Text>
+              </TouchableWithoutFeedback>
+            </View>
+          )}
+          <View style={tutorialStyles.menuButtonSeparator} />
+          <View style={styles.divider} />
+          <TutorialDrinkQuantity
+            darkMode={darkMode}
+            drinkAmount={drinkAmount}
+            reduceDrinkQuantity={this.reduceDrinkQuantity}
+            increaseDrinkQuantity={this.increaseDrinkQuantity}
+          />
+          <View style={styles.thickDivider} />
+          <View>
+            <View style={tutorialStyles.sectionHeaderContainer}>
+              <Text style={tutorialStyles.sectionHeader}>Ingredients</Text>
+            </View>
+            <View style={styles.divider} />
+          </View>
+          {Object.keys(recipe).length !== 0 &&
+            recipe.ingredients.map((ingredient) => (
+              <ListItem
+                key={ingredient.ingredientId}
+                title={ingredientModel.getIngredientShortDescription(
+                  ingredient,
+                  drinkAmount,
+                  false,
+                  user.useMetric
+                )}
+                darkMode={darkMode}
+                disabled
+              />
+            ))}
+          <View style={styles.thickDivider} />
+          <View>
+            <View style={tutorialStyles.sectionHeaderContainer}>
+              <Text style={tutorialStyles.sectionHeader}>Steps</Text>
+            </View>
+            <View style={styles.divider} />
+          </View>
+          <View style={tutorialStyles.stepsContainer}>
+            {Object.keys(recipe).length !== 0 &&
+              recipe.steps.map((step, idx) => (
+                <Step
+                  key={`step${idx}`}
+                  step={step}
+                  isFirst={idx === 0}
+                  isLast={idx === recipe.steps.length - 1}
+                  darkMode={darkMode}
+                />
+              ))}
+          </View>
+          <View style={tutorialStyles.bufferView} />
+        </Animated.ScrollView>
         {!recipeSaved && (
           <BottomBar
             buttonTitle={'Add to Library'}

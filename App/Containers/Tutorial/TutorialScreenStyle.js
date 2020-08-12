@@ -69,7 +69,7 @@ export default function getTutorialStylesheet(useDarkMode) {
     iconView: {
       alignSelf: 'center',
       height: 184,
-      marginBottom: 12,
+      marginBottom: 24,
     },
     menuButtonSeparator: {
       height: 24,
@@ -105,7 +105,6 @@ export default function getTutorialStylesheet(useDarkMode) {
       textAlign: 'center',
     },
     scrollView: {
-      flex: 1,
       paddingBottom: 16,
     },
     scrollViewContent: {
@@ -159,6 +158,22 @@ export default function getTutorialStylesheet(useDarkMode) {
     },
     stepsContainer: {
       marginLeft: 16,
+    },
+    topHeaderBubble: {
+      alignItems: 'center',
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      borderRadius: 18,
+      height: 36,
+      justifyContent: 'center',
+      width: 36,
+    },
+    topHeaderOutline: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingBottom: 5,
+      paddingRight: 8,
+      width: '100%',
     },
   })
 }

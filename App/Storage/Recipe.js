@@ -47,6 +47,7 @@ export function Recipe(recipeObj) {
   recipe.campaignId = recipeObj.campaignId || ''
   recipe.favorited = recipeObj.favorited || false
   recipe.status = recipeObj.status || 'ACTIVE'
+  recipe.imageLink = recipeObj.imageLink || ''
 
   return recipe
 }
