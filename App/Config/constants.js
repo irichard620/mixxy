@@ -235,6 +235,7 @@ export const details = [
 
 // Modal types
 export const MODAL_TYPE_BOTTOM = 'bottom'
+export const MODAL_TYPE_CENTER = 'center'
 export const MODAL_ADD_STEP = 'Add Step'
 export const MODAL_INGREDIENT_UNIT = 'Set Ingredient Unit'
 export const MODAL_BUILDER_NAV = 'Edit Recipe Info'
@@ -243,6 +244,7 @@ export const MODAL_SHARED_RECIPE = 'Shared Recipe'
 export const MODAL_PAYWALL = 'Paywall'
 export const MODAL_RECIPE_MENU = 'Recipe Settings'
 export const MODAL_VOLUME_UNITS = 'Volume Units'
+export const MODAL_PUSH_NOTIFICATIONS = 'Get Notifications'
 
 // Errors
 export const MIXXY_PRO_LIBRARY_FULL =

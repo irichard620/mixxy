@@ -16,6 +16,8 @@ export default function TopHeader(props) {
     onShareClick,
     backgroundColor,
     dividerBackgroundColor,
+    showDots,
+    useAbsolutePosition,
   } = props
 
   const tutorialStyles = getTutorialStylesheet(darkMode)
@@ -29,6 +31,10 @@ export default function TopHeader(props) {
 
   const backgroundColorStyle = {
     backgroundColor: backgroundColor,
+    position: useAbsolutePosition ? 'absolute' : 'relative',
+    top: 0,
+    left: 0,
+    right: 0,
   }
   const dividerBackgroundColorStyle = {
     backgroundColor: dividerBackgroundColor,
@@ -47,29 +53,31 @@ export default function TopHeader(props) {
             />
           </View>
         </TouchableOpacity>
-        <View style={headerStyles.rightDotsView}>
-          <TouchableOpacity onPress={onDotsClick}>
-            <View style={[tutorialStyles.topHeaderBubble, headerStyles.marginRight]}>
-              <Image
-                style={headerStyles.dots}
-                source={darkMode ? Images.topHeaderDotsDark : Images.topHeaderDotsLight}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onShareClick}>
-            <View style={[tutorialStyles.topHeaderBubble, headerStyles.marginRight]}>
-              <Image
-                style={headerStyles.share}
-                source={darkMode ? Images.topHeaderShareDark : Images.topHeaderShareLight}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onFavoriteClick}>
-            <View style={tutorialStyles.topHeaderBubble}>
-              <Image style={headerStyles.favorite} source={favoriteImageToUse} />
-            </View>
-          </TouchableOpacity>
-        </View>
+        {showDots && (
+          <View style={headerStyles.rightDotsView}>
+            <TouchableOpacity onPress={onDotsClick}>
+              <View style={[tutorialStyles.topHeaderBubble, headerStyles.marginRight]}>
+                <Image
+                  style={headerStyles.dots}
+                  source={darkMode ? Images.topHeaderDotsDark : Images.topHeaderDotsLight}
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onShareClick}>
+              <View style={[tutorialStyles.topHeaderBubble, headerStyles.marginRight]}>
+                <Image
+                  style={headerStyles.share}
+                  source={darkMode ? Images.topHeaderShareDark : Images.topHeaderShareLight}
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onFavoriteClick}>
+              <View style={tutorialStyles.topHeaderBubble}>
+                <Image style={headerStyles.favorite} source={favoriteImageToUse} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
       </Animated.View>
       <Animated.View style={dividerBackgroundColorStyle} />
     </AnimatedSafeAreaView>
@@ -85,6 +93,8 @@ TopHeader.propTypes = {
   onShareClick: PropTypes.func,
   backgroundColor: PropTypes.string,
   dividerBackgroundColor: PropTypes.string,
+  showDots: PropTypes.bool,
+  useAbsolutePosition: PropTypes.bool,
 }
 
 const headerStyles = StyleSheet.create({
@@ -114,7 +124,9 @@ const headerStyles = StyleSheet.create({
   touchable: {
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 5,
     paddingLeft: 8,
     paddingRight: 8,
+    paddingTop: 5,
   },
 })

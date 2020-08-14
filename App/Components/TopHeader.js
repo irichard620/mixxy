@@ -14,11 +14,6 @@ export default function TopHeader(props) {
     darkMode,
     rightButtonTitle,
     onRightButtonPress,
-    showDots,
-    onDotsClick,
-    onFavoriteClick,
-    isFavorited,
-    onShareClick,
   } = props
 
   const styles = getStylesheet(darkMode)
@@ -29,13 +24,6 @@ export default function TopHeader(props) {
     imageToUse = darkMode ? Images.topHeaderXDark : Images.topHeaderXLight
   } else {
     imageToUse = darkMode ? Images.topHeaderBackDark : Images.topHeaderBackLight
-  }
-
-  let favoriteImageToUse
-  if (isFavorited) {
-    favoriteImageToUse = Images.topHeaderUnfavorite
-  } else {
-    favoriteImageToUse = darkMode ? Images.topHeaderFavoriteDark : Images.topHeaderFavoriteLight
   }
 
   return (
@@ -54,25 +42,6 @@ export default function TopHeader(props) {
         )}
         {!!title && title !== '' && !rightButtonTitle && (
           <View style={headerStyles.rightPlaceholder} />
-        )}
-        {showDots && (
-          <View style={headerStyles.rightDotsView}>
-            <TouchableOpacity onPress={onDotsClick}>
-              <Image
-                style={headerStyles.dots}
-                source={darkMode ? Images.topHeaderDotsDark : Images.topHeaderDotsLight}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onShareClick}>
-              <Image
-                style={headerStyles.share}
-                source={darkMode ? Images.topHeaderShareDark : Images.topHeaderShareLight}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onFavoriteClick}>
-              <Image style={headerStyles.favorite} source={favoriteImageToUse} />
-            </TouchableOpacity>
-          </View>
         )}
       </View>
       {showSeparator && <View style={styles.divider} />}
@@ -97,39 +66,24 @@ TopHeader.propTypes = {
 
 const headerStyles = StyleSheet.create({
   close: {
-    height: 20,
-    width: 20,
-  },
-  dots: {
-    height: 20,
-    marginRight: 20,
-    resizeMode: 'contain',
-  },
-  favorite: {
-    height: 22,
-    resizeMode: 'contain',
+    height: 36,
+    width: 36,
   },
   rightButton: {
     alignSelf: 'center',
     justifyContent: 'center',
     width: 20,
   },
-  rightDotsView: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
   rightPlaceholder: {
     height: 0,
-    width: 20,
-  },
-  share: {
-    height: 20,
-    marginRight: 20,
-    resizeMode: 'contain',
+    width: 36,
   },
   touchable: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
+    paddingBottom: 5,
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 5,
   },
 })

@@ -66,6 +66,7 @@ export default {
   modalUnfavoriteDark: require('../Assets/Images/modal/Modal_Unfavorite_DARK.png'),
   modalUnfavoriteLight: require('../Assets/Images/modal/Modal_Unfavorite_LIGHT.png'),
   proModalBadge: require('../Assets/Images/modal/Badge_MixxyPro.png'),
+  notificationsBadge: require('../Assets/Images/modal/Badge_Notifications.png'),
   // Builder
   builderAddNew: require('../Assets/Images/new_builder/Builder_NewStep.png'),
   builderDeleteIngredient: require('../Assets/Images/new_builder/Builder_DeleteIngredient.png'),
@@ -82,8 +83,8 @@ export default {
   topHeaderUnfavoriteDark: require('../Assets/Images/navbar/Nav_Unfavorite_DARK.png'),
   topHeaderXLight: require('../Assets/Images/navbar/Nav_X_LIGHT.png'),
   topHeaderXDark: require('../Assets/Images/navbar/Nav_X_DARK.png'),
-  topHeaderBackLight: require('../Assets/Images/navbar/TopBar_Back_LIGHT.png'),
-  topHeaderBackDark: require('../Assets/Images/navbar/TopBar_Back_DARK.png'),
+  topHeaderBackLight: require('../Assets/Images/navbar/Nav_Back_LIGHT.png'),
+  topHeaderBackDark: require('../Assets/Images/navbar/Nav_Back_DARK.png'),
   topHeaderDotsLight: require('../Assets/Images/navbar/Nav_Dots_LIGHT.png'),
   topHeaderDotsDark: require('../Assets/Images/navbar/Nav_Dots_DARK.png'),
 }

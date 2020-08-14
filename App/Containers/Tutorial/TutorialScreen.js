@@ -349,9 +349,10 @@ class TutorialScreen extends React.Component {
     }
 
     const outputFinal = darkMode ? 'rgba(0,0,0,1.0)' : 'rgba(255,255,255,1.0)'
+    const outputStart = darkMode ? 'rgba(0,0,0,0.0)' : 'rgba(255,255,255,0.0)'
     return scrollY.interpolate({
       inputRange: [0, recipeImageHeight],
-      outputRange: ['rgba(0,0,0,0.0)', outputFinal],
+      outputRange: [outputStart, outputFinal],
       extrapolate: 'clamp',
       useNativeDriver: true,
     })
@@ -365,10 +366,11 @@ class TutorialScreen extends React.Component {
       return darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light
     }
 
-    const outputFinal = darkMode ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)'
+    const outputFinal = darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'
+    const outputStart = darkMode ? 'rgba(255,255,255,0.0)' : 'rgba(0,0,0,0.0)'
     return scrollY.interpolate({
       inputRange: [0, recipeImageHeight],
-      outputRange: ['rgba(0,0,0,0.0)', outputFinal],
+      outputRange: [outputStart, outputFinal],
       extrapolate: 'clamp',
       useNativeDriver: true,
     })
@@ -456,17 +458,6 @@ class TutorialScreen extends React.Component {
 
     const isDescription = 'recipeDescription' in recipe && recipe.recipeDescription !== ''
 
-    let stickyHeaderIndices = [
-      7,
-      7 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
-    ]
-    if (isDescription) {
-      stickyHeaderIndices = [
-        8,
-        8 + 2 + (recipe.ingredients !== undefined ? recipe.ingredients.length : 0),
-      ]
-    }
-
     const recipeImageExists = !!(recipe.imageLink && recipe.imageLink !== '')
     const recipeImageStyle = {
       height: recipeImageHeight,
@@ -474,11 +465,8 @@ class TutorialScreen extends React.Component {
     }
     const scrollViewStyle = {
       zIndex: -1,
-      position: recipeImageExists ? 'absolute' : 'relative',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      top: 0,
+      position: 'relative',
+      flex: 1,
     }
 
     return (
@@ -493,10 +481,11 @@ class TutorialScreen extends React.Component {
           onShareClick={this.onShareClick}
           backgroundColor={this._getHeaderBackgroundColor()}
           dividerBackgroundColor={this._getHeaderDividerBackgroundColor()}
+          showDots={recipeSaved}
+          useAbsolutePosition={recipeImageExists}
         />
         <Animated.ScrollView
           style={[tutorialStyles.scrollView, scrollViewStyle]}
-          stickyHeaderIndices={stickyHeaderIndices}
           overScrollMode={'never'}
           scrollEventThrottle={16}
           onScroll={Animated.event([

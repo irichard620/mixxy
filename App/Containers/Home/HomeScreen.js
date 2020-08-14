@@ -22,6 +22,7 @@ import ModalContentSharedRecipe from '../../Components/ModalContentSharedRecipe'
 import * as constants from '../../Config/constants'
 import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
 import ModalContentBottom from '../../Components/ModalContentBottom'
+import ModalContentPushNotifications from '../../Components/ModalContentPushNotifications'
 
 const initialLayout = { width: Dimensions.get('window').width }
 const routes = [
@@ -134,15 +135,31 @@ class HomeScreen extends React.Component {
     try {
       const authStatus = await messaging().hasPermission()
       if (authStatus === messaging.AuthorizationStatus.NOT_DETERMINED) {
-        // Register
-        await messaging().registerDeviceForRemoteMessages()
-
-        // Subscribe to general topic
-        await messaging().subscribeToTopic('general')
-
-        // Request permission
-        await messaging().requestPermission()
+        this.setState({
+          visibleModal: true,
+          modalType: constants.MODAL_PUSH_NOTIFICATIONS,
+        })
       }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  onNotificationModalButtonClick = async () => {
+    try {
+      // Register
+      await messaging().registerDeviceForRemoteMessages()
+
+      // Subscribe to general topic
+      await messaging().subscribeToTopic('general')
+
+      // Request permission
+      await messaging().requestPermission()
+
+      this.setState({
+        visibleModal: false,
+        modalType: '',
+      })
     } catch (e) {
       console.log(e)
     }
@@ -365,7 +382,11 @@ class HomeScreen extends React.Component {
         <CustomModal
           visibleModal={visibleModal}
           onCloseClick={this.onCloseModalClick}
-          type={constants.MODAL_TYPE_BOTTOM}
+          type={
+            modalType === constants.MODAL_PUSH_NOTIFICATIONS
+              ? constants.MODAL_TYPE_CENTER
+              : constants.MODAL_TYPE_BOTTOM
+          }
           darkMode={darkMode}
         >
           {modalType === constants.MODAL_SHARED_RECIPE && (
@@ -393,6 +414,13 @@ class HomeScreen extends React.Component {
               onModalSave={this.onVolumeUnitSavePressed}
               hasSave={true}
               darkMode={darkMode}
+            />
+          )}
+          {modalType === constants.MODAL_PUSH_NOTIFICATIONS && (
+            <ModalContentPushNotifications
+              darkMode={darkMode}
+              onClose={this.onCloseModalClick}
+              onButtonClick={this.onNotificationModalButtonClick}
             />
           )}
         </CustomModal>

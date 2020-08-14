@@ -84,6 +84,7 @@ export default function getSponsorStylesheet(useDarkMode) {
       alignSelf: 'center',
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 8,
+      textAlign: 'center',
     },
     topImage: {
       height: 251,

@@ -15,8 +15,8 @@ export default function getTutorialStylesheet(useDarkMode) {
       marginBottom: 16,
     },
     descriptionText: {
-      ...Fonts.body2,
-      color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
+      ...Fonts.body1,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginTop: 16,
       paddingLeft: 16,
       paddingRight: 16,
@@ -88,10 +88,10 @@ export default function getTutorialStylesheet(useDarkMode) {
       alignSelf: 'flex-end',
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       marginRight: 16,
-      marginTop: -21,
+      marginTop: -22,
     },
     readMoreText: {
-      ...Fonts.body2,
+      ...Fonts.buttonText,
       color: Colors.blue1,
       paddingLeft: 10,
       paddingRight: 10,
@@ -171,9 +171,7 @@ export default function getTutorialStylesheet(useDarkMode) {
       alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingBottom: 5,
       paddingRight: 8,
-      width: '100%',
     },
   })
 }
