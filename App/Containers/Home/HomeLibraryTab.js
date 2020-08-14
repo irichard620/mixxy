@@ -41,6 +41,9 @@ function HomeLibraryTab(props) {
   let options
   if (selected === ALL_RECIPES_FILTER) {
     options = recipes
+  } else if (!(selected in filterDict)) {
+    options = recipes
+    setSelected(ALL_RECIPES_FILTER)
   } else {
     options = filterDict[selected]
   }
@@ -67,6 +70,7 @@ function HomeLibraryTab(props) {
 
   return (
     <FlatList
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={Helpers.flexGrowStyle}
       data={[{ item: 'menu' }, { item: 'space' }, ...options]}
       keyExtractor={(item, index) => {

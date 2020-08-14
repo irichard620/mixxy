@@ -23,7 +23,11 @@ export default function BuilderBasicDetails(props) {
   } = props
   const builderStyles = getBuilderStylesheet(darkMode)
   return (
-    <KeyboardAwareScrollView extraScrollHeight={30} style={builderStyles.scrollView}>
+    <KeyboardAwareScrollView
+      extraScrollHeight={30}
+      style={builderStyles.scrollView}
+      showsVerticalScrollIndicator={false}
+    >
       <Text style={builderStyles.heading}>{'New Recipe'}</Text>
       <Text style={builderStyles.headingDescription}>
         {'Let’s get the basics about this drink recipe before getting into the steps.'}

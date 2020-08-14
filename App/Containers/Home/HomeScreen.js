@@ -147,6 +147,10 @@ class HomeScreen extends React.Component {
 
   onNotificationModalButtonClick = async () => {
     try {
+      this.setState({
+        visibleModal: false,
+        modalType: '',
+      })
       // Register
       await messaging().registerDeviceForRemoteMessages()
 
@@ -155,11 +159,6 @@ class HomeScreen extends React.Component {
 
       // Request permission
       await messaging().requestPermission()
-
-      this.setState({
-        visibleModal: false,
-        modalType: '',
-      })
     } catch (e) {
       console.log(e)
     }

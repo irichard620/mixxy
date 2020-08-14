@@ -5,8 +5,8 @@ import Fonts from '../../Theme/Fonts'
 export default function getCampaignStylesheet(useDarkMode) {
   return StyleSheet.create({
     backContainer: {
+      left: 16,
       position: 'absolute',
-      right: 16,
       top: 56,
     },
     bufferView: {

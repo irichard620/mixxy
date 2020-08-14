@@ -102,7 +102,7 @@ function HomeSettingsTab(props) {
   }
 
   return (
-    <ScrollView style={styles.outerContainer}>
+    <ScrollView style={styles.outerContainer} showsVerticalScrollIndicator={false}>
       <Text style={homeStyles.topHeaderLibrary}>Settings</Text>
       <View style={homeStyles.settingsProOutline}>
         <Image source={Images.proBadge} style={homeStyles.settingsProImage} />

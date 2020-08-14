@@ -27,7 +27,11 @@ export default function BuilderIngredients(props) {
     marginLeft: leftMargin,
   }
   return (
-    <KeyboardAwareScrollView extraScrollHeight={30} style={builderStyles.scrollView}>
+    <KeyboardAwareScrollView
+      extraScrollHeight={30}
+      style={builderStyles.scrollView}
+      showsVerticalScrollIndicator={false}
+    >
       <Text style={builderStyles.heading}>{'Ingredients'}</Text>
       <Text style={builderStyles.headingDescription}>
         {

@@ -47,6 +47,7 @@ function HomeDiscoverTab(props) {
     <ScrollView
       style={homeStyles.scrollContainer}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      showsVerticalScrollIndicator={false}
     >
       <Text style={homeStyles.topHeader}>Discover</Text>
       {sponsorCards.map((sponsorCard) => (

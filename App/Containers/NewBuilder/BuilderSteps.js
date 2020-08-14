@@ -88,6 +88,7 @@ export default function BuilderSteps(props) {
           onScrollEndDrag={(event) => {
             setScrollOffsetTable(event.nativeEvent.contentOffset.y)
           }}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item, index, drag }) => (
             <TouchableOpacity
               style={builderStyles.ingredientRow}
@@ -125,6 +126,7 @@ export default function BuilderSteps(props) {
         onScrollEndDrag={(event) => {
           setScrollOffsetTable(event.nativeEvent.contentOffset.y)
         }}
+        showsVerticalScrollIndicator={false}
       >
         {listHeader}
         {steps.map((step, idx) => (

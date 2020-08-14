@@ -119,7 +119,7 @@ class SponsorScreen extends React.Component {
     }
     return (
       <View style={styles.outerContainer}>
-        <ScrollView style={sponsorStyles.scrollContainer}>
+        <ScrollView style={sponsorStyles.scrollContainer} showsVerticalScrollIndicator={false}>
           <StatusBar backgroundColor={'transparent'} translucent />
           <View style={sponsorStyles.topImageOutline}>
             {cardImageLink !== '' && (

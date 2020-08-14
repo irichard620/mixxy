@@ -92,7 +92,7 @@ export default function getHomeStylesheet(useDarkMode) {
       textAlign: 'center',
     },
     libraryMenuOutline: {
-      alignItems: 'center',
+      alignItems: 'flex-start',
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       height: 68,
       marginTop: -10,
@@ -100,6 +100,7 @@ export default function getHomeStylesheet(useDarkMode) {
     libraryMenuScrollOutline: {
       alignItems: 'center',
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      flexGrow: 1,
       height: 68,
     },
     linearGradient: {

@@ -55,7 +55,7 @@ export default function ModalContentBottom(props) {
         />
       )}
       {isListModal && (
-        <ScrollView style={listPadding}>
+        <ScrollView style={listPadding} showsVerticalScrollIndicator={false}>
           {options.map((option) => (
             <ListItem
               key={`${option.title}${option.subtitle}`}
@@ -82,7 +82,7 @@ export default function ModalContentBottom(props) {
         </View>
       )}
       {isMultiSelectModal && (
-        <ScrollView style={listPadding}>
+        <ScrollView style={listPadding} showsVerticalScrollIndicator={false}>
           {options.map((option, idx) => (
             <MultiSelectListItem
               key={`${option.title}`}
