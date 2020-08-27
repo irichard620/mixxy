@@ -14,6 +14,7 @@ import { NavigationActions } from 'react-navigation'
 class AllRecipesScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.searchBar = React.createRef()
     this.state = {
       data: [],
     }
@@ -60,12 +61,14 @@ class AllRecipesScreen extends React.Component {
     return (
       <View>
         <SearchBar
+          ref={this.searchBar}
           placeholder="Search"
           lightTheme
           round
           onChangeText={(text) => this.searchFilterFunction(text)}
           autoCorrect={false}
           searchBarStyle={'minimal'}
+          onSearchButtonPress={() => this.searchBar && this.searchBar.current.unFocus()}
         />
         <View style={styles.divider} />
         <View style={allRecipesStyles.bufferView} />
@@ -100,12 +103,14 @@ class AllRecipesScreen extends React.Component {
         <FlatList
           data={data}
           keyExtractor={(item) => item.recipeId}
+          onScrollBeginDrag={() => this.searchBar && this.searchBar.current.unFocus()}
           renderItem={({ item }) => (
             <RecipeCard
               recipeName={item.recipeName}
               recipeType={item.recipeType}
               servingGlass={item.servingGlass}
               onCardClick={() => {
+                this.searchBar && this.searchBar.current.unFocus()
                 NavigationService.navigate('TutorialScreen', {
                   recipe: item,
                 })

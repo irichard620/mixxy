@@ -9,7 +9,7 @@ import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
 import HomeLibraryMenuButtons from './HomeLibraryMenuButtons'
 import Helpers from '../../Theme/Helpers'
-import { FAVORITES_FILTER, ALL_RECIPES_FILTER } from '../../Config/constants'
+import { FAVORITES_FILTER, ALL_RECIPES_FILTER, drinkTypeFilterNames } from '../../Config/constants'
 
 function HomeLibraryTab(props) {
   const { recipes, onNewRecipeClick } = props
@@ -26,11 +26,15 @@ function HomeLibraryTab(props) {
   filterDict[FAVORITES_FILTER] = []
   let recipe
   for (recipe of recipes) {
-    // Base spirit
-    if (recipe.baseSpirit in filterDict) {
-      filterDict[recipe.baseSpirit].push(recipe)
+    let filterNameToUse = recipe.baseSpirit
+    if (!filterNameToUse || filterNameToUse === '') {
+      filterNameToUse = drinkTypeFilterNames[recipe.recipeType]
+    }
+
+    if (filterNameToUse in filterDict) {
+      filterDict[filterNameToUse].push(recipe)
     } else {
-      filterDict[recipe.baseSpirit] = [recipe]
+      filterDict[filterNameToUse] = [recipe]
     }
 
     // Favorited

@@ -1,27 +1,5 @@
 import { LayoutAnimation } from 'react-native'
 
-// Cocktail steps
-export const STEP_ADD_INGREDIENTS = 'Add Ingredients'
-export const STEP_REMOVE_INGREDIENTS = 'Remove Ingredients'
-export const STEP_STIR = 'Stir'
-export const STEP_MUDDLE = 'Muddle'
-export const STEP_BLEND = 'Blend'
-export const STEP_SHAKE = 'Shake'
-export const STEP_STRAIN = 'Strain'
-export const STEP_GARNISH = 'Garnish'
-export const STEP_RIM_GLASS = 'Rim Glass'
-export const steps = [
-  STEP_ADD_INGREDIENTS,
-  STEP_REMOVE_INGREDIENTS,
-  STEP_STIR,
-  STEP_MUDDLE,
-  STEP_BLEND,
-  STEP_SHAKE,
-  STEP_STRAIN,
-  STEP_GARNISH,
-  STEP_RIM_GLASS,
-]
-
 // Cocktail serving glasses
 export const SERVING_GLASS_COCKTAIL = 'Cocktail Glass'
 export const SERVING_GLASS_TALL = 'Tall Glass'
@@ -80,26 +58,6 @@ export const servingGlassRaw = {
   [SERVING_GLASS_COPPER_MUG]: SERVING_GLASS_COPPER_MUG,
 }
 
-// Ingredient Vessels
-export const INGREDIENTS_COCKTAIL_SHAKER = 'Cocktail Shaker'
-export const INGREDIENTS_MIXING_GLASS = 'Mixing glass'
-export const INGREDIENTS_SERVING_GLASS = 'Serving glass'
-export const INGREDIENTS_BLENDER = 'Blender'
-export const ingredientsVessels = [
-  INGREDIENTS_COCKTAIL_SHAKER,
-  INGREDIENTS_MIXING_GLASS,
-  INGREDIENTS_SERVING_GLASS,
-  INGREDIENTS_BLENDER,
-]
-export const ingredientsVesselDescriptions = {
-  [INGREDIENTS_COCKTAIL_SHAKER]:
-    'The essential tool for shaking cocktails and quickly chilling them with ice.',
-  [INGREDIENTS_MIXING_GLASS]: 'A dedicated glass for stirring your ingredients together.',
-  [INGREDIENTS_SERVING_GLASS]:
-    "Add ingredients directly into the glass you're serving the final drink in.",
-  [INGREDIENTS_BLENDER]: 'Perfect for crushing up ice and making a slushy frozen drink.',
-}
-
 // Fraction amounts
 export const AMOUNT_ZERO = ''
 export const AMOUNT_1EIGTH = '1/8'
@@ -149,12 +107,6 @@ export const allAmountTypes = [
   AMOUNT_TYPE_RIM,
 ]
 
-// Ingredient classifications
-export const CLASSIFICATION_ALCOHOLIC = 'Alcoholic'
-export const CLASSIFICATION_NON_ALCOHOLIC = 'Non-alcoholic'
-export const CLASSIFICATION_CULINARY = 'Culinary'
-export const CLASSIFICATION_ICE = 'Ice'
-
 // Drink types
 export const DRINK_TYPE_COCKTAIL = 'Cocktail'
 export const DRINK_TYPE_WINE_COCKTAILS = 'Wine Cocktails'
@@ -189,6 +141,12 @@ export const drinkTypeDescriptions = {
     'Beer is delicious on its own, but using it as the base for your next shandy or punch can make it so much more.',
   [DRINK_TYPE_NON_ALCOHOLIC]:
     'Also known as “Mocktails,” these drinks mix non-alcoholic ingredients to create tasty, elaborate drinks for all ages.',
+}
+export const drinkTypeFilterNames = {
+  [DRINK_TYPE_COCKTAIL]: DRINK_TYPE_COCKTAIL,
+  [DRINK_TYPE_WINE_COCKTAILS]: 'Wine',
+  [DRINK_TYPE_BEER_COCKTAILS]: 'Beer',
+  [DRINK_TYPE_NON_ALCOHOLIC]: 'Non-Alcoholic',
 }
 
 // Base spirits
