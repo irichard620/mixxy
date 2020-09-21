@@ -13,6 +13,7 @@ import NavigationService from '../../Services/NavigationService'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import UserActions from '../../Stores/User/Actions'
 import HomeDiscoverTab from './HomeDiscoverTab'
+import HomeBartenderTab from './HomeBartenderTab'
 import Images from '../../Theme/Images'
 import HomeLibraryTab from './HomeLibraryTab'
 import HomeSettingsTab from './HomeSettingsTab'
@@ -28,6 +29,7 @@ const initialLayout = { width: Dimensions.get('window').width }
 const routes = [
   { key: 'discover', title: 'Discover' },
   { key: 'library', title: 'Library' },
+  { key: 'bartender', title: 'Bartender' },
   { key: 'settings', title: 'Settings' },
 ]
 
@@ -281,9 +283,15 @@ class HomeScreen extends React.Component {
         source = darkMode ? Images.navLibraryDark : Images.navLibraryLight
       }
       return <Image source={source} style={homeStyles.tabIcon} />
+    } else if (route.key === 'bartender') {
+      let source = Images.navLibrarySelected
+      if (index !== 2) {
+        source = darkMode ? Images.navLibraryDark : Images.navLibraryLight
+      }
+      return <Image source={source} style={homeStyles.tabIcon} />
     } else {
       let source = Images.navSettingsSelected
-      if (index !== 2) {
+      if (index !== 3) {
         source = darkMode ? Images.navSettingsDark : Images.navSettingsLight
       }
       return <Image source={source} style={homeStyles.tabIcon} />
@@ -296,6 +304,8 @@ class HomeScreen extends React.Component {
         return <HomeDiscoverTab />
       case 'library':
         return <HomeLibraryTab onNewRecipeClick={this.onNewRecipeClick} />
+      case 'bartender':
+        return <HomeBartenderTab />
       default:
         return (
           <HomeSettingsTab
