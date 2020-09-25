@@ -39,6 +39,22 @@ export function* fetchRemoteRecipes(params) {
   }
 }
 
+export function* fetchBartenderRecipes(params) {
+  yield put(RecipeActions.fetchBartenderRecipesLoading())
+
+  // Fetch recipe from an API
+  const recipes = yield call(recipeService.fetchBartenderRecipes, params)
+  if (recipes) {
+    yield put(RecipeActions.fetchBartenderRecipesSuccess(recipes))
+  } else {
+    yield put(
+      RecipeActions.fetchBartenderRecipesFailure(
+        'There was an error while fetching bartender recipes.'
+      )
+    )
+  }
+}
+
 export function* fetchSharedRecipe(params) {
   yield put(RecipeActions.fetchSharedRecipeLoading())
   // Fetch recipe from an API

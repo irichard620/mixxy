@@ -102,6 +102,26 @@ async function fetchRemoteRecipes(params) {
   }
 }
 
+async function fetchBartenderRecipes(params) {
+  let url = 'bartender/'
+  try {
+    const response = await defaultApiClient(url).put('recipes', {
+      ingredientIds: params.ingredientIds,
+    })
+    if (in200s(response.status)) {
+      const recipes = []
+      for (let i = 0; i < response.data.length; i++) {
+        recipes.push(Recipe(camelcaseKeys(response.data[i])))
+      }
+      return recipes
+    }
+
+    return null
+  } catch (e) {
+    return null
+  }
+}
+
 async function fetchSharedRecipe(params) {
   const appVersion = DeviceInfo.getVersion()
   try {
@@ -198,6 +218,7 @@ export const recipeService = {
   persistRecipe,
   fetchRecipes,
   fetchRemoteRecipes,
+  fetchBartenderRecipes,
   fetchSharedRecipe,
   createSharedRecipe,
   deleteRecipe,
