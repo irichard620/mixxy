@@ -43,9 +43,9 @@ export function* fetchBartenderRecipes(params) {
   yield put(RecipeActions.fetchBartenderRecipesLoading())
 
   // Fetch recipe from an API
-  const recipes = yield call(recipeService.fetchBartenderRecipes, params)
-  if (recipes) {
-    yield put(RecipeActions.fetchBartenderRecipesSuccess(recipes))
+  const bartenderRecipes = yield call(recipeService.fetchBartenderRecipes, params)
+  if (bartenderRecipes) {
+    yield put(RecipeActions.fetchBartenderRecipesSuccess(bartenderRecipes))
   } else {
     yield put(
       RecipeActions.fetchBartenderRecipesFailure(

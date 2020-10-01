@@ -20,6 +20,7 @@ export function Recipe(recipeObj) {
   recipe.baseSpirit = recipeObj.baseSpirit
   recipe.servingGlass = recipeObj.servingGlass
   recipe.totalOunces = recipeObj.totalOunces
+  recipe.missingCount = recipeObj.missingCount || 0
 
   // Recipe - how to make
   if (!('steps' in recipeObj)) {

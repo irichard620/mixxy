@@ -24,6 +24,7 @@ import * as constants from '../../Config/constants'
 import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 import ModalContentPushNotifications from '../../Components/ModalContentPushNotifications'
+import ModalContentBarCart from '../../Components/ModalContentBarCart'
 
 const initialLayout = { width: Dimensions.get('window').width }
 const routes = [
@@ -45,6 +46,7 @@ class HomeScreen extends React.Component {
       visibleModal: false,
       modalType: '',
       selectedVolumeUnit: false,
+      selectedIngredients: [],
     }
   }
 
@@ -237,6 +239,21 @@ class HomeScreen extends React.Component {
     NavigationService.navigate('BuilderScreen', {})
   }
 
+  onBarCartClick = () => {
+    const { user } = this.props
+    if (!user.user.premium) {
+      this.setState({
+        visibleModal: true,
+        modalType: constants.MODAL_PAYWALL,
+      })
+      return
+    }
+    this.setState({
+      visibleModal: true,
+      modalType: constants.MODAL_BAR_CART,
+    })
+  }
+
   onCloseModalClick = () => {
     this.setState({
       visibleModal: false,
@@ -284,9 +301,9 @@ class HomeScreen extends React.Component {
       }
       return <Image source={source} style={homeStyles.tabIcon} />
     } else if (route.key === 'bartender') {
-      let source = Images.navLibrarySelected
+      let source = Images.navBartenderSelected
       if (index !== 2) {
-        source = darkMode ? Images.navLibraryDark : Images.navLibraryLight
+        source = darkMode ? Images.navBartenderDark : Images.navBartenderLight
       }
       return <Image source={source} style={homeStyles.tabIcon} />
     } else {
@@ -298,6 +315,12 @@ class HomeScreen extends React.Component {
     }
   }
 
+  setSelectedIngredients = (selectedIngredients) => {
+    this.setState({
+      selectedIngredients: selectedIngredients,
+    })
+  }
+
   renderScene = ({ route }) => {
     switch (route.key) {
       case 'discover':
@@ -305,7 +328,13 @@ class HomeScreen extends React.Component {
       case 'library':
         return <HomeLibraryTab onNewRecipeClick={this.onNewRecipeClick} />
       case 'bartender':
-        return <HomeBartenderTab />
+        return (
+          <HomeBartenderTab
+            selectedIngredients={this.state.selectedIngredients}
+            setSelectedIngredients={this.setSelectedIngredients}
+            onBarCartClick={this.onBarCartClick}
+          />
+        )
       default:
         return (
           <HomeSettingsTab
@@ -362,6 +391,38 @@ class HomeScreen extends React.Component {
     updateVolumeUnits(useMetric)
   }
 
+  onAddIngredientClick = () => {
+    // TODO: nav with ingredients screen and callback that sets bar cart ingredients
+  }
+
+  onSearchDrinksClick = () => {
+    // TODO: nav with results screen - passing in IDs of bar cart ingredients
+  }
+
+  onTabChange = (idx) => {
+    const { selectedIngredients, index } = this.state
+    if (index === 2 && idx !== 2 && selectedIngredients.length) {
+      Alert.alert('Bartender search', 'Are you done with your bartender search?', [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            this.setState({
+              selectedIngredients: [],
+              index: idx,
+            })
+          },
+        },
+      ])
+    } else {
+      this.setState({
+        index: idx,
+      })
+    }
+  }
+
   render() {
     const { darkMode, fetchSharedRecipeIsLoading, sharedRecipe } = this.props
     const { index, visibleModal, modalType } = this.state
@@ -374,7 +435,7 @@ class HomeScreen extends React.Component {
           swipeEnabled={false}
           navigationState={{ index, routes }}
           renderScene={this.renderScene}
-          onIndexChange={(idx) => this.setState({ index: idx })}
+          onIndexChange={this.onTabChange}
           initialLayout={initialLayout}
           tabBarPosition={'bottom'}
           renderTabBar={(props) => (
@@ -430,6 +491,14 @@ class HomeScreen extends React.Component {
               darkMode={darkMode}
               onClose={this.onCloseModalClick}
               onButtonClick={this.onNotificationModalButtonClick}
+            />
+          )}
+          {modalType === constants.MODAL_BAR_CART && (
+            <ModalContentBarCart
+              darkMode={darkMode}
+              onSearchDrinksClick={this.onSearchDrinksClick}
+              ingredients={[]}
+              onAddIngredientClick={this.onAddIngredientClick}
             />
           )}
         </CustomModal>

@@ -31,7 +31,7 @@ const { Types, Creators } = createActions({
   // The operation has started and is loading
   fetchBartenderRecipesLoading: null,
   // recipe fetched
-  fetchBartenderRecipesSuccess: ['recipes'],
+  fetchBartenderRecipesSuccess: ['bartenderRecipes'],
   // Failure
   fetchBartenderRecipesFailure: ['errorMessage'],
 

@@ -62,12 +62,14 @@ export const fetchBartenderRecipesLoading = (state) => ({
   fetchBartenderRecipesErrorMessage: null,
 })
 
-export const fetchBartenderRecipesSuccess = (state, { recipes }) => ({
-  ...state,
-  bartenderRecipes: recipes,
-  fetchBartenderRecipesIsLoading: false,
-  fetchBartenderRecipesErrorMessage: null,
-})
+export const fetchBartenderRecipesSuccess = (state, { bartenderRecipes }) => {
+  return {
+    ...state,
+    bartenderRecipes: bartenderRecipes,
+    fetchBartenderRecipesIsLoading: false,
+    fetchBartenderRecipesErrorMessage: null,
+  }
+}
 
 export const fetchBartenderRecipesFailure = (state, { errorMessage }) => ({
   ...state,

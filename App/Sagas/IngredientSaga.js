@@ -17,3 +17,19 @@ export function* fetchIngredients() {
     )
   }
 }
+
+export function* fetchBarCartIngredients() {
+  yield put(IngredientActions.barCartFetchIngredientsLoading())
+
+  // Fetch user informations from an API
+  const ingredients = yield call(ingredientService.fetchBarCartIngredients)
+  yield put(IngredientActions.barCartFetchIngredientsSuccess(ingredients))
+}
+
+export function* setBarCartIngredients() {
+  yield put(IngredientActions.barCartSetIngredientsLoading())
+
+  // Fetch user informations from an API
+  const ingredients = yield call(ingredientService.setBarCartIngredients)
+  yield put(IngredientActions.barCartSetIngredientsSuccess(ingredients))
+}

@@ -1,9 +1,10 @@
 import React from 'react'
-import { Dimensions, FlatList, Text, View, Alert } from 'react-native'
+import { FlatList, View, Alert } from 'react-native'
+import SearchBar from 'react-native-search-bar'
 import { connect } from 'react-redux'
 import NavigationService from '../../Services/NavigationService'
 import getStylesheet from '../../Theme/ApplicationStyles'
-import LinearGradient from 'react-native-linear-gradient'
+import getBartenderStylesheet from './BartenderStyle'
 import TopHeader from '../../Components/TopHeader'
 import BottomBar from '../../Components/BottomBar'
 import { NavigationActions } from 'react-navigation'
@@ -22,7 +23,12 @@ class IngredientsScreen extends React.Component {
   }
 
   componentDidMount() {
+    const { navigation } = this.props
     this.props.fetchIngredients()
+
+    this.setState({
+      selectedIngredients: navigation.getParam('selectedIngredients'),
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -79,6 +85,39 @@ class IngredientsScreen extends React.Component {
     navigation.dispatch(NavigationActions.back())
   }
 
+  renderHeader = () => {
+    const { darkMode } = this.props
+    const styles = getStylesheet(darkMode)
+    const bartenderStyles = getBartenderStylesheet(darkMode)
+    return (
+      <View>
+        <SearchBar
+          ref={this.searchBar}
+          placeholder="Search"
+          lightTheme
+          round
+          onChangeText={(text) => this.searchFilterFunction(text)}
+          autoCorrect={false}
+          searchBarStyle={'minimal'}
+          onSearchButtonPress={() => this.searchBar && this.searchBar.current.unFocus()}
+        />
+        <View style={styles.divider} />
+        <View style={bartenderStyles.bufferView} />
+      </View>
+    )
+  }
+
+  searchFilterFunction = (text) => {
+    const { ingredients } = this.props
+    const newData = ingredients.filter((item) => {
+      const itemData = `${item.name.toUpperCase()}`
+      const textData = text.toUpperCase()
+      return itemData.indexOf(textData) > -1
+    })
+
+    this.setState({ data: newData })
+  }
+
   render() {
     const { darkMode } = this.props
     const { data, selectedIngredients } = this.state
@@ -99,9 +138,10 @@ class IngredientsScreen extends React.Component {
         <FlatList
           data={data}
           keyExtractor={(item) => item.recipeId}
-          // onScrollBeginDrag={() => this.searchBar && this.searchBar.current.unFocus()}
+          onScrollBeginDrag={() => this.searchBar && this.searchBar.current.unFocus()}
           renderItem={({ item }) => (
             <ListItem
+              key={item.ingredientId}
               title={item.name}
               onClick={() => this.onListItemClick(item)}
               darkMode={darkMode}

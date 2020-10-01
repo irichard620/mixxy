@@ -203,6 +203,7 @@ export const MODAL_PAYWALL = 'Paywall'
 export const MODAL_RECIPE_MENU = 'Recipe Settings'
 export const MODAL_VOLUME_UNITS = 'Volume Units'
 export const MODAL_PUSH_NOTIFICATIONS = 'Get Notifications'
+export const MODAL_BAR_CART = 'Bar Cart'
 
 // Errors
 export const MIXXY_PRO_LIBRARY_FULL =

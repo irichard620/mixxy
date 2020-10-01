@@ -13,8 +13,8 @@ export default function getHomeStylesheet(useDarkMode) {
     },
     bartenderBarCartOutline: {
       backgroundColor: useDarkMode ? Colors.darkFill4Dark : Colors.darkFill4Light,
-      padding: 16,
       marginBottom: 16,
+      padding: 16,
     },
     bartenderBarCartSubtext: {
       ...Fonts.body3,

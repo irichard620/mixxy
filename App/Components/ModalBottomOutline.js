@@ -1,12 +1,13 @@
 import React from 'react'
-import { View, Text, KeyboardAvoidingView, Dimensions } from 'react-native'
+import { View, Text, KeyboardAvoidingView, Dimensions, Button, StyleSheet } from 'react-native'
 import PullDown from './Pulldown'
 import getStylesheet from '../Theme/ApplicationStyles'
 import { PropTypes } from 'prop-types'
 import getComponentStylesheet from './ComponentStyle'
+import Colors from '../Theme/Colors'
 
 export default function ModalBottomOutline(props) {
-  const { title, darkMode, children } = props
+  const { title, darkMode, children, onRightButtonClick, rightButtonTitle } = props
 
   const styles = getStylesheet(darkMode)
   const componentStyles = getComponentStylesheet(darkMode)
@@ -22,7 +23,15 @@ export default function ModalBottomOutline(props) {
     <KeyboardAvoidingView behavior="position" enabled>
       <View style={[componentStyles.modalBottomOutlineContent, maxHeightModal]}>
         <PullDown darkMode={darkMode} />
-        <Text style={componentStyles.modalBottomOutlineTitle}>{title}</Text>
+        <View style={modalStyles.content}>
+          <Button title={rightButtonTitle || ''} color={Colors.transparent} />
+          <Text style={componentStyles.modalBottomOutlineTitle}>{title}</Text>
+          <Button
+            title={rightButtonTitle || ''}
+            color={Colors.blue1}
+            onPress={onRightButtonClick}
+          />
+        </View>
         <View style={styles.divider} />
         {children}
       </View>
@@ -34,4 +43,17 @@ ModalBottomOutline.propTypes = {
   title: PropTypes.string,
   darkMode: PropTypes.bool,
   children: PropTypes.node,
+  onRightButtonClick: PropTypes.func,
+  rightButtonTitle: PropTypes.string,
 }
+
+const modalStyles = StyleSheet.create({
+  content: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 56,
+    justifyContent: 'space-between',
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+})

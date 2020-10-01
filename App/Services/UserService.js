@@ -26,6 +26,7 @@ async function fetchUser() {
     }
     storage.setItem('user', JSON.stringify(userDetails))
     userDetails.viewedTutorial = viewedTutorial
+    userDetails.premium = true
     return userDetails
   } catch (e) {
     return e

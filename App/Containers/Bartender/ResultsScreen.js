@@ -6,7 +6,7 @@ import getStylesheet from '../../Theme/ApplicationStyles'
 import getBartenderStylesheet from './BartenderStyle'
 import TopHeader from '../../Components/TopHeader'
 import { NavigationActions } from 'react-navigation'
-import IngredientActions from '../../Stores/Ingredient/Actions'
+import RecipeActions from '../../Stores/Recipe/Actions'
 import { PropTypes } from 'prop-types'
 import RecipeCard from '../../Components/RecipeCard'
 
@@ -19,7 +19,8 @@ class ResultsScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchBartenderRecipes(this.props.ingredientIds)
+    const { navigation, fetchBartenderRecipes } = this.props
+    fetchBartenderRecipes(navigation.getParam('ingredientIds'))
   }
 
   componentDidUpdate(prevProps) {
@@ -43,7 +44,7 @@ class ResultsScreen extends React.Component {
         // Set recipe state to details
         const recipeDict = {}
         for (let recipe of bartenderRecipes) {
-          if (recipe.missingCount in recipeDict) {
+          if (!(recipe.missingCount in recipeDict)) {
             recipeDict[recipe.missingCount] = [recipe]
           } else {
             recipeDict[recipe.missingCount].push(recipe)
@@ -113,7 +114,7 @@ class ResultsScreen extends React.Component {
   }
 
   render() {
-    const { darkMode } = this.props
+    const { darkMode, fetchBartenderRecipesIsLoading } = this.props
     const { data } = this.state
     const styles = getStylesheet(darkMode)
     const bartenderStyles = getBartenderStylesheet(darkMode)
@@ -126,27 +127,37 @@ class ResultsScreen extends React.Component {
           showSeparator={true}
           darkMode={darkMode}
         />
-        <SectionList
-          sections={data}
-          keyExtractor={(item) => item.title}
-          renderItem={({ item }) => (
-            <RecipeCard
-              recipeName={item.recipeName}
-              recipeType={item.recipeType}
-              servingGlass={item.servingGlass}
-              onCardClick={() => {
-                NavigationService.navigate('TutorialScreen', {
-                  recipe: item,
-                })
-              }}
-              darkMode={darkMode}
-            />
-          )}
-          style={{ width: '100%' }}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={bartenderStyles.sectionHeader}>{title}</Text>
-          )}
-        />
+        {data.length === 0 ? (
+          <View style={bartenderStyles.emptyContainer}>
+            <Text style={bartenderStyles.emptyText}>
+              {fetchBartenderRecipesIsLoading
+                ? 'Loading...'
+                : 'No results. Try updating your ingredient list!'}
+            </Text>
+          </View>
+        ) : (
+          <SectionList
+            sections={data}
+            keyExtractor={(item) => item.title}
+            renderItem={({ item }) => (
+              <RecipeCard
+                recipeName={item.recipeName}
+                recipeType={item.recipeType}
+                servingGlass={item.servingGlass}
+                onCardClick={() => {
+                  NavigationService.navigate('TutorialScreen', {
+                    recipe: item,
+                  })
+                }}
+                darkMode={darkMode}
+              />
+            )}
+            style={{ width: '100%' }}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={bartenderStyles.sectionHeader}>{title}</Text>
+            )}
+          />
+        )}
       </View>
     )
   }
@@ -163,14 +174,14 @@ ResultsScreen.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  bartenderRecipes: state.recipes.ingredients,
+  bartenderRecipes: state.recipes.bartenderRecipes,
   fetchBartenderRecipesIsLoading: state.recipes.fetchBartenderRecipesIsLoading,
   fetchBartenderRecipesErrorMessage: state.recipes.fetchBartenderRecipesErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   fetchBartenderRecipes: (ingredientIds) =>
-    dispatch(IngredientActions.fetchIngredients(ingredientIds)),
+    dispatch(RecipeActions.fetchBartenderRecipes(ingredientIds)),
 })
 
 export default connect(

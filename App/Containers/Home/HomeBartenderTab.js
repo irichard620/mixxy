@@ -85,14 +85,21 @@ HomeBartenderSection.propTypes = {
 }
 
 function HomeBartenderTab(props) {
-  //   const {} = props
+  const { setSelectedIngredients, selectedIngredients, onBarCartClick } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
 
   const [ingredientsOpen, setIngredientsOpen] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [selectedIngredients, setSelectedIngredients] = useState([])
+
+  const removeIngredient = (idx) => {
+    if (idx >= 0) {
+      const array = [...selectedIngredients]
+      array.splice(idx, 1)
+      setSelectedIngredients(array)
+    }
+  }
 
   return (
     <View style={styles.outerContainer}>
@@ -102,13 +109,15 @@ function HomeBartenderTab(props) {
           Bartender helps you discover which drinks you can create with the ingredients you already
           have on hand.
         </Text>
-        <View style={homeStyles.bartenderBarCartOutline}>
-          <View style={homeStyles.bartenderBarCartIcon} />
-          <Text style={homeStyles.bartenderBarCartText}>My Bar Cart</Text>
-          <Text style={homeStyles.bartenderBarCartSubtext}>
-            Keep a running list of your ingredients to quickly browse recipes you can make.
-          </Text>
-        </View>
+        <TouchableWithoutFeedback style={{ flex: 1 }} onPress={onBarCartClick}>
+          <View style={homeStyles.bartenderBarCartOutline}>
+            <View style={homeStyles.bartenderBarCartIcon} />
+            <Text style={homeStyles.bartenderBarCartText}>My Bar Cart</Text>
+            <Text style={homeStyles.bartenderBarCartSubtext}>
+              Keep a running list of your ingredients to quickly browse recipes you can make.
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
         <HomeBartenderSection
           title="Ingredients"
           number={selectedIngredients.length}
@@ -124,12 +133,12 @@ function HomeBartenderTab(props) {
               </Text>
             ) : (
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 }}>
-                {selectedIngredients.map((ingredient) => (
+                {selectedIngredients.map((ingredient, idx) => (
                   <SelectedItem
                     key={ingredient.ingredientId}
                     title={ingredient.name}
                     darkMode={darkMode}
-                    onClick={() => {}}
+                    onClick={() => removeIngredient(idx)}
                   />
                 ))}
               </View>
@@ -138,6 +147,7 @@ function HomeBartenderTab(props) {
               onPress={() => {
                 NavigationService.navigate('IngredientsScreen', {
                   addIngredients: (ingredients) => setSelectedIngredients(ingredients),
+                  selectedIngredients,
                 })
               }}
             />
@@ -154,12 +164,25 @@ function HomeBartenderTab(props) {
         <View style={styles.divider} />
         <View style={homeStyles.bufferView} />
       </ScrollView>
-      <BottomBar buttonTitle={'Search Drinks'} onButtonClick={() => {}} darkMode={darkMode} />
+      <BottomBar
+        buttonTitle={'Search Drinks'}
+        onButtonClick={() => {
+          NavigationService.navigate('ResultsScreen', {
+            ingredientIds: selectedIngredients.map((i) => i.ingredientId),
+          })
+        }}
+        darkMode={darkMode}
+        disabled={!selectedIngredients.length}
+      />
     </View>
   )
 }
 
-HomeBartenderTab.propTypes = {}
+HomeBartenderTab.propTypes = {
+  setSelectedIngredients: PropTypes.func,
+  selectedIngredients: PropTypes.array,
+  onBarCartClick: PropTypes.func,
+}
 
 const mapStateToProps = (state) => ({})
 
