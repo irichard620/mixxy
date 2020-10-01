@@ -25,6 +25,23 @@ export default function getHomeStylesheet(useDarkMode) {
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 6,
     },
+    bartenderSectionNumber: {
+      alignItems: 'center',
+      borderRadius: 15,
+      height: 30,
+      justifyContent: 'center',
+      marginRight: 16,
+      width: 42,
+    },
+    bartenderSectionOutline: {
+      flex: 1,
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingRight: 16,
+      height: 50,
+    },
     bartenderSectionText: {
       ...Fonts.h3Semibold,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,

@@ -11,6 +11,7 @@ import AddButton from '../../Components/AddButton'
 import SelectedItem from '../../Components/SelectedItem'
 import Colors from '../../Theme/Colors'
 import Images from '../../Theme/Images'
+import Helpers from '../../Theme/Helpers'
 
 const HomeBartenderSection = (props) => {
   const { title, number, onClick, open, darkMode } = props
@@ -28,48 +29,19 @@ const HomeBartenderSection = (props) => {
     arrowIcon = Images.builderUnitArrowDark
   }
 
-  const iconTransformStyle = open ? { transform: [{ rotate: '180deg' }] } : {}
+  const baseIconStyle = { height: 12, resizeMode: 'contain' }
+  const iconTransformStyle = open
+    ? { transform: [{ rotate: '180deg' }], ...baseIconStyle }
+    : { ...baseIconStyle }
   return (
-    <TouchableWithoutFeedback style={{ flex: 1 }} onPress={onClick}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          flexWrap: 'nowrap',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingRight: 16,
-          height: 50,
-        }}
-      >
+    <TouchableWithoutFeedback style={Helpers.fill} onPress={onClick}>
+      <View style={homeStyles.bartenderSectionOutline}>
         <Text style={homeStyles.bartenderSectionText}>{title}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            flexWrap: 'nowrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <View
-            style={[
-              {
-                width: 42,
-                height: 30,
-                borderRadius: 15,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: 16,
-              },
-              badgeBackgroundStyle,
-            ]}
-          >
+        <View style={Helpers.rowStartVerticalAlign}>
+          <View style={[homeStyles.bartenderSectionNumber, badgeBackgroundStyle]}>
             <Text>{number}</Text>
           </View>
-          <Image
-            style={[{ height: 12, resizeMode: 'contain' }, iconTransformStyle]}
-            source={arrowIcon}
-          />
+          <Image style={iconTransformStyle} source={arrowIcon} />
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -85,7 +57,7 @@ HomeBartenderSection.propTypes = {
 }
 
 function HomeBartenderTab(props) {
-  const { setSelectedIngredients, selectedIngredients, onBarCartClick } = props
+  const { setSelectedIngredients, selectedIngredients, onBarCartClick, barCartIngredients } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
@@ -101,6 +73,10 @@ function HomeBartenderTab(props) {
     }
   }
 
+  const subtextBottomMargin = { marginBottom: 24 }
+  const ingredientsSectionPadding = { paddingBottom: 24 }
+  const selectedIngredientsMargin = { marginBottom: 16 }
+
   return (
     <View style={styles.outerContainer}>
       <ScrollView style={homeStyles.scrollContainer} showsVerticalScrollIndicator={false}>
@@ -109,7 +85,7 @@ function HomeBartenderTab(props) {
           Bartender helps you discover which drinks you can create with the ingredients you already
           have on hand.
         </Text>
-        <TouchableWithoutFeedback style={{ flex: 1 }} onPress={onBarCartClick}>
+        <TouchableWithoutFeedback style={Helpers.fill} onPress={onBarCartClick}>
           <View style={homeStyles.bartenderBarCartOutline}>
             <View style={homeStyles.bartenderBarCartIcon} />
             <Text style={homeStyles.bartenderBarCartText}>My Bar Cart</Text>
@@ -126,13 +102,13 @@ function HomeBartenderTab(props) {
           darkMode={darkMode}
         />
         {ingredientsOpen && (
-          <View style={{ paddingBottom: 24 }}>
+          <View style={ingredientsSectionPadding}>
             {selectedIngredients.length === 0 ? (
-              <Text style={[homeStyles.bartenderBarCartSubtext, { marginBottom: 24 }]}>
+              <Text style={[homeStyles.bartenderBarCartSubtext, subtextBottomMargin]}>
                 You have no ingredients selected.
               </Text>
             ) : (
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 16 }}>
+              <View style={[Helpers.rowStartWrap, selectedIngredientsMargin]}>
                 {selectedIngredients.map((ingredient, idx) => (
                   <SelectedItem
                     key={ingredient.ingredientId}
@@ -167,12 +143,16 @@ function HomeBartenderTab(props) {
       <BottomBar
         buttonTitle={'Search Drinks'}
         onButtonClick={() => {
+          const ingredientIds = [
+            ...barCartIngredients.map((i) => i.ingredientId),
+            ...selectedIngredients.map((i) => i.ingredientId),
+          ]
           NavigationService.navigate('ResultsScreen', {
-            ingredientIds: selectedIngredients.map((i) => i.ingredientId),
+            ingredientIds: ingredientIds,
           })
         }}
         darkMode={darkMode}
-        disabled={!selectedIngredients.length}
+        disabled={!selectedIngredients.length && !barCartIngredients.length}
       />
     </View>
   )
@@ -182,10 +162,11 @@ HomeBartenderTab.propTypes = {
   setSelectedIngredients: PropTypes.func,
   selectedIngredients: PropTypes.array,
   onBarCartClick: PropTypes.func,
+  barCartIngredients: PropTypes.array,
 }
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = () => ({})
 
-const mapDispatchToProps = (dispatch) => ({})
+const mapDispatchToProps = () => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeBartenderTab)

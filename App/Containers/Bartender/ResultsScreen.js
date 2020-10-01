@@ -9,6 +9,7 @@ import { NavigationActions } from 'react-navigation'
 import RecipeActions from '../../Stores/Recipe/Actions'
 import { PropTypes } from 'prop-types'
 import RecipeCard from '../../Components/RecipeCard'
+import Helpers from '../../Theme/Helpers'
 
 class ResultsScreen extends React.Component {
   constructor(props) {
@@ -43,7 +44,8 @@ class ResultsScreen extends React.Component {
       } else {
         // Set recipe state to details
         const recipeDict = {}
-        for (let recipe of bartenderRecipes) {
+        for (let i = 0; i < bartenderRecipes.length; i++) {
+          const recipe = bartenderRecipes[i]
           if (!(recipe.missingCount in recipeDict)) {
             recipeDict[recipe.missingCount] = [recipe]
           } else {
@@ -88,6 +90,10 @@ class ResultsScreen extends React.Component {
 
   onBackScreenClick = () => {
     const { navigation } = this.props
+    const onClose = navigation.getParam('onClose')
+    if (onClose) {
+      onClose()
+    }
     navigation.dispatch(NavigationActions.back())
   }
 
@@ -152,7 +158,7 @@ class ResultsScreen extends React.Component {
                 darkMode={darkMode}
               />
             )}
-            style={{ width: '100%' }}
+            style={Helpers.fullWidth}
             renderSectionHeader={({ section: { title } }) => (
               <Text style={bartenderStyles.sectionHeader}>{title}</Text>
             )}

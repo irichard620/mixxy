@@ -8,7 +8,7 @@ import SelectedItem from './SelectedItem'
 import getComponentStylesheet from './ComponentStyle'
 
 export default function ModalContentBarCart(props) {
-  const { darkMode, onSearchDrinksClick, ingredients, onAddIngredientClick } = props
+  const { darkMode, onSearchDrinksClick, ingredients, onAddIngredientClick, setIngredients } = props
 
   const componentStyles = getComponentStylesheet(darkMode)
 
@@ -28,7 +28,11 @@ export default function ModalContentBarCart(props) {
             key={ingredient.ingredientId}
             title={ingredient.name}
             darkMode={darkMode}
-            onClick={() => {}}
+            onClick={() => {
+              const array = [...ingredients]
+              array.splice(idx, 1)
+              setIngredients(array)
+            }}
           />
         ))}
       </View>
@@ -49,13 +53,16 @@ ModalContentBarCart.propTypes = {
   onSearchDrinksClick: PropTypes.func,
   ingredients: PropTypes.array,
   onAddIngredientClick: PropTypes.func,
+  setIngredients: PropTypes.func,
 }
 
 const modalBarCartStyles = StyleSheet.create({
   ingredientOutline: {
-    paddingBottom: 32,
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: 16,
+    paddingBottom: 32,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
 })

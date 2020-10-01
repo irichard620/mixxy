@@ -11,6 +11,7 @@ import { NavigationActions } from 'react-navigation'
 import IngredientActions from '../../Stores/Ingredient/Actions'
 import { PropTypes } from 'prop-types'
 import ListItem from '../../Components/ListItem'
+import Helpers from '../../Theme/Helpers'
 
 class IngredientsScreen extends React.Component {
   constructor(props) {
@@ -53,6 +54,10 @@ class IngredientsScreen extends React.Component {
 
   onBackScreenClick = () => {
     const { navigation } = this.props
+    const onClose = navigation.getParam('onClose')
+    if (onClose) {
+      onClose()
+    }
     navigation.dispatch(NavigationActions.back())
   }
 
@@ -82,6 +87,10 @@ class IngredientsScreen extends React.Component {
     const { navigation } = this.props
     const { selectedIngredients } = this.state
     navigation.getParam('addIngredients')(selectedIngredients)
+    const onClose = navigation.getParam('onClose')
+    if (onClose) {
+      onClose()
+    }
     navigation.dispatch(NavigationActions.back())
   }
 
@@ -124,8 +133,8 @@ class IngredientsScreen extends React.Component {
     const styles = getStylesheet(darkMode)
 
     const selectedIngredientDict = {}
-    for (let item of selectedIngredients) {
-      selectedIngredientDict[item.ingredientId] = true
+    for (let i = 0; i < selectedIngredients.length; i++) {
+      selectedIngredientDict[selectedIngredients[i].ingredientId] = true
     }
     return (
       <View style={styles.outerContainer}>
@@ -137,18 +146,17 @@ class IngredientsScreen extends React.Component {
         />
         <FlatList
           data={data}
-          keyExtractor={(item) => item.recipeId}
+          keyExtractor={(item) => item.ingredientId}
           onScrollBeginDrag={() => this.searchBar && this.searchBar.current.unFocus()}
           renderItem={({ item }) => (
             <ListItem
-              key={item.ingredientId}
               title={item.name}
               onClick={() => this.onListItemClick(item)}
               darkMode={darkMode}
               selected={item.ingredientId in selectedIngredientDict}
             />
           )}
-          style={{ width: '100%' }}
+          style={Helpers.fullWidth}
           ListHeaderComponent={this.renderHeader}
         />
         <BottomBar

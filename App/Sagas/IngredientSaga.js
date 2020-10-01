@@ -26,10 +26,10 @@ export function* fetchBarCartIngredients() {
   yield put(IngredientActions.barCartFetchIngredientsSuccess(ingredients))
 }
 
-export function* setBarCartIngredients() {
+export function* setBarCartIngredients(params) {
   yield put(IngredientActions.barCartSetIngredientsLoading())
 
   // Fetch user informations from an API
-  const ingredients = yield call(ingredientService.setBarCartIngredients)
+  const ingredients = yield call(ingredientService.setBarCartIngredients, params)
   yield put(IngredientActions.barCartSetIngredientsSuccess(ingredients))
 }

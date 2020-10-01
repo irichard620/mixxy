@@ -11,6 +11,7 @@ import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
 import RecipeActions from '../../Stores/Recipe/Actions'
+import IngredientActions from '../../Stores/Ingredient/Actions'
 import UserActions from '../../Stores/User/Actions'
 import HomeDiscoverTab from './HomeDiscoverTab'
 import HomeBartenderTab from './HomeBartenderTab'
@@ -78,6 +79,7 @@ class HomeScreen extends React.Component {
     this.configureNotifications()
 
     this.props.fetchRecipes()
+    this.props.barCartFetchIngredients()
   }
 
   componentDidUpdate(prevProps) {
@@ -333,6 +335,7 @@ class HomeScreen extends React.Component {
             selectedIngredients={this.state.selectedIngredients}
             setSelectedIngredients={this.setSelectedIngredients}
             onBarCartClick={this.onBarCartClick}
+            barCartIngredients={this.props.barCartIngredients}
           />
         )
       default:
@@ -392,11 +395,34 @@ class HomeScreen extends React.Component {
   }
 
   onAddIngredientClick = () => {
-    // TODO: nav with ingredients screen and callback that sets bar cart ingredients
+    const { barCartIngredients, barCartSetIngredients } = this.props
+    this.onCloseModalClick()
+    NavigationService.navigate('IngredientsScreen', {
+      addIngredients: (ingredients) => {
+        barCartSetIngredients(ingredients)
+      },
+      onClose: () => {
+        this.setState({
+          visibleModal: true,
+          modalType: constants.MODAL_BAR_CART,
+        })
+      },
+      selectedIngredients: barCartIngredients,
+    })
   }
 
-  onSearchDrinksClick = () => {
-    // TODO: nav with results screen - passing in IDs of bar cart ingredients
+  onSearchDrinksFromBarCartClick = () => {
+    const { barCartIngredients } = this.props
+    this.onCloseModalClick()
+    NavigationService.navigate('ResultsScreen', {
+      ingredientIds: barCartIngredients.map((i) => i.ingredientId),
+      onClose: () => {
+        this.setState({
+          visibleModal: true,
+          modalType: constants.MODAL_BAR_CART,
+        })
+      },
+    })
   }
 
   onTabChange = (idx) => {
@@ -424,7 +450,13 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { darkMode, fetchSharedRecipeIsLoading, sharedRecipe } = this.props
+    const {
+      darkMode,
+      fetchSharedRecipeIsLoading,
+      sharedRecipe,
+      barCartIngredients,
+      barCartSetIngredients,
+    } = this.props
     const { index, visibleModal, modalType } = this.state
     const styles = getStylesheet(darkMode)
     const homeStyles = getHomeStylesheet(darkMode)
@@ -496,9 +528,10 @@ class HomeScreen extends React.Component {
           {modalType === constants.MODAL_BAR_CART && (
             <ModalContentBarCart
               darkMode={darkMode}
-              onSearchDrinksClick={this.onSearchDrinksClick}
-              ingredients={[]}
+              onSearchDrinksClick={this.onSearchDrinksFromBarCartClick}
+              ingredients={barCartIngredients}
               onAddIngredientClick={this.onAddIngredientClick}
+              setIngredients={barCartSetIngredients}
             />
           )}
         </CustomModal>
@@ -524,6 +557,9 @@ HomeScreen.propTypes = {
   fetchRecipes: PropTypes.func,
   fetchSharedRecipe: PropTypes.func,
   updateVolumeUnits: PropTypes.func,
+  barCartFetchIngredients: PropTypes.func,
+  barCartSetIngredients: PropTypes.func,
+  barCartIngredients: PropTypes.array,
 }
 
 const mapStateToProps = (state) => ({
@@ -535,6 +571,9 @@ const mapStateToProps = (state) => ({
   restoreIAPIsLoading: state.user.restoreIAPIsLoading,
   user: state.user,
   updateVolumeUnitsLoading: state.user.updateVolumeUnitsLoading,
+  barCartIngredients: state.ingredients.barCartIngredients,
+  barCartFetchIngredientsIsLoading: state.ingredients.barCartFetchIngredientsIsLoading,
+  barCartSetIngredientsIsLoading: state.ingredients.barCartSetIngredientsIsLoading,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -544,6 +583,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchRecipes: () => dispatch(RecipeActions.fetchRecipes()),
   fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
   updateVolumeUnits: (useMetric) => dispatch(UserActions.updateVolumeUnits(useMetric)),
+  barCartFetchIngredients: () => dispatch(IngredientActions.barCartFetchIngredients()),
+  barCartSetIngredients: (ingredients) =>
+    dispatch(IngredientActions.barCartSetIngredients(ingredients)),
 })
 
 export default withNavigationFocus(
