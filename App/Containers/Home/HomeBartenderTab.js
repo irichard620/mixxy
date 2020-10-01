@@ -152,7 +152,9 @@ function HomeBartenderTab(props) {
           })
         }}
         darkMode={darkMode}
-        disabled={!selectedIngredients.length && !barCartIngredients.length}
+        disabled={
+          !selectedIngredients.length && (!barCartIngredients || !barCartIngredients.length)
+        }
       />
     </View>
   )
