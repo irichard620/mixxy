@@ -13,7 +13,10 @@ export default function getHomeStylesheet(useDarkMode) {
     },
     bartenderBarCartOutline: {
       backgroundColor: useDarkMode ? Colors.darkFill4Dark : Colors.darkFill4Light,
+      borderRadius: 10,
       marginBottom: 16,
+      marginLeft: 16,
+      marginRight: 16,
       padding: 16,
     },
     bartenderBarCartSubtext: {
@@ -33,6 +36,10 @@ export default function getHomeStylesheet(useDarkMode) {
       marginRight: 16,
       width: 42,
     },
+    bartenderSectionNumberText: {
+      ...Fonts.body3Semibold,
+      color: useDarkMode ? Colors.text1Light : Colors.text1Dark,
+    },
     bartenderSectionOutline: {
       flex: 1,
       flexDirection: 'row',
@@ -40,6 +47,7 @@ export default function getHomeStylesheet(useDarkMode) {
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingRight: 16,
+      marginLeft: 16,
       height: 50,
     },
     bartenderSectionText: {
@@ -190,6 +198,11 @@ export default function getHomeStylesheet(useDarkMode) {
       flex: 1,
       paddingLeft: 16,
       paddingRight: 16,
+      paddingTop: 8,
+    },
+    scrollContainerNoHorizontalPadding: {
+      backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+      flex: 1,
       paddingTop: 8,
     },
     sectionHeader: {

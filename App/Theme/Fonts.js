@@ -66,6 +66,11 @@ export default {
     lineHeight: lineSpacing.body3,
     fontWeight: fontWeight.medium,
   },
+  body3Semibold: {
+    fontSize: size.body3,
+    lineHeight: lineSpacing.body3,
+    fontWeight: fontWeight.semibold,
+  },
   cardHeader: {
     fontSize: size.body1,
     lineHeight: lineSpacing.body1,

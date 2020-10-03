@@ -12,7 +12,7 @@
     "lint-fix": "eslint --fix .",
     "lint-check": "eslint .",
     "rename": "react-native-rename",
-    "postinstall": "npx jetify"
+    "postinstall": "npx jetify && patch-package"
   },
   "dependencies": {
     "@react-native-firebase/analytics": "6.4.0",

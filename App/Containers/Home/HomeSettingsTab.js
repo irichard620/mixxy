@@ -123,7 +123,7 @@ function HomeSettingsTab(props) {
       </View>
       <View style={[styles.divider, extraPadding]} />
       {constants.settingsSections.map((section, idx) => renderSection(section, idx))}
-      <Text style={homeStyles.settingsVersionText}>Mixxy V1.1.1</Text>
+      <Text style={homeStyles.settingsVersionText}>Mixxy V2.0</Text>
     </ScrollView>
   )
 }

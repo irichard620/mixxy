@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { ScrollView, Text, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { PropTypes } from 'prop-types'
 import ModalBottomOutline from './ModalBottomOutline'
 import ButtonLarge from './ButtonLarge'
@@ -22,20 +22,24 @@ export default function ModalContentBarCart(props) {
       <Text style={componentStyles.modalBarCartDescription}>
         {`There are ${ingredients.length} ingredients in your bar cart`}
       </Text>
-      <View style={modalBarCartStyles.ingredientOutline}>
-        {ingredients.map((ingredient, idx) => (
-          <SelectedItem
-            key={ingredient.ingredientId}
-            title={ingredient.name}
-            darkMode={darkMode}
-            onClick={() => {
-              const array = [...ingredients]
-              array.splice(idx, 1)
-              setIngredients(array)
-            }}
-          />
-        ))}
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TouchableWithoutFeedback>
+          <View style={modalBarCartStyles.ingredientOutline}>
+            {ingredients.map((ingredient, idx) => (
+              <SelectedItem
+                key={ingredient.ingredientId}
+                title={ingredient.name}
+                darkMode={darkMode}
+                onClick={() => {
+                  const array = [...ingredients]
+                  array.splice(idx, 1)
+                  setIngredients(array)
+                }}
+              />
+            ))}
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
       <ButtonLarge
         title={'Search Drinks'}
         margin={[0, 16, 2, 16]}

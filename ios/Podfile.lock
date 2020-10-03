@@ -381,9 +381,9 @@ PODS:
     - React
   - RNShare (3.2.0):
     - React
-  - SDWebImage (5.5.2):
-    - SDWebImage/Core (= 5.5.2)
-  - SDWebImage/Core (5.5.2)
+  - SDWebImage (5.9.2):
+    - SDWebImage/Core (= 5.9.2)
+  - SDWebImage/Core (5.9.2)
   - SDWebImageWebPCoder (0.4.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.5)
@@ -605,7 +605,7 @@ SPEC CHECKSUMS:
   RNScreens: 812b79d384e2bea7eebc4ec981469160d4948fd5
   RNSearchBar: 9860431356b7d12a8449d2fddb2b5f3c78d1e99f
   RNShare: 13f1b72aab353c3092b30dce99d212871bb2a8a1
-  SDWebImage: 4d5c027c935438f341ed33dbac53ff9f479922ca
+  SDWebImage: 0b42b8719ab0c5257177d5894306e8a336b21cbb
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 

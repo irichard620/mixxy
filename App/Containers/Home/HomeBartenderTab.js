@@ -1,4 +1,11 @@
-import { ScrollView, Text, View, TouchableWithoutFeedback, Image } from 'react-native'
+import {
+  ScrollView,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Image,
+  LayoutAnimation,
+} from 'react-native'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import React, { useState } from 'react'
 import getHomeStylesheet from './HomeScreenStyle'
@@ -12,6 +19,7 @@ import SelectedItem from '../../Components/SelectedItem'
 import Colors from '../../Theme/Colors'
 import Images from '../../Theme/Images'
 import Helpers from '../../Theme/Helpers'
+import { CustomLayoutEaseIn } from '../../Config/constants'
 
 const HomeBartenderSection = (props) => {
   const { title, number, onClick, open, darkMode } = props
@@ -39,7 +47,7 @@ const HomeBartenderSection = (props) => {
         <Text style={homeStyles.bartenderSectionText}>{title}</Text>
         <View style={Helpers.rowStartVerticalAlign}>
           <View style={[homeStyles.bartenderSectionNumber, badgeBackgroundStyle]}>
-            <Text>{number}</Text>
+            <Text style={homeStyles.bartenderSectionNumberText}>{number}</Text>
           </View>
           <Image style={iconTransformStyle} source={arrowIcon} />
         </View>
@@ -74,14 +82,18 @@ function HomeBartenderTab(props) {
   }
 
   const subtextBottomMargin = { marginBottom: 24 }
-  const ingredientsSectionPadding = { paddingBottom: 24 }
+  const ingredientsSectionPadding = { paddingBottom: 24, paddingLeft: 16, paddingRight: 16 }
   const selectedIngredientsMargin = { marginBottom: 16 }
+  const marginLeftStyle = { marginLeft: 16, marginRight: 16 }
 
   return (
     <View style={styles.outerContainer}>
-      <ScrollView style={homeStyles.scrollContainer} showsVerticalScrollIndicator={false}>
-        <Text style={homeStyles.topHeader}>Bartender</Text>
-        <Text style={homeStyles.bartenderSubheader}>
+      <ScrollView
+        style={homeStyles.scrollContainerNoHorizontalPadding}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={[homeStyles.topHeader, marginLeftStyle]}>Bartender</Text>
+        <Text style={[homeStyles.bartenderSubheader, marginLeftStyle]}>
           Bartender helps you discover which drinks you can create with the ingredients you already
           have on hand.
         </Text>
@@ -97,7 +109,10 @@ function HomeBartenderTab(props) {
         <HomeBartenderSection
           title="Ingredients"
           number={selectedIngredients.length}
-          onClick={() => setIngredientsOpen(!ingredientsOpen)}
+          onClick={() => {
+            LayoutAnimation.configureNext(CustomLayoutEaseIn)
+            setIngredientsOpen(!ingredientsOpen)
+          }}
           open={ingredientsOpen}
           darkMode={darkMode}
         />

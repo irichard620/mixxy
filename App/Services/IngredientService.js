@@ -25,7 +25,6 @@ function fetchIngredients() {
 
 async function setBarCartIngredients(params) {
   try {
-    console.log(params)
     const ingredients = params.ingredients
     await storage.setItem('ingredients', JSON.stringify(ingredients))
     return ingredients

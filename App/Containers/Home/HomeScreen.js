@@ -428,20 +428,24 @@ class HomeScreen extends React.Component {
   onTabChange = (idx) => {
     const { selectedIngredients, index } = this.state
     if (index === 2 && idx !== 2 && selectedIngredients.length) {
-      Alert.alert('Bartender search', 'Are you done with your bartender search?', [
-        {
-          text: 'No',
-        },
-        {
-          text: 'Yes',
-          onPress: () => {
-            this.setState({
-              selectedIngredients: [],
-              index: idx,
-            })
+      Alert.alert(
+        'Leave Bartender?',
+        'Are you done with your Bartender search? Leaving the tab will clear the ingredients.',
+        [
+          {
+            text: 'No',
           },
-        },
-      ])
+          {
+            text: 'Yes',
+            onPress: () => {
+              this.setState({
+                selectedIngredients: [],
+                index: idx,
+              })
+            },
+          },
+        ]
+      )
     } else {
       this.setState({
         index: idx,

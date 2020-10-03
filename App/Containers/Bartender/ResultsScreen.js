@@ -143,8 +143,9 @@ class ResultsScreen extends React.Component {
           </View>
         ) : (
           <SectionList
+            stickySectionHeadersEnabled={false}
             sections={data}
-            keyExtractor={(item) => item.title}
+            keyExtractor={(item) => item.recipeId}
             renderItem={({ item }) => (
               <RecipeCard
                 recipeName={item.recipeName}
