@@ -11,8 +11,10 @@ import getHomeStylesheet from './HomeScreenStyle'
 import RecipeCard from '../../Components/RecipeCard'
 import NavigationService from '../../Services/NavigationService'
 import RecipeActions from '../../Stores/Recipe/Actions'
+import IngredientActions from '../../Stores/Ingredient/Actions'
 import UserActions from '../../Stores/User/Actions'
 import HomeDiscoverTab from './HomeDiscoverTab'
+import HomeBartenderTab from './HomeBartenderTab'
 import Images from '../../Theme/Images'
 import HomeLibraryTab from './HomeLibraryTab'
 import HomeSettingsTab from './HomeSettingsTab'
@@ -23,11 +25,13 @@ import * as constants from '../../Config/constants'
 import ModalContentMixxyPro from '../../Components/ModalContentMixxyPro'
 import ModalContentBottom from '../../Components/ModalContentBottom'
 import ModalContentPushNotifications from '../../Components/ModalContentPushNotifications'
+import ModalContentBarCart from '../../Components/ModalContentBarCart'
 
 const initialLayout = { width: Dimensions.get('window').width }
 const routes = [
   { key: 'discover', title: 'Discover' },
   { key: 'library', title: 'Library' },
+  { key: 'bartender', title: 'Bartender' },
   { key: 'settings', title: 'Settings' },
 ]
 
@@ -43,6 +47,7 @@ class HomeScreen extends React.Component {
       visibleModal: false,
       modalType: '',
       selectedVolumeUnit: false,
+      selectedIngredients: [],
     }
   }
 
@@ -74,6 +79,7 @@ class HomeScreen extends React.Component {
     this.configureNotifications()
 
     this.props.fetchRecipes()
+    this.props.barCartFetchIngredients()
   }
 
   componentDidUpdate(prevProps) {
@@ -235,6 +241,21 @@ class HomeScreen extends React.Component {
     NavigationService.navigate('BuilderScreen', {})
   }
 
+  onBarCartClick = () => {
+    const { user } = this.props
+    if (!user.user.premium) {
+      this.setState({
+        visibleModal: true,
+        modalType: constants.MODAL_PAYWALL,
+      })
+      return
+    }
+    this.setState({
+      visibleModal: true,
+      modalType: constants.MODAL_BAR_CART,
+    })
+  }
+
   onCloseModalClick = () => {
     this.setState({
       visibleModal: false,
@@ -281,13 +302,25 @@ class HomeScreen extends React.Component {
         source = darkMode ? Images.navLibraryDark : Images.navLibraryLight
       }
       return <Image source={source} style={homeStyles.tabIcon} />
+    } else if (route.key === 'bartender') {
+      let source = Images.navBartenderSelected
+      if (index !== 2) {
+        source = darkMode ? Images.navBartenderDark : Images.navBartenderLight
+      }
+      return <Image source={source} style={homeStyles.tabIcon} />
     } else {
       let source = Images.navSettingsSelected
-      if (index !== 2) {
+      if (index !== 3) {
         source = darkMode ? Images.navSettingsDark : Images.navSettingsLight
       }
       return <Image source={source} style={homeStyles.tabIcon} />
     }
+  }
+
+  setSelectedIngredients = (selectedIngredients) => {
+    this.setState({
+      selectedIngredients: selectedIngredients,
+    })
   }
 
   renderScene = ({ route }) => {
@@ -296,6 +329,15 @@ class HomeScreen extends React.Component {
         return <HomeDiscoverTab />
       case 'library':
         return <HomeLibraryTab onNewRecipeClick={this.onNewRecipeClick} />
+      case 'bartender':
+        return (
+          <HomeBartenderTab
+            selectedIngredients={this.state.selectedIngredients}
+            setSelectedIngredients={this.setSelectedIngredients}
+            onBarCartClick={this.onBarCartClick}
+            barCartIngredients={this.props.barCartIngredients}
+          />
+        )
       default:
         return (
           <HomeSettingsTab
@@ -352,8 +394,69 @@ class HomeScreen extends React.Component {
     updateVolumeUnits(useMetric)
   }
 
+  onAddIngredientClick = () => {
+    const { barCartIngredients, barCartSetIngredients } = this.props
+    this.onCloseModalClick()
+    NavigationService.navigate('IngredientsScreen', {
+      addIngredients: (ingredients) => {
+        barCartSetIngredients(ingredients)
+      },
+      onClose: () => {
+        this.setState({
+          visibleModal: true,
+          modalType: constants.MODAL_BAR_CART,
+        })
+      },
+      selectedIngredients: barCartIngredients,
+    })
+  }
+
+  onSearchDrinksFromBarCartClick = () => {
+    const { barCartIngredients } = this.props
+    this.onCloseModalClick()
+    NavigationService.navigate('ResultsScreen', {
+      ingredientIds: barCartIngredients.map((i) => i.ingredientId),
+      onClose: () => {
+        this.setState({
+          visibleModal: true,
+          modalType: constants.MODAL_BAR_CART,
+        })
+      },
+    })
+  }
+
+  onTabChange = (idx) => {
+    const { selectedIngredients, index } = this.state
+    if (index === 2 && idx !== 2 && selectedIngredients.length) {
+      Alert.alert('Bartender search', 'Are you done with your bartender search?', [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            this.setState({
+              selectedIngredients: [],
+              index: idx,
+            })
+          },
+        },
+      ])
+    } else {
+      this.setState({
+        index: idx,
+      })
+    }
+  }
+
   render() {
-    const { darkMode, fetchSharedRecipeIsLoading, sharedRecipe } = this.props
+    const {
+      darkMode,
+      fetchSharedRecipeIsLoading,
+      sharedRecipe,
+      barCartIngredients,
+      barCartSetIngredients,
+    } = this.props
     const { index, visibleModal, modalType } = this.state
     const styles = getStylesheet(darkMode)
     const homeStyles = getHomeStylesheet(darkMode)
@@ -364,7 +467,7 @@ class HomeScreen extends React.Component {
           swipeEnabled={false}
           navigationState={{ index, routes }}
           renderScene={this.renderScene}
-          onIndexChange={(idx) => this.setState({ index: idx })}
+          onIndexChange={this.onTabChange}
           initialLayout={initialLayout}
           tabBarPosition={'bottom'}
           renderTabBar={(props) => (
@@ -422,6 +525,15 @@ class HomeScreen extends React.Component {
               onButtonClick={this.onNotificationModalButtonClick}
             />
           )}
+          {modalType === constants.MODAL_BAR_CART && (
+            <ModalContentBarCart
+              darkMode={darkMode}
+              onSearchDrinksClick={this.onSearchDrinksFromBarCartClick}
+              ingredients={barCartIngredients}
+              onAddIngredientClick={this.onAddIngredientClick}
+              setIngredients={barCartSetIngredients}
+            />
+          )}
         </CustomModal>
         <DynamicLinkListener handleDynamicLink={this.handleDynamicLink} />
       </SafeAreaView>
@@ -445,6 +557,9 @@ HomeScreen.propTypes = {
   fetchRecipes: PropTypes.func,
   fetchSharedRecipe: PropTypes.func,
   updateVolumeUnits: PropTypes.func,
+  barCartFetchIngredients: PropTypes.func,
+  barCartSetIngredients: PropTypes.func,
+  barCartIngredients: PropTypes.array,
 }
 
 const mapStateToProps = (state) => ({
@@ -456,6 +571,9 @@ const mapStateToProps = (state) => ({
   restoreIAPIsLoading: state.user.restoreIAPIsLoading,
   user: state.user,
   updateVolumeUnitsLoading: state.user.updateVolumeUnitsLoading,
+  barCartIngredients: state.ingredients.barCartIngredients,
+  barCartFetchIngredientsIsLoading: state.ingredients.barCartFetchIngredientsIsLoading,
+  barCartSetIngredientsIsLoading: state.ingredients.barCartSetIngredientsIsLoading,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -465,6 +583,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchRecipes: () => dispatch(RecipeActions.fetchRecipes()),
   fetchSharedRecipe: (recipeId) => dispatch(RecipeActions.fetchSharedRecipe(recipeId)),
   updateVolumeUnits: (useMetric) => dispatch(UserActions.updateVolumeUnits(useMetric)),
+  barCartFetchIngredients: () => dispatch(IngredientActions.barCartFetchIngredients()),
+  barCartSetIngredients: (ingredients) =>
+    dispatch(IngredientActions.barCartSetIngredients(ingredients)),
 })
 
 export default withNavigationFocus(

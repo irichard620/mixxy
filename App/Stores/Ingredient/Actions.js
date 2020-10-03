@@ -9,6 +9,22 @@ const { Types, Creators } = createActions({
   fetchIngredientsSuccess: ['ingredients'],
   // An error occurred
   fetchIngredientsFailure: ['errorMessage'],
+  // Bar cart add ingredients
+  barCartSetIngredients: ['ingredients'],
+  // loading
+  barCartSetIngredientsLoading: null,
+  // Success
+  barCartSetIngredientsSuccess: ['barCartIngredients'],
+  // An error occurred
+  barCartSetIngredientsFailure: ['errorMessage'],
+  // Bar cart get ingredients
+  barCartFetchIngredients: null,
+  // loading
+  barCartFetchIngredientsLoading: null,
+  // Success
+  barCartFetchIngredientsSuccess: ['barCartIngredients'],
+  // An error occurred
+  barCartFetchIngredientsFailure: ['errorMessage'],
 })
 
 export const IngredientTypes = Types

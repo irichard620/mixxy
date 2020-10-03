@@ -4,6 +4,53 @@ import { StyleSheet } from 'react-native'
 
 export default function getHomeStylesheet(useDarkMode) {
   return StyleSheet.create({
+    bartenderBarCartIcon: {
+      backgroundColor: Colors.red1,
+      borderRadius: 24,
+      height: 48,
+      marginBottom: 12,
+      width: 48,
+    },
+    bartenderBarCartOutline: {
+      backgroundColor: useDarkMode ? Colors.darkFill4Dark : Colors.darkFill4Light,
+      marginBottom: 16,
+      padding: 16,
+    },
+    bartenderBarCartSubtext: {
+      ...Fonts.body3,
+      color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
+    },
+    bartenderBarCartText: {
+      ...Fonts.h3Semibold,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginBottom: 6,
+    },
+    bartenderSectionNumber: {
+      alignItems: 'center',
+      borderRadius: 15,
+      height: 30,
+      justifyContent: 'center',
+      marginRight: 16,
+      width: 42,
+    },
+    bartenderSectionOutline: {
+      flex: 1,
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingRight: 16,
+      height: 50,
+    },
+    bartenderSectionText: {
+      ...Fonts.h3Semibold,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+    },
+    bartenderSubheader: {
+      ...Fonts.body1,
+      color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
+      marginBottom: 32,
+    },
     bufferView: {
       height: 24,
     },

@@ -159,6 +159,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'nowrap',
   },
+  rowStartVerticalAlign: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+  },
   rowStartWrap: {
     alignItems: 'flex-start',
     flexDirection: 'row',

@@ -14,7 +14,7 @@ import {
   updateVolumeUnits,
 } from './UserSaga'
 import { startup } from './StartupSaga'
-import { fetchIngredients } from './IngredientSaga'
+import { fetchIngredients, fetchBarCartIngredients, setBarCartIngredients } from './IngredientSaga'
 import {
   persistRecipe,
   fetchRecipes,
@@ -24,6 +24,7 @@ import {
   unfavoriteRecipe,
   fetchSharedRecipe,
   createSharedRecipe,
+  fetchBartenderRecipes,
 } from './RecipeSaga'
 import { fetchSponsorCards, fetchSponsorCardDetails } from './SponsorSaga'
 import { fetchCampaigns } from './CampaignSaga'
@@ -43,6 +44,10 @@ export default function* root() {
     takeLatest(UserTypes.REQUEST_PURCHASE_IAP, requestPurchaseIAP),
     // Call fetchIngredients when action triggered
     takeLatest(IngredientTypes.FETCH_INGREDIENTS, fetchIngredients),
+    // Fetch bar cart ingredients
+    takeLatest(IngredientTypes.BAR_CART_FETCH_INGREDIENTS, fetchBarCartIngredients),
+    // Set bar cart ingredients
+    takeLatest(IngredientTypes.BAR_CART_SET_INGREDIENTS, setBarCartIngredients),
     // Save recipe
     takeLatest(RecipeTypes.PERSIST_RECIPE, persistRecipe),
     // Fetch recipes
@@ -55,6 +60,8 @@ export default function* root() {
     takeLatest(MasterListTypes.FETCH_MASTER_LISTS, fetchMasterLists),
     // Fetch remote recipes
     takeLatest(RecipeTypes.FETCH_REMOTE_RECIPES, fetchRemoteRecipes),
+    // Fetch bartender recipes
+    takeLatest(RecipeTypes.FETCH_BARTENDER_RECIPES, fetchBartenderRecipes),
     // Delete recipe
     takeLatest(RecipeTypes.DELETE_RECIPE, deleteRecipe),
     // Favorite

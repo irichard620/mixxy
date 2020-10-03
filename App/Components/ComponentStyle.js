@@ -56,6 +56,15 @@ export default function getComponentStylesheet(darkMode) {
       ...Fonts.body1,
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
     },
+    modalBarCartDescription: {
+      alignSelf: 'flex-start',
+      color: darkMode ? Colors.text1Dark : Colors.text1Light,
+      ...Fonts.body1,
+      marginBottom: 16,
+      marginLeft: 16,
+      marginRight: 16,
+      marginTop: 24,
+    },
     modalBottomOutlineContent: {
       backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       borderTopLeftRadius: 20,
@@ -67,8 +76,6 @@ export default function getComponentStylesheet(darkMode) {
       alignSelf: 'center',
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
       ...Fonts.navHeader,
-      marginBottom: 14,
-      marginTop: 22,
     },
     modalCenterOutlineContent: {
       backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
@@ -140,6 +147,19 @@ export default function getComponentStylesheet(darkMode) {
     secondaryTextButtonLarge: {
       ...Fonts.buttonText,
       color: darkMode ? Colors.text1Dark : Colors.text1Light,
+    },
+    selectedItemOutline: {
+      alignItems: 'center',
+      backgroundColor: darkMode ? Colors.blue1TransparentDark : Colors.blue1TransparentLight,
+      borderRadius: 18,
+      flexDirection: 'row',
+      flexWrap: 'nowrap',
+      height: 36,
+      justifyContent: 'center',
+      marginBottom: 8,
+      marginRight: 8,
+      paddingLeft: 16,
+      paddingRight: 16,
     },
     textboxContainer: {
       backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,

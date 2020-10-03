@@ -55,6 +55,28 @@ export const fetchRemoteRecipesFailure = (state, { errorMessage }) => ({
   fetchRemoteRecipesErrorMessage: errorMessage,
 })
 
+export const fetchBartenderRecipesLoading = (state) => ({
+  ...state,
+  bartenderRecipes: [],
+  fetchBartenderRecipesIsLoading: true,
+  fetchBartenderRecipesErrorMessage: null,
+})
+
+export const fetchBartenderRecipesSuccess = (state, { bartenderRecipes }) => {
+  return {
+    ...state,
+    bartenderRecipes: bartenderRecipes,
+    fetchBartenderRecipesIsLoading: false,
+    fetchBartenderRecipesErrorMessage: null,
+  }
+}
+
+export const fetchBartenderRecipesFailure = (state, { errorMessage }) => ({
+  ...state,
+  fetchBartenderRecipesIsLoading: false,
+  fetchBartenderRecipesErrorMessage: errorMessage,
+})
+
 export const deleteRecipeLoading = (state) => ({
   ...state,
   deleteRecipeIsLoading: true,
@@ -106,6 +128,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.FETCH_REMOTE_RECIPES_LOADING]: fetchRemoteRecipesLoading,
   [RecipeTypes.FETCH_REMOTE_RECIPES_SUCCESS]: fetchRemoteRecipesSuccess,
   [RecipeTypes.FETCH_REMOTE_RECIPES_FAILURE]: fetchRemoteRecipesFailure,
+  [RecipeTypes.FETCH_BARTENDER_RECIPES_LOADING]: fetchBartenderRecipesLoading,
+  [RecipeTypes.FETCH_BARTENDER_RECIPES_SUCCESS]: fetchBartenderRecipesSuccess,
+  [RecipeTypes.FETCH_BARTENDER_RECIPES_FAILURE]: fetchBartenderRecipesFailure,
   [RecipeTypes.DELETE_RECIPE_LOADING]: deleteRecipeLoading,
   [RecipeTypes.DELETE_RECIPE_SUCCESS]: deleteRecipeSuccess,
   [RecipeTypes.FETCH_SHARED_RECIPE_LOADING]: fetchSharedRecipeLoading,
