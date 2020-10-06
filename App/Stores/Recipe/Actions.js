@@ -27,7 +27,7 @@ const { Types, Creators } = createActions({
   fetchRemoteRecipesFailure: ['errorMessage'],
 
   // Fetch bartender recipes
-  fetchBartenderRecipes: ['ingredientIds'],
+  fetchBartenderRecipes: ['ingredientIds', 'baseSpirit'],
   // The operation has started and is loading
   fetchBartenderRecipesLoading: null,
   // recipe fetched

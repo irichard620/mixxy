@@ -21,7 +21,7 @@ class ResultsScreen extends React.Component {
 
   componentDidMount() {
     const { navigation, fetchBartenderRecipes } = this.props
-    fetchBartenderRecipes(navigation.getParam('ingredientIds'))
+    fetchBartenderRecipes(navigation.getParam('ingredientIds'), navigation.getParam('baseSpirit'))
   }
 
   componentDidUpdate(prevProps) {
@@ -160,6 +160,7 @@ class ResultsScreen extends React.Component {
               />
             )}
             style={Helpers.fullWidth}
+            contentContainerStyle={bartenderStyles.sectionListContainer}
             renderSectionHeader={({ section: { title } }) => (
               <Text style={bartenderStyles.sectionHeader}>{title}</Text>
             )}
@@ -187,8 +188,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchBartenderRecipes: (ingredientIds) =>
-    dispatch(RecipeActions.fetchBartenderRecipes(ingredientIds)),
+  fetchBartenderRecipes: (ingredientIds, baseSpirit) =>
+    dispatch(RecipeActions.fetchBartenderRecipes(ingredientIds, baseSpirit)),
 })
 
 export default connect(

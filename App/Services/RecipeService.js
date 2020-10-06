@@ -107,6 +107,7 @@ async function fetchBartenderRecipes(params) {
   try {
     const response = await defaultApiClient(url).put('recipes', {
       ingredientIds: params.ingredientIds,
+      baseSpirit: params.baseSpirit,
     })
     if (in200s(response.status)) {
       const recipes = []

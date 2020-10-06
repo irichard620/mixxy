@@ -150,6 +150,7 @@ export const drinkTypeFilterNames = {
 }
 
 // Base spirits
+export const NONE_SPIRIT = 'None'
 export const BASE_SPIRIT_BEER = 'Beer'
 export const BASE_SPIRIT_WINE = 'Wine'
 export const BASE_SPIRIT_NON_ALCOHOLIC = 'Non-Alcoholic'
@@ -234,11 +235,11 @@ export const OPTION_VOLUME_UNITS = 'Volume Units'
 export const OPTION_REPLAY_TUTORIAL = 'Replay Mixxy Intro'
 export const OPTION_RATE_APP = 'Rate Mixxy on the App Store'
 export const OPTION_CONTACT_US = 'Contact Us'
-export const OPTION_JOIN_BETA = 'Join Mixxy Beta'
+export const OPTION_REPORT_BUG = 'Report a Bug'
 export const OPTION_INSTAGRAM = 'Follow us on Instagram'
 export const settingsOptions = {
   [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS, OPTION_REPLAY_TUTORIAL, OPTION_RATE_APP],
-  [SETTINGS_SECTION_CONTACT]: [OPTION_CONTACT_US, OPTION_JOIN_BETA, OPTION_INSTAGRAM],
+  [SETTINGS_SECTION_CONTACT]: [OPTION_CONTACT_US, OPTION_REPORT_BUG, OPTION_INSTAGRAM],
 }
 
 // Add custom ingredient

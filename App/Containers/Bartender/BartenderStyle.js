@@ -23,5 +23,8 @@ export default function getBartenderStylesheet(useDarkMode) {
       marginLeft: 16,
       marginTop: 16,
     },
+    sectionListContainer: {
+      paddingBottom: 24,
+    },
   })
 }

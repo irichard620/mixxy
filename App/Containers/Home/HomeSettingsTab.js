@@ -41,7 +41,7 @@ function HomeSettingsTab(props) {
       // Pull up email
       let emailLink = 'mailto:info@mixxyapp.com'
       if (option === constants.OPTION_JOIN_BETA) {
-        emailLink = `${emailLink}?subject=Request to join Mixxy Beta`
+        emailLink = `${emailLink}?subject=Mixxy Bug Report`
       }
       Linking.canOpenURL(emailLink).then((supported) => {
         if (supported) {

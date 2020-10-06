@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native'
 export default function getHomeStylesheet(useDarkMode) {
   return StyleSheet.create({
     bartenderBarCartIcon: {
-      backgroundColor: Colors.red1,
       borderRadius: 24,
       height: 48,
       marginBottom: 12,
@@ -27,6 +26,21 @@ export default function getHomeStylesheet(useDarkMode) {
       ...Fonts.h3Semibold,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 6,
+    },
+    bartenderCheckboxContainerStyle: {
+      borderRadius: 5,
+      height: 18,
+      marginRight: 8,
+      width: 18,
+    },
+    bartenderCheckboxIcon: {
+      height: 18,
+      width: 18,
+    },
+    bartenderIncludeContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginTop: 24,
     },
     bartenderSectionNumber: {
       alignItems: 'center',

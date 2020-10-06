@@ -14,12 +14,14 @@ import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import NavigationService from '../../Services/NavigationService'
 import BottomBar from '../../Components/BottomBar'
+import ClickableTextbox from '../../Components/ClickableTextbox'
 import AddButton from '../../Components/AddButton'
 import SelectedItem from '../../Components/SelectedItem'
 import Colors from '../../Theme/Colors'
 import Images from '../../Theme/Images'
 import Helpers from '../../Theme/Helpers'
-import { CustomLayoutEaseIn } from '../../Config/constants'
+import { CustomLayoutEaseIn, NONE_SPIRIT } from '../../Config/constants'
+import Fonts from '../../Theme/Fonts'
 
 const HomeBartenderSection = (props) => {
   const { title, number, onClick, open, darkMode } = props
@@ -65,13 +67,21 @@ HomeBartenderSection.propTypes = {
 }
 
 function HomeBartenderTab(props) {
-  const { setSelectedIngredients, selectedIngredients, onBarCartClick, barCartIngredients } = props
+  const {
+    setSelectedIngredients,
+    selectedIngredients,
+    onBarCartClick,
+    barCartIngredients,
+    baseSpirit,
+    onBaseSpiritClick,
+  } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
 
   const [ingredientsOpen, setIngredientsOpen] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [addFromBarCart, setAddFromBarCart] = useState(false)
 
   const removeIngredient = (idx) => {
     if (idx >= 0) {
@@ -86,6 +96,22 @@ function HomeBartenderTab(props) {
   const selectedIngredientsMargin = { marginBottom: 16 }
   const marginLeftStyle = { marginLeft: 16, marginRight: 16 }
 
+  const showBarCartCheckbox = Boolean(barCartIngredients.length > 0)
+  const searchDisabled =
+    !selectedIngredients.length &&
+    (!barCartIngredients || !barCartIngredients.length || !addFromBarCart)
+  let barCartCheckboxStyle
+  if (!addFromBarCart) {
+    barCartCheckboxStyle = {
+      borderWidth: 1,
+      borderColor: darkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
+    }
+  } else {
+    barCartCheckboxStyle = {
+      backgroundColor: Colors.blue1,
+    }
+  }
+
   return (
     <View style={styles.outerContainer}>
       <ScrollView
@@ -99,7 +125,7 @@ function HomeBartenderTab(props) {
         </Text>
         <TouchableWithoutFeedback style={Helpers.fill} onPress={onBarCartClick}>
           <View style={homeStyles.bartenderBarCartOutline}>
-            <View style={homeStyles.bartenderBarCartIcon} />
+            <Image style={homeStyles.bartenderBarCartIcon} source={Images.barCartIcon} />
             <Text style={homeStyles.bartenderBarCartText}>My Bar Cart</Text>
             <Text style={homeStyles.bartenderBarCartSubtext}>
               Keep a running list of your ingredients to quickly browse recipes you can make.
@@ -142,16 +168,49 @@ function HomeBartenderTab(props) {
                 })
               }}
             />
+            {showBarCartCheckbox && (
+              <TouchableWithoutFeedback onPress={() => setAddFromBarCart(!addFromBarCart)}>
+                <View style={homeStyles.bartenderIncludeContainer}>
+                  <View style={[homeStyles.bartenderCheckboxContainerStyle, barCartCheckboxStyle]}>
+                    {addFromBarCart && (
+                      <Image
+                        style={homeStyles.bartenderCheckboxIcon}
+                        source={Images.checkmarkBox}
+                      ></Image>
+                    )}
+                  </View>
+                  <Text
+                    style={{
+                      ...Fonts.body1,
+                      color: darkMode ? Colors.text1Dark : Colors.text1Light,
+                    }}
+                  >
+                    Include ingredients from my Bar Cart
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            )}
           </View>
         )}
         <View style={styles.divider} />
         <HomeBartenderSection
           title="Filters"
           number={0}
-          onClick={() => setFiltersOpen(!filtersOpen)}
+          onClick={() => {
+            LayoutAnimation.configureNext(CustomLayoutEaseIn)
+            setFiltersOpen(!filtersOpen)
+          }}
           open={filtersOpen}
           darkMode={darkMode}
         />
+        {filtersOpen && (
+          <ClickableTextbox
+            modalText={baseSpirit === NONE_SPIRIT ? '' : baseSpirit}
+            textPlaceholder={'Base Spirit'}
+            onClick={onBaseSpiritClick}
+            darkMode={darkMode}
+          />
+        )}
         <View style={styles.divider} />
         <View style={homeStyles.bufferView} />
       </ScrollView>
@@ -159,17 +218,16 @@ function HomeBartenderTab(props) {
         buttonTitle={'Search Drinks'}
         onButtonClick={() => {
           const ingredientIds = [
-            ...barCartIngredients.map((i) => i.ingredientId),
+            ...(addFromBarCart ? barCartIngredients.map((i) => i.ingredientId) : []),
             ...selectedIngredients.map((i) => i.ingredientId),
           ]
           NavigationService.navigate('ResultsScreen', {
             ingredientIds: ingredientIds,
+            baseSpirit: baseSpirit === NONE_SPIRIT ? '' : baseSpirit,
           })
         }}
         darkMode={darkMode}
-        disabled={
-          !selectedIngredients.length && (!barCartIngredients || !barCartIngredients.length)
-        }
+        disabled={searchDisabled}
       />
     </View>
   )
@@ -180,6 +238,8 @@ HomeBartenderTab.propTypes = {
   selectedIngredients: PropTypes.array,
   onBarCartClick: PropTypes.func,
   barCartIngredients: PropTypes.array,
+  baseSpirit: PropTypes.string,
+  onBaseSpiritClick: PropTypes.func,
 }
 
 const mapStateToProps = () => ({})

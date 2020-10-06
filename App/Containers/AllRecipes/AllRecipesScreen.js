@@ -119,6 +119,7 @@ class AllRecipesScreen extends React.Component {
             />
           )}
           style={allRecipesStyles.recipeListOutline}
+          contentContainerStyle={allRecipesStyles.recipeListContainer}
           ListHeaderComponent={this.renderHeader}
         />
       </View>

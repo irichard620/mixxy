@@ -48,6 +48,8 @@ class HomeScreen extends React.Component {
       modalType: '',
       selectedVolumeUnit: false,
       selectedIngredients: [],
+      baseSpirit: constants.NONE_SPIRIT,
+      selectedBaseSpirit: '',
     }
   }
 
@@ -336,6 +338,8 @@ class HomeScreen extends React.Component {
             setSelectedIngredients={this.setSelectedIngredients}
             onBarCartClick={this.onBarCartClick}
             barCartIngredients={this.props.barCartIngredients}
+            baseSpirit={this.state.baseSpirit}
+            onBaseSpiritClick={this.onBaseSpiritClick}
           />
         )
       default:
@@ -453,6 +457,39 @@ class HomeScreen extends React.Component {
     }
   }
 
+  onBaseSpiritClick = () => {
+    this.setState({
+      visibleModal: true,
+      modalType: constants.BUILDER_BASE_SPIRIT_DETAIL,
+    })
+  }
+
+  baseSpiritOptions = () => {
+    const { baseSpirit, selectedBaseSpirit } = this.state
+    const existingItem = selectedBaseSpirit === '' ? baseSpirit : selectedBaseSpirit
+    const arrToUse = []
+    arrToUse.push({
+      title: constants.NONE_SPIRIT,
+      selected: existingItem === constants.NONE_SPIRIT,
+    })
+    constants.baseSpirits.forEach((baseSpirit) => {
+      if (baseSpirit !== constants.BASE_SPIRIT_OTHER) {
+        arrToUse.push({ title: baseSpirit, selected: existingItem === baseSpirit })
+      }
+    })
+    return arrToUse
+  }
+
+  onBaseSpiritSaved = () => {
+    const { baseSpirit, selectedBaseSpirit } = this.state
+    this.setState({
+      selectedBaseSpirit: '',
+      baseSpirit: selectedBaseSpirit === '' ? baseSpirit : selectedBaseSpirit,
+      visibleModal: false,
+      modalType: '',
+    })
+  }
+
   render() {
     const {
       darkMode,
@@ -518,6 +555,17 @@ class HomeScreen extends React.Component {
               title={constants.MODAL_VOLUME_UNITS}
               onPressItem={this.onVolumeUnitPress}
               onModalSave={this.onVolumeUnitSavePressed}
+              hasSave={true}
+              darkMode={darkMode}
+            />
+          )}
+          {modalType === constants.BUILDER_BASE_SPIRIT_DETAIL && (
+            <ModalContentBottom
+              isListModal={true}
+              options={this.baseSpiritOptions()}
+              title="Base Spirit Options"
+              onPressItem={(val) => this.setState({ selectedBaseSpirit: val })}
+              onModalSave={this.onBaseSpiritSaved}
               hasSave={true}
               darkMode={darkMode}
             />

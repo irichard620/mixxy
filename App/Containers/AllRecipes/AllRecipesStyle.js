@@ -5,6 +5,9 @@ export default function getAllRecipesStylesheet(useDarkMode) {
     bufferView: {
       height: 16,
     },
+    recipeListContainer: {
+      paddingBottom: 24,
+    },
     recipeListOutline: {
       width: '100%',
     },
