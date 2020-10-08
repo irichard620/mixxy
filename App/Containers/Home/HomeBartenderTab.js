@@ -195,7 +195,7 @@ function HomeBartenderTab(props) {
         <View style={styles.divider} />
         <HomeBartenderSection
           title="Filters"
-          number={0}
+          number={baseSpirit === NONE_SPIRIT ? 0 : 1}
           onClick={() => {
             LayoutAnimation.configureNext(CustomLayoutEaseIn)
             setFiltersOpen(!filtersOpen)

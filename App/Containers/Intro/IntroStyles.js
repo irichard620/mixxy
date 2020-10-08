@@ -54,17 +54,29 @@ export default StyleSheet.create({
     paddingRight: 20,
   },
   iconViewBuffer: {
-    height: '27%',
+    height: '32%',
+  },
+  introItemOutline: {
+    alignItems: 'center',
+    backgroundColor: Colors.backgroundColorLight,
+    borderRadius: 10,
+    justifyContent: 'center',
+    marginBottom: 10,
+    marginHorizontal: 16,
+    padding: 20,
+    shadowColor: Colors.backgroundColorDark,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    width: 80,
   },
   navIcon: {
     height: 40,
-    marginBottom: 20,
-    marginTop: 20,
     resizeMode: 'contain',
   },
   title: {
     ...Fonts.h1Semibold,
-    marginTop: 32,
+    marginTop: 22,
     textAlign: 'center',
   },
 })
