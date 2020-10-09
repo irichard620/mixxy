@@ -96,7 +96,7 @@ function HomeBartenderTab(props) {
   const selectedIngredientsMargin = { marginBottom: 16 }
   const marginLeftStyle = { marginLeft: 16, marginRight: 16 }
 
-  const showBarCartCheckbox = Boolean(barCartIngredients.length > 0)
+  const showBarCartCheckbox = Boolean(barCartIngredients && barCartIngredients.length > 0)
   const searchDisabled =
     !selectedIngredients.length &&
     (!barCartIngredients || !barCartIngredients.length || !addFromBarCart)
@@ -218,7 +218,9 @@ function HomeBartenderTab(props) {
         buttonTitle={'Search Drinks'}
         onButtonClick={() => {
           const ingredientIds = [
-            ...(addFromBarCart ? barCartIngredients.map((i) => i.ingredientId) : []),
+            ...(addFromBarCart && barCartIngredients
+              ? barCartIngredients.map((i) => i.ingredientId)
+              : []),
             ...selectedIngredients.map((i) => i.ingredientId),
           ]
           NavigationService.navigate('ResultsScreen', {

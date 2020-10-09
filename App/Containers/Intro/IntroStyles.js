@@ -54,16 +54,17 @@ export default StyleSheet.create({
     paddingRight: 20,
   },
   iconViewBuffer: {
-    height: '32%',
+    height: '31%',
   },
   introItemOutline: {
     alignItems: 'center',
     backgroundColor: Colors.backgroundColorLight,
     borderRadius: 10,
+    height: 80,
     justifyContent: 'center',
-    marginBottom: 10,
+    marginBottom: 32,
     marginHorizontal: 16,
-    padding: 20,
+    marginTop: 20,
     shadowColor: Colors.backgroundColorDark,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.12,
@@ -76,7 +77,6 @@ export default StyleSheet.create({
   },
   title: {
     ...Fonts.h1Semibold,
-    marginTop: 22,
     textAlign: 'center',
   },
 })

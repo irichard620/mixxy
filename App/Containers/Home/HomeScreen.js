@@ -430,11 +430,15 @@ class HomeScreen extends React.Component {
   }
 
   onTabChange = (idx) => {
-    const { selectedIngredients, index } = this.state
-    if (index === 2 && idx !== 2 && selectedIngredients.length) {
+    const { selectedIngredients, index, baseSpirit } = this.state
+    if (
+      index === 2 &&
+      idx !== 2 &&
+      (selectedIngredients.length || baseSpirit !== constants.NONE_SPIRIT)
+    ) {
       Alert.alert(
         'Leave Bartender?',
-        'Are you done with your Bartender search? Leaving the tab will clear the ingredients.',
+        'Are you done with your Bartender search? Leaving the tab will clear the ingredients and filters.',
         [
           {
             text: 'No',
@@ -445,6 +449,7 @@ class HomeScreen extends React.Component {
               this.setState({
                 selectedIngredients: [],
                 index: idx,
+                baseSpirit: constants.NONE_SPIRIT,
               })
             },
           },

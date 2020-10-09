@@ -59,7 +59,9 @@ export default function IntroScreen(props) {
 
   const renderItem = (index) => {
     const isSelected = index === step
-    let imageToDisplay = Images.logo
+    const opacityStyle = { opacity: isSelected ? 1 : 0.25 }
+    let imageToDisplay
+    let imageStyle = introStyles.navIcon
     if (index === 1) {
       imageToDisplay = isSelected ? Images.navDiscoverSelected : Images.navDiscoverLight
     } else if (index === 2) {
@@ -68,10 +70,13 @@ export default function IntroScreen(props) {
       imageToDisplay = isSelected ? Images.navBartenderSelected : Images.navBartenderLight
     } else if (index === 4) {
       imageToDisplay = isSelected ? Images.navSettingsSelected : Images.navSettingsLight
+    } else {
+      imageToDisplay = Images.logo
+      imageStyle = { height: 48, resizeMode: 'contain' }
     }
     return (
-      <View style={introStyles.introItemOutline} key={`icon${index}`}>
-        <Image source={imageToDisplay} style={introStyles.navIcon} />
+      <View style={[introStyles.introItemOutline, opacityStyle]} key={`icon${index}`}>
+        <Image source={imageToDisplay} style={imageStyle} />
       </View>
     )
   }
