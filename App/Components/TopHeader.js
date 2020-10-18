@@ -1,5 +1,15 @@
 import React from 'react'
-import { SafeAreaView, Text, Image, TouchableOpacity, View, StyleSheet, Button } from 'react-native'
+import {
+  SafeAreaView,
+  Text,
+  Image,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Button,
+  Platform,
+  StatusBar,
+} from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
 import Images from '../Theme/Images'
 import { PropTypes } from 'prop-types'
@@ -27,7 +37,7 @@ export default function TopHeader(props) {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
       <View style={componentStyles.topHeaderOutline}>
         <TouchableOpacity style={headerStyles.touchable} onPress={onClose}>
           <Image style={headerStyles.close} source={imageToUse} />

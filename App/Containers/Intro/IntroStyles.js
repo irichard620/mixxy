@@ -6,6 +6,7 @@ const shadowStyle = {
   shadowColor: Colors.backgroundColorDark,
   shadowOpacity: 0.14,
   shadowRadius: 12,
+  elevation: 2,
 }
 
 export default StyleSheet.create({
@@ -70,6 +71,7 @@ export default StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 8,
     width: 80,
+    elevation: 2,
   },
   navIcon: {
     height: 40,

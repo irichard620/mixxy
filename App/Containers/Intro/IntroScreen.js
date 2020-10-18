@@ -91,6 +91,7 @@ export default function IntroScreen(props) {
             horizontal
             data={[0, 1, 2, 3, 4]}
             scrollEnabled={false}
+            showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ paddingRight: carouselLeftBuffer }}
           >
             <View style={{ width: carouselLeftBuffer }} />

@@ -132,6 +132,7 @@ export default function getComponentStylesheet(darkMode) {
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.12,
       shadowRadius: 8,
+      elevation: 2,
     },
     recipeCardType: {
       ...Fonts.body3,

@@ -1,5 +1,14 @@
 import React from 'react'
-import { SafeAreaView, Image, TouchableOpacity, View, StyleSheet, Animated } from 'react-native'
+import {
+  SafeAreaView,
+  Image,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Animated,
+  Platform,
+  StatusBar,
+} from 'react-native'
 import Images from '../../Theme/Images'
 import { PropTypes } from 'prop-types'
 import getTutorialStylesheet from './TutorialScreenStyle'
@@ -35,6 +44,7 @@ export default function TopHeader(props) {
     top: 0,
     left: 0,
     right: 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   }
   const dividerBackgroundColorStyle = {
     backgroundColor: dividerBackgroundColor,

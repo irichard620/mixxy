@@ -220,7 +220,7 @@ export default function getHomeStylesheet(useDarkMode) {
       height: 0,
     },
     tabIndicatorColor: {
-      backgroundColor: Colors.red1,
+      backgroundColor: Colors.transparent,
     },
     tabLabel: {
       display: 'none',
