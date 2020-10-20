@@ -3,6 +3,10 @@ const size = {
   h1: 24,
   h2: 22,
   h3: 20,
+  h1New: 34,
+  h2New: 28,
+  h3New: 22,
+  h4New: 20,
   body1: 17,
   body2: 16,
   body3: 15,
@@ -13,9 +17,13 @@ const lineSpacing = {
   h1: 31,
   h2: 27,
   h3: 23,
+  h1New: 41,
+  h2New: 34,
+  h3New: 28,
+  h4New: 24,
   body1: 22,
   body2: 21,
-  body3: 19,
+  body3: 20,
 }
 
 const fontWeight = {
@@ -45,6 +53,26 @@ export default {
     fontSize: size.h3,
     lineHeight: lineSpacing.h3,
     fontWeight: fontWeight.bold,
+  },
+  h1New: {
+    fontSize: size.h1New,
+    lineHeight: lineSpacing.h1New,
+    fontWeight: fontWeight.bold,
+  },
+  h2New: {
+    fontSize: size.h2New,
+    lineHeight: lineSpacing.h2New,
+    fontWeight: fontWeight.bold,
+  },
+  h3New: {
+    fontSize: size.h3New,
+    lineHeight: lineSpacing.h3New,
+    fontWeight: fontWeight.bold,
+  },
+  h4New: {
+    fontSize: size.h4New,
+    lineHeight: lineSpacing.h4New,
+    fontWeight: fontWeight.semibold,
   },
   buttonText: {
     fontSize: size.body1,

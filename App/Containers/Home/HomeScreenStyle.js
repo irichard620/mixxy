@@ -76,44 +76,6 @@ export default function getHomeStylesheet(useDarkMode) {
     bufferView: {
       height: 24,
     },
-    campaignBottomGradientContainer: {
-      backgroundColor: Colors.transparent,
-      bottom: 0,
-      height: 144,
-      left: 0,
-      position: 'absolute',
-      right: 0,
-      zIndex: 1,
-    },
-    campaignDescription: {
-      ...Fonts.body2,
-      color: Colors.white,
-    },
-    campaignImage: {
-      borderRadius: 10,
-      height: 440,
-      width: '100%',
-    },
-    campaignOutline: {
-      alignSelf: 'center',
-      backgroundColor: useDarkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
-      borderRadius: 10,
-      height: 440,
-      marginBottom: 24,
-    },
-    campaignTitle: {
-      ...Fonts.h3Semibold,
-      color: Colors.white,
-    },
-    campaignTopGradientContainer: {
-      backgroundColor: Colors.transparent,
-      height: 56,
-      left: 0,
-      position: 'absolute',
-      right: 0,
-      top: 0,
-      zIndex: 1,
-    },
     emptyContainer: {
       alignItems: 'center',
       flexGrow: 1,
@@ -172,10 +134,6 @@ export default function getHomeStylesheet(useDarkMode) {
       flexGrow: 1,
       height: 68,
     },
-    linearGradient: {
-      borderRadius: 10,
-      flex: 1,
-    },
     masterListBottomGradientContainer: {
       backgroundColor: Colors.transparent,
       bottom: 0,
@@ -218,13 +176,6 @@ export default function getHomeStylesheet(useDarkMode) {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flex: 1,
       paddingTop: 8,
-    },
-    sectionHeader: {
-      ...Fonts.h1Semibold,
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      marginBottom: 18,
-      marginTop: 24,
-      textAlign: 'left',
     },
     settingsProButton1Text: {
       ...Fonts.body1,
