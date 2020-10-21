@@ -1,27 +1,40 @@
 import { TouchableWithoutFeedback, View, Text, Dimensions, Animated, Easing } from 'react-native'
 import React from 'react'
 import FastImage from 'react-native-fast-image'
-import getHomeStylesheet from '../HomeScreenStyle'
+import getDiscoverStylesheet from './DiscoverStyle'
 import { PropTypes } from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
-import HomeTags from '../HomeTag'
+import HomeTags from './Tags'
 
 export default function BlogCard(props) {
   const { blog, disabled, onBlogClick, darkMode } = props
-  const { title, subtitle, heroImageLink, tags, tagColor } = blog
+  const { title, subtitle, heroImageLink, tags, tagColor, author, sponsorCard } = blog
   const { width } = Dimensions.get('window')
-  const cardWidth = {
-    width: width - 32,
+  const widthToUse = width - 64
+  const cardDimensions = {
+    width: width - 64,
+    height: (widthToUse * 4) / 3,
   }
 
-  const homeStyles = getHomeStylesheet(darkMode)
+  const discoverStyles = getDiscoverStylesheet(darkMode)
   let scaleValue = new Animated.Value(0)
   const cardScale = scaleValue.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [1, 0.98, 0.96],
   })
-  let transformStyle = { ...homeStyles.campaignOutline, transform: [{ scale: cardScale }] }
+  let transformStyle = {
+    ...discoverStyles.cardOutline,
+    ...cardDimensions,
+    transform: [{ scale: cardScale }],
+  }
 
+  // Profile image to use
+  let profileImage = null
+  if (author) {
+    profileImage = author.profileImageLink
+  } else if (sponsorCard) {
+    profileImage = sponsorCard.logoLink
+  }
   return (
     <TouchableWithoutFeedback
       disabled={disabled}
@@ -47,7 +60,7 @@ export default function BlogCard(props) {
       <Animated.View style={transformStyle}>
         {heroImageLink !== '' && (
           <FastImage
-            style={[homeStyles.campaignImage, cardWidth]}
+            style={[discoverStyles.cardImage, cardDimensions]}
             source={{
               uri: heroImageLink,
               priority: FastImage.priority.normal,
@@ -56,22 +69,39 @@ export default function BlogCard(props) {
           />
         )}
         <HomeTags tags={tags} darkMode={darkMode} tagColor={tagColor} />
-        <View style={homeStyles.sponsorCardDescriptionContainer}>
-          <Text style={homeStyles.campaignTitle}>{title}</Text>
-          <Text style={homeStyles.campaignDescription}>{subtitle}</Text>
+        <View style={discoverStyles.cardBottomContentContainer}>
+          {profileImage && (
+            <FastImage
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                marginBottom: 12,
+                borderWidth: 1,
+                borderColor: 'white',
+              }}
+              source={{
+                uri: profileImage,
+                priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
+          )}
+          <Text style={discoverStyles.cardTitle}>{title}</Text>
+          <Text style={discoverStyles.cardDescription}>{subtitle}</Text>
         </View>
-        <View style={homeStyles.campaignTopGradientContainer}>
+        <View style={discoverStyles.cardTopGradientContainer}>
           <LinearGradient
             colors={['#00000015', '#00000000']}
-            style={homeStyles.linearGradient}
+            style={discoverStyles.linearGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
           />
         </View>
-        <View style={homeStyles.campaignBottomGradientContainer}>
+        <View style={discoverStyles.cardBottomGradientContainer}>
           <LinearGradient
             colors={['#00000080', '#00000000']}
-            style={homeStyles.linearGradient}
+            style={discoverStyles.linearGradient}
             start={{ x: 0, y: 1 }}
             end={{ x: 0, y: 0 }}
           />

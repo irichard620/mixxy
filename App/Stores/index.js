@@ -7,6 +7,7 @@ import { reducer as RecipeReducer } from './Recipe/Reducers'
 import { reducer as SponsorReducer } from './Sponsor/Reducers'
 import { reducer as CampaignReducer } from './Campaign/Reducers'
 import { reducer as MasterListReducer } from './MasterList/Reducers'
+import { reducer as BlogReducer } from './Blog/Reducers'
 
 export default () => {
   const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ export default () => {
     sponsors: SponsorReducer,
     campaigns: CampaignReducer,
     masterLists: MasterListReducer,
+    blogs: BlogReducer,
   })
 
   return configureStore(rootReducer, rootSaga)

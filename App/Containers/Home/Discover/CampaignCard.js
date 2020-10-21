@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image'
 import getDiscoverStylesheet from './DiscoverStyle'
 import { PropTypes } from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
-import HomeTags from '../HomeTag'
+import HomeTags from './Tags'
 
 export default function CampaignCard(props) {
   const { campaign, disabled, onCampaignClick, darkMode } = props

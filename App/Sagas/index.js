@@ -6,6 +6,7 @@ import { RecipeTypes } from '../Stores/Recipe/Actions'
 import { SponsorTypes } from '../Stores/Sponsor/Actions'
 import { CampaignTypes } from '../Stores/Campaign/Actions'
 import { MasterListTypes } from '../Stores/MasterList/Actions'
+import { BlogTypes } from '../Stores/Blog/Actions'
 import {
   fetchUser,
   requestPurchaseIAP,
@@ -29,6 +30,7 @@ import {
 import { fetchSponsorCards, fetchSponsorCardDetails } from './SponsorSaga'
 import { fetchCampaigns } from './CampaignSaga'
 import { fetchMasterLists } from './MasterListSaga'
+import { fetchBlogs } from './BlogSaga'
 
 export default function* root() {
   yield all([
@@ -76,5 +78,7 @@ export default function* root() {
     takeLatest(SponsorTypes.FETCH_SPONSOR_CARD_DETAILS, fetchSponsorCardDetails),
     // Update volume units
     takeLatest(UserTypes.UPDATE_VOLUME_UNITS, updateVolumeUnits),
+    // Fetch blogs
+    takeLatest(BlogTypes.FETCH_BLOGS, fetchBlogs),
   ])
 }
