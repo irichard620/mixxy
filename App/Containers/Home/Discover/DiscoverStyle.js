@@ -49,6 +49,13 @@ export default function getDiscoverStylesheet(useDarkMode) {
       top: 0,
       zIndex: 1,
     },
+    divider: {
+      backgroundColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      height: 0.5,
+      marginLeft: 16,
+      paddingRight: 16,
+      width: '100%',
+    },
     linearGradient: {
       borderRadius: 10,
       flex: 1,
@@ -63,6 +70,7 @@ export default function getDiscoverStylesheet(useDarkMode) {
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 16,
       marginTop: 16,
+      paddingLeft: 16,
       textAlign: 'left',
     },
     sponsorCardBottomGradientContainer: {

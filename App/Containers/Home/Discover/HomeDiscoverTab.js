@@ -1,5 +1,4 @@
 import { ScrollView, Text, View, RefreshControl } from 'react-native'
-import getStylesheet from '../../../Theme/ApplicationStyles'
 import React, { useState, useEffect } from 'react'
 import getHomeStylesheet from '../HomeScreenStyle'
 import { useDarkMode } from 'react-native-dark-mode'
@@ -32,7 +31,6 @@ function HomeDiscoverTab(props) {
   } = props
   const [refreshing, setRefreshing] = useState(false)
   const darkMode = useDarkMode()
-  const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
   const discoverStyles = getDiscoverStylesheet(darkMode)
 
@@ -56,60 +54,62 @@ function HomeDiscoverTab(props) {
     setRefreshing(true)
   }
 
+  const paddingStyle = { paddingLeft: 16, paddingRight: 16 }
+
   return (
     <ScrollView
       style={discoverStyles.scrollContainer}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       showsVerticalScrollIndicator={false}
     >
-      <View style={{ paddingLeft: 16, paddingRight: 16 }}>
-        <Text style={homeStyles.topHeader}>Discover</Text>
-        {sponsorCards.map((sponsorCard) => (
-          <HomeSponsorCard
-            onSponsorCardClick={(sponsorCard) => {
-              NavigationService.navigate('SponsorScreen', {
-                sponsor: sponsorCard,
-              })
-            }}
-            key={sponsorCard.cardId}
-            sponsorCard={sponsorCard}
-            disabled={false}
-            darkMode={darkMode}
-          />
-        ))}
-        <View style={styles.divider} />
-        <Text style={discoverStyles.sectionHeader}>Collections</Text>
-      </View>
+      <Text style={[homeStyles.topHeader, paddingStyle]}>Discover</Text>
+      {sponsorCards.map((sponsorCard) => (
+        <HomeSponsorCard
+          onSponsorCardClick={(sponsorCard) => {
+            NavigationService.navigate('SponsorScreen', {
+              sponsor: sponsorCard,
+            })
+          }}
+          key={sponsorCard.cardId}
+          sponsorCard={sponsorCard}
+          disabled={false}
+          darkMode={darkMode}
+        />
+      ))}
+      <View style={discoverStyles.divider} />
+      <Text style={discoverStyles.sectionHeader}>Collections</Text>
       <Carousel items={campaigns} darkMode={darkMode} isCampaigns />
-      <View style={styles.divider} />
+      <View style={discoverStyles.divider} />
       <Text style={discoverStyles.sectionHeader}>Learn with Mixxy</Text>
       <Carousel items={blogs} darkMode={darkMode} isCampaigns={false} />
-      <View style={styles.divider} />
+      <View style={discoverStyles.divider} />
       <Text style={discoverStyles.sectionHeader}>Browse More</Text>
-      {masterLists.map((masterList) => (
+      <View style={paddingStyle}>
+        {masterLists.map((masterList) => (
+          <ListItem
+            key={masterList.masterListId}
+            title={masterList.name}
+            onClick={() => {
+              NavigationService.navigate('CampaignScreen', {
+                campaign: masterList,
+              })
+            }}
+            darkMode={darkMode}
+            showArrow
+            enlarged
+          />
+        ))}
         <ListItem
-          key={masterList.masterListId}
-          title={masterList.name}
+          key={'allRecipes'}
+          title={'All Recipes'}
           onClick={() => {
-            NavigationService.navigate('CampaignScreen', {
-              campaign: masterList,
-            })
+            NavigationService.navigate('AllRecipesScreen')
           }}
           darkMode={darkMode}
           showArrow
           enlarged
         />
-      ))}
-      <ListItem
-        key={'allRecipes'}
-        title={'All Recipes'}
-        onClick={() => {
-          NavigationService.navigate('AllRecipesScreen')
-        }}
-        darkMode={darkMode}
-        showArrow
-        enlarged
-      />
+      </View>
       <View style={homeStyles.bufferView} />
     </ScrollView>
   )

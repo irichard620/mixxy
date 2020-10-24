@@ -11,6 +11,8 @@ import RecipeCard from '../../Components/RecipeCard'
 import analytics from '@react-native-firebase/analytics'
 import { PropTypes } from 'prop-types'
 import Markdown from 'react-native-markdown-display'
+import Colors from '../../Theme/Colors'
+import Fonts from '../../Theme/Fonts'
 
 class BlogScreen extends React.Component {
   componentDidMount() {
@@ -115,9 +117,22 @@ class BlogScreen extends React.Component {
               <Text style={blogStyles.dateText}>{displayDate}</Text>
             </View>
             <View style={styles.divider} />
-            <View style={blogStyles.bodyText}>
-              <Markdown>{body}</Markdown>
+            <View style={blogStyles.bodyTextOutline}>
+              <Markdown
+                style={{
+                  body: {
+                    ...Fonts.body1,
+                    color: darkMode ? Colors.text1Dark : Colors.text1Light,
+                  },
+                }}
+              >
+                {body}
+              </Markdown>
             </View>
+            <View style={styles.divider} />
+            {recipes && recipes.length > 0 && (
+              <Text style={blogStyles.recipesMentionedText}>Recipes Mentioned</Text>
+            )}
           </View>
           <View style={blogStyles.recipesContainer}>
             {recipes &&

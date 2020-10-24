@@ -4,10 +4,19 @@ import Fonts from '../../Theme/Fonts'
 
 export default function getBlogStylesheet(useDarkMode) {
   return StyleSheet.create({
+    authorName: {
+      ...Fonts.body3,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginLeft: 8,
+    },
     backContainer: {
       left: 16,
       position: 'absolute',
       top: 56,
+    },
+    bodyTextOutline: {
+      marginBottom: 18,
+      marginTop: 18,
     },
     bufferView: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
@@ -26,6 +35,14 @@ export default function getBlogStylesheet(useDarkMode) {
       right: 0,
       zIndex: 1,
     },
+    contentContainer: {
+      paddingLeft: 16,
+      paddingRight: 16,
+    },
+    dateText: {
+      ...Fonts.body3,
+      color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
+    },
     description: {
       ...Fonts.body3,
       color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
@@ -36,34 +53,22 @@ export default function getBlogStylesheet(useDarkMode) {
     },
     recipesContainer: {
       marginBottom: 24,
+      marginTop: 16,
+    },
+    recipesMentionedText: {
+      ...Fonts.h4New,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginTop: 24,
     },
     scrollContainer: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flex: 1,
     },
-    bodyText: {
-      marginTop: 24,
-      body: { ...Fonts.body1 },
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-    authorName: {
-      ...Fonts.body3,
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      marginLeft: 8,
-    },
-    dateText: {
-      ...Fonts.body3,
-      color: useDarkMode ? Colors.stepTextDark : Colors.stepTextLight,
-    },
-    contentContainer: {
-      paddingLeft: 16,
-      paddingRight: 16,
-    },
     title: {
       ...Fonts.h3New,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 8,
       marginTop: 4,
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
     },
     topImage: {
       height: 440,

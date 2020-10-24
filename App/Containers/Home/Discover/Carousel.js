@@ -13,11 +13,13 @@ export default function Carousel(props) {
   const { width } = Dimensions.get('window')
 
   const offsets = [...Array(items.length)].map((_x, i) => i * (width - 64) + (i - 1) * 16)
+  const paddingLeftStyle = { paddingLeft: 16 }
+  const widthStyle = { width: 16 }
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{ paddingLeft: 16 }}
+      style={paddingLeftStyle}
       snapToOffsets={offsets}
       decelerationRate={'fast'}
     >
@@ -52,7 +54,7 @@ export default function Carousel(props) {
           )
         }
       })}
-      <View style={{ width: 16 }} />
+      <View style={widthStyle} />
     </ScrollView>
   )
 }
