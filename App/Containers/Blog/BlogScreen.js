@@ -10,9 +10,67 @@ import { NavigationActions } from 'react-navigation'
 import RecipeCard from '../../Components/RecipeCard'
 import analytics from '@react-native-firebase/analytics'
 import { PropTypes } from 'prop-types'
-import Markdown from 'react-native-markdown-display'
+import Markdown, { MarkdownIt } from 'react-native-markdown-display'
 import Colors from '../../Theme/Colors'
 import Fonts from '../../Theme/Fonts'
+
+const markdownItInstance = MarkdownIt({ typographer: true, html: true })
+
+const getHtmlAttribute = (content, attributeName) => {
+  const attributeIndex = content.indexOf(attributeName)
+  if (attributeIndex === -1) return null
+  let attribute = ''
+  let didOpen = false
+  for (let i = attributeIndex; i < content.length; i++) {
+    if (content[i] === '"' && didOpen) {
+      break
+    } else if (content[i] === '"' && !didOpen) {
+      didOpen = true
+    } else if (didOpen) {
+      attribute += content[i]
+    }
+  }
+  return attribute
+}
+
+const rules = {
+  // eslint-disable-next-line react/display-name
+  html_inline: (node, _children, _parent, _styles) => {
+    console.log(node)
+    // we check that the parent array contans a td because <br> in paragraph setting will create a html_inlinde surrounded by a soft break, try removing the clause to see what happens (double spacing on the <br> between 'top one' and 'bottom one')
+    if (node.content.trim() === '<br>') {
+      return <Text key={node.key}>{'\n'}</Text>
+    } else if (node.content.trim().includes('<img')) {
+      // Get aspect ratio
+      const content = node.content.trim()
+      const src = getHtmlAttribute(content, 'src')
+      const width = getHtmlAttribute(content, 'width')
+      const height = getHtmlAttribute(content, 'height')
+      if (!(width && height)) {
+        return null
+      }
+
+      const aspectRatio = Number(height) / Number(width)
+      const { width: fullWidth } = Dimensions.get('window')
+
+      return (
+        <FastImage
+          style={{
+            width: fullWidth - 32,
+            height: fullWidth - 32 * aspectRatio,
+          }}
+          source={{
+            uri: src,
+            priority: FastImage.priority.normal,
+          }}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+      )
+    }
+
+    return null
+  },
+}
 
 class BlogScreen extends React.Component {
   componentDidMount() {
@@ -119,10 +177,18 @@ class BlogScreen extends React.Component {
             <View style={styles.divider} />
             <View style={blogStyles.bodyTextOutline}>
               <Markdown
+                rules={rules}
+                markdownit={markdownItInstance}
                 style={{
                   body: {
                     ...Fonts.body1,
                     color: darkMode ? Colors.text1Dark : Colors.text1Light,
+                  },
+                  code_inline: {
+                    ...Fonts.body1,
+                    color: Colors.blue1,
+                    backgroundColor: Colors.transparent,
+                    fontFamily: null,
                   },
                 }}
               >
