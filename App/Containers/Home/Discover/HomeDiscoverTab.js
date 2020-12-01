@@ -1,7 +1,6 @@
-import { ScrollView, Text, View, RefreshControl } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { Animated, Text, View } from 'react-native'
+import React from 'react'
 import getHomeStylesheet from '../HomeScreenStyle'
-import { useDarkMode } from 'react-native-dark-mode'
 import { connect } from 'react-redux'
 import HomeSponsorCard from './SponsorCard'
 import { PropTypes } from 'prop-types'
@@ -13,109 +12,118 @@ import CampaignActions from '../../../Stores/Campaign/Actions'
 import MasterListActions from '../../../Stores/MasterList/Actions'
 import BlogActions from '../../../Stores/Blog/Actions'
 import getDiscoverStylesheet from './DiscoverStyle'
+import HomeTabOutline from '../HomeTabOutline'
 
-function HomeDiscoverTab(props) {
-  const {
-    sponsorCards,
-    campaigns,
-    masterLists,
-    blogs,
-    fetchSponsorCards,
-    fetchCampaigns,
-    fetchMasterLists,
-    fetchBlogs,
-    sponsorCardsIsLoading,
-    campaignsIsLoading,
-    masterListsIsLoading,
-    blogsIsLoading,
-  } = props
-  const [refreshing, setRefreshing] = useState(false)
-  const darkMode = useDarkMode()
-  const homeStyles = getHomeStylesheet(darkMode)
-  const discoverStyles = getDiscoverStylesheet(darkMode)
+class HomeDiscoverTab extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      scrollY: new Animated.Value(0),
+      refreshing: false,
+    }
+  }
 
-  useEffect(() => {
+  componentDidUpdate() {
+    const {
+      sponsorCardsIsLoading,
+      campaignsIsLoading,
+      masterListsIsLoading,
+      blogsIsLoading,
+    } = this.props
     if (
-      refreshing &&
+      this.state.refreshing &&
       !sponsorCardsIsLoading &&
       !campaignsIsLoading &&
       !masterListsIsLoading &&
       !blogsIsLoading
     ) {
-      setRefreshing(false)
+      this.setState({
+        refreshing: false,
+      })
     }
-  })
+  }
 
-  const onRefresh = () => {
+  onRefresh() {
+    const { fetchSponsorCards, fetchCampaigns, fetchMasterLists, fetchBlogs } = this.props
     fetchSponsorCards()
     fetchCampaigns()
     fetchMasterLists()
     fetchBlogs()
-    setRefreshing(true)
+    this.setState({
+      refreshing: true,
+    })
   }
 
-  const paddingStyle = { paddingLeft: 16, paddingRight: 16 }
+  render() {
+    const { darkMode, sponsorCards, campaigns, masterLists, blogs } = this.props
 
-  return (
-    <ScrollView
-      style={discoverStyles.scrollContainer}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      showsVerticalScrollIndicator={false}
-    >
-      <Text style={[homeStyles.topHeader, paddingStyle]}>Discover</Text>
-      {sponsorCards.map((sponsorCard) => (
-        <HomeSponsorCard
-          onSponsorCardClick={(sponsorCard) => {
-            NavigationService.navigate('SponsorScreen', {
-              sponsor: sponsorCard,
-            })
-          }}
-          key={sponsorCard.cardId}
-          sponsorCard={sponsorCard}
-          disabled={false}
-          darkMode={darkMode}
-        />
-      ))}
-      <View style={discoverStyles.divider} />
-      <Text style={discoverStyles.sectionHeader}>Collections</Text>
-      <Carousel items={campaigns} darkMode={darkMode} isCampaigns />
-      <View style={discoverStyles.divider} />
-      <Text style={discoverStyles.sectionHeader}>Learn with Mixxy</Text>
-      <Carousel items={blogs} darkMode={darkMode} isCampaigns={false} />
-      <View style={discoverStyles.divider} />
-      <Text style={discoverStyles.sectionHeader}>Browse More</Text>
-      <View style={paddingStyle}>
-        {masterLists.map((masterList) => (
-          <ListItem
-            key={masterList.masterListId}
-            title={masterList.name}
-            onClick={() => {
-              NavigationService.navigate('CampaignScreen', {
-                campaign: masterList,
+    const homeStyles = getHomeStylesheet(darkMode)
+    const discoverStyles = getDiscoverStylesheet(darkMode)
+
+    const paddingStyle = { paddingLeft: 16, paddingRight: 16 }
+
+    return (
+      <HomeTabOutline
+        pageTitle="Discover"
+        showRefreshControl={true}
+        isRefreshing={this.state.refreshing}
+        onRefresh={this.onRefresh}
+      >
+        {sponsorCards.map((sponsorCard) => (
+          <HomeSponsorCard
+            onSponsorCardClick={(sponsorCard) => {
+              NavigationService.navigate('SponsorScreen', {
+                sponsor: sponsorCard,
               })
+            }}
+            key={sponsorCard.cardId}
+            sponsorCard={sponsorCard}
+            disabled={false}
+            darkMode={darkMode}
+          />
+        ))}
+        <View style={discoverStyles.divider} />
+        <Text style={discoverStyles.sectionHeader}>Collections</Text>
+        <Carousel items={campaigns} darkMode={darkMode} isCampaigns />
+        <View style={discoverStyles.divider} />
+        <Text style={discoverStyles.sectionHeader}>Learn with Mixxy</Text>
+        <Carousel items={blogs} darkMode={darkMode} isCampaigns={false} />
+        <View style={discoverStyles.divider} />
+        <Text style={discoverStyles.sectionHeader}>Browse More</Text>
+        <View style={paddingStyle}>
+          {masterLists.map((masterList) => (
+            <ListItem
+              key={masterList.masterListId}
+              title={masterList.name}
+              onClick={() => {
+                NavigationService.navigate('CampaignScreen', {
+                  campaign: masterList,
+                })
+              }}
+              darkMode={darkMode}
+              showArrow
+              enlarged
+            />
+          ))}
+          <ListItem
+            key={'allRecipes'}
+            title={'All Recipes'}
+            onClick={() => {
+              NavigationService.navigate('AllRecipesScreen')
             }}
             darkMode={darkMode}
             showArrow
             enlarged
           />
-        ))}
-        <ListItem
-          key={'allRecipes'}
-          title={'All Recipes'}
-          onClick={() => {
-            NavigationService.navigate('AllRecipesScreen')
-          }}
-          darkMode={darkMode}
-          showArrow
-          enlarged
-        />
-      </View>
-      <View style={homeStyles.bufferView} />
-    </ScrollView>
-  )
+        </View>
+        <View style={homeStyles.bufferView} />
+      </HomeTabOutline>
+    )
+  }
 }
 
 HomeDiscoverTab.propTypes = {
+  darkMode: PropTypes.bool,
   sponsorCards: PropTypes.array,
   campaigns: PropTypes.array,
   masterLists: PropTypes.array,
@@ -152,4 +160,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchBlogs: () => dispatch(BlogActions.fetchBlogs()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeDiscoverTab)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavigationService.screenWithDarkMode(HomeDiscoverTab))

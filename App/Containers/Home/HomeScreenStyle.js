@@ -225,7 +225,6 @@ export default function getHomeStylesheet(useDarkMode) {
     },
     topHeader: {
       ...Fonts.h1New,
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 18,
       textAlign: 'left',
     },
