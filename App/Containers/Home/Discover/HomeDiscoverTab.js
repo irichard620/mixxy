@@ -42,7 +42,7 @@ class HomeDiscoverTab extends React.Component {
     }
   }
 
-  onRefresh() {
+  onRefresh = () => {
     const { fetchSponsorCards, fetchCampaigns, fetchMasterLists, fetchBlogs } = this.props
     fetchSponsorCards()
     fetchCampaigns()
@@ -63,6 +63,7 @@ class HomeDiscoverTab extends React.Component {
 
     return (
       <HomeTabOutline
+        darkMode={darkMode}
         pageTitle="Discover"
         showRefreshControl={true}
         isRefreshing={this.state.refreshing}

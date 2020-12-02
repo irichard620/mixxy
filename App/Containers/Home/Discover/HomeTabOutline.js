@@ -112,7 +112,7 @@ class HomeTabOutline extends React.Component {
 HomeTabOutline.propTypes = {
   darkMode: PropTypes.bool,
   pageTitle: PropTypes.string,
-  children: PropTypes.object,
+  children: PropTypes.array,
   showRefreshControl: PropTypes.bool,
   isRefreshing: PropTypes.bool,
   onRefresh: PropTypes.func,

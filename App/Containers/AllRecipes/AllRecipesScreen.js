@@ -21,8 +21,12 @@ class AllRecipesScreen extends React.Component {
   }
 
   componentDidMount() {
-    const { fetchRemoteRecipes } = this.props
+    const { fetchRemoteRecipes, navigation } = this.props
+    const focusSearchBar = navigation.getParam('focusSearchBar', false)
     fetchRemoteRecipes()
+    if (focusSearchBar) {
+      this.searchBar && this.searchBar.current.focus()
+    }
   }
 
   componentDidUpdate(prevProps) {

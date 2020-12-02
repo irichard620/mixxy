@@ -112,10 +112,8 @@ export default function getHomeStylesheet(useDarkMode) {
       height: 36,
       justifyContent: 'center',
       marginRight: 8,
-      paddingBottom: 8,
       paddingLeft: 16,
       paddingRight: 16,
-      paddingTop: 8,
     },
     libraryMenuItemTitle: {
       ...Fonts.body1,

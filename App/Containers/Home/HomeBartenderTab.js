@@ -108,7 +108,7 @@ function HomeBartenderTab(props) {
 
   return (
     <View style={styles.outerContainer}>
-      <HomeTabOutline pageTitle="Bartender" showRefreshControl={false}>
+      <HomeTabOutline pageTitle="Bartender" showRefreshControl={false} darkMode={darkMode}>
         <Text style={[homeStyles.bartenderSubheader, marginLeftStyle]}>
           Bartender helps you discover which drinks you can create with the ingredients you already
           have on hand.

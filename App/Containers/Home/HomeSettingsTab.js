@@ -38,10 +38,10 @@ function HomeSettingsTab(props) {
           }
         }
       )
-    } else if (option === constants.OPTION_CONTACT_US || option === constants.OPTION_JOIN_BETA) {
+    } else if (option === constants.OPTION_CONTACT_US || option === constants.OPTION_REPORT_BUG) {
       // Pull up email
       let emailLink = 'mailto:info@mixxyapp.com'
-      if (option === constants.OPTION_JOIN_BETA) {
+      if (option === constants.OPTION_REPORT_BUG) {
         emailLink = `${emailLink}?subject=Mixxy Bug Report`
       }
       Linking.canOpenURL(emailLink).then((supported) => {
@@ -103,7 +103,7 @@ function HomeSettingsTab(props) {
   }
 
   return (
-    <HomeTabOutline pageTitle="Settings" showRefreshControl={false}>
+    <HomeTabOutline pageTitle="Settings" showRefreshControl={false} darkMode={darkMode}>
       <View style={homeStyles.settingsProOutline}>
         <Image source={Images.proBadge} style={homeStyles.settingsProImage} />
         <Text style={homeStyles.settingsProTitle}>{'Mixxy Pro'}</Text>

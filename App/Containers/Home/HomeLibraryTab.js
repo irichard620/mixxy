@@ -108,8 +108,9 @@ function HomeLibraryTab(props) {
     ) : null
 
   const titleColor = { color: _getPageTitleTextColor() }
+  const paddingStyle = { paddingLeft: 16, paddingRight: 16, paddingTop: 8 }
   const listHeader = (
-    <Animated.Text style={[homeStyles.topHeaderLibrary, titleColor]}>Library</Animated.Text>
+    <Animated.Text style={[homeStyles.topHeader, paddingStyle, titleColor]}>Library</Animated.Text>
   )
 
   return (

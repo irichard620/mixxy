@@ -36,7 +36,6 @@ const getHtmlAttribute = (content, attributeName) => {
 const rules = {
   // eslint-disable-next-line react/display-name
   html_inline: (node, _children, _parent, _styles) => {
-    console.log(node)
     // we check that the parent array contans a td because <br> in paragraph setting will create a html_inlinde surrounded by a soft break, try removing the clause to see what happens (double spacing on the <br> between 'top one' and 'bottom one')
     if (node.content.trim() === '<br>') {
       return <Text key={node.key}>{'\n'}</Text>
@@ -52,13 +51,18 @@ const rules = {
 
       const aspectRatio = Number(height) / Number(width)
       const { width: fullWidth } = Dimensions.get('window')
+      const borderStyle = { borderRadius: 10 }
 
       return (
         <FastImage
-          style={{
-            width: fullWidth - 32,
-            height: fullWidth - 32 * aspectRatio,
-          }}
+          key={src}
+          style={[
+            {
+              width: fullWidth - 32,
+              height: fullWidth - 32 * aspectRatio,
+            },
+            borderStyle,
+          ]}
           source={{
             uri: src,
             priority: FastImage.priority.normal,
