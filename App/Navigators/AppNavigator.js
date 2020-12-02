@@ -12,6 +12,7 @@ import AllRecipesScreen from '../Containers/AllRecipes/AllRecipesScreen'
 import { useDarkModeContext } from 'react-native-dark-mode'
 import IngredientsScreen from '../Containers/Bartender/IngredientsScreen'
 import ResultsScreen from '../Containers/Bartender/ResultsScreen'
+import BlogScreen from '../Containers/Blog/BlogScreen'
 
 const StackNavigator = createStackNavigator(
   {
@@ -67,6 +68,12 @@ const StackNavigator = createStackNavigator(
       screen: ResultsScreen,
       navigationOptions: {
         gesturesEnabled: false,
+      },
+    },
+    BlogScreen: {
+      screen: BlogScreen,
+      navigationOptions: {
+        gesturesEnabled: true,
       },
     },
     IntroScreen: {

@@ -1,26 +1,32 @@
 import { TouchableWithoutFeedback, View, Text, Dimensions, Animated, Easing } from 'react-native'
 import React from 'react'
 import FastImage from 'react-native-fast-image'
-import getHomeStylesheet from './HomeScreenStyle'
+import getDiscoverStylesheet from './DiscoverStyle'
 import { PropTypes } from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
-import HomeTags from './HomeTag'
+import HomeTags from './Tags'
 
-export default function HomeCampaign(props) {
+export default function CampaignCard(props) {
   const { campaign, disabled, onCampaignClick, darkMode } = props
   const { name, shortDescription, imageLink, tags, tagColor } = campaign
   const { width } = Dimensions.get('window')
-  const cardWidth = {
-    width: width - 32,
+  const widthToUse = width - 64
+  const cardDimensions = {
+    width: width - 64,
+    height: (widthToUse * 4) / 3,
   }
 
-  const homeStyles = getHomeStylesheet(darkMode)
+  const discoverStyles = getDiscoverStylesheet(darkMode)
   let scaleValue = new Animated.Value(0)
   const cardScale = scaleValue.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [1, 0.98, 0.96],
   })
-  let transformStyle = { ...homeStyles.campaignOutline, transform: [{ scale: cardScale }] }
+  let transformStyle = {
+    ...discoverStyles.cardOutline,
+    ...cardDimensions,
+    transform: [{ scale: cardScale }],
+  }
 
   return (
     <TouchableWithoutFeedback
@@ -47,7 +53,7 @@ export default function HomeCampaign(props) {
       <Animated.View style={transformStyle}>
         {imageLink !== '' && (
           <FastImage
-            style={[homeStyles.campaignImage, cardWidth]}
+            style={[discoverStyles.cardImage, cardDimensions]}
             source={{
               uri: imageLink,
               priority: FastImage.priority.normal,
@@ -56,22 +62,22 @@ export default function HomeCampaign(props) {
           />
         )}
         <HomeTags tags={tags} darkMode={darkMode} tagColor={tagColor} />
-        <View style={homeStyles.sponsorCardDescriptionContainer}>
-          <Text style={homeStyles.campaignTitle}>{name}</Text>
-          <Text style={homeStyles.campaignDescription}>{shortDescription}</Text>
+        <View style={discoverStyles.cardBottomContentContainer}>
+          <Text style={discoverStyles.cardTitle}>{name}</Text>
+          <Text style={discoverStyles.cardDescription}>{shortDescription}</Text>
         </View>
-        <View style={homeStyles.campaignTopGradientContainer}>
+        <View style={discoverStyles.cardTopGradientContainer}>
           <LinearGradient
             colors={['#00000015', '#00000000']}
-            style={homeStyles.linearGradient}
+            style={discoverStyles.linearGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
           />
         </View>
-        <View style={homeStyles.campaignBottomGradientContainer}>
+        <View style={discoverStyles.cardBottomGradientContainer}>
           <LinearGradient
             colors={['#00000080', '#00000000']}
-            style={homeStyles.linearGradient}
+            style={discoverStyles.linearGradient}
             start={{ x: 0, y: 1 }}
             end={{ x: 0, y: 0 }}
           />
@@ -81,7 +87,7 @@ export default function HomeCampaign(props) {
   )
 }
 
-HomeCampaign.propTypes = {
+CampaignCard.propTypes = {
   campaign: PropTypes.object,
   disabled: PropTypes.bool,
   onCampaignClick: PropTypes.func,

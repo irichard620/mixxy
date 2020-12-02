@@ -1,10 +1,10 @@
 import { TouchableWithoutFeedback, View, Text, Dimensions, Animated, Easing } from 'react-native'
 import React from 'react'
 import FastImage from 'react-native-fast-image'
-import getHomeStylesheet from './HomeScreenStyle'
+import getDiscoverStylesheet from './DiscoverStyle'
 import { PropTypes } from 'prop-types'
 import LinearGradient from 'react-native-linear-gradient'
-import HomeTags from './HomeTag'
+import HomeTags from './Tags'
 
 export default function HomeSponsorCard(props) {
   const { sponsorCard, disabled, onSponsorCardClick, darkMode } = props
@@ -14,13 +14,13 @@ export default function HomeSponsorCard(props) {
     width: width - 32,
   }
 
-  const homeStyles = getHomeStylesheet(darkMode)
+  const discoverStyles = getDiscoverStylesheet(darkMode)
   let scaleValue = new Animated.Value(0)
   const cardScale = scaleValue.interpolate({
     inputRange: [0, 0.5, 1],
     outputRange: [1, 0.98, 0.96],
   })
-  let transformStyle = { ...homeStyles.sponsorCardOutline, transform: [{ scale: cardScale }] }
+  let transformStyle = { ...discoverStyles.sponsorCardOutline, transform: [{ scale: cardScale }] }
 
   return (
     <TouchableWithoutFeedback
@@ -47,7 +47,7 @@ export default function HomeSponsorCard(props) {
       <Animated.View style={transformStyle}>
         {cardImageLink !== '' && (
           <FastImage
-            style={[homeStyles.sponsorCardImage, cardWidth]}
+            style={[discoverStyles.sponsorCardImage, cardWidth]}
             source={{
               uri: cardImageLink,
               priority: FastImage.priority.normal,
@@ -56,21 +56,21 @@ export default function HomeSponsorCard(props) {
           />
         )}
         <HomeTags tags={tags} darkMode={darkMode} tagColor={tagColor} />
-        <View style={homeStyles.sponsorCardDescriptionContainer}>
-          <Text style={homeStyles.sponsorCardDescription}>{cardTitle}</Text>
+        <View style={discoverStyles.cardBottomContentContainer}>
+          <Text style={discoverStyles.cardTitle}>{cardTitle}</Text>
         </View>
-        <View style={homeStyles.campaignTopGradientContainer}>
+        <View style={discoverStyles.cardTopGradientContainer}>
           <LinearGradient
             colors={['#00000015', '#00000000']}
-            style={homeStyles.linearGradient}
+            style={discoverStyles.linearGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
           />
         </View>
-        <View style={homeStyles.sponsorBottomGradientContainer}>
+        <View style={discoverStyles.sponsorCardBottomGradientContainer}>
           <LinearGradient
             colors={['#00000080', '#00000000']}
-            style={homeStyles.linearGradient}
+            style={discoverStyles.linearGradient}
             start={{ x: 0, y: 1 }}
             end={{ x: 0, y: 0 }}
           />

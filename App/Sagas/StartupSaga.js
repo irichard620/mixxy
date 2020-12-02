@@ -3,6 +3,7 @@ import UserActions from '../Stores/User/Actions'
 import SponsorActions from '../Stores/Sponsor/Actions'
 import CampaignActions from '../Stores/Campaign/Actions'
 import MasterListActions from '../Stores/MasterList/Actions'
+import BlogActions from '../Stores/Blog/Actions'
 import RecipeActions from '../Stores/Recipe/Actions'
 import NavigationService from '../Services/NavigationService'
 import { userService as UserService } from '../Services/UserService'
@@ -14,6 +15,7 @@ export function* startup() {
   yield put(SponsorActions.fetchSponsorCards())
   yield put(CampaignActions.fetchCampaigns())
   yield put(MasterListActions.fetchMasterLists())
+  yield put(BlogActions.fetchBlogs())
   yield put(RecipeActions.fetchRecipes())
 
   // Get user and decide whether to trigger tutorial
