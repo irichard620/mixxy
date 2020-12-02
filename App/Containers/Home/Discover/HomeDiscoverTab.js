@@ -1,4 +1,4 @@
-import { Animated, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import React from 'react'
 import getHomeStylesheet from '../HomeScreenStyle'
 import { connect } from 'react-redux'
@@ -12,13 +12,12 @@ import CampaignActions from '../../../Stores/Campaign/Actions'
 import MasterListActions from '../../../Stores/MasterList/Actions'
 import BlogActions from '../../../Stores/Blog/Actions'
 import getDiscoverStylesheet from './DiscoverStyle'
-import HomeTabOutline from '../HomeTabOutline'
+import HomeTabOutline from './HomeTabOutline'
 
 class HomeDiscoverTab extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      scrollY: new Animated.Value(0),
       refreshing: false,
     }
   }
@@ -68,6 +67,7 @@ class HomeDiscoverTab extends React.Component {
         showRefreshControl={true}
         isRefreshing={this.state.refreshing}
         onRefresh={this.onRefresh}
+        addSearch
       >
         {sponsorCards.map((sponsorCard) => (
           <HomeSponsorCard

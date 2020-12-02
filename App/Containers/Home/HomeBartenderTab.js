@@ -1,11 +1,4 @@
-import {
-  ScrollView,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  Image,
-  LayoutAnimation,
-} from 'react-native'
+import { Text, View, TouchableWithoutFeedback, Image, LayoutAnimation } from 'react-native'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import React, { useState } from 'react'
 import getHomeStylesheet from './HomeScreenStyle'
@@ -13,7 +6,7 @@ import { useDarkMode } from 'react-native-dark-mode'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import NavigationService from '../../Services/NavigationService'
-import BottomBar from '../../Components/BottomBar'
+import BottomBarV2 from '../../Components/BottomBarV2'
 import ClickableTextbox from '../../Components/ClickableTextbox'
 import AddButton from '../../Components/AddButton'
 import SelectedItem from '../../Components/SelectedItem'
@@ -22,6 +15,7 @@ import Images from '../../Theme/Images'
 import Helpers from '../../Theme/Helpers'
 import { CustomLayoutEaseIn, NONE_SPIRIT } from '../../Config/constants'
 import Fonts from '../../Theme/Fonts'
+import HomeTabOutline from './Discover/HomeTabOutline'
 
 const HomeBartenderSection = (props) => {
   const { title, number, onClick, open, darkMode } = props
@@ -114,11 +108,7 @@ function HomeBartenderTab(props) {
 
   return (
     <View style={styles.outerContainer}>
-      <ScrollView
-        style={homeStyles.scrollContainerNoHorizontalPadding}
-        showsVerticalScrollIndicator={false}
-      >
-        <Text style={[homeStyles.topHeader, marginLeftStyle]}>Bartender</Text>
+      <HomeTabOutline pageTitle="Bartender" showRefreshControl={false}>
         <Text style={[homeStyles.bartenderSubheader, marginLeftStyle]}>
           Bartender helps you discover which drinks you can create with the ingredients you already
           have on hand.
@@ -213,9 +203,9 @@ function HomeBartenderTab(props) {
         )}
         <View style={styles.divider} />
         <View style={homeStyles.bufferView} />
-      </ScrollView>
-      <BottomBar
-        buttonTitle={'Search Drinks'}
+      </HomeTabOutline>
+      <BottomBarV2
+        buttonTitle={'Search'}
         onButtonClick={() => {
           const ingredientIds = [
             ...(addFromBarCart && barCartIngredients

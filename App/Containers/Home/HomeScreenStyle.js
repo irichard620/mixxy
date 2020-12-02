@@ -126,13 +126,13 @@ export default function getHomeStylesheet(useDarkMode) {
       alignItems: 'flex-start',
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       height: 68,
-      marginTop: -10,
     },
     libraryMenuScrollOutline: {
       alignItems: 'center',
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flexGrow: 1,
       height: 68,
+      paddingLeft: 16,
     },
     scrollContainer: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
@@ -231,7 +231,7 @@ export default function getHomeStylesheet(useDarkMode) {
     topHeaderLibrary: {
       ...Fonts.top,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      marginBottom: 18,
+      marginBottom: 8,
       marginTop: 8,
       paddingLeft: 16,
       textAlign: 'left',

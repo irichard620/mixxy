@@ -1,4 +1,4 @@
-import { Alert, ScrollView, Text, View, Linking, Image, TouchableOpacity } from 'react-native'
+import { Alert, Text, View, Linking, Image, TouchableOpacity } from 'react-native'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import React from 'react'
 import Rate from 'react-native-rate'
@@ -10,6 +10,7 @@ import * as constants from '../../Config/constants'
 import Detail from '../../Components/Detail'
 import Images from '../../Theme/Images'
 import NavigationService from '../../Services/NavigationService'
+import HomeTabOutline from './Discover/HomeTabOutline'
 
 function HomeSettingsTab(props) {
   const { user, onMixxyProClick, onRestoreClick, onVolumeUnitsClick } = props
@@ -102,8 +103,7 @@ function HomeSettingsTab(props) {
   }
 
   return (
-    <ScrollView style={styles.outerContainer} showsVerticalScrollIndicator={false}>
-      <Text style={homeStyles.topHeaderLibrary}>Settings</Text>
+    <HomeTabOutline pageTitle="Settings" showRefreshControl={false}>
       <View style={homeStyles.settingsProOutline}>
         <Image source={Images.proBadge} style={homeStyles.settingsProImage} />
         <Text style={homeStyles.settingsProTitle}>{'Mixxy Pro'}</Text>
@@ -124,7 +124,8 @@ function HomeSettingsTab(props) {
       <View style={[styles.divider, extraPadding]} />
       {constants.settingsSections.map((section, idx) => renderSection(section, idx))}
       <Text style={homeStyles.settingsVersionText}>Mixxy V2.0</Text>
-    </ScrollView>
+      <View style={homeStyles.bufferView} />
+    </HomeTabOutline>
   )
 }
 

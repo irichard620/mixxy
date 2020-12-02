@@ -1,10 +1,10 @@
 import { Animated, View, RefreshControl } from 'react-native'
 import React from 'react'
-import getHomeStylesheet from './HomeScreenStyle'
+import getHomeStylesheet from '../HomeScreenStyle'
 import { PropTypes } from 'prop-types'
-import AnimatedHeader from '../../Components/AnimatedHeader'
-import getDiscoverStylesheet from './Discover/DiscoverStyle'
-import getStylesheet from '../../Theme/ApplicationStyles'
+import AnimatedHeader from '../../../Components/AnimatedHeader'
+import getDiscoverStylesheet from './DiscoverStyle'
+import getStylesheet from '../../../Theme/ApplicationStyles'
 
 class HomeTabOutline extends React.Component {
   constructor(props) {
@@ -64,6 +64,7 @@ class HomeTabOutline extends React.Component {
       showRefreshControl,
       isRefreshing,
       onRefresh,
+      addSearch,
     } = this.props
 
     const styles = getStylesheet(darkMode)
@@ -76,11 +77,11 @@ class HomeTabOutline extends React.Component {
     return (
       <View style={styles.outerContainer}>
         <AnimatedHeader
-          title="Discover"
+          title={pageTitle}
           darkMode={darkMode}
           dividerBackgroundColor={this._getHeaderDividerBackgroundColor()}
           textColor={this._getHeaderTextColor()}
-          addSearch
+          addSearch={addSearch}
         />
         <Animated.ScrollView
           style={discoverStyles.scrollContainer}
@@ -115,6 +116,7 @@ HomeTabOutline.propTypes = {
   showRefreshControl: PropTypes.bool,
   isRefreshing: PropTypes.bool,
   onRefresh: PropTypes.func,
+  addSearch: PropTypes.bool,
 }
 
 export default HomeTabOutline
