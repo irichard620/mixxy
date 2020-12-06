@@ -128,7 +128,6 @@ async function fetchSharedRecipe(params) {
   try {
     let url = `recipes/${params.recipeId}?version=${appVersion}`
     const response = await defaultApiClient(url).get()
-    console.log(response)
     if (in200s(response.status)) {
       return Recipe(camelcaseKeys(response.data))
     }

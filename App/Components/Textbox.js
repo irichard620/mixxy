@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types'
 import getComponentStylesheet from './ComponentStyle'
 
 export default function Textbox(props) {
-  const { modalText, textPlaceholder, charLimit, onChangeText, darkMode } = props
+  const { modalText, textPlaceholder, charLimit, onChangeText, secureTextEntry, darkMode } = props
   const componentStyles = getComponentStylesheet(darkMode)
   return (
     <View style={componentStyles.textboxContainer}>
@@ -17,6 +17,7 @@ export default function Textbox(props) {
         style={componentStyles.textboxInput}
         maxLength={charLimit}
         multiline={false}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   )

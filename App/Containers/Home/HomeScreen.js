@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { withNavigationFocus } from 'react-navigation'
 import { TabView, TabBar } from 'react-native-tab-view'
+import auth from '@react-native-firebase/auth'
 import RNIap, { purchaseErrorListener, purchaseUpdatedListener } from 'react-native-iap'
 import messaging from '@react-native-firebase/messaging'
 import getStylesheet from '../../Theme/ApplicationStyles'
@@ -40,6 +41,8 @@ class HomeScreen extends React.Component {
 
   purchaseErrorPro = null
 
+  authListener = null
+
   constructor(props) {
     super(props)
     this.state = {
@@ -50,6 +53,7 @@ class HomeScreen extends React.Component {
       selectedIngredients: [],
       baseSpirit: constants.NONE_SPIRIT,
       selectedBaseSpirit: '',
+      authUser: {},
     }
   }
 
@@ -76,6 +80,13 @@ class HomeScreen extends React.Component {
           },
         ]
       )
+    })
+
+    // Auth listener
+    this.authListener = auth().onAuthStateChanged((user) => {
+      this.setState({
+        authUser: user,
+      })
     })
 
     this.configureNotifications()
@@ -135,6 +146,9 @@ class HomeScreen extends React.Component {
     if (this.purchaseErrorPro) {
       this.purchaseErrorPro.remove()
       this.purchaseErrorPro = null
+    }
+    if (this.authListener) {
+      this.authListener = null
     }
   }
 
@@ -348,6 +362,7 @@ class HomeScreen extends React.Component {
             onMixxyProClick={this.onPurchaseMixxyClicked}
             onRestoreClick={this.onRestorePurchaseClicked}
             onVolumeUnitsClick={this.onVolumeUnitMenuClick}
+            authUser={this.state.authUser}
           />
         )
     }

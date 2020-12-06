@@ -13,4 +13,8 @@ export const INITIAL_STATE = {
   requestPurchaseIAPErrorMessage: null,
   purchase: {},
   updateVolumeUnitsLoading: false,
+  createRemoteUserIsLoading: false,
+  createRemoteUserErrorMessage: null,
+  updateAndFetchRemoteUserIsLoading: false,
+  updateAndFetchRemoteUserErrorMessage: null,
 }

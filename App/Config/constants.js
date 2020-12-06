@@ -228,7 +228,10 @@ export const BUILDER_MENU_INGREDIENTS = 'Ingredients'
 // Settings sections
 export const SETTINGS_SECTION_GENERAL = 'GENERAL'
 export const SETTINGS_SECTION_CONTACT = 'CONTACT'
-export const settingsSections = [SETTINGS_SECTION_GENERAL, SETTINGS_SECTION_CONTACT]
+export const settingsSections = [
+  SETTINGS_SECTION_GENERAL,
+  SETTINGS_SECTION_CONTACT,
+]
 
 // Settings options
 export const OPTION_VOLUME_UNITS = 'Volume Units'
@@ -237,6 +240,8 @@ export const OPTION_RATE_APP = 'Rate Mixxy on the App Store'
 export const OPTION_CONTACT_US = 'Contact Us'
 export const OPTION_REPORT_BUG = 'Report a Bug'
 export const OPTION_INSTAGRAM = 'Follow us on Instagram'
+export const OPTION_LOG_IN = 'Login'
+export const OPTION_SIGN_OUT = 'Logout'
 export const settingsOptions = {
   [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS, OPTION_REPLAY_TUTORIAL, OPTION_RATE_APP],
   [SETTINGS_SECTION_CONTACT]: [OPTION_CONTACT_US, OPTION_REPORT_BUG, OPTION_INSTAGRAM],

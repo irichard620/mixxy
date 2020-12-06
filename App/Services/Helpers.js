@@ -8,12 +8,17 @@ export const isWithin = curryN(3, (min, max, value) => {
 })
 export const in200s = isWithin(200, 299)
 
-export const defaultApiClient = (object) =>
-  axios.create({
+export const defaultApiClient = (object, token = null) => {
+  let headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  }
+  if (token) {
+    headers.authorization = token
+  }
+  return axios.create({
     baseURL: `${Config.API_URL}/mixxy/${object}`,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
+    headers,
     timeout: 3000,
   })
+}

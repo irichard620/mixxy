@@ -37,6 +37,15 @@ const { Types, Creators } = createActions({
   updateVolumeUnitsLoading: null,
   // Update success
   updateVolumeUnitsSuccess: ['userDetails'],
+  // Remote user stuff
+  createRemoteUser: ['email', 'displayName', 'firebaseToken'],
+  createRemoteUserLoading: null,
+  createRemoteUserSuccess: ['user'],
+  createRemoteUserFailure: ['errorMessage'],
+  updateAndFetchRemoteUser: ['email', 'firebaseToken'],
+  updateAndFetchRemoteUserLoading: null,
+  updateAndFetchRemoteUserSuccess: ['user'],
+  updateAndFetchRemoteUserFailure: ['errorMessage'],
 })
 
 export const UserTypes = Types

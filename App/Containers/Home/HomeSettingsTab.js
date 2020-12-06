@@ -2,6 +2,7 @@ import { Alert, Text, View, Linking, Image, TouchableOpacity } from 'react-nativ
 import getStylesheet from '../../Theme/ApplicationStyles'
 import React from 'react'
 import Rate from 'react-native-rate'
+import auth from '@react-native-firebase/auth'
 import { PropTypes } from 'prop-types'
 import getHomeStylesheet from './HomeScreenStyle'
 import { useDarkMode } from 'react-native-dark-mode'
@@ -13,7 +14,7 @@ import NavigationService from '../../Services/NavigationService'
 import HomeTabOutline from './Discover/HomeTabOutline'
 
 function HomeSettingsTab(props) {
-  const { user, onMixxyProClick, onRestoreClick, onVolumeUnitsClick } = props
+  const { user, onMixxyProClick, onRestoreClick, onVolumeUnitsClick, authUser } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
@@ -70,6 +71,22 @@ function HomeSettingsTab(props) {
           ])
         }
       })
+    } else if (option === constants.OPTION_LOG_IN) {
+      NavigationService.navigate('LoginScreen')
+    } else if (option === constants.OPTION_SIGN_OUT) {
+      Alert.alert('Logout', 'Are you sure you want to logout of Mixxy?', [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            auth()
+              .signOut()
+              .then(() => console.log('User signed out!'))
+          },
+        },
+      ])
     }
   }
 
@@ -91,7 +108,51 @@ function HomeSettingsTab(props) {
     return (
       <View key={section} style={homeStyles.settingsSectionContainer}>
         <Text style={homeStyles.settingsSectionHeader}>{section}</Text>
-        {constants.settingsOptions[section].map((option) => renderOption(option))}
+        {constants.settingsOptions[section].map((option) => {
+          if (!authUser && option === constants.OPTION_SIGN_OUT) {
+            return null
+          } else if (authUser && option === constants.OPTION_LOG_IN) {
+            return null
+          }
+          return renderOption(option)
+        })}
+      </View>
+    )
+  }
+
+  const renderAccountSection = () => {
+    console.log({ user })
+    return (
+      <View key="Account" style={homeStyles.settingsSectionContainer}>
+        <Text style={homeStyles.settingsSectionHeader}>Account</Text>
+        {authUser && (
+          <Detail key="email" value={user.email} title="Email" showSeparator disabled darkMode={darkMode} />
+        )}
+        {authUser && (
+          <Detail key="display_name" value={user.displayName} title="Display name" showSeparator disabled darkMode={darkMode} />
+        )}
+        {authUser && (
+          <Detail
+            key="logout"
+            value={''}
+            title={constants.OPTION_SIGN_OUT}
+            onDetailClick={() => onSettingsOptionClick(constants.OPTION_SIGN_OUT)}
+            showArrow
+            showSeparator
+            darkMode={darkMode}
+          />
+        )}
+        {!authUser && (
+          <Detail
+            key="login"
+            value={''}
+            title={constants.OPTION_LOG_IN}
+            onDetailClick={() => onSettingsOptionClick(constants.OPTION_LOG_IN)}
+            showArrow
+            showSeparator
+            darkMode={darkMode}
+          />
+        )}
       </View>
     )
   }
@@ -122,6 +183,7 @@ function HomeSettingsTab(props) {
         )}
       </View>
       <View style={[styles.divider, extraPadding]} />
+      {renderAccountSection()}
       {constants.settingsSections.map((section, idx) => renderSection(section, idx))}
       <Text style={homeStyles.settingsVersionText}>Mixxy V2.1</Text>
       <View style={homeStyles.bufferView} />
@@ -134,6 +196,7 @@ HomeSettingsTab.propTypes = {
   onMixxyProClick: PropTypes.func,
   onRestoreClick: PropTypes.func,
   onVolumeUnitsClick: PropTypes.func,
+  authUser: PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({

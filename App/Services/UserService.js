@@ -1,6 +1,7 @@
 import storage from 'redux-persist/lib/storage'
 import * as RNIap from 'react-native-iap'
 import { Config } from '../Config'
+import { defaultApiClient, in200s } from './Helpers'
 
 async function fetchUser() {
   try {
@@ -90,10 +91,26 @@ async function restoreIAP() {
   }
 }
 
+async function createOrUpdateRemoteUser({ email, displayName = null, firebaseToken = null }) {
+  let userData = { email }
+  if (displayName) userData.display_name = displayName
+  let url = `users`
+  try {
+    const response = await defaultApiClient(url, firebaseToken).post('/', userData)
+    if (in200s(response.status)) {
+      return [null, response.data]
+    }
+    return [response.data, null]
+  } catch (error) {
+    return [error, null]
+  }
+}
+
 export const userService = {
   fetchUser,
   updateVolumeUnits,
   requestPurchaseIAP,
   upgradeIAP,
   restoreIAP,
+  createOrUpdateRemoteUser,
 }

@@ -45,3 +45,23 @@ export function* requestPurchaseIAP() {
     yield put(UserActions.requestPurchaseIAPFailure(error))
   }
 }
+
+export function* createRemoteUser(params) {
+  yield put(UserActions.createRemoteUserLoading())
+  const [error, user] = yield call(userService.createOrUpdateRemoteUser, params)
+  if (!error) {
+    yield put(UserActions.createRemoteUserSuccess(user))
+  } else {
+    yield put(UserActions.createRemoteUserFailure(error))
+  }
+}
+
+export function* updateAndFetchRemoteUser(params) {
+  yield put(UserActions.updateAndFetchRemoteUserLoading())
+  const [error, user] = yield call(userService.createOrUpdateRemoteUser, params)
+  if (!error) {
+    yield put(UserActions.updateAndFetchRemoteUserSuccess(user))
+  } else {
+    yield put(UserActions.updateAndFetchRemoteUserFailure(error))
+  }
+}

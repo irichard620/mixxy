@@ -94,6 +94,44 @@ export const updateVolumeUnitsSuccess = (state, { userDetails }) => ({
   updateVolumeUnitsLoading: false,
 })
 
+export const createRemoteUserLoading = (state) => ({
+  ...state,
+  createRemoteUserIsLoading: true,
+  createRemoteUserErrorMessage: null,
+})
+
+export const createRemoteUserSuccess = (state, { user }) => ({
+  ...state,
+  user: { ...state.user, email: user.email, displayName: user.display_name },
+  createRemoteUserIsLoading: false,
+  createRemoteUserErrorMessage: null,
+})
+
+export const createRemoteUserFailure = (state, { errorMessage }) => ({
+  ...state,
+  createRemoteUserIsLoading: false,
+  createRemoteUserErrorMessage: errorMessage,
+})
+
+export const updateAndFetchRemoteUserLoading = (state) => ({
+  ...state,
+  updateAndFetchRemoteUserIsLoading: true,
+  updateAndFetchRemoteUserErrorMessage: null,
+})
+
+export const updateAndFetchRemoteUserSuccess = (state, { user }) => ({
+  ...state,
+  user: { ...state.user, email: user.email, displayName: user.display_name },
+  updateAndFetchRemoteUserIsLoading: false,
+  updateAndFetchRemoteUserErrorMessage: null,
+})
+
+export const updateAndFetchRemoteUserFailure = (state, { errorMessage }) => ({
+  ...state,
+  updateAndFetchRemoteUserIsLoading: false,
+  updateAndFetchRemoteUserErrorMessage: errorMessage,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [UserTypes.FETCH_USER_LOADING]: fetchUserLoading,
   [UserTypes.FETCH_USER_SUCCESS]: fetchUserSuccess,
@@ -108,4 +146,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [UserTypes.REQUEST_PURCHASE_IAP_FAILURE]: requestPurchaseIAPFailure,
   [UserTypes.UPDATE_VOLUME_UNITS_LOADING]: updateVolumeUnitsLoading,
   [UserTypes.UPDATE_VOLUME_UNITS_SUCCESS]: updateVolumeUnitsSuccess,
+  [UserTypes.CREATE_REMOTE_USER_LOADING]: createRemoteUserLoading,
+  [UserTypes.CREATE_REMOTE_USER_SUCCESS]: createRemoteUserSuccess,
+  [UserTypes.CREATE_REMOTE_USER_FAILURE]: createRemoteUserFailure,
+  [UserTypes.UPDATE_AND_FETCH_REMOTE_USER_LOADING]: updateAndFetchRemoteUserLoading,
+  [UserTypes.UPDATE_AND_FETCH_REMOTE_USER_SUCCESS]: updateAndFetchRemoteUserSuccess,
+  [UserTypes.UPDATE_AND_FETCH_REMOTE_USER_FAILURE]: updateAndFetchRemoteUserFailure,
 })

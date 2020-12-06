@@ -13,6 +13,30 @@ import { useDarkModeContext } from 'react-native-dark-mode'
 import IngredientsScreen from '../Containers/Bartender/IngredientsScreen'
 import ResultsScreen from '../Containers/Bartender/ResultsScreen'
 import BlogScreen from '../Containers/Blog/BlogScreen'
+import SignUpScreen from '../Containers/Authentication/SignUpScreen'
+import LoginScreen from '../Containers/Authentication/LoginScreen'
+
+const LoginStack = createStackNavigator(
+  {
+    Login: {
+      screen: LoginScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    SignUp: {
+      screen: SignUpScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'Login',
+    mode: 'card',
+  }
+)
 
 const StackNavigator = createStackNavigator(
   {
@@ -78,6 +102,12 @@ const StackNavigator = createStackNavigator(
     },
     IntroScreen: {
       screen: IntroScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    LoginScreen: {
+      screen: LoginStack,
       navigationOptions: {
         gesturesEnabled: false,
       },

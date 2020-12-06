@@ -13,6 +13,8 @@ import {
   restoreIAP,
   upgradeIAP,
   updateVolumeUnits,
+  createRemoteUser,
+  updateAndFetchRemoteUser,
 } from './UserSaga'
 import { startup } from './StartupSaga'
 import { fetchIngredients, fetchBarCartIngredients, setBarCartIngredients } from './IngredientSaga'
@@ -80,5 +82,9 @@ export default function* root() {
     takeLatest(UserTypes.UPDATE_VOLUME_UNITS, updateVolumeUnits),
     // Fetch blogs
     takeLatest(BlogTypes.FETCH_BLOGS, fetchBlogs),
+    // Create remote user
+    takeLatest(UserTypes.CREATE_REMOTE_USER, createRemoteUser),
+    // Update and fetch remote user
+    takeLatest(UserTypes.UPDATE_AND_FETCH_REMOTE_USER, updateAndFetchRemoteUser),
   ])
 }
