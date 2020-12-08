@@ -34,6 +34,8 @@ export default {
   introArrow: require('../Assets/Images/buttons/Intro_Arrow.png'),
   barCartIcon: require('../Assets/Images/barcart.png'),
   checkmarkBox: require('../Assets/Images/buttons/checkmark_box.png'),
+  cornerCreate: require('../Assets/Images/buttons/CB_Create.png'),
+  cornerSearch: require('../Assets/Images/buttons/CB_Search.png'),
   // Drink type art
   glassFlute: require('../Assets/Images/glasses/Glass_Flute.png'),
   glassMarg: require('../Assets/Images/glasses/Glass_Margarita.png'),

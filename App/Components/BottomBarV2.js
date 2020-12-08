@@ -12,7 +12,10 @@ export default function BottomBarV2(props) {
     outlineBackground.backgroundColor = darkMode ? Colors.darkFill2Dark : Colors.darkFill2Light
   }
 
-  let icon = Images.xCampaign
+  let icon = Images.cornerCreate
+  if (buttonTitle === 'Search') {
+    icon = Images.cornerSearch
+  }
 
   return (
     <TouchableOpacity
@@ -39,6 +42,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 21,
     resizeMode: 'contain',
+    marginLeft: 12,
   },
   innerView: {
     alignItems: 'center',
@@ -56,7 +60,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     position: 'absolute',
     right: 16,
-    width: 145,
   },
   primaryText: {
     color: Colors.white,

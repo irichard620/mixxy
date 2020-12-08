@@ -76,6 +76,9 @@ export default function getHomeStylesheet(useDarkMode) {
     bufferView: {
       height: 24,
     },
+    bufferViewLarge: {
+      height: 80,
+    },
     emptyContainer: {
       alignItems: 'center',
       flexGrow: 1,
@@ -137,7 +140,6 @@ export default function getHomeStylesheet(useDarkMode) {
       flex: 1,
       paddingLeft: 16,
       paddingRight: 16,
-      paddingTop: 8,
     },
     scrollContainerNoHorizontalPadding: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
@@ -224,6 +226,10 @@ export default function getHomeStylesheet(useDarkMode) {
     topHeader: {
       ...Fonts.h1New,
       marginBottom: 18,
+      textAlign: 'left',
+    },
+    topHeaderNoBottom: {
+      ...Fonts.h1New,
       textAlign: 'left',
     },
     topHeaderLibrary: {

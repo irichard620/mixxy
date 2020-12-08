@@ -63,7 +63,6 @@ export default function getDiscoverStylesheet(useDarkMode) {
     scrollContainer: {
       backgroundColor: useDarkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
       flex: 1,
-      paddingTop: 8,
     },
     sectionHeader: {
       ...Fonts.h2New,

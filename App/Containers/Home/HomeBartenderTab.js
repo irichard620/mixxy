@@ -202,7 +202,7 @@ function HomeBartenderTab(props) {
           />
         )}
         <View style={styles.divider} />
-        <View style={homeStyles.bufferView} />
+        <View style={homeStyles.bufferViewLarge} />
       </HomeTabOutline>
       <BottomBarV2
         buttonTitle={'Search'}

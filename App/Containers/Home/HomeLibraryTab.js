@@ -11,6 +11,7 @@ import NavigationService from '../../Services/NavigationService'
 import HomeLibraryMenuButtons from './HomeLibraryMenuButtons'
 import AnimatedHeader from '../../Components/AnimatedHeader'
 import Helpers from '../../Theme/Helpers'
+import Colors from '../../Theme/Colors'
 import { FAVORITES_FILTER, ALL_RECIPES_FILTER, drinkTypeFilterNames } from '../../Config/constants'
 
 function HomeLibraryTab(props) {
@@ -27,7 +28,7 @@ function HomeLibraryTab(props) {
     const outputFinal = !darkMode ? 'rgba(0,0,0,1.0)' : 'rgba(255,255,255,1.0)'
     const outputStart = !darkMode ? 'rgba(0,0,0,0.0)' : 'rgba(255,255,255,0.0)'
     return scrollY.interpolate({
-      inputRange: [0, 48],
+      inputRange: [0, 40],
       outputRange: [outputStart, outputFinal],
       extrapolate: 'clamp',
       useNativeDriver: true,
@@ -38,18 +39,7 @@ function HomeLibraryTab(props) {
     const outputFinal = !darkMode ? 'rgba(0,0,0,0.0)' : 'rgba(255,255,255,0.0)'
     const outputStart = !darkMode ? 'rgba(0,0,0,1.0)' : 'rgba(255,255,255,1.0)'
     return scrollY.interpolate({
-      inputRange: [0, 48],
-      outputRange: [outputStart, outputFinal],
-      extrapolate: 'clamp',
-      useNativeDriver: true,
-    })
-  }
-
-  const _getHeaderDividerBackgroundColor = () => {
-    const outputFinal = darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'
-    const outputStart = darkMode ? 'rgba(255,255,255,0.0)' : 'rgba(0,0,0,0.0)'
-    return scrollY.interpolate({
-      inputRange: [0, 48],
+      inputRange: [0, 40],
       outputRange: [outputStart, outputFinal],
       extrapolate: 'clamp',
       useNativeDriver: true,
@@ -108,9 +98,11 @@ function HomeLibraryTab(props) {
     ) : null
 
   const titleColor = { color: _getPageTitleTextColor() }
-  const paddingStyle = { paddingLeft: 16, paddingRight: 16, paddingTop: 8 }
+  const paddingStyle = { paddingLeft: 16, paddingRight: 16 }
   const listHeader = (
-    <Animated.Text style={[homeStyles.topHeader, paddingStyle, titleColor]}>Library</Animated.Text>
+    <Animated.Text style={[homeStyles.topHeaderNoBottom, paddingStyle, titleColor]}>
+      Library
+    </Animated.Text>
   )
 
   return (
@@ -118,7 +110,7 @@ function HomeLibraryTab(props) {
       <AnimatedHeader
         title="Library"
         darkMode={darkMode}
-        dividerBackgroundColor={_getHeaderDividerBackgroundColor()}
+        dividerBackgroundColor={Colors.transparent}
         textColor={_getHeaderTextColor()}
       />
       <Animated.FlatList
@@ -130,7 +122,7 @@ function HomeLibraryTab(props) {
           },
         ])}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={Helpers.flexGrowStyle}
+        contentContainerStyle={[Helpers.flexGrowStyle, { paddingBottom: 80 }]}
         data={[{ item: 'menu' }, { item: 'space' }, ...options]}
         keyExtractor={(item, index) => {
           if (index === 0) {

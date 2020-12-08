@@ -8,7 +8,7 @@ import HomeTags from './Tags'
 
 export default function BlogCard(props) {
   const { blog, disabled, onBlogClick, darkMode } = props
-  const { title, subtitle, heroImageLink, tags, tagColor, author, sponsorCard } = blog
+  const { title, cardText, heroImageLink, tags, tagColor, author, sponsorCard } = blog
   const { width } = Dimensions.get('window')
   const widthToUse = width - 64
   const cardDimensions = {
@@ -88,7 +88,7 @@ export default function BlogCard(props) {
             />
           )}
           <Text style={discoverStyles.cardTitle}>{title}</Text>
-          <Text style={discoverStyles.cardDescription}>{subtitle}</Text>
+          <Text style={discoverStyles.cardDescription}>{cardText}</Text>
         </View>
         <View style={discoverStyles.cardTopGradientContainer}>
           <LinearGradient

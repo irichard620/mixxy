@@ -9,6 +9,7 @@ export function Blog(blogObj) {
   // Blog metadata
   blog.title = blogObj.title
   blog.subtitle = blogObj.subtitle || ''
+  blog.cardText = blogObj.cardText || ''
   blog.body = blogObj.body || ''
   blog.heroImageLink = blogObj.heroImageLink
   blog.createdAt = blogObj.createdAt

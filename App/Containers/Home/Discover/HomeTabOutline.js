@@ -21,7 +21,7 @@ class HomeTabOutline extends React.Component {
     const outputFinal = !darkMode ? 'rgba(0,0,0,1.0)' : 'rgba(255,255,255,1.0)'
     const outputStart = !darkMode ? 'rgba(0,0,0,0.0)' : 'rgba(255,255,255,0.0)'
     return scrollY.interpolate({
-      inputRange: [0, 48],
+      inputRange: [0, 40],
       outputRange: [outputStart, outputFinal],
       extrapolate: 'clamp',
       useNativeDriver: true,
@@ -35,7 +35,7 @@ class HomeTabOutline extends React.Component {
     const outputFinal = !darkMode ? 'rgba(0,0,0,0.0)' : 'rgba(255,255,255,0.0)'
     const outputStart = !darkMode ? 'rgba(0,0,0,1.0)' : 'rgba(255,255,255,1.0)'
     return scrollY.interpolate({
-      inputRange: [0, 48],
+      inputRange: [0, 40],
       outputRange: [outputStart, outputFinal],
       extrapolate: 'clamp',
       useNativeDriver: true,
@@ -49,7 +49,7 @@ class HomeTabOutline extends React.Component {
     const outputFinal = darkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'
     const outputStart = darkMode ? 'rgba(255,255,255,0.0)' : 'rgba(0,0,0,0.0)'
     return scrollY.interpolate({
-      inputRange: [0, 48],
+      inputRange: [0, 40],
       outputRange: [outputStart, outputFinal],
       extrapolate: 'clamp',
       useNativeDriver: true,
