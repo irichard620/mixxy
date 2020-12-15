@@ -206,6 +206,9 @@ export default function getHomeStylesheet(useDarkMode) {
       backgroundColor: useDarkMode
         ? Colors.backgroundColorDarkTransparent
         : Colors.backgroundColorLightTransparent,
+      borderColor: Colors.transparent,
+      borderTopColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
+      borderWidth: 0.5,
       height: 48,
     },
     tabIcon: {
@@ -228,16 +231,16 @@ export default function getHomeStylesheet(useDarkMode) {
       marginBottom: 18,
       textAlign: 'left',
     },
-    topHeaderNoBottom: {
-      ...Fonts.h1New,
-      textAlign: 'left',
-    },
     topHeaderLibrary: {
       ...Fonts.top,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
       marginBottom: 8,
       marginTop: 8,
       paddingLeft: 16,
+      textAlign: 'left',
+    },
+    topHeaderNoBottom: {
+      ...Fonts.h1New,
       textAlign: 'left',
     },
   })

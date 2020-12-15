@@ -22,7 +22,7 @@ export default function ListItem(props) {
     backgroundColorStyle.paddingLeft = 0
     titleExtraStyle.fontSize = 20
     textContainerExtraStyle.height = 56
-    textContainerExtraStyle.paddingRight = 0
+    textContainerExtraStyle.paddingRight = 16
   }
   if (selected) {
     backgroundColorStyle.backgroundColor = darkMode

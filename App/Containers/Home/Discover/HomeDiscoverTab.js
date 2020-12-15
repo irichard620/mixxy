@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { Text, View, Dimensions } from 'react-native'
 import React from 'react'
 import getHomeStylesheet from '../HomeScreenStyle'
 import { connect } from 'react-redux'
@@ -59,7 +59,10 @@ class HomeDiscoverTab extends React.Component {
     const homeStyles = getHomeStylesheet(darkMode)
     const discoverStyles = getDiscoverStylesheet(darkMode)
 
-    const paddingStyle = { paddingLeft: 16, paddingRight: 16 }
+    const { width } = Dimensions.get('window')
+
+    const paddingStyle = { paddingLeft: 16 }
+    const widthStyle = { width: width - 32 }
 
     return (
       <HomeTabOutline
@@ -83,13 +86,13 @@ class HomeDiscoverTab extends React.Component {
             darkMode={darkMode}
           />
         ))}
-        <View style={discoverStyles.divider} />
+        <View style={[discoverStyles.divider, widthStyle]} />
         <Text style={discoverStyles.sectionHeader}>Collections</Text>
         <Carousel items={campaigns} darkMode={darkMode} isCampaigns />
-        <View style={discoverStyles.divider} />
+        <View style={[discoverStyles.divider, widthStyle]} />
         <Text style={discoverStyles.sectionHeader}>Learn with Mixxy</Text>
         <Carousel items={blogs} darkMode={darkMode} isCampaigns={false} />
-        <View style={discoverStyles.divider} />
+        <View style={[discoverStyles.divider, widthStyle]} />
         <Text style={discoverStyles.sectionHeader}>Browse More</Text>
         <View style={paddingStyle}>
           {masterLists.map((masterList) => (

@@ -53,7 +53,7 @@ export default function getDiscoverStylesheet(useDarkMode) {
       backgroundColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       height: 0.5,
       marginLeft: 16,
-      paddingRight: 16,
+      marginRight: 16,
       width: '100%',
     },
     linearGradient: {
@@ -91,7 +91,7 @@ export default function getDiscoverStylesheet(useDarkMode) {
       backgroundColor: useDarkMode ? Colors.darkFill1Dark : Colors.darkFill1Light,
       borderRadius: 10,
       height: 216,
-      marginBottom: 24,
+      marginBottom: 16,
     },
     tagContainer: {
       alignItems: 'center',
