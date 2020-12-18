@@ -42,6 +42,6 @@ export default function getAuthStylesheet(useDarkMode) {
       textAlign: 'left',
       ...Fonts.body1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-    }
+    },
   })
 }

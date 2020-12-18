@@ -41,8 +41,8 @@ BottomBarV2.propTypes = {
 const styles = StyleSheet.create({
   icon: {
     height: 21,
-    resizeMode: 'contain',
     marginLeft: 12,
+    resizeMode: 'contain',
   },
   innerView: {
     alignItems: 'center',

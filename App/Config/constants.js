@@ -228,10 +228,7 @@ export const BUILDER_MENU_INGREDIENTS = 'Ingredients'
 // Settings sections
 export const SETTINGS_SECTION_GENERAL = 'GENERAL'
 export const SETTINGS_SECTION_CONTACT = 'CONTACT'
-export const settingsSections = [
-  SETTINGS_SECTION_GENERAL,
-  SETTINGS_SECTION_CONTACT,
-]
+export const settingsSections = [SETTINGS_SECTION_GENERAL, SETTINGS_SECTION_CONTACT]
 
 // Settings options
 export const OPTION_VOLUME_UNITS = 'Volume Units'

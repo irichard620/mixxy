@@ -74,6 +74,7 @@ function HomeSettingsTab(props) {
     } else if (option === constants.OPTION_LOG_IN) {
       NavigationService.navigate('LoginScreen')
     } else if (option === constants.OPTION_SIGN_OUT) {
+      // TODO: clear email and display name here
       Alert.alert('Logout', 'Are you sure you want to logout of Mixxy?', [
         {
           text: 'No',
@@ -121,15 +122,28 @@ function HomeSettingsTab(props) {
   }
 
   const renderAccountSection = () => {
-    console.log({ user })
     return (
       <View key="Account" style={homeStyles.settingsSectionContainer}>
         <Text style={homeStyles.settingsSectionHeader}>Account</Text>
         {authUser && (
-          <Detail key="email" value={user.email} title="Email" showSeparator disabled darkMode={darkMode} />
+          <Detail
+            key="email"
+            value={user.email}
+            title="Email"
+            showSeparator
+            disabled
+            darkMode={darkMode}
+          />
         )}
         {authUser && (
-          <Detail key="display_name" value={user.displayName} title="Display name" showSeparator disabled darkMode={darkMode} />
+          <Detail
+            key="display_name"
+            value={user.displayName}
+            title="Display name"
+            showSeparator
+            disabled
+            darkMode={darkMode}
+          />
         )}
         {authUser && (
           <Detail

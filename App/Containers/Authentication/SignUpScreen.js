@@ -14,8 +14,6 @@ import TopHeader from '../../Components/TopHeader'
 import getStylesheet from '../../Theme/ApplicationStyles'
 
 class SignUpScreen extends React.Component {
-  authListener = null
-
   constructor(props) {
     super(props)
     this.state = {
@@ -27,33 +25,9 @@ class SignUpScreen extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // Auth listener
-    this.authListener = auth().onAuthStateChanged((user) => {
-      if (user && !this.state.authUser) {
-        user.getIdToken().then((token) => {
-          this.setState({ authUser: user })
-          this.props.updateAndFetchRemoteUser(this.state.email, token)
-        })
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    if (this.authListener) {
-      this.authListener = null
-    }
-  }
-
   componentDidUpdate(prevProps) {
     const { email, password } = this.state
-    const {
-      createRemoteUserIsLoading,
-      createRemoteUserErrorMessage,
-      updateAndFetchRemoteUserIsLoading,
-      updateAndFetchRemoteUserErrorMessage,
-      navigation,
-    } = this.props
+    const { createRemoteUserIsLoading, createRemoteUserErrorMessage } = this.props
     if (prevProps.createRemoteUserIsLoading && !createRemoteUserIsLoading) {
       if (createRemoteUserErrorMessage) {
         if (createRemoteUserErrorMessage === 'Email conflict') {
@@ -72,7 +46,14 @@ class SignUpScreen extends React.Component {
               text: 'Ok',
             },
           ])
+        } else if (createRemoteUserErrorMessage === 'Profanity') {
+          Alert.alert('Error', 'You cannot use profanity in your display name.', [
+            {
+              text: 'Ok',
+            },
+          ])
         }
+        this.setState({ loading: false })
       } else {
         // Authenticate
         auth()
@@ -92,25 +73,6 @@ class SignUpScreen extends React.Component {
 
             console.error(error)
           })
-      }
-    }
-    if (prevProps.updateAndFetchRemoteUserIsLoading && !updateAndFetchRemoteUserIsLoading) {
-      if (updateAndFetchRemoteUserErrorMessage) {
-        Alert.alert('Error', 'An unexpected error occurred creating account. Please try again.', [
-          {
-            text: 'Ok',
-          },
-        ])
-      } else {
-        Alert.alert('Success!', 'Mixxy account has been successfully created.', [
-          {
-            text: 'Ok',
-            onPress: () => {
-              navigation.popToTop()
-              navigation.goBack(null)
-            },
-          },
-        ])
       }
     }
   }

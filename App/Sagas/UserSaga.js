@@ -60,6 +60,10 @@ export function* updateAndFetchRemoteUser(params) {
   yield put(UserActions.updateAndFetchRemoteUserLoading())
   const [error, user] = yield call(userService.createOrUpdateRemoteUser, params)
   if (!error) {
+    yield call(userService.saveEmailAndDisplayName, {
+      email: user.email,
+      displayName: user.display_name,
+    })
     yield put(UserActions.updateAndFetchRemoteUserSuccess(user))
   } else {
     yield put(UserActions.updateAndFetchRemoteUserFailure(error))

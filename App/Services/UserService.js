@@ -102,7 +102,21 @@ async function createOrUpdateRemoteUser({ email, displayName = null, firebaseTok
     }
     return [response.data, null]
   } catch (error) {
-    return [error, null]
+    const errorMessage = (error.response && error.response.data) || error.request || error.message
+    return [errorMessage, null]
+  }
+}
+
+async function saveEmailAndDisplayName({ email, displayName }) {
+  try {
+    const user = await storage.getItem('user')
+    const userDetails = user ? JSON.parse(user) : {}
+    userDetails.email = email
+    userDetails.displayName = displayName
+    storage.setItem('user', JSON.stringify(userDetails))
+    return userDetails
+  } catch (e) {
+    return e
   }
 }
 
@@ -113,4 +127,5 @@ export const userService = {
   upgradeIAP,
   restoreIAP,
   createOrUpdateRemoteUser,
+  saveEmailAndDisplayName,
 }

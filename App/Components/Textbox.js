@@ -29,4 +29,5 @@ Textbox.propTypes = {
   charLimit: PropTypes.number,
   onChangeText: PropTypes.func,
   darkMode: PropTypes.bool,
+  secureTextEntry: PropTypes.bool,
 }
