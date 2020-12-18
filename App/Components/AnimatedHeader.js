@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet, Animated, View, Button } from 'react-native'
+import { SafeAreaView, StyleSheet, Animated, View, Button, Platform, StatusBar } from 'react-native'
 import Fonts from '../Theme/Fonts'
 import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
@@ -12,6 +12,7 @@ export default function AnimatedHeader(props) {
 
   const backgroundColorStyle = {
     backgroundColor: darkMode ? Colors.backgroundColorDark : Colors.backgroundColorLight,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   }
   const dividerBackgroundColorStyle = {
     backgroundColor: dividerBackgroundColor,
@@ -23,8 +24,10 @@ export default function AnimatedHeader(props) {
     color: textColor,
   }
   const searchTextStyle = {
-    color: Colors.blue1,
+    // tecolor: Colors.blue1,
     ...Fonts.body1,
+    fontColor: Colors.blue1,
+    backgroundColor: Colors.transparent,
   }
 
   return (
@@ -58,13 +61,14 @@ AnimatedHeader.propTypes = {
 }
 
 const headerStyles = StyleSheet.create({
-  rightPlaceholder: {
-    height: 0,
-    width: 80,
-  },
   rightButton: {
     alignSelf: 'center',
     justifyContent: 'center',
+    width: 80,
+  },
+  rightPlaceholder: {
+    backgroundColor: Colors.transparent,
+    height: 0,
     width: 80,
   },
   topHeaderOutline: {

@@ -19,6 +19,7 @@ export default function ModalBottomOutline(props) {
     width: width,
   }
 
+  // TODO: fix these empty placeholder buttons
   return (
     <KeyboardAvoidingView behavior="position" enabled>
       <View style={[componentStyles.modalBottomOutlineContent, maxHeightModal]}>

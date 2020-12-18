@@ -55,27 +55,36 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     const { upgradeMixxyPro } = this.props
-    // Purchase success handler
-    this.purchaseUpdatePro = purchaseUpdatedListener((purchase) => {
-      const receipt = purchase.transactionReceipt
-      if (receipt) {
-        // Update in our system - wait for callback
-        upgradeMixxyPro(purchase)
-      }
-    })
 
-    // Purchase error handler
-    this.purchaseErrorPro = purchaseErrorListener(() => {
-      // Show alert
-      Alert.alert(
-        'Error purchasing Mixxy Pro',
-        'An error occurred purchasing pro version of Mixxy.',
-        [
-          {
-            text: 'OK',
-          },
-        ]
-      )
+    RNIap.initConnection().then(() => {
+      RNIap.flushFailedPurchasesCachedAsPendingAndroid()
+        .catch(() => {
+          // - there are pending purchases that are still pending (we can't consume a pending purchase)
+        })
+        .then(() => {
+          // Purchase success handler
+          this.purchaseUpdatePro = purchaseUpdatedListener((purchase) => {
+            const receipt = purchase.transactionReceipt
+            if (receipt) {
+              // Update in our system - wait for callback
+              upgradeMixxyPro(purchase)
+            }
+          })
+
+          // Purchase error handler
+          this.purchaseErrorPro = purchaseErrorListener(() => {
+            // Show alert
+            Alert.alert(
+              'Error purchasing Mixxy Pro',
+              'An error occurred purchasing pro version of Mixxy.',
+              [
+                {
+                  text: 'OK',
+                },
+              ]
+            )
+          })
+        })
     })
 
     this.configureNotifications()

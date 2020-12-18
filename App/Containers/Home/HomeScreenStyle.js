@@ -209,6 +209,7 @@ export default function getHomeStylesheet(useDarkMode) {
       borderColor: Colors.transparent,
       borderTopColor: useDarkMode ? Colors.darkFill2Dark : Colors.darkFill2Light,
       borderWidth: 0.5,
+      elevation: 0,
       height: 48,
     },
     tabIcon: {

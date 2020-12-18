@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import Colors from '../Theme/Colors'
 import Fonts from '../Theme/Fonts'
 
@@ -121,6 +121,7 @@ export default function getComponentStylesheet(darkMode) {
     recipeCardOutline: {
       backgroundColor: darkMode ? Colors.cardColorDark : Colors.cardColorLight,
       borderRadius: 10,
+      elevation: 2,
       marginBottom: 12,
       marginLeft: 16,
       marginRight: 16,
@@ -132,7 +133,6 @@ export default function getComponentStylesheet(darkMode) {
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.12,
       shadowRadius: 8,
-      elevation: 2,
     },
     recipeCardType: {
       ...Fonts.body3,
@@ -170,7 +170,8 @@ export default function getComponentStylesheet(darkMode) {
       marginBottom: 24,
       marginLeft: 16,
       marginRight: 16,
-      padding: 14,
+      paddingHorizontal: 14,
+      paddingVertical: Platform.OS === 'android' ? 0 : 14,
     },
     textboxInput: {
       color: darkMode ? Colors.text1Dark : Colors.text1Light,

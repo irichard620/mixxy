@@ -41,7 +41,7 @@ export default function TopHeader(props) {
   const backgroundColorStyle = {
     backgroundColor: backgroundColor,
     position: useAbsolutePosition ? 'absolute' : 'relative',
-    top: 0,
+    top: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     left: 0,
     right: 0,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
