@@ -43,5 +43,24 @@ export default function getAuthStylesheet(useDarkMode) {
       ...Fonts.body1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
     },
+    authHeading: {
+      ...Fonts.h3New,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      textAlign: 'center',
+      marginBottom: 32,
+    },
+    authSubheading: {
+      ...Fonts.h2New,
+      fontWeight: '500',
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      textAlign: 'center',
+      marginBottom: 24,
+    },
+    emailButton: {
+      alignSelf: 'center',
+      width: 200,
+      height: 45,
+      backgroundColor: Colors.text1Light,
+    },
   })
 }

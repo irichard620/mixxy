@@ -15,9 +15,16 @@ import ResultsScreen from '../Containers/Bartender/ResultsScreen'
 import BlogScreen from '../Containers/Blog/BlogScreen'
 import SignUpScreen from '../Containers/Authentication/SignUpScreen'
 import LoginScreen from '../Containers/Authentication/LoginScreen'
+import AuthScreen from '../Containers/Authentication/AuthScreen'
 
 const LoginStack = createStackNavigator(
   {
+    Auth: {
+      screen: AuthScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
     Login: {
       screen: LoginScreen,
       navigationOptions: {
@@ -33,7 +40,7 @@ const LoginStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'Login',
+    initialRouteName: 'Auth',
     mode: 'card',
   }
 )

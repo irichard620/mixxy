@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text, Button, Alert } from 'react-native'
+import { View, Text, Button, Alert, Dimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth'
@@ -104,7 +105,31 @@ class LoginScreen extends React.Component {
   }
 
   onRegisterClick = () => {
-    NavigationService.navigate('SignUp', { keyLoginScreen: this.props.navigation.state.key })
+    NavigationService.navigate('SignUp')
+  }
+
+  onAppleButtonPress = async () => {
+    // Start the sign-in request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    })
+
+    // Ensure Apple returned a user identityToken
+    if (!appleAuthRequestResponse.identityToken) {
+      Alert.alert('Error', 'Apple login failed - please try again later.', [
+        {
+          text: 'Ok',
+        },
+      ])
+    }
+
+    // Create a Firebase credential from the response
+    const { identityToken, nonce } = appleAuthRequestResponse
+    const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce)
+
+    // Sign the user in with the credential
+    return auth().signInWithCredential(appleCredential)
   }
 
   render() {
@@ -112,6 +137,7 @@ class LoginScreen extends React.Component {
     const { email, password, loading } = this.state
     const styles = getStylesheet(darkMode)
     const authStyles = getAuthStylesheet(darkMode)
+    const { width } = Dimensions.get('window')
     return (
       <View style={styles.outerContainer}>
         <TopHeader onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
@@ -140,6 +166,17 @@ class LoginScreen extends React.Component {
             charLimit={100}
             darkMode={darkMode}
             secureTextEntry
+          />
+          <AppleButton
+            buttonStyle={darkMode ? AppleButton.Style.WHITE : AppleButton.Style.BLACK}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              marginBottom: 16,
+              marginLeft: 16,
+              width: width - 32,
+              height: 45,
+            }}
+            onPress={() => this.onAppleButtonPress()}
           />
           <Text style={authStyles.noAccountText}>Don‘t have an account?</Text>
           <Button title="Register" onPress={this.onRegisterClick} />
