@@ -4,8 +4,27 @@ import Colors from '../../Theme/Colors'
 
 export default function getAuthStylesheet(useDarkMode) {
   return StyleSheet.create({
+    authHeading: {
+      ...Fonts.h3New,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      marginBottom: 32,
+      textAlign: 'center',
+    },
+    authSubheading: {
+      ...Fonts.h2New,
+      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+      fontWeight: '500',
+      marginBottom: 24,
+      textAlign: 'center',
+    },
     buffer: {
       height: 24,
+    },
+    emailButton: {
+      alignSelf: 'center',
+      backgroundColor: Colors.text1Light,
+      height: 45,
+      width: 200,
     },
     heading: {
       alignSelf: 'flex-start',
@@ -22,7 +41,8 @@ export default function getAuthStylesheet(useDarkMode) {
       marginBottom: 18,
       marginLeft: 16,
       marginRight: 16,
-      textAlign: 'left',
+      marginTop: 16,
+      textAlign: 'center',
       ...Fonts.body1,
       color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
     },
@@ -42,25 +62,6 @@ export default function getAuthStylesheet(useDarkMode) {
       textAlign: 'left',
       ...Fonts.body1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-    },
-    authHeading: {
-      ...Fonts.h3New,
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      textAlign: 'center',
-      marginBottom: 32,
-    },
-    authSubheading: {
-      ...Fonts.h2New,
-      fontWeight: '500',
-      color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
-      textAlign: 'center',
-      marginBottom: 24,
-    },
-    emailButton: {
-      alignSelf: 'center',
-      width: 200,
-      height: 45,
-      backgroundColor: Colors.text1Light,
     },
   })
 }

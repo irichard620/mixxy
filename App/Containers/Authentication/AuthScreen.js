@@ -1,24 +1,20 @@
 import React from 'react'
-import {
-  SafeAreaView,
-  Text,
-  Alert,
-  Image,
-  TouchableNativeFeedback,
-  View,
-  StyleSheet,
-  Button,
-  Linking,
-} from 'react-native'
+import { SafeAreaView, Text, Alert, View, Linking } from 'react-native'
+import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth'
 import { NavigationActions } from 'react-navigation'
 import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication'
 import NavigationService from '../../Services/NavigationService'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import getAuthStylesheet from './AuthStyle'
+import { PropTypes } from 'prop-types'
 import TopHeader from '../../Components/TopHeader'
+import UserActions from '../../Stores/User/Actions'
 import ButtonLarge from '../../Components/ButtonLarge'
 import Colors from '../../Theme/Colors'
+
+const APPLE_PROVIDER_ID = 'apple.com'
+const GOOGLE_PROVIDER_ID = 'google.com'
 
 class AuthScreen extends React.Component {
   authListener = null
@@ -37,12 +33,44 @@ class AuthScreen extends React.Component {
     // Auth listener
     this.authListener = auth().onAuthStateChanged((user) => {
       if (user && !this.state.authUser) {
-        user.getIdToken().then((token) => {
-          this.setState({ authUser: user })
-          // this.props.updateAndFetchRemoteUser(user._user.email, token)
-        })
+        let displayName = null
+        const email = user.email
+        if (user.providerId === APPLE_PROVIDER_ID || user.providerId === GOOGLE_PROVIDER_ID) {
+          displayName = user.displayName
+          user.getIdToken().then((token) => {
+            this.props.updateAndFetchRemoteUser(email, displayName, token)
+          })
+        }
+        this.setState({ authUser: user })
       }
     })
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      updateAndFetchRemoteUserIsLoading,
+      updateAndFetchRemoteUserErrorMessage,
+      navigation,
+    } = this.props
+    if (prevProps.updateAndFetchRemoteUserIsLoading && !updateAndFetchRemoteUserIsLoading) {
+      if (updateAndFetchRemoteUserErrorMessage) {
+        Alert.alert('Error', 'An unexpected error occurred authenticated. Please try again.', [
+          {
+            text: 'Ok',
+          },
+        ])
+      } else {
+        Alert.alert('Success!', 'You have successfully authenticated with Mixxy.', [
+          {
+            text: 'Ok',
+            onPress: () => {
+              navigation.popToTop()
+              navigation.goBack(null)
+            },
+          },
+        ])
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -155,4 +183,26 @@ class AuthScreen extends React.Component {
   }
 }
 
-export default NavigationService.screenWithDarkMode(AuthScreen)
+AuthScreen.propTypes = {
+  darkMode: PropTypes.bool,
+  navigation: PropTypes.object,
+  updateAndFetchRemoteUser: PropTypes.func,
+  updateAndFetchRemoteUserIsLoading: PropTypes.bool,
+  updateAndFetchRemoteUserErrorMessage: PropTypes.string,
+}
+
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+  updateAndFetchRemoteUserIsLoading: state.user.updateAndFetchRemoteUserIsLoading,
+  updateAndFetchRemoteUserErrorMessage: state.user.updateAndFetchRemoteUserErrorMessage,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  updateAndFetchRemoteUser: (email, displayName, firebaseToken) =>
+    dispatch(UserActions.updateAndFetchRemoteUser(email, displayName, firebaseToken)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavigationService.screenWithDarkMode(AuthScreen))

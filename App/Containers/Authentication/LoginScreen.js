@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Button, Alert, Dimensions } from 'react-native'
+import { View, Text, Alert, Dimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication'
 import { NavigationActions } from 'react-navigation'
@@ -13,10 +13,9 @@ import UserActions from '../../Stores/User/Actions'
 import BottomBar from '../../Components/BottomBar'
 import TopHeader from '../../Components/TopHeader'
 import getStylesheet from '../../Theme/ApplicationStyles'
+import Colors from '../../Theme/Colors'
 
 class LoginScreen extends React.Component {
-  authListener = null
-
   constructor(props) {
     super(props)
     this.state = {
@@ -24,51 +23,6 @@ class LoginScreen extends React.Component {
       password: '',
       loading: false,
       authUser: null,
-    }
-  }
-
-  componentDidMount() {
-    // Auth listener
-    this.authListener = auth().onAuthStateChanged((user) => {
-      if (user && !this.state.authUser) {
-        user.getIdToken().then((token) => {
-          this.setState({ authUser: user })
-          this.props.updateAndFetchRemoteUser(user._user.email, token)
-        })
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    if (this.authListener) {
-      this.authListener = null
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const {
-      updateAndFetchRemoteUserIsLoading,
-      updateAndFetchRemoteUserErrorMessage,
-      navigation,
-    } = this.props
-    if (prevProps.updateAndFetchRemoteUserIsLoading && !updateAndFetchRemoteUserIsLoading) {
-      if (updateAndFetchRemoteUserErrorMessage) {
-        Alert.alert('Error', 'An unexpected error occurred logging in. Please try again.', [
-          {
-            text: 'Ok',
-          },
-        ])
-      } else {
-        Alert.alert('Success!', 'You have successfully authenticated with Mixxy.', [
-          {
-            text: 'Ok',
-            onPress: () => {
-              navigation.popToTop()
-              navigation.goBack(null)
-            },
-          },
-        ])
-      }
     }
   }
 
@@ -87,8 +41,12 @@ class LoginScreen extends React.Component {
     const { email, password } = this.state
     auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('Success')
+      .then((user) => {
+        const authUser = auth().currentUser
+        // Get token
+        authUser.getIdToken().then((token) => {
+          this.props.updateAndFetchRemoteUser(email, token)
+        })
       })
       .catch((error) => {
         // TODO: add popups if error
@@ -132,6 +90,8 @@ class LoginScreen extends React.Component {
     return auth().signInWithCredential(appleCredential)
   }
 
+  onForgotPasswordClick = () => {}
+
   render() {
     const { darkMode } = this.props
     const { email, password, loading } = this.state
@@ -140,17 +100,44 @@ class LoginScreen extends React.Component {
     const { width } = Dimensions.get('window')
     return (
       <View style={styles.outerContainer}>
-        <TopHeader onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
+        <TopHeader
+          onClose={this.onBackScreenClick}
+          showSeparator
+          darkMode={darkMode}
+          title="Log in"
+          useArrow
+        />
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           extraScrollHeight={30}
           style={authStyles.scrollView}
         >
-          <Text style={authStyles.heading}>Login</Text>
           <Text style={authStyles.headingDescription}>
             {'Login to your Mixxy account to access the best Mixxy has to offer.'}
           </Text>
-          <Text style={authStyles.sectionHeading}>{'Email'}</Text>
+          <AppleButton
+            buttonStyle={darkMode ? AppleButton.Style.WHITE : AppleButton.Style.BLACK}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              marginLeft: 16,
+              width: width - 32,
+              height: 45,
+            }}
+            onPress={() => this.onAppleButtonPress()}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginHorizontal: 16,
+              marginVertical: 24,
+            }}
+          >
+            <View style={{ ...styles.divider, width: (width - 64) / 2 }} />
+            <Text>OR</Text>
+            <View style={{ ...styles.divider, width: (width - 64) / 2 }} />
+          </View>
           <Textbox
             onChangeText={(text) => this.setState({ email: text })}
             modalText={email}
@@ -158,7 +145,6 @@ class LoginScreen extends React.Component {
             charLimit={100}
             darkMode={darkMode}
           />
-          <Text style={authStyles.sectionHeading}>{'Password'}</Text>
           <Textbox
             onChangeText={(text) => this.setState({ password: text })}
             modalText={password}
@@ -167,19 +153,12 @@ class LoginScreen extends React.Component {
             darkMode={darkMode}
             secureTextEntry
           />
-          <AppleButton
-            buttonStyle={darkMode ? AppleButton.Style.WHITE : AppleButton.Style.BLACK}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={{
-              marginBottom: 16,
-              marginLeft: 16,
-              width: width - 32,
-              height: 45,
-            }}
-            onPress={() => this.onAppleButtonPress()}
-          />
-          <Text style={authStyles.noAccountText}>Don‘t have an account?</Text>
-          <Button title="Register" onPress={this.onRegisterClick} />
+          <Text
+            style={[authStyles.noAccountText, { color: Colors.blue1 }]}
+            onPress={this.onForgotPasswordClick}
+          >
+            Forgot password?
+          </Text>
           <View style={authStyles.buffer} />
         </KeyboardAwareScrollView>
         <BottomBar
@@ -209,7 +188,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   updateAndFetchRemoteUser: (email, firebaseToken) =>
-    dispatch(UserActions.updateAndFetchRemoteUser(email, firebaseToken)),
+    dispatch(UserActions.updateAndFetchRemoteUser(email, null, firebaseToken)),
 })
 
 export default connect(

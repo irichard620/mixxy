@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Alert } from 'react-native'
+import { View, Text } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -25,58 +25,6 @@ class SignUpScreen extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { email, password } = this.state
-    const { createRemoteUserIsLoading, createRemoteUserErrorMessage } = this.props
-    if (prevProps.createRemoteUserIsLoading && !createRemoteUserIsLoading) {
-      if (createRemoteUserErrorMessage) {
-        if (createRemoteUserErrorMessage === 'Email conflict') {
-          Alert.alert(
-            'Error',
-            'This email address is already in use. Go to login page if this is your account',
-            [
-              {
-                text: 'Ok',
-              },
-            ]
-          )
-        } else if (createRemoteUserErrorMessage === 'Display name conflict') {
-          Alert.alert('Error', 'This display name is already in use. Please enter another one.', [
-            {
-              text: 'Ok',
-            },
-          ])
-        } else if (createRemoteUserErrorMessage === 'Profanity') {
-          Alert.alert('Error', 'You cannot use profanity in your display name.', [
-            {
-              text: 'Ok',
-            },
-          ])
-        }
-        this.setState({ loading: false })
-      } else {
-        // Authenticate
-        auth()
-          .createUserWithEmailAndPassword(email, password)
-          .then(() => {
-            console.log('Success')
-          })
-          .catch((error) => {
-            // TODO: add popups if error
-            if (error.code === 'auth/email-already-in-use') {
-              console.log('That email address is already in use!')
-            }
-
-            if (error.code === 'auth/invalid-email') {
-              console.log('That email address is invalid!')
-            }
-
-            console.error(error)
-          })
-      }
-    }
-  }
-
   onBackScreenClick = () => {
     this.props.navigation.dispatch(NavigationActions.back())
   }
@@ -91,11 +39,33 @@ class SignUpScreen extends React.Component {
   }
 
   onSignUp = () => {
-    const { email, displayName } = this.state
+    const { email, password, displayName } = this.state
     this.setState({
       loading: true,
     })
-    this.props.createRemoteUser(email, displayName)
+    // Authenticate
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        const authUser = auth().currentUser
+        // Get token
+        authUser.getIdToken().then((token) => {
+          // Make api call
+          this.props.updateAndFetchRemoteUser(email, displayName, token)
+        })
+      })
+      .catch((error) => {
+        // TODO: add popups if error
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!')
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!')
+        }
+
+        console.error(error)
+      })
   }
 
   render() {
@@ -108,8 +78,9 @@ class SignUpScreen extends React.Component {
       <View style={styles.outerContainer}>
         <TopHeader
           onClose={this.onBackScreenClick}
-          showSeparator={false}
+          showSeparator
           darkMode={darkMode}
+          title="Sign Up"
           useArrow
         />
         <KeyboardAwareScrollView
@@ -117,17 +88,16 @@ class SignUpScreen extends React.Component {
           extraScrollHeight={30}
           style={authStyles.scrollView}
         >
-          <Text style={authStyles.heading}>Sign Up</Text>
           <Text style={authStyles.headingDescription}>
             {
               'Sign up for a Mixxy account to get the most out of your experience, including cloud backups and community content'
             }
           </Text>
-          <Text style={authStyles.sectionHeading}>{'Set a display name'}</Text>
+          <Text style={authStyles.sectionHeading}>{'What is your name?'}</Text>
           <Textbox
             onChangeText={(text) => this.setState({ displayName: text })}
             modalText={displayName}
-            textPlaceholder={'Display name'}
+            textPlaceholder={'Name'}
             charLimit={100}
             darkMode={darkMode}
           />
@@ -183,8 +153,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   createRemoteUser: (email, displayName) =>
     dispatch(UserActions.createRemoteUser(email, displayName)),
-  updateAndFetchRemoteUser: (email, firebaseToken) =>
-    dispatch(UserActions.updateAndFetchRemoteUser(email, firebaseToken)),
+  updateAndFetchRemoteUser: (email, displayName, firebaseToken) =>
+    dispatch(UserActions.updateAndFetchRemoteUser(email, displayName, firebaseToken)),
 })
 
 export default connect(
