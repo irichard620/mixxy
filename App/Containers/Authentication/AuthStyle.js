@@ -4,6 +4,13 @@ import Colors from '../../Theme/Colors'
 
 export default function getAuthStylesheet(useDarkMode) {
   return StyleSheet.create({
+    appleButton: {
+      alignSelf: 'center',
+      height: 45,
+      marginBottom: 16,
+      marginTop: 16,
+      width: 200,
+    },
     authHeading: {
       ...Fonts.h3New,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
@@ -46,6 +53,13 @@ export default function getAuthStylesheet(useDarkMode) {
       ...Fonts.body1,
       color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
     },
+    loginSeparator: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginHorizontal: 16,
+      marginVertical: 24,
+    },
     noAccountText: {
       alignSelf: 'center',
       textAlign: 'center',
@@ -62,6 +76,13 @@ export default function getAuthStylesheet(useDarkMode) {
       textAlign: 'left',
       ...Fonts.body1,
       color: useDarkMode ? Colors.text1Dark : Colors.text1Light,
+    },
+    termsOfServiceContainer: {
+      alignItems: 'center',
+      bottom: 32,
+      left: 0,
+      position: 'absolute',
+      right: 0,
     },
   })
 }

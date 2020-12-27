@@ -99,6 +99,7 @@ function HomeLibraryTab(props) {
 
   const titleColor = { color: _getPageTitleTextColor() }
   const paddingStyle = { paddingLeft: 16, paddingRight: 16 }
+  const paddingBottomStyle = { paddingBottom: 80 }
   const listHeader = (
     <Animated.Text style={[homeStyles.topHeaderNoBottom, paddingStyle, titleColor]}>
       Library
@@ -122,7 +123,7 @@ function HomeLibraryTab(props) {
           },
         ])}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={[Helpers.flexGrowStyle, { paddingBottom: 80 }]}
+        contentContainerStyle={[Helpers.flexGrowStyle, paddingBottomStyle]}
         data={[{ item: 'menu' }, { item: 'space' }, ...options]}
         keyExtractor={(item, index) => {
           if (index === 0) {

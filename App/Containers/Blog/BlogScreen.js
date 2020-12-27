@@ -160,15 +160,9 @@ class BlogScreen extends React.Component {
           <View style={blogStyles.contentContainer}>
             <Text style={blogStyles.title}>{title}</Text>
             <Text style={blogStyles.description}>{subtitle}</Text>
-            <View
-              style={{ flexDirection: 'row', height: 32, marginBottom: 16, alignItems: 'center' }}
-            >
+            <View style={blogStyles.profileOutline}>
               <FastImage
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                }}
+                style={blogStyles.profileImage}
                 source={{
                   uri: profileImage,
                   priority: FastImage.priority.normal,

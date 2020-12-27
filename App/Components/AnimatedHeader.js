@@ -58,13 +58,13 @@ AnimatedHeader.propTypes = {
 }
 
 const headerStyles = StyleSheet.create({
-  rightPlaceholder: {
-    height: 0,
-    width: 80,
-  },
   rightButton: {
     alignSelf: 'center',
     justifyContent: 'center',
+    width: 80,
+  },
+  rightPlaceholder: {
+    height: 0,
     width: 80,
   },
   topHeaderOutline: {

@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, Text, Alert, Dimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication'
+import { appleAuth } from '@invertase/react-native-apple-authentication'
+import { GoogleSignin } from '@react-native-community/google-signin'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth'
@@ -12,8 +13,10 @@ import Textbox from '../../Components/Textbox'
 import UserActions from '../../Stores/User/Actions'
 import BottomBar from '../../Components/BottomBar'
 import TopHeader from '../../Components/TopHeader'
+import ButtonLarge from '../../Components/ButtonLarge'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import Colors from '../../Theme/Colors'
+import Helpers from '../../Theme/Helpers'
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -90,7 +93,31 @@ class LoginScreen extends React.Component {
     return auth().signInWithCredential(appleCredential)
   }
 
-  onForgotPasswordClick = () => {}
+  onGoogleButtonPress = async () => {
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn()
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential)
+  }
+
+  onForgotPasswordClick = () => {
+    Alert.prompt('Enter email', 'Enter your email so we can send a reset password link', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: (email) => {
+          auth().sendPasswordResetEmail(email)
+        },
+      },
+    ])
+  }
 
   render() {
     const { darkMode } = this.props
@@ -115,25 +142,27 @@ class LoginScreen extends React.Component {
           <Text style={authStyles.headingDescription}>
             {'Login to your Mixxy account to access the best Mixxy has to offer.'}
           </Text>
-          <AppleButton
-            buttonStyle={darkMode ? AppleButton.Style.WHITE : AppleButton.Style.BLACK}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={{
-              marginLeft: 16,
-              width: width - 32,
-              height: 45,
-            }}
-            onPress={() => this.onAppleButtonPress()}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginHorizontal: 16,
-              marginVertical: 24,
-            }}
-          >
+          <View style={Helpers.crossCenter}>
+            <ButtonLarge
+              onButtonClick={this.onAppleButtonPress}
+              title="Continue with Apple"
+              margin={[0, 0, 16, 0]}
+              buttonWidth={250}
+              buttonHeight={45}
+              colorOverride={darkMode ? '#FFFFFF' : '#000000'}
+              textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
+            />
+            <ButtonLarge
+              onButtonClick={this.onGoogleButtonPress}
+              title="Continue with Google"
+              margin={[0, 0, 16, 0]}
+              buttonWidth={250}
+              buttonHeight={45}
+              colorOverride={darkMode ? '#FFFFFF' : '#000000'}
+              textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
+            />
+          </View>
+          <View style={authStyles.loginSeparator}>
             <View style={{ ...styles.divider, width: (width - 64) / 2 }} />
             <Text>OR</Text>
             <View style={{ ...styles.divider, width: (width - 64) / 2 }} />

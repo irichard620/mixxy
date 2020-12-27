@@ -72,14 +72,7 @@ export default function BlogCard(props) {
         <View style={discoverStyles.cardBottomContentContainer}>
           {profileImage && (
             <FastImage
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-                marginBottom: 12,
-                borderWidth: 1,
-                borderColor: 'white',
-              }}
+              style={discoverStyles.blogProfileImage}
               source={{
                 uri: profileImage,
                 priority: FastImage.priority.normal,

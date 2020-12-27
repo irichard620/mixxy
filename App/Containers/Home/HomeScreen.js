@@ -1,5 +1,6 @@
 import React from 'react'
 import { Dimensions, Image, Alert, SafeAreaView, Platform } from 'react-native'
+import { GoogleSignin } from '@react-native-community/google-signin'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { withNavigationFocus } from 'react-navigation'
@@ -90,6 +91,10 @@ class HomeScreen extends React.Component {
     })
 
     this.configureNotifications()
+
+    GoogleSignin.configure({
+      webClientId: '205781924664-lvmaub685leraqq1q47ilv0cfkg7obqs.apps.googleusercontent.com',
+    })
 
     this.props.fetchRecipes()
     this.props.barCartFetchIngredients()

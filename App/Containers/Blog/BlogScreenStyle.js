@@ -51,6 +51,17 @@ export default function getBlogStylesheet(useDarkMode) {
     linearGradient: {
       flex: 1,
     },
+    profileImage: {
+      borderRadius: 16,
+      height: 32,
+      width: 32,
+    },
+    profileOutline: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      height: 32,
+      marginBottom: 16,
+    },
     recipesContainer: {
       marginBottom: 24,
       marginTop: 16,

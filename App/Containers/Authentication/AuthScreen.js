@@ -3,7 +3,8 @@ import { SafeAreaView, Text, Alert, View, Linking } from 'react-native'
 import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth'
 import { NavigationActions } from 'react-navigation'
-import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication'
+import { appleAuth } from '@invertase/react-native-apple-authentication'
+import { GoogleSignin } from '@react-native-community/google-signin'
 import NavigationService from '../../Services/NavigationService'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import getAuthStylesheet from './AuthStyle'
@@ -12,6 +13,7 @@ import TopHeader from '../../Components/TopHeader'
 import UserActions from '../../Stores/User/Actions'
 import ButtonLarge from '../../Components/ButtonLarge'
 import Colors from '../../Theme/Colors'
+import Helpers from '../../Theme/Helpers'
 
 const APPLE_PROVIDER_ID = 'apple.com'
 const GOOGLE_PROVIDER_ID = 'google.com'
@@ -35,7 +37,11 @@ class AuthScreen extends React.Component {
       if (user && !this.state.authUser) {
         let displayName = null
         const email = user.email
-        if (user.providerId === APPLE_PROVIDER_ID || user.providerId === GOOGLE_PROVIDER_ID) {
+        let providerId = null
+        if (user.providerData && user.providerData.length) {
+          providerId = user.providerData[0].providerId
+        }
+        if (providerId === APPLE_PROVIDER_ID || providerId === GOOGLE_PROVIDER_ID) {
           displayName = user.displayName
           user.getIdToken().then((token) => {
             this.props.updateAndFetchRemoteUser(email, displayName, token)
@@ -126,6 +132,17 @@ class AuthScreen extends React.Component {
     return auth().signInWithCredential(appleCredential)
   }
 
+  onGoogleButtonPress = async () => {
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn()
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential)
+  }
+
   render() {
     const { darkMode } = this.props
     const styles = getStylesheet(darkMode)
@@ -136,30 +153,36 @@ class AuthScreen extends React.Component {
         <Text style={authStyles.authHeading}>Mixxy</Text>
         <Text style={authStyles.authSubheading}>Ultimate guide to home bartending.</Text>
         <Text style={authStyles.noAccountText}>Get started by creating your account.</Text>
-        <AppleButton
-          buttonStyle={darkMode ? AppleButton.Style.WHITE : AppleButton.Style.BLACK}
-          buttonType={AppleButton.Type.SIGN_UP}
-          style={{
-            marginTop: 16,
-            marginBottom: 16,
-            alignSelf: 'center',
-            width: 200,
-            height: 45,
-          }}
-          onPress={() => this.onAppleButtonPress()}
-        />
-        <View style={{ alignItems: 'center' }}>
+        <View style={Helpers.crossCenter}>
+          <ButtonLarge
+            onButtonClick={this.onAppleButtonPress}
+            title="Sign up with Apple"
+            margin={[16, 0, 16, 0]}
+            buttonWidth={250}
+            buttonHeight={45}
+            colorOverride={darkMode ? '#FFFFFF' : '#000000'}
+            textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
+          />
+          <ButtonLarge
+            onButtonClick={this.onGoogleButtonPress}
+            title="Sign up with Google"
+            margin={[0, 0, 16, 0]}
+            buttonWidth={250}
+            buttonHeight={45}
+            colorOverride={darkMode ? '#FFFFFF' : '#000000'}
+            textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
+          />
           <ButtonLarge
             onButtonClick={this.onEmailSignUpClick}
-            title="Sign up with email"
+            title="Sign up with Email"
             margin={[0, 0, 16, 0]}
-            buttonWidth={200}
+            buttonWidth={250}
             buttonHeight={45}
             colorOverride={darkMode ? '#FFFFFF' : '#000000'}
             textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
           />
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={Helpers.rowMain}>
           <Text style={authStyles.noAccountText}>{'Already have an account? '}</Text>
           <Text
             style={[authStyles.noAccountText, { color: Colors.blue1 }]}
@@ -169,7 +192,7 @@ class AuthScreen extends React.Component {
           </Text>
         </View>
 
-        <View style={{ position: 'absolute', bottom: 32, left: 0, right: 0, alignItems: 'center' }}>
+        <View style={authStyles.termsOfServiceContainer}>
           <Text style={authStyles.noAccountText}>By creating an account, I accept Mixxys</Text>
           <Text
             style={[authStyles.noAccountText, { color: Colors.blue1 }]}

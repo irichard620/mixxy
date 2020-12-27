@@ -4,6 +4,14 @@ import Fonts from '../../../Theme/Fonts'
 
 export default function getDiscoverStylesheet(useDarkMode) {
   return StyleSheet.create({
+    blogProfileImage: {
+      borderColor: Colors.backgroundColorLight,
+      borderRadius: 20,
+      borderWidth: 1,
+      height: 40,
+      marginBottom: 12,
+      width: 40,
+    },
     cardBottomContentContainer: {
       alignItems: 'flex-start',
       bottom: 0,
