@@ -35,16 +35,14 @@ class AuthScreen extends React.Component {
     // Auth listener
     this.authListener = auth().onAuthStateChanged((user) => {
       if (user && !this.state.authUser) {
-        let displayName = null
         const email = user.email
         let providerId = null
         if (user.providerData && user.providerData.length) {
           providerId = user.providerData[0].providerId
         }
         if (providerId === APPLE_PROVIDER_ID || providerId === GOOGLE_PROVIDER_ID) {
-          displayName = user.displayName
           user.getIdToken().then((token) => {
-            this.props.updateAndFetchRemoteUser(email, displayName, token)
+            this.props.updateAndFetchRemoteUser(email, null, token)
           })
         }
         this.setState({ authUser: user })
@@ -56,6 +54,7 @@ class AuthScreen extends React.Component {
     const {
       updateAndFetchRemoteUserIsLoading,
       updateAndFetchRemoteUserErrorMessage,
+      user,
       navigation,
     } = this.props
     if (prevProps.updateAndFetchRemoteUserIsLoading && !updateAndFetchRemoteUserIsLoading) {
@@ -72,6 +71,11 @@ class AuthScreen extends React.Component {
             onPress: () => {
               navigation.popToTop()
               navigation.goBack(null)
+
+              // check if display name is empty and go to new page
+              if (!user.displayName || user.displayName === '') {
+                NavigationService.navigate('Username')
+              }
             },
           },
         ])
@@ -212,6 +216,7 @@ AuthScreen.propTypes = {
   updateAndFetchRemoteUser: PropTypes.func,
   updateAndFetchRemoteUserIsLoading: PropTypes.bool,
   updateAndFetchRemoteUserErrorMessage: PropTypes.string,
+  user: PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({

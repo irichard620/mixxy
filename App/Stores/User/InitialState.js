@@ -17,4 +17,6 @@ export const INITIAL_STATE = {
   createRemoteUserErrorMessage: null,
   updateAndFetchRemoteUserIsLoading: false,
   updateAndFetchRemoteUserErrorMessage: null,
+  updateDisplayNameIsLoading: false,
+  updateDisplayNameErrorMessage: null,
 }

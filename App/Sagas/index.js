@@ -15,6 +15,7 @@ import {
   updateVolumeUnits,
   createRemoteUser,
   updateAndFetchRemoteUser,
+  updateDisplayName,
 } from './UserSaga'
 import { startup } from './StartupSaga'
 import { fetchIngredients, fetchBarCartIngredients, setBarCartIngredients } from './IngredientSaga'
@@ -86,5 +87,7 @@ export default function* root() {
     takeLatest(UserTypes.CREATE_REMOTE_USER, createRemoteUser),
     // Update and fetch remote user
     takeLatest(UserTypes.UPDATE_AND_FETCH_REMOTE_USER, updateAndFetchRemoteUser),
+    // Update display name
+    takeLatest(UserTypes.UPDATE_DISPLAY_NAME, updateDisplayName),
   ])
 }

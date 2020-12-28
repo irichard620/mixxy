@@ -88,6 +88,8 @@ function HomeSettingsTab(props) {
           },
         },
       ])
+    } else if (option === constants.OPTION_DISPLAY_NAME) {
+      NavigationService.navigate('Username')
     }
   }
 
@@ -138,10 +140,10 @@ function HomeSettingsTab(props) {
         {authUser && (
           <Detail
             key="display_name"
-            value={user.displayName}
-            title="Display name"
+            value={user.displayName || 'No value'}
+            title={constants.OPTION_DISPLAY_NAME}
+            onDetailClick={() => onSettingsOptionClick(constants.OPTION_DISPLAY_NAME)}
             showSeparator
-            disabled
             darkMode={darkMode}
           />
         )}

@@ -132,6 +132,25 @@ export const updateAndFetchRemoteUserFailure = (state, { errorMessage }) => ({
   updateAndFetchRemoteUserErrorMessage: errorMessage,
 })
 
+export const updateDisplayNameLoading = (state) => ({
+  ...state,
+  updateDisplayNameIsLoading: true,
+  updateDisplayNameErrorMessage: null,
+})
+
+export const updateDisplayNameSuccess = (state, { user }) => ({
+  ...state,
+  user: { ...state.user, email: user.email, displayName: user.displayName.toLowerCase() },
+  updateDisplayNameIsLoading: false,
+  updateDisplayNameErrorMessage: null,
+})
+
+export const updateDisplayNameFailure = (state, { errorMessage }) => ({
+  ...state,
+  updateDisplayNameIsLoading: false,
+  updateDisplayNameErrorMessage: errorMessage,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [UserTypes.FETCH_USER_LOADING]: fetchUserLoading,
   [UserTypes.FETCH_USER_SUCCESS]: fetchUserSuccess,
@@ -152,4 +171,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [UserTypes.UPDATE_AND_FETCH_REMOTE_USER_LOADING]: updateAndFetchRemoteUserLoading,
   [UserTypes.UPDATE_AND_FETCH_REMOTE_USER_SUCCESS]: updateAndFetchRemoteUserSuccess,
   [UserTypes.UPDATE_AND_FETCH_REMOTE_USER_FAILURE]: updateAndFetchRemoteUserFailure,
+  [UserTypes.UPDATE_DISPLAY_NAME_LOADING]: updateDisplayNameLoading,
+  [UserTypes.UPDATE_DISPLAY_NAME_SUCCESS]: updateDisplayNameSuccess,
+  [UserTypes.UPDATE_DISPLAY_NAME_FAILURE]: updateDisplayNameFailure,
 })

@@ -69,3 +69,16 @@ export function* updateAndFetchRemoteUser(params) {
     yield put(UserActions.updateAndFetchRemoteUserFailure(error))
   }
 }
+
+export function* updateDisplayName(params) {
+  yield put(UserActions.updateDisplayNameLoading())
+  const errorMessage = yield call(userService.updateDisplayName, params)
+  if (!errorMessage) {
+    const user = yield call(userService.saveEmailAndDisplayName, {
+      displayName: params.displayName,
+    })
+    yield put(UserActions.updateDisplayNameSuccess(user))
+  } else {
+    yield put(UserActions.updateDisplayNameFailure(errorMessage))
+  }
+}

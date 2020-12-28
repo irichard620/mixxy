@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -19,7 +19,6 @@ class SignUpScreen extends React.Component {
     this.state = {
       email: '',
       password: '',
-      displayName: '',
       loading: false,
       authUser: null,
     }
@@ -30,16 +29,15 @@ class SignUpScreen extends React.Component {
   }
 
   inputValid = () => {
-    const { email, password, displayName } = this.state
+    const { email, password } = this.state
 
     if (email.trim() === '') return false
     if (password.trim().length < 6) return false
-    if (displayName.trim() === '') return false
     return true
   }
 
   onSignUp = () => {
-    const { email, password, displayName } = this.state
+    const { email, password } = this.state
     this.setState({
       loading: true,
     })
@@ -51,26 +49,40 @@ class SignUpScreen extends React.Component {
         // Get token
         authUser.getIdToken().then((token) => {
           // Make api call
-          this.props.updateAndFetchRemoteUser(email, displayName, token)
+          this.props.updateAndFetchRemoteUser(email, null, token)
         })
       })
       .catch((error) => {
         // TODO: add popups if error
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!')
+          Alert.alert('Error', 'That email address is already in use!', [
+            {
+              text: 'Ok',
+            },
+          ])
+          return
         }
 
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!')
+          Alert.alert('Error', 'That email address is invalid!', [
+            {
+              text: 'Ok',
+            },
+          ])
+          return
         }
 
-        console.error(error)
+        Alert.alert('Error', 'An unexpected error occurred signing up. Please try again.', [
+          {
+            text: 'Ok',
+          },
+        ])
       })
   }
 
   render() {
     const { darkMode } = this.props
-    const { email, password, displayName, loading } = this.state
+    const { email, password, loading } = this.state
     const styles = getStylesheet(darkMode)
     const authStyles = getAuthStylesheet(darkMode)
 
@@ -93,14 +105,6 @@ class SignUpScreen extends React.Component {
               'Sign up for a Mixxy account to get the most out of your experience, including cloud backups and community content'
             }
           </Text>
-          <Text style={authStyles.sectionHeading}>{'What is your name?'}</Text>
-          <Textbox
-            onChangeText={(text) => this.setState({ displayName: text })}
-            modalText={displayName}
-            textPlaceholder={'Name'}
-            charLimit={100}
-            darkMode={darkMode}
-          />
           <Text style={authStyles.sectionHeading}>{'What is your email?'}</Text>
           <Textbox
             onChangeText={(text) => this.setState({ email: text })}

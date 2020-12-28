@@ -107,16 +107,36 @@ async function createOrUpdateRemoteUser({ email, displayName = null, firebaseTok
   }
 }
 
-async function saveEmailAndDisplayName({ email, displayName }) {
+async function saveEmailAndDisplayName({ email = null, displayName = null }) {
   try {
     const user = await storage.getItem('user')
     const userDetails = user ? JSON.parse(user) : {}
-    userDetails.email = email
-    userDetails.displayName = displayName
+    if (email) {
+      userDetails.email = email
+    }
+    if (displayName) {
+      userDetails.displayName = displayName
+    }
     storage.setItem('user', JSON.stringify(userDetails))
     return userDetails
   } catch (e) {
     return e
+  }
+}
+
+async function updateDisplayName({ displayName = null, firebaseToken = null }) {
+  console.log('display', displayName)
+  let userData = { display_name: displayName }
+  let url = `users`
+  try {
+    const response = await defaultApiClient(url, firebaseToken).put('/', userData)
+    if (in200s(response.status)) {
+      return null
+    }
+    return response.data
+  } catch (error) {
+    const errorMessage = (error.response && error.response.data) || error.request || error.message
+    return errorMessage
   }
 }
 
@@ -128,4 +148,5 @@ export const userService = {
   restoreIAP,
   createOrUpdateRemoteUser,
   saveEmailAndDisplayName,
+  updateDisplayName,
 }

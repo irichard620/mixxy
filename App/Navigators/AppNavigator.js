@@ -16,6 +16,7 @@ import BlogScreen from '../Containers/Blog/BlogScreen'
 import SignUpScreen from '../Containers/Authentication/SignUpScreen'
 import LoginScreen from '../Containers/Authentication/LoginScreen'
 import AuthScreen from '../Containers/Authentication/AuthScreen'
+import UsernameScreen from '../Containers/Authentication/UsernameScreen'
 
 const LoginStack = createStackNavigator(
   {
@@ -115,6 +116,12 @@ const StackNavigator = createStackNavigator(
     },
     LoginScreen: {
       screen: LoginStack,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
+    Username: {
+      screen: UsernameScreen,
       navigationOptions: {
         gesturesEnabled: false,
       },
