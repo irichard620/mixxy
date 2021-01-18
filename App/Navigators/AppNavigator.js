@@ -38,6 +38,12 @@ const LoginStack = createStackNavigator(
         gesturesEnabled: false,
       },
     },
+    Username: {
+      screen: UsernameScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
   },
   {
     headerMode: 'none',
@@ -116,12 +122,6 @@ const StackNavigator = createStackNavigator(
     },
     LoginScreen: {
       screen: LoginStack,
-      navigationOptions: {
-        gesturesEnabled: false,
-      },
-    },
-    Username: {
-      screen: UsernameScreen,
       navigationOptions: {
         gesturesEnabled: false,
       },

@@ -5,10 +5,23 @@ import { PropTypes } from 'prop-types'
 import getComponentStylesheet from './ComponentStyle'
 
 export default function Textbox(props) {
-  const { modalText, textPlaceholder, charLimit, onChangeText, secureTextEntry, darkMode } = props
+  const {
+    modalText,
+    textPlaceholder,
+    charLimit,
+    onChangeText,
+    secureTextEntry,
+    darkMode,
+    disabled,
+    marginBottomOverride,
+  } = props
   const componentStyles = getComponentStylesheet(darkMode)
+  let marginBottomStyle = {}
+  if (marginBottomOverride) {
+    marginBottomStyle = { marginBottom: marginBottomOverride }
+  }
   return (
-    <View style={componentStyles.textboxContainer}>
+    <View style={[componentStyles.textboxContainer, marginBottomStyle]}>
       <TextInput
         onChangeText={(text) => onChangeText(text)}
         value={modalText}
@@ -18,6 +31,7 @@ export default function Textbox(props) {
         maxLength={charLimit}
         multiline={false}
         secureTextEntry={secureTextEntry}
+        editable={!disabled}
       />
     </View>
   )
@@ -30,4 +44,6 @@ Textbox.propTypes = {
   onChangeText: PropTypes.func,
   darkMode: PropTypes.bool,
   secureTextEntry: PropTypes.bool,
+  disabled: PropTypes.bool,
+  marginBottomOverride: PropTypes.number,
 }

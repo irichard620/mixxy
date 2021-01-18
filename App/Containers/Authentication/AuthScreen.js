@@ -69,12 +69,12 @@ class AuthScreen extends React.Component {
           {
             text: 'Ok',
             onPress: () => {
-              navigation.popToTop()
-              navigation.goBack(null)
-
               // check if display name is empty and go to new page
               if (!user.displayName || user.displayName === '') {
                 NavigationService.navigate('Username')
+              } else {
+                navigation.popToTop()
+                navigation.goBack(null)
               }
             },
           },

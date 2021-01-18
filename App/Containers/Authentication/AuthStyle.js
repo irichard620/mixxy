@@ -69,6 +69,20 @@ export default function getAuthStylesheet(useDarkMode) {
     scrollView: {
       flex: 1,
     },
+    textboxSubtext: {
+      alignSelf: 'flex-start',
+      marginBottom: 24,
+      marginLeft: 16,
+      textAlign: 'left',
+      ...Fonts.body1,
+      color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
+    },
+    topHeader: {
+      ...Fonts.h1New,
+      marginBottom: 8,
+      textAlign: 'left',
+      marginLeft: 16,
+    },
     sectionHeading: {
       alignSelf: 'flex-start',
       marginBottom: 12,

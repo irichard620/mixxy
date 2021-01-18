@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Alert } from 'react-native'
+import { SafeAreaView, View, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 // import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -10,7 +10,6 @@ import NavigationService from '../../Services/NavigationService'
 import Textbox from '../../Components/Textbox'
 import BottomBar from '../../Components/BottomBar'
 import UserActions from '../../Stores/User/Actions'
-import TopHeader from '../../Components/TopHeader'
 import getStylesheet from '../../Theme/ApplicationStyles'
 
 class UsernameScreen extends React.Component {
@@ -18,6 +17,7 @@ class UsernameScreen extends React.Component {
     super(props)
     this.state = {
       displayName: '',
+      fullName: '',
       loading: false,
     }
   }
@@ -77,62 +77,84 @@ class UsernameScreen extends React.Component {
   }
 
   inputValid = () => {
-    const { displayName } = this.state
+    const { displayName, fullName } = this.state
 
     if (displayName.trim() === '') return false
+    if (fullName.trim() === '') return false
     return true
   }
 
   onUpdateDisplayName = () => {
-    const { displayName } = this.state
+    const { displayName, fullName } = this.state
     this.setState({
       loading: true,
     })
     const authUser = auth().currentUser
     // Get token
     authUser.getIdToken().then((token) => {
-      this.props.updateDisplayName(displayName, token)
+      this.props.updateDisplayName(displayName, fullName, token)
     })
   }
 
   render() {
-    const { darkMode } = this.props
-    const { displayName, loading } = this.state
+    const { darkMode, user } = this.props
+    const { displayName, fullName, loading } = this.state
     const styles = getStylesheet(darkMode)
     const authStyles = getAuthStylesheet(darkMode)
 
     return (
-      <View style={styles.outerContainer}>
-        <TopHeader
-          onClose={this.onBackScreenClick}
-          showSeparator
-          darkMode={darkMode}
-          title="Username"
-        />
+      <SafeAreaView style={styles.outerContainer}>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           extraScrollHeight={30}
           style={authStyles.scrollView}
         >
-          <Text style={authStyles.headingDescription}>
-            {'Set a unique username for your Mixxy account'}
+          <Text style={[authStyles.topHeader, { paddingTop: 48 }]}>Almost there!</Text>
+          <Text style={[authStyles.sectionHeading, { paddingBottom: 12 }]}>
+            We just need a few more details to complete your profile.
           </Text>
+          <Text style={authStyles.sectionHeading}>Email</Text>
+          <Textbox
+            modalText=""
+            textPlaceholder={user.email}
+            charLimit={100}
+            darkMode={darkMode}
+            disabled
+          />
+          <Text style={authStyles.sectionHeading}>Username</Text>
           <Textbox
             onChangeText={(text) => this.setState({ displayName: text })}
             modalText={displayName}
             textPlaceholder={'Username'}
             charLimit={100}
             darkMode={darkMode}
+            marginBottomOverride={12}
           />
+          <Text style={authStyles.textboxSubtext}>
+            A unique nickname to help others find your Mixxy profile and tag your recipes. Usernames
+            can only contain letters, numbers, periods, and underscores.
+          </Text>
+          <Text style={authStyles.sectionHeading}>Name</Text>
+          <Textbox
+            onChangeText={(text) => this.setState({ fullName: text })}
+            modalText={fullName}
+            textPlaceholder={'Full name'}
+            charLimit={100}
+            darkMode={darkMode}
+            marginBottomOverride={12}
+          />
+          <Text style={authStyles.textboxSubtext}>
+            This is visible to other people who visit your Mixxy profile.
+          </Text>
           <View style={authStyles.buffer} />
         </KeyboardAwareScrollView>
         <BottomBar
-          buttonTitle="Set display name"
+          buttonTitle="Sign Up"
           disabled={!this.inputValid() || loading}
           darkMode={darkMode}
           onButtonClick={this.onUpdateDisplayName}
         />
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -143,6 +165,7 @@ UsernameScreen.propTypes = {
   updateDisplayName: PropTypes.func,
   updateDisplayNameIsLoading: PropTypes.bool,
   updateDisplayNameErrorMessage: PropTypes.string,
+  user: PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({
@@ -152,8 +175,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  updateDisplayName: (displayName, firebaseToken) =>
-    dispatch(UserActions.updateDisplayName(displayName, firebaseToken)),
+  updateDisplayName: (displayName, fullName, firebaseToken) =>
+    dispatch(UserActions.updateDisplayName(displayName, fullName, firebaseToken)),
 })
 
 export default connect(

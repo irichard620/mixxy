@@ -46,7 +46,7 @@ const { Types, Creators } = createActions({
   updateAndFetchRemoteUserLoading: null,
   updateAndFetchRemoteUserSuccess: ['user'],
   updateAndFetchRemoteUserFailure: ['errorMessage'],
-  updateDisplayName: ['displayName', 'firebaseToken'],
+  updateDisplayName: ['displayName', 'fullName', 'firebaseToken'],
   updateDisplayNameLoading: null,
   updateDisplayNameSuccess: ['user'],
   updateDisplayNameFailure: ['errorMessage'],

@@ -57,11 +57,6 @@ TopHeader.propTypes = {
   darkMode: PropTypes.bool,
   rightButtonTitle: PropTypes.string,
   onRightButtonPress: PropTypes.func,
-  showDots: PropTypes.bool,
-  onDotsClick: PropTypes.func,
-  onFavoriteClick: PropTypes.func,
-  isFavorited: PropTypes.bool,
-  onShareClick: PropTypes.func,
 }
 
 const headerStyles = StyleSheet.create({

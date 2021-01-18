@@ -124,9 +124,8 @@ async function saveEmailAndDisplayName({ email = null, displayName = null }) {
   }
 }
 
-async function updateDisplayName({ displayName = null, firebaseToken = null }) {
-  console.log('display', displayName)
-  let userData = { display_name: displayName }
+async function updateDisplayName({ displayName = null, fullName = null, firebaseToken = null }) {
+  let userData = { display_name: displayName, full_name: fullName }
   let url = `users`
   try {
     const response = await defaultApiClient(url, firebaseToken).put('/', userData)
