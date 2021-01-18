@@ -131,7 +131,11 @@ class BlogScreen extends React.Component {
 
     // Get display date
     const createdAtDate = new Date(createdAt)
-    let displayDate = createdAtDate.toLocaleString('default', { month: 'long', day: 'numeric' })
+    let displayDate = createdAtDate.toLocaleString('default', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    })
     return (
       <View style={styles.outerContainer}>
         <ScrollView style={blogStyles.scrollContainer} showsVerticalScrollIndicator={false}>
