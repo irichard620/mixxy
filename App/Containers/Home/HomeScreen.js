@@ -55,6 +55,7 @@ class HomeScreen extends React.Component {
       baseSpirit: constants.NONE_SPIRIT,
       selectedBaseSpirit: '',
       authUser: {},
+      authToken: '',
     }
   }
 
@@ -85,9 +86,13 @@ class HomeScreen extends React.Component {
 
     // Auth listener
     this.authListener = auth().onAuthStateChanged((user) => {
-      this.setState({
-        authUser: user,
-      })
+      if (user) {
+        user.getIdToken().then((token) => {
+          this.setState({ authUser: user, authToken: token })
+        })
+      } else {
+        this.setState({ authUser: {}, authToken: '' })
+      }
     })
 
     this.configureNotifications()
@@ -140,6 +145,9 @@ class HomeScreen extends React.Component {
     }
     if (nextUser && prevProps.updateVolumeUnitsLoading && !this.props.updateVolumeUnitsLoading) {
       this.onCloseModalClick()
+    }
+    if (prevProps.syncUserRecipesIsLoading && !this.props.syncUserRecipesIsLoading) {
+      // TODO: error if syncing issue
     }
   }
 
@@ -344,6 +352,13 @@ class HomeScreen extends React.Component {
     })
   }
 
+  onSyncUserRecipesClick = () => {
+    const { syncUserRecipes } = this.props
+    const { authToken } = this.state
+    if (!authToken) return
+    syncUserRecipes(authToken)
+  }
+
   renderScene = ({ route }) => {
     switch (route.key) {
       case 'discover':
@@ -367,6 +382,7 @@ class HomeScreen extends React.Component {
             onMixxyProClick={this.onPurchaseMixxyClicked}
             onRestoreClick={this.onRestorePurchaseClicked}
             onVolumeUnitsClick={this.onVolumeUnitMenuClick}
+            onSyncUserRecipesClick={this.onSyncUserRecipesClick}
             authUser={this.state.authUser}
           />
         )
@@ -637,6 +653,9 @@ HomeScreen.propTypes = {
   barCartFetchIngredients: PropTypes.func,
   barCartSetIngredients: PropTypes.func,
   barCartIngredients: PropTypes.array,
+  syncUserRecipes: PropTypes.func,
+  syncUserRecipesIsLoading: PropTypes.bool,
+  syncUserRecipesErrorMessage: PropTypes.string,
 }
 
 const mapStateToProps = (state) => ({
@@ -651,6 +670,8 @@ const mapStateToProps = (state) => ({
   barCartIngredients: state.ingredients.barCartIngredients,
   barCartFetchIngredientsIsLoading: state.ingredients.barCartFetchIngredientsIsLoading,
   barCartSetIngredientsIsLoading: state.ingredients.barCartSetIngredientsIsLoading,
+  syncUserRecipesIsLoading: state.recipes.syncUserRecipesIsLoading,
+  syncUserRecipesErrorMessage: state.recipes.syncUserRecipesErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -663,6 +684,7 @@ const mapDispatchToProps = (dispatch) => ({
   barCartFetchIngredients: () => dispatch(IngredientActions.barCartFetchIngredients()),
   barCartSetIngredients: (ingredients) =>
     dispatch(IngredientActions.barCartSetIngredients(ingredients)),
+  syncUserRecipes: (firebaseToken) => dispatch(RecipeActions.syncUserRecipes(firebaseToken)),
 })
 
 export default withNavigationFocus(

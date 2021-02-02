@@ -62,6 +62,12 @@ const { Types, Creators } = createActions({
   favoriteRecipe: ['recipeId'],
   // Unfavorite
   unfavoriteRecipe: ['recipeId'],
+
+  // Sync user recipes
+  syncUserRecipes: ['firebaseToken'],
+  syncUserRecipesLoading: null,
+  syncUserRecipesSuccess: ['recipes'],
+  syncUserRecipesFailure: ['errorMessage'],
 })
 
 export const RecipeTypes = Types

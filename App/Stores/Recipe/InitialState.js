@@ -16,4 +16,6 @@ export const INITIAL_STATE = {
   shareLink: null,
   createSharedRecipeIsLoading: false,
   createSharedRecipeErrorMessage: null,
+  syncUserRecipesIsLoading: false,
+  syncUserRecipesErrorMessage: null,
 }

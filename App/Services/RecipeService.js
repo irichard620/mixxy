@@ -3,9 +3,8 @@ import DeviceInfo from 'react-native-device-info'
 import analytics from '@react-native-firebase/analytics'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
-import snakeCaseKeys from 'snakecase-keys'
 import uuidv4 from 'uuid/v4'
-import { Recipe } from '../Storage/Recipe'
+import { Recipe, snakecaseRecipe } from '../Storage/Recipe'
 import * as constants from '../Config/constants'
 
 function getActiveRecipes(rawRecipes) {
@@ -152,13 +151,7 @@ async function createSharedRecipe(params) {
   }
 
   // Snake case the whole payload
-  let recipe = snakeCaseKeys(params.recipe)
-  for (let i = 0; i < recipe.steps.length; i++) {
-    snakeCaseKeys(recipe.steps[i])
-    for (let j = 0; j < recipe.steps[i].ingredients; j++) {
-      snakeCaseKeys(recipe.steps[i].ingredients[j])
-    }
-  }
+  let recipe = snakecaseRecipe(params.recipe)
 
   let url = `recipes/`
   recipe.device_token = deviceToken
@@ -219,7 +212,44 @@ async function unfavoriteRecipe(params) {
     }
   }
   storage.setItem('recipes', JSON.stringify(r))
-  return r
+  return getActiveRecipes(recipes)
+}
+
+async function syncUserRecipes({ firebaseToken = null }) {
+  // Get recipes from local storage
+  const localStorageRecipes = await storage.getItem('recipes')
+  const r = localStorageRecipes ? JSON.parse(localStorageRecipes) : []
+  const result = []
+  for (let i = 0; i < r.length; i += 1) {
+    // Create objects and add to result
+    result.push(Recipe(r[i]))
+  }
+  const snakecaseRecipes = []
+  for (let i = 0; i < result.length; i++) {
+    snakecaseRecipes.push(snakecaseRecipe(result[i]))
+  }
+
+  let url = `users/backup`
+  return defaultApiClient(url, firebaseToken)
+    .post('', { recipes: snakecaseRecipes })
+    .then((response) => {
+      if (in200s(response.status)) {
+        const recipes = []
+        for (let i = 0; i < response.data.length; i++) {
+          const recipe = Recipe(camelcaseKeys(response.data[i]))
+          if (!recipe.deletedAt) {
+            recipes.push(recipe)
+          }
+        }
+        return [null, recipes]
+      }
+
+      return [response.data, null]
+    })
+    .catch((error) => {
+      const errorMessage = (error.response && error.response.data) || error.request || error.message
+      return [errorMessage, null]
+    })
 }
 
 export const recipeService = {
@@ -232,4 +262,5 @@ export const recipeService = {
   deleteRecipe,
   favoriteRecipe,
   unfavoriteRecipe,
+  syncUserRecipes,
 }

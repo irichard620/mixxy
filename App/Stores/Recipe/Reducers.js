@@ -119,6 +119,25 @@ export const createSharedRecipeFailure = (state, { errorMessage }) => ({
   createSharedRecipeErrorMessage: errorMessage,
 })
 
+export const syncUserRecipesLoading = (state) => ({
+  ...state,
+  syncUserRecipesIsLoading: true,
+  syncUserRecipesErrorMessage: null,
+})
+
+export const syncUserRecipesSuccess = (state, { recipes }) => ({
+  ...state,
+  recipes: recipes,
+  syncUserRecipesIsLoading: false,
+  syncUserRecipesErrorMessage: null,
+})
+
+export const syncUserRecipesFailure = (state, { errorMessage }) => ({
+  ...state,
+  syncUserRecipesIsLoading: false,
+  syncUserRecipesErrorMessage: errorMessage,
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.PERSIST_RECIPE_LOADING]: persistRecipeLoading,
   [RecipeTypes.PERSIST_RECIPE_SUCCESS]: persistRecipeSuccess,
@@ -138,4 +157,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [RecipeTypes.CREATE_SHARED_RECIPE_LOADING]: createSharedRecipeLoading,
   [RecipeTypes.CREATE_SHARED_RECIPE_SUCCESS]: createSharedRecipeSuccess,
   [RecipeTypes.CREATE_SHARED_RECIPE_FAILURE]: createSharedRecipeFailure,
+  [RecipeTypes.SYNC_USER_RECIPES_LOADING]: syncUserRecipesLoading,
+  [RecipeTypes.SYNC_USER_RECIPES_SUCCESS]: syncUserRecipesSuccess,
+  [RecipeTypes.SYNC_USER_RECIPES_FAILURE]: syncUserRecipesFailure,
 })

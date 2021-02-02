@@ -14,7 +14,14 @@ import NavigationService from '../../Services/NavigationService'
 import HomeTabOutline from './Discover/HomeTabOutline'
 
 function HomeSettingsTab(props) {
-  const { user, onMixxyProClick, onRestoreClick, onVolumeUnitsClick, authUser } = props
+  const {
+    user,
+    onMixxyProClick,
+    onRestoreClick,
+    onVolumeUnitsClick,
+    authUser,
+    onSyncUserRecipesClick,
+  } = props
   const darkMode = useDarkMode()
   const styles = getStylesheet(darkMode)
   const homeStyles = getHomeStylesheet(darkMode)
@@ -90,6 +97,8 @@ function HomeSettingsTab(props) {
       ])
     } else if (option === constants.OPTION_DISPLAY_NAME || option === constants.OPTION_FULL_NAME) {
       NavigationService.navigate('Username')
+    } else if (option === constants.OPTION_TRIGGER_MANUAL_SYNC) {
+      onSyncUserRecipesClick()
     }
   }
 
@@ -198,7 +207,7 @@ function HomeSettingsTab(props) {
         <Detail
           key="manual_sync"
           title={constants.OPTION_TRIGGER_MANUAL_SYNC}
-          onDetailClick={() => onSettingsOptionClick(constants.OPTION_FULL_NAME)}
+          onDetailClick={() => onSettingsOptionClick(constants.OPTION_TRIGGER_MANUAL_SYNC)}
           showSeparator
           showArrow
           darkMode={darkMode}
@@ -252,6 +261,7 @@ HomeSettingsTab.propTypes = {
   onMixxyProClick: PropTypes.func,
   onRestoreClick: PropTypes.func,
   onVolumeUnitsClick: PropTypes.func,
+  onSyncUserRecipesClick: PropTypes.func,
   authUser: PropTypes.object,
 }
 

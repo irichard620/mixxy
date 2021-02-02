@@ -29,6 +29,7 @@ import {
   fetchSharedRecipe,
   createSharedRecipe,
   fetchBartenderRecipes,
+  syncUserRecipes,
 } from './RecipeSaga'
 import { fetchSponsorCards, fetchSponsorCardDetails } from './SponsorSaga'
 import { fetchCampaigns } from './CampaignSaga'
@@ -77,6 +78,8 @@ export default function* root() {
     takeLatest(RecipeTypes.FETCH_SHARED_RECIPE, fetchSharedRecipe),
     // Create shared recipe
     takeLatest(RecipeTypes.CREATE_SHARED_RECIPE, createSharedRecipe),
+    // Sync user recipes
+    takeLatest(RecipeTypes.SYNC_USER_RECIPES, syncUserRecipes),
     // Fetch sponsor details
     takeLatest(SponsorTypes.FETCH_SPONSOR_CARD_DETAILS, fetchSponsorCardDetails),
     // Update volume units

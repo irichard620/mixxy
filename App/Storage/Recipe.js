@@ -1,8 +1,21 @@
 import uuidv4 from 'uuid/v4'
+import snakeCaseKeys from 'snakecase-keys'
 import { Step } from './Step'
 import { getOunceAmountFromIngredient, Ingredient } from './Ingredient'
 
 const camelcaseKeys = require('camelcase-keys')
+
+export function snakecaseRecipe(recipe) {
+  // Snake case the whole payload
+  let snakeCaseRecipe = snakeCaseKeys(recipe)
+  for (let i = 0; i < snakeCaseRecipe.steps.length; i++) {
+    snakeCaseKeys(snakeCaseRecipe.steps[i])
+    for (let j = 0; j < snakeCaseRecipe.steps[i].ingredients; j++) {
+      snakeCaseKeys(snakeCaseRecipe.steps[i].ingredients[j])
+    }
+  }
+  return snakeCaseRecipe
+}
 
 export function Recipe(recipeObj) {
   const recipe = {}
@@ -51,9 +64,15 @@ export function Recipe(recipeObj) {
   recipe.imageLink = recipeObj.imageLink || ''
 
   // Times
-  recipe.deletedAt = recipeObj.deletedAt || null
-  recipe.createdAt = recipeObj.createdAt || new Date().toJSON()
-  recipe.updatedAt = recipeObj.updatedAt || new Date().toJSON()
+  if (recipeObj.deletedAt) {
+    recipe.deletedAt = recipeObj.deletedAt
+  }
+  if (recipeObj.createdAt) {
+    recipe.createdAt = recipeObj.createdAt
+  }
+  if (recipeObj.updatedAt) {
+    recipe.updatedAt = recipeObj.updatedAt
+  }
 
   return recipe
 }

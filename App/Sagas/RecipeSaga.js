@@ -99,3 +99,13 @@ export function* unfavoriteRecipe(params) {
   const recipes = yield call(recipeService.unfavoriteRecipe, params)
   yield put(RecipeActions.persistRecipeSuccess(recipes))
 }
+
+export function* syncUserRecipes(params) {
+  yield put(RecipeActions.syncUserRecipesLoading())
+  const [error, recipes] = yield call(recipeService.syncUserRecipes, params)
+  if (!error) {
+    yield put(RecipeActions.syncUserRecipesSuccess(recipes))
+  } else {
+    yield put(RecipeActions.syncUserRecipesFailure(error))
+  }
+}
