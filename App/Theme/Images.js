@@ -94,4 +94,7 @@ export default {
   topHeaderBackDark: require('../Assets/Images/navbar/Nav_Back_DARK.png'),
   topHeaderDotsLight: require('../Assets/Images/navbar/Nav_Dots_LIGHT.png'),
   topHeaderDotsDark: require('../Assets/Images/navbar/Nav_Dots_DARK.png'),
+  // Auth flow
+  auth3dMartini: require('../Assets/Images/3d-martini.png'),
+  authBlurBackground: require('../Assets/Images/blur-bg.png'),
 }

@@ -63,6 +63,7 @@ export function* updateAndFetchRemoteUser(params) {
     yield call(userService.saveEmailAndDisplayName, {
       email: user.email,
       displayName: user.display_name,
+      fullName: user.full_name,
     })
     yield put(UserActions.updateAndFetchRemoteUserSuccess(user))
   } else {
@@ -76,6 +77,7 @@ export function* updateDisplayName(params) {
   if (!errorMessage) {
     const user = yield call(userService.saveEmailAndDisplayName, {
       displayName: params.displayName,
+      fullName: params.fullName,
     })
     yield put(UserActions.updateDisplayNameSuccess(user))
   } else {

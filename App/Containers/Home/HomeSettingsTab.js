@@ -88,7 +88,7 @@ function HomeSettingsTab(props) {
           },
         },
       ])
-    } else if (option === constants.OPTION_DISPLAY_NAME) {
+    } else if (option === constants.OPTION_DISPLAY_NAME || option === constants.OPTION_FULL_NAME) {
       NavigationService.navigate('Username')
     }
   }
@@ -149,6 +149,16 @@ function HomeSettingsTab(props) {
         )}
         {authUser && (
           <Detail
+            key="full_name"
+            value={user.fullName || 'No value'}
+            title={constants.OPTION_FULL_NAME}
+            onDetailClick={() => onSettingsOptionClick(constants.OPTION_FULL_NAME)}
+            showSeparator
+            darkMode={darkMode}
+          />
+        )}
+        {authUser && (
+          <Detail
             key="logout"
             value={''}
             title={constants.OPTION_SIGN_OUT}
@@ -173,6 +183,30 @@ function HomeSettingsTab(props) {
     )
   }
 
+  const renderCloudBackupSection = () => {
+    return authUser ? (
+      <View key="Cloud Backup" style={homeStyles.settingsSectionContainer}>
+        <Text style={homeStyles.settingsSectionHeader}>Cloud Backup</Text>
+        <Detail
+          key="last_backup_at"
+          value={user.lastBackupAt || 'None'}
+          title="Last backup"
+          showSeparator
+          disabled
+          darkMode={darkMode}
+        />
+        <Detail
+          key="manual_sync"
+          title={constants.OPTION_TRIGGER_MANUAL_SYNC}
+          onDetailClick={() => onSettingsOptionClick(constants.OPTION_FULL_NAME)}
+          showSeparator
+          showArrow
+          darkMode={darkMode}
+        />
+      </View>
+    ) : null
+  }
+
   let proText = 'Thanks for being a Mixxy Pro user and supporting our team.'
   if (!user.premium) {
     proText =
@@ -181,6 +215,11 @@ function HomeSettingsTab(props) {
 
   return (
     <HomeTabOutline pageTitle="Settings" showRefreshControl={false} darkMode={darkMode}>
+      {/* <Image
+        source={darkMode ? Images.navSettingsDark : Images.navSettingsLight}
+        style={homeStyles.settingsUserImage}
+      />
+      <Text style={homeStyles.settingsProText}>Not logged in</Text> */}
       <View style={homeStyles.settingsProOutline}>
         <Image source={Images.proBadge} style={homeStyles.settingsProImage} />
         <Text style={homeStyles.settingsProTitle}>{'Mixxy Pro'}</Text>
@@ -200,8 +239,9 @@ function HomeSettingsTab(props) {
       </View>
       <View style={[styles.divider, extraPadding]} />
       {renderAccountSection()}
+      {renderCloudBackupSection()}
       {constants.settingsSections.map((section, idx) => renderSection(section, idx))}
-      <Text style={homeStyles.settingsVersionText}>Mixxy V2.1</Text>
+      <Text style={homeStyles.settingsVersionText}>Mixxy V3.0</Text>
       <View style={homeStyles.bufferView} />
     </HomeTabOutline>
   )

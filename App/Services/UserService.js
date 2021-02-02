@@ -107,7 +107,7 @@ async function createOrUpdateRemoteUser({ email, displayName = null, firebaseTok
   }
 }
 
-async function saveEmailAndDisplayName({ email = null, displayName = null }) {
+async function saveEmailAndDisplayName({ email = null, displayName = null, fullName = null }) {
   try {
     const user = await storage.getItem('user')
     const userDetails = user ? JSON.parse(user) : {}
@@ -116,6 +116,9 @@ async function saveEmailAndDisplayName({ email = null, displayName = null }) {
     }
     if (displayName) {
       userDetails.displayName = displayName
+    }
+    if (fullName) {
+      userDetails.fullName = fullName
     }
     storage.setItem('user', JSON.stringify(userDetails))
     return userDetails

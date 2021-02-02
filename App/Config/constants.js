@@ -239,6 +239,8 @@ export const OPTION_REPORT_BUG = 'Report a Bug'
 export const OPTION_INSTAGRAM = 'Follow us on Instagram'
 export const OPTION_LOG_IN = 'Login'
 export const OPTION_DISPLAY_NAME = 'Display name'
+export const OPTION_FULL_NAME = 'Full name'
+export const OPTION_TRIGGER_MANUAL_SYNC = 'Trigger manual sync'
 export const OPTION_SIGN_OUT = 'Logout'
 export const settingsOptions = {
   [SETTINGS_SECTION_GENERAL]: [OPTION_VOLUME_UNITS, OPTION_REPLAY_TUTORIAL, OPTION_RATE_APP],

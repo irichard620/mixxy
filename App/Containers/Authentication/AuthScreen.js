@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView, Text, Alert, View, Linking } from 'react-native'
+import { SafeAreaView, Text, Alert, View, Linking, Image, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth'
 import { NavigationActions } from 'react-navigation'
@@ -8,15 +8,53 @@ import { GoogleSignin } from '@react-native-community/google-signin'
 import NavigationService from '../../Services/NavigationService'
 import getStylesheet from '../../Theme/ApplicationStyles'
 import getAuthStylesheet from './AuthStyle'
+import GoogleButton from './GoogleButton'
+import AppleButton from './AppleButton'
 import { PropTypes } from 'prop-types'
 import TopHeader from '../../Components/TopHeader'
 import UserActions from '../../Stores/User/Actions'
 import ButtonLarge from '../../Components/ButtonLarge'
 import Colors from '../../Theme/Colors'
+import Images from '../../Theme/Images'
 import Helpers from '../../Theme/Helpers'
 
 const APPLE_PROVIDER_ID = 'apple.com'
 const GOOGLE_PROVIDER_ID = 'google.com'
+
+export const onAppleButtonPress = async () => {
+  // Start the sign-in request
+  const appleAuthRequestResponse = await appleAuth.performRequest({
+    requestedOperation: appleAuth.Operation.LOGIN,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  })
+
+  // Ensure Apple returned a user identityToken
+  if (!appleAuthRequestResponse.identityToken) {
+    Alert.alert('Error', 'Apple login failed - please try again later.', [
+      {
+        text: 'Ok',
+      },
+    ])
+  }
+
+  // Create a Firebase credential from the response
+  const { identityToken, nonce } = appleAuthRequestResponse
+  const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce)
+
+  // Sign the user in with the credential
+  return auth().signInWithCredential(appleCredential)
+}
+
+export const onGoogleButtonPress = async () => {
+  // Get the users ID token
+  const { idToken } = await GoogleSignin.signIn()
+
+  // Create a Google credential with the token
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken)
+
+  // Sign-in the user with the credential
+  return auth().signInWithCredential(googleCredential)
+}
 
 class AuthScreen extends React.Component {
   authListener = null
@@ -112,90 +150,65 @@ class AuthScreen extends React.Component {
     })
   }
 
-  onAppleButtonPress = async () => {
-    // Start the sign-in request
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-      requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    })
-
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      Alert.alert('Error', 'Apple login failed - please try again later.', [
-        {
-          text: 'Ok',
-        },
-      ])
-    }
-
-    // Create a Firebase credential from the response
-    const { identityToken, nonce } = appleAuthRequestResponse
-    const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce)
-
-    // Sign the user in with the credential
-    return auth().signInWithCredential(appleCredential)
-  }
-
-  onGoogleButtonPress = async () => {
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn()
-
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken)
-
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential)
-  }
-
   render() {
     const { darkMode } = this.props
     const styles = getStylesheet(darkMode)
     const authStyles = getAuthStylesheet(darkMode)
+
+    const { width, height } = Dimensions.get('window')
     return (
       <SafeAreaView style={styles.outerContainer}>
-        <TopHeader onClose={this.onBackScreenClick} showSeparator={false} darkMode={darkMode} />
-        <Text style={authStyles.authHeading}>Mixxy</Text>
-        <Text style={authStyles.authSubheading}>Ultimate guide to home bartending.</Text>
-        <Text style={authStyles.noAccountText}>Get started by creating your account.</Text>
-        <View style={Helpers.crossCenter}>
-          <ButtonLarge
-            onButtonClick={this.onAppleButtonPress}
-            title="Sign up with Apple"
-            margin={[16, 0, 16, 0]}
-            buttonWidth={250}
-            buttonHeight={45}
-            colorOverride={darkMode ? '#FFFFFF' : '#000000'}
-            textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
-          />
-          <ButtonLarge
-            onButtonClick={this.onGoogleButtonPress}
-            title="Sign up with Google"
-            margin={[0, 0, 16, 0]}
-            buttonWidth={250}
-            buttonHeight={45}
-            colorOverride={darkMode ? '#FFFFFF' : '#000000'}
-            textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
-          />
-          <ButtonLarge
-            onButtonClick={this.onEmailSignUpClick}
-            title="Sign up with Email"
-            margin={[0, 0, 16, 0]}
-            buttonWidth={250}
-            buttonHeight={45}
-            colorOverride={darkMode ? '#FFFFFF' : '#000000'}
-            textColorOverride={darkMode ? '#000000' : '#FFFFFF'}
-          />
+        <TopHeader
+          onClose={this.onBackScreenClick}
+          showSeparator={false}
+          darkMode={darkMode}
+          useTransparent
+        />
+        <Image
+          style={{
+            alignSelf: 'center',
+            marginTop: 60,
+            marginBottom: 36,
+            height: height * 0.27,
+            resizeMode: 'contain',
+          }}
+          source={Images.auth3dMartini}
+        />
+        <Image
+          style={{
+            position: 'absolute',
+            height: height * 0.45,
+            zIndex: -1,
+            width: width,
+            top: 0,
+            left: 0,
+            right: 0,
+          }}
+          source={Images.authBlurBackground}
+        />
+        <Text style={authStyles.authHeading}>Join Mixxy</Text>
+        <Text style={authStyles.authSubheading}>
+          Mixxy is creating a community for home bartenders to learn and share recipes. Get started
+          by creating an account.
+        </Text>
+        <ButtonLarge
+          onButtonClick={this.onEmailSignUpClick}
+          title="Create Account"
+          margin={[0, 16, 16, 16]}
+          buttonWidth={width - 32}
+          isPrimary
+        />
+        <View style={Helpers.row}>
+          <AppleButton onAppleButtonPress={onAppleButtonPress} />
+          <GoogleButton onGoogleButtonPress={onGoogleButtonPress} />
         </View>
-        <View style={Helpers.rowMain}>
-          <Text style={authStyles.noAccountText}>{'Already have an account? '}</Text>
-          <Text
-            style={[authStyles.noAccountText, { color: Colors.blue1 }]}
-            onPress={this.onSignInClick}
-          >
-            Sign in
-          </Text>
-        </View>
-
+        <View style={styles.divider} />
+        <ButtonLarge
+          onButtonClick={this.onSignInClick}
+          title="Sign In"
+          margin={[16, 16, 0, 16]}
+          buttonWidth={width - 32}
+        />
         <View style={authStyles.termsOfServiceContainer}>
           <Text style={authStyles.noAccountText}>By creating an account, I accept Mixxys</Text>
           <Text

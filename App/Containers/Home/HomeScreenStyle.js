@@ -196,6 +196,11 @@ export default function getHomeStylesheet(useDarkMode) {
       marginLeft: 16,
       marginTop: 24,
     },
+    settingsUserImage: {
+      borderRadius: 52,
+      height: 104,
+      width: 104,
+    },
     settingsVersionText: {
       color: useDarkMode ? Colors.text2Dark : Colors.text2Light,
       fontSize: 12,

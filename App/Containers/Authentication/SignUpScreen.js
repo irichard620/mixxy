@@ -1,17 +1,21 @@
 import React from 'react'
-import { View, Text, Alert } from 'react-native'
+import { View, Text, Alert, Dimensions } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth'
 import getAuthStylesheet from './AuthStyle'
+import { onGoogleButtonPress, onAppleButtonPress } from './AuthScreen'
+import GoogleButton from './GoogleButton'
+import AppleButton from './AppleButton'
 import { PropTypes } from 'prop-types'
 import NavigationService from '../../Services/NavigationService'
 import Textbox from '../../Components/Textbox'
-import BottomBar from '../../Components/BottomBar'
 import UserActions from '../../Stores/User/Actions'
 import TopHeader from '../../Components/TopHeader'
+import ButtonLarge from '../../Components/ButtonLarge'
 import getStylesheet from '../../Theme/ApplicationStyles'
+import Helpers from '../../Theme/Helpers'
 
 class SignUpScreen extends React.Component {
   constructor(props) {
@@ -53,7 +57,6 @@ class SignUpScreen extends React.Component {
         })
       })
       .catch((error) => {
-        // TODO: add popups if error
         if (error.code === 'auth/email-already-in-use') {
           Alert.alert('Error', 'That email address is already in use!', [
             {
@@ -85,27 +88,20 @@ class SignUpScreen extends React.Component {
     const { email, password, loading } = this.state
     const styles = getStylesheet(darkMode)
     const authStyles = getAuthStylesheet(darkMode)
+    const { width } = Dimensions.get('window')
 
     return (
       <View style={styles.outerContainer}>
-        <TopHeader
-          onClose={this.onBackScreenClick}
-          showSeparator
-          darkMode={darkMode}
-          title="Sign Up"
-          useArrow
-        />
+        <TopHeader onClose={this.onBackScreenClick} darkMode={darkMode} useArrow />
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           extraScrollHeight={30}
           style={authStyles.scrollView}
         >
+          <Text style={authStyles.heading}>Welcome to Mixxy.</Text>
           <Text style={authStyles.headingDescription}>
-            {
-              'Sign up for a Mixxy account to get the most out of your experience, including cloud backups and community content'
-            }
+            Get started with features like library backup and recipe sharing.
           </Text>
-          <Text style={authStyles.sectionHeading}>{'What is your email?'}</Text>
           <Textbox
             onChangeText={(text) => this.setState({ email: text })}
             modalText={email}
@@ -113,7 +109,6 @@ class SignUpScreen extends React.Component {
             charLimit={100}
             darkMode={darkMode}
           />
-          <Text style={authStyles.sectionHeading}>{'Set a password'}</Text>
           <Textbox
             onChangeText={(text) => this.setState({ password: text })}
             modalText={password}
@@ -122,14 +117,24 @@ class SignUpScreen extends React.Component {
             darkMode={darkMode}
             secureTextEntry
           />
+          <ButtonLarge
+            title="Sign Up"
+            isPrimary
+            margin={[0, 16, 0, 16]}
+            onButtonClick={this.onSignUp}
+            disabled={!this.inputValid() || loading}
+          />
+          <View style={authStyles.loginSeparator}>
+            <View style={{ ...styles.divider, width: (width - 64) / 2 }} />
+            <Text>OR</Text>
+            <View style={{ ...styles.divider, width: (width - 64) / 2 }} />
+          </View>
+          <View style={Helpers.row}>
+            <AppleButton onAppleButtonPress={onAppleButtonPress} />
+            <GoogleButton onGoogleButtonPress={onGoogleButtonPress} />
+          </View>
           <View style={authStyles.buffer} />
         </KeyboardAwareScrollView>
-        <BottomBar
-          buttonTitle="Sign up"
-          disabled={!this.inputValid() || loading}
-          darkMode={darkMode}
-          onButtonClick={this.onSignUp}
-        />
       </View>
     )
   }
@@ -138,25 +143,14 @@ class SignUpScreen extends React.Component {
 SignUpScreen.propTypes = {
   darkMode: PropTypes.bool,
   navigation: PropTypes.object,
-  createRemoteUser: PropTypes.func,
-  createRemoteUserIsLoading: PropTypes.bool,
-  createRemoteUserErrorMessage: PropTypes.string,
   updateAndFetchRemoteUser: PropTypes.func,
-  updateAndFetchRemoteUserIsLoading: PropTypes.bool,
-  updateAndFetchRemoteUserErrorMessage: PropTypes.string,
 }
 
 const mapStateToProps = (state) => ({
   user: state.user.user,
-  createRemoteUserIsLoading: state.user.createRemoteUserIsLoading,
-  createRemoteUserErrorMessage: state.user.createRemoteUserErrorMessage,
-  updateAndFetchRemoteUserIsLoading: state.user.updateAndFetchRemoteUserIsLoading,
-  updateAndFetchRemoteUserErrorMessage: state.user.updateAndFetchRemoteUserErrorMessage,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  createRemoteUser: (email, displayName) =>
-    dispatch(UserActions.createRemoteUser(email, displayName)),
   updateAndFetchRemoteUser: (email, displayName, firebaseToken) =>
     dispatch(UserActions.updateAndFetchRemoteUser(email, displayName, firebaseToken)),
 })

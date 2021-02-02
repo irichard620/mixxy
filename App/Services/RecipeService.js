@@ -1,7 +1,6 @@
 import storage from 'redux-persist/lib/storage'
 import DeviceInfo from 'react-native-device-info'
 import analytics from '@react-native-firebase/analytics'
-import * as recipeModel from '../Storage/Recipe'
 import { defaultApiClient, in200s } from './Helpers'
 import camelcaseKeys from 'camelcase-keys'
 import snakeCaseKeys from 'snakecase-keys'
@@ -9,17 +8,32 @@ import uuidv4 from 'uuid/v4'
 import { Recipe } from '../Storage/Recipe'
 import * as constants from '../Config/constants'
 
+function getActiveRecipes(rawRecipes) {
+  const recipes = rawRecipes ? JSON.parse(rawRecipes) : []
+  const result = []
+  for (let i = 0; i < recipes.length; i += 1) {
+    // Create objects and add to result
+    const recipe = Recipe(recipes[i])
+    if (!recipe.deletedAt) {
+      result.push(recipe)
+    }
+  }
+  return result
+}
+
 async function persistRecipe(params) {
   const recipeToSave = params.recipeToSave
   const isExternal = params.isExternal
   const isPremium = params.isPremium
   try {
     const recipes = await storage.getItem('recipes')
-    const r = recipes ? JSON.parse(recipes) : []
+    const r = getActiveRecipes(recipes)
     let found = false
     let duplicateName = false
     for (let i = 0; i < r.length; i += 1) {
       if (r[i].recipeId === recipeToSave.recipeId) {
+        // New updatedAt
+        recipeToSave.updatedAt = new Date().toJSON()
         r[i] = recipeToSave
         found = true
         break
@@ -61,16 +75,7 @@ async function persistRecipe(params) {
 async function fetchRecipes() {
   try {
     const recipes = await storage.getItem('recipes')
-    const result = []
-    const r = recipes ? JSON.parse(recipes) : []
-    for (let i = 0; i < r.length; i += 1) {
-      // Create objects and add to result
-      const recipe = recipeModel.Recipe(r[i])
-      if (recipe.status === 'ACTIVE') {
-        result.push(recipe)
-      }
-    }
-    return result
+    return getActiveRecipes(recipes)
   } catch (e) {
     return []
   }
@@ -173,17 +178,20 @@ async function createSharedRecipe(params) {
 
 async function deleteRecipe(params) {
   const recipeId = params.recipeId
+  const result = []
   const recipes = await storage.getItem('recipes')
   const r = recipes ? JSON.parse(recipes) : []
   for (let i = 0; i < r.length; i += 1) {
     const recipe = r[i]
     if (recipe.recipeId === recipeId) {
-      r.splice(i, 1)
-      break
+      // Soft delete
+      recipe.deletedAt = new Date().toJSON()
+    } else if (recipe.status === 'ACTIVE' && !recipe.deletedAt) {
+      result.push(recipe)
     }
   }
   storage.setItem('recipes', JSON.stringify(r))
-  return r
+  return result
 }
 
 async function favoriteRecipe(params) {
@@ -197,7 +205,7 @@ async function favoriteRecipe(params) {
     }
   }
   storage.setItem('recipes', JSON.stringify(r))
-  return r
+  return getActiveRecipes(recipes)
 }
 
 async function unfavoriteRecipe(params) {

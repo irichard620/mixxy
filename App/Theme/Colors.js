@@ -26,6 +26,7 @@ export default {
   mixxyProYellow: '#FFB142',
   red1: '#EB4B13',
   orange1: '#EF5B18',
+  orange2: '#EF5417',
   red1TransparentLight: '#EB4B1315',
   red1TransparentDark: '#EB4B1330',
   backgroundColorLight: '#FFFFFF',

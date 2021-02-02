@@ -1,7 +1,6 @@
 import React from 'react'
 import { SafeAreaView, View, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-// import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import auth from '@react-native-firebase/auth'
 import getAuthStylesheet from './AuthStyle'
@@ -9,6 +8,7 @@ import { PropTypes } from 'prop-types'
 import NavigationService from '../../Services/NavigationService'
 import Textbox from '../../Components/Textbox'
 import BottomBar from '../../Components/BottomBar'
+import TopHeader from '../../Components/TopHeader'
 import UserActions from '../../Stores/User/Actions'
 import getStylesheet from '../../Theme/ApplicationStyles'
 
@@ -23,7 +23,7 @@ class UsernameScreen extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { updateDisplayNameIsLoading, updateDisplayNameErrorMessage, navigation } = this.props
+    const { updateDisplayNameIsLoading, updateDisplayNameErrorMessage } = this.props
     if (prevProps.updateDisplayNameIsLoading && !updateDisplayNameIsLoading) {
       if (updateDisplayNameErrorMessage) {
         // TODO: check for display name or profanity
@@ -61,8 +61,7 @@ class UsernameScreen extends React.Component {
           {
             text: 'Ok',
             onPress: () => {
-              navigation.popToTop()
-              navigation.goBack(null)
+              this.onBackScreenClick()
             },
           },
         ])
@@ -104,13 +103,14 @@ class UsernameScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.outerContainer}>
+        <TopHeader onClose={this.onBackScreenClick} darkMode={darkMode} />
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           extraScrollHeight={30}
           style={authStyles.scrollView}
         >
-          <Text style={[authStyles.topHeader, { paddingTop: 48 }]}>Almost there!</Text>
-          <Text style={[authStyles.sectionHeading, { paddingBottom: 12 }]}>
+          <Text style={authStyles.heading}>Almost there!</Text>
+          <Text style={authStyles.headingDescription}>
             We just need a few more details to complete your profile.
           </Text>
           <Text style={authStyles.sectionHeading}>Email</Text>

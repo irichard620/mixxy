@@ -50,6 +50,11 @@ export function Recipe(recipeObj) {
   recipe.status = recipeObj.status || 'ACTIVE'
   recipe.imageLink = recipeObj.imageLink || ''
 
+  // Times
+  recipe.deletedAt = recipeObj.deletedAt || null
+  recipe.createdAt = recipeObj.createdAt || new Date().toJSON()
+  recipe.updatedAt = recipeObj.updatedAt || new Date().toJSON()
+
   return recipe
 }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { SafeAreaView, Text, Image, TouchableOpacity, View, StyleSheet, Button } from 'react-native'
 import getStylesheet from '../Theme/ApplicationStyles'
 import Images from '../Theme/Images'
+import Colors from '../Theme/Colors'
 import { PropTypes } from 'prop-types'
 import getComponentStylesheet from './ComponentStyle'
 
@@ -14,6 +15,7 @@ export default function TopHeader(props) {
     darkMode,
     rightButtonTitle,
     onRightButtonPress,
+    useTransparent,
   } = props
 
   const styles = getStylesheet(darkMode)
@@ -26,9 +28,14 @@ export default function TopHeader(props) {
     imageToUse = darkMode ? Images.topHeaderBackDark : Images.topHeaderBackLight
   }
 
+  const transparentStyle = {}
+  if (useTransparent) {
+    transparentStyle.backgroundColor = Colors.transparent
+  }
+
   return (
     <SafeAreaView>
-      <View style={componentStyles.topHeaderOutline}>
+      <View style={[componentStyles.topHeaderOutline, transparentStyle]}>
         <TouchableOpacity style={headerStyles.touchable} onPress={onClose}>
           <Image style={headerStyles.close} source={imageToUse} />
         </TouchableOpacity>
